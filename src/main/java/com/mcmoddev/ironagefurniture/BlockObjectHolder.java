@@ -66,6 +66,10 @@ public class BlockObjectHolder {
 	public static Block chair_wood_ironage_bench_back_padded_single_jungle;
 	public static Block chair_wood_ironage_bench_back_padded_single_spruce;
 	
+	public static Block light_metal_ironage_sconce_wall_empty_iron;
+	public static Block light_metal_ironage_sconce_wall_torch_iron;
+	public static Block light_metal_ironage_sconce_wall_torch_iron_unlit;
+	
 	public static Block chair_wood_ironage_classic_biomesoplenty_cherry;
 	public static Block chair_wood_ironage_classic_biomesoplenty_ebony;
 	public static Block chair_wood_ironage_classic_biomesoplenty_ethereal;

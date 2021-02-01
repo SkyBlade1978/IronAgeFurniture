@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=north,type=wall": {
+      "model": "ironagefurniture:light_metal_ironage_sconce_wall_celestial_iron",
+      "y": 0
+    },
+    "facing=east,type=wall": {
+      "model": "ironagefurniture:light_metal_ironage_sconce_wall_celestial_iron",
+      "y": 90
+    },
+    "facing=south,type=wall": {
+      "model": "ironagefurniture:light_metal_ironage_sconce_wall_celestial_iron",
+      "y": 180
+    },
+    "facing=west,type=wall": {
+      "model": "ironagefurniture:light_metal_ironage_sconce_wall_celestial_iron",
+      "y": 270
+    },
+    "facing=north,type=floor": {
+      "model": "ironagefurniture:light_metal_ironage_sconce_floor_celestial_iron",
+      "y": 0
+    },
+    "facing=east,type=floor": {
+      "model": "ironagefurniture:light_metal_ironage_sconce_floor_celestial_iron",
+      "y": 90
+    },
+    "facing=south,type=floor": {
+      "model": "ironagefurniture:light_metal_ironage_sconce_floor_celestial_iron",
+      "y": 180
+    },
+    "facing=west,type=floor": {
+      "model": "ironagefurniture:light_metal_ironage_sconce_floor_celestial_iron",
+      "y": 270
+    }
+  }
+}

@@ -9,6 +9,7 @@ public class IronAgeFurnitureConfiguration {
 	public static boolean GENERATE_SHORT_STOOLS = true;
 	public static boolean GENERATE_TALL_STOOLS = true;
 	public static boolean GENERATE_WOOD_BENCHES = true;
+	public static boolean GENERATE_SCONCES = true;
 	public static boolean CFM_CONVERSION_RECIPES = true;
 	public static boolean INTEGRATION_BIOMESOPLENTY = true;
 	public static boolean INTEGRATION_NATURA = true;
@@ -31,6 +32,8 @@ public class IronAgeFurnitureConfiguration {
 		GENERATE_TALL_STOOLS = config.getBoolean("GENERATE_TALL_STOOLS", "options", GENERATE_TALL_STOOLS, "If true, then tall stools will be generated");
 		
 		GENERATE_WOOD_BENCHES = config.getBoolean("GENERATE_WOOD_BENCHES", "options", GENERATE_WOOD_BENCHES, "If true, then wooden benches will be generated");
+		
+		GENERATE_SCONCES = config.getBoolean("GENERATE_SCONCES", "options", GENERATE_SCONCES, "If true, then sconces will be generated");
 		
 		CFM_CONVERSION_RECIPES = config.getBoolean("CFM_CONVERSION_RECIPES", "options", CFM_CONVERSION_RECIPES, "If true, recipes for converting chairs from Crayfish Furniture Mod will be added");
 		config.save();

@@ -67,6 +67,12 @@ public class BlockInitialiser {
 			BlockObjectHolder.chair_wood_ironage_stool_tall_spruce = FurnitureFactory.CreateWoodTallStool("chair_wood_ironage_stool_tall_spruce");
 		}
 		
+		if (IronAgeFurnitureConfiguration.GENERATE_SCONCES) {
+			BlockObjectHolder.light_metal_ironage_sconce_wall_empty_iron = FurnitureFactory.CreateMetalSconce("light_metal_ironage_sconce_wall_empty_iron");
+			BlockObjectHolder.light_metal_ironage_sconce_wall_torch_iron = FurnitureFactory.CreateMetalTorchSconce("light_metal_ironage_sconce_wall_torch_iron");
+			BlockObjectHolder.light_metal_ironage_sconce_wall_torch_iron_unlit = FurnitureFactory.CreateMetalTorchSconceUnlit("light_metal_ironage_sconce_wall_torch_iron_unlit");
+		}
+		
 		if (IronAgeFurnitureConfiguration.GENERATE_WOOD_BENCHES) {
 			BlockObjectHolder.chair_wood_ironage_bench_single_oak = FurnitureFactory.CreateWoodBench("chair_wood_ironage_bench_single_oak");
 			BlockObjectHolder.chair_wood_ironage_bench_single_acacia = FurnitureFactory.CreateWoodBench("chair_wood_ironage_bench_single_acacia"); 
