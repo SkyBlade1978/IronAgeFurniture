@@ -7,7 +7,9 @@ import com.mcmoddev.ironagefurniture.api.Blocks.Chair;
 import com.mcmoddev.ironagefurniture.api.Blocks.LightHolder;
 import com.mcmoddev.ironagefurniture.api.Blocks.LightSource;
 import com.mcmoddev.ironagefurniture.api.Blocks.Stool;
+import com.mcmoddev.ironagefurniture.api.Enumerations.LightHolderType;
 import com.mcmoddev.ironagefurniture.api.Enumerations.LightType;
+import com.mcmoddev.ironagefurniture.api.Enumerations.Lit;
 import com.mcmoddev.ironagefurniture.init.ItemInitialiser;
 
 import net.minecraft.block.Block;
@@ -123,20 +125,20 @@ public class FurnitureFactory {
 	}
 	
 	public static Block CreateMetalSconce(String name, float resistance, float hardness) {
-		return registerBlock(new LightHolder(Material.IRON, name, resistance, hardness, LightType.SCONCE), name);
+		return registerBlock(new LightHolder(Material.IRON, name, resistance, hardness, LightHolderType.SCONCE), name);
 	}
 	
 	public static Block CreateMetalSconce(String name) {
-		return registerBlock(new LightHolder(Material.IRON, name, 10, 1,  LightType.SCONCE), name);
+		return registerBlock(new LightHolder(Material.IRON, name, 10, 1,  LightHolderType.SCONCE), name);
 	}
 	
 	public static Block CreateMetalTorchSconce(String name, float resistance, float hardness, boolean lit) {
 		Block newBlock;
 		
 		if (lit)
-			newBlock =  registerBlock(new LightSource(Material.IRON, name, resistance, hardness, LightType.SCONCE), name).setLightLevel(0.9375F);
+			newBlock =  registerBlock(new LightSource(Material.IRON, name, resistance, hardness, LightHolderType.SCONCE, Lit.LIT, LightType.TORCH), name).setLightLevel(0.9375F);
 		else
-			newBlock =  registerBlock(new LightSource(Material.IRON, name, resistance, hardness, LightType.SCONCE), name);
+			newBlock =  registerBlock(new LightSource(Material.IRON, name, resistance, hardness, LightHolderType.SCONCE, Lit.UNLIT, LightType.TORCH), name);
 		
 		return newBlock;
 	}

@@ -2,15 +2,13 @@ package com.mcmoddev.ironagefurniture.api.Enumerations;
 
 import net.minecraft.util.IStringSerializable;
 
-public enum LightType implements IStringSerializable {
-	 TORCH("torch"),
-     CANDLE("candle"),
-     GLOWSTONE("glowstone"),
-     CELESTIAL("celestial");
+public enum LightHolderType implements IStringSerializable {
+	 SCONCE("sconce"),
+     CANDLESTICK("candlestick");
 	
      private final String name;
 
-     private LightType(String name)
+     private LightHolderType(String name)
      {
          this.name = name;
      }

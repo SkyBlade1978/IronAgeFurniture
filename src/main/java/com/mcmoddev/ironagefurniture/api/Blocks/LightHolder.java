@@ -3,7 +3,7 @@ package com.mcmoddev.ironagefurniture.api.Blocks;
 import java.util.List;
 import com.mcmoddev.ironagefurniture.BlockObjectHolder;
 import com.mcmoddev.ironagefurniture.Ironagefurniture;
-import com.mcmoddev.ironagefurniture.api.Enumerations.LightType;
+import com.mcmoddev.ironagefurniture.api.Enumerations.LightHolderType;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -13,6 +13,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -22,13 +24,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class LightHolder extends BlockHBase {
-	private static final AxisAlignedBB SCONCEBB = new AxisAlignedBB(0.1, 0.0, 0.1, 0.9, 0.5, 0.9);
+	private static final AxisAlignedBB SCONCEBB = new AxisAlignedBB(0.3, 0.6, 0.1, 0.7, 0.7, 0.5);
 	
 	protected boolean _canFloor = false;
 	protected boolean _canWall = false;
 	protected boolean _canCeiling = false;
 	
-	protected LightType _lightType = LightType.SCONCE;
+	protected LightHolderType _lightHolderType = LightHolderType.SCONCE;
 	
 	@Override
 	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
@@ -41,9 +43,9 @@ public class LightHolder extends BlockHBase {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		
-		if (heldItem.getUnlocalizedName().equals("tile.torch")) {
+		if (heldItem.getItem() == Item.getItemFromBlock(Blocks.TORCH)) {
 			
-			switch (this._lightType) {
+			switch (this._lightHolderType) {
 			case SCONCE:
 				IBlockState newState = BlockObjectHolder.light_metal_ironage_sconce_wall_torch_iron.getDefaultState();
 				
@@ -86,12 +88,12 @@ public class LightHolder extends BlockHBase {
 		this.setCreativeTab(Ironagefurniture.ironagefurnitureTab);
 	}
 	
-	public LightHolder(Material materialIn, String name, float resistance, float hardness, LightType lightType) {
+	public LightHolder(Material materialIn, String name, float resistance, float hardness, LightHolderType lightType) {
 		super(materialIn);
 		
-		this._lightType = lightType;
+		this._lightHolderType = lightType;
 		
-		switch (this._lightType) {
+		switch (this._lightHolderType) {
 		case SCONCE:
 			this._canFloor = true;
 			this._canWall = true;
