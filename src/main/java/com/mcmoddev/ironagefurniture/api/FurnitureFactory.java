@@ -134,9 +134,9 @@ public class FurnitureFactory {
 		Block newBlock;
 		
 		if (lit)
-			newBlock =  registerBlock(new LightSource(Material.IRON, name, resistance, hardness), name).setLightLevel(0.9375F);
+			newBlock =  registerBlock(new LightSource(Material.IRON, name, resistance, hardness, LightType.SCONCE), name).setLightLevel(0.9375F);
 		else
-			newBlock =  registerBlock(new LightSource(Material.IRON, name, resistance, hardness), name);
+			newBlock =  registerBlock(new LightSource(Material.IRON, name, resistance, hardness, LightType.SCONCE), name);
 		
 		return newBlock;
 	}
