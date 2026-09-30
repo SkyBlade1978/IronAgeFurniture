@@ -5,8 +5,10 @@
 # IronAgeFurniture
 
 IronAgeFurniture adds functional chairs, stools, benches, beds, lamps, and
-sconces to Minecraft. The unreleased `0.4.0.110021` candidate adds Phase 4
+sconces to Minecraft. The published `0.4.0.110021` release adds Phase 4
 furniture and lighting for Minecraft 1.10.2 with Forge 12.18.3.2511.
+The unreleased `0.5.0.110021` candidate adds extension APIs but no Phase 5
+storage furniture yet.
 
 Phase 3 contains the established seating collection plus empty, torch,
 redstone-torch, glow, lava, and redstone lighting, including throwable lava
@@ -74,7 +76,7 @@ default-off option. Back up older worlds before first opening them in Phase 4.
 The supported Java namespace is `zone.moddev.mc.ironagefurniture`. Add-ons
 compiled against the former `com.mcmoddev.ironagefurniture` packages must
 update their imports. The Maven coordinate is
-`zone.moddev.mc:iron-age-furniture:0.4.0.110021`.
+`zone.moddev.mc:iron-age-furniture:0.5.0.110021`.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes and
 [docs/VERSIONS.md](docs/VERSIONS.md) for the versioning scheme. Report bugs

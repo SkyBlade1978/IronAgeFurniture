@@ -1,4 +1,11 @@
-# IronAgeFurniture 0.4.0.110021 (unreleased)
+# IronAgeFurniture 0.5.0.110021 (unreleased)
+
+Phase 5 foundation for Minecraft 1.10.2. Add extension points for surface
+item placement, interactions, and client-only rendering without registering
+storage furniture. The update feed continues to advertise published
+`0.4.0.110021`.
+
+# IronAgeFurniture 0.4.0.110021
 
 Phase 4 candidate for Minecraft 1.10.2 and Forge 12.18.3.2511. The update
 feed continues to advertise the published `0.3.0.110021` release.

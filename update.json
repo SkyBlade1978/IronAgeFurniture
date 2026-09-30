@@ -1,11 +1,12 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/iron-age-furniture/files",
   "promos": {
-    "1.10.2-latest": "0.3.0.110021",
-    "1.10.2-recommended": "0.3.0.110021"
+    "1.10.2-latest": "0.4.0.110021",
+    "1.10.2-recommended": "0.4.0.110021"
   },
   "1.10.2": {
     "0.2.0.5": "Previous Iron Age Furniture release for Minecraft 1.10.2.",
-    "0.3.0.110021": "Phase 3 adds lamps, sconces, throwable lava lamps, and sixteen upholstery colours for padded benches."
+    "0.3.0.110021": "Phase 3 adds lamps, sconces, throwable lava lamps, and sixteen upholstery colours for padded benches.",
+    "0.4.0.110021": "Phase 4 adds beds, chairs, candles, metal sconces, translations, and CFM chair migration."
   }
 }

@@ -14,6 +14,11 @@ import zone.moddev.mc.ironagefurniture.api.tile.TileEntityUpholstery;
 import zone.moddev.mc.ironagefurniture.client.resources.GeneratedModelResourcePack;
 import zone.moddev.mc.ironagefurniture.client.particle.HeldCandleSmoke;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityPaddedBench;
+import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry;
+import zone.moddev.mc.ironagefurniture.api.FluidAgingRegistry;
+import zone.moddev.mc.ironagefurniture.api.LegacyFluidRegistration;
+import zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry;
 import zone.moddev.mc.ironagefurniture.init.BlockInitialiser;
 import zone.moddev.mc.ironagefurniture.init.ClientItemInitialiser;
 import zone.moddev.mc.ironagefurniture.init.ClientModelInitialiser;
@@ -32,6 +37,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -41,7 +47,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class Ironagefurniture
 {
     public static final String MODID = "ironagefurniture";
-    public static final String VERSION = "0.4.0.110021";
+    public static final String VERSION = "0.5.0.110021";
 
 	public static final Map<String,Block> BlockRegistry = new HashMap<String, Block>();
 	public static final Map<String,Item> ItemRegistry = new HashMap<String, Item>();
@@ -79,6 +85,7 @@ public class Ironagefurniture
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+		LegacyFluidRegistration.runPending();
 	IronAgeFurnitureConfiguration.init(event);
 		MinecraftForge.EVENT_BUS.register(new CreativeModeBreakTracker());
 		MinecraftForge.EVENT_BUS.register(cfmChairMigration);
@@ -104,6 +111,14 @@ public class Ironagefurniture
 		}
 
     }
+
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
+		SurfaceContentRegistry.freeze();
+		SurfaceInteractionRegistry.freeze();
+		FluidAgingRegistry.freeze();
+		if (event.getSide().isClient()) SurfaceRenderRegistry.freeze();
+	}
 
 	@EventHandler
 	public void missingMappings(FMLMissingMappingsEvent event) {
