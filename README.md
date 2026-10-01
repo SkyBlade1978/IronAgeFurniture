@@ -21,6 +21,11 @@ release their lamp on redstone, landing intact in Creative but shattering and
 igniting the landing area in other modes. Seventeen locale choices and CFM
 wooden-chair migration support are included.
 
+Mining a lava-lamp sconce with a suitable Silk Touch pickaxe returns the empty
+sconce and intact lamp separately. Without Silk Touch, the sconce still drops
+in its original metal, but the lamp shatters and starts a fire. This applies
+to floor and wall sconces, including available Base Metals materials.
+
 Carried candles show a small animated flame and a little smoke without any
 extra mod. With OptiFine's Dynamic Lights enabled, a held candle can also light
 the area around you; that illumination is an OptiFine visual effect, not a

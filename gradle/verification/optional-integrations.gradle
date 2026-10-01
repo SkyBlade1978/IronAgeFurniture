@@ -353,6 +353,7 @@ tasks.register('runOptionalIntegrationServer', Exec) {
         workingDir serverDirectory
         executable java8Launcher.get().executablePath.asFile
         args "-Diaf.probe.mods=${optionalIntegrationProfile}", '-Dfml.queryResult=confirm',
+                "-Diaf.probe.sconceDrops=${providers.gradleProperty('verifySconceDrops').getOrElse('true')}",
                 '-jar', forgeServerJar.name, 'nogui'
     }
     doLast {

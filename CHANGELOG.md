@@ -5,6 +5,11 @@ item placement, interactions, and client-only rendering without registering
 storage furniture. The update feed continues to advertise published
 `0.4.0.110021`.
 
+- Preserve the original metal when a floor or wall lava-lamp sconce is mined.
+  Silk Touch returns the empty sconce and intact lamp; ordinary mining drops
+  the empty sconce and shatters the lamp into fire. Creative mining produces
+  neither items nor fire.
+
 # IronAgeFurniture 0.4.0.110021
 
 Phase 4 candidate for Minecraft 1.10.2 and Forge 12.18.3.2511. The update
