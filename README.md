@@ -31,6 +31,9 @@ extra mod. With OptiFine's Dynamic Lights enabled, a held candle can also light
 the area around you; that illumination is an OptiFine visual effect, not a
 placed light block.
 
+Wooden and canopy beds are flammable like chairs. If fire consumes any part,
+the whole bed burns away.
+
 ## Requirements
 
 - Minecraft 1.10.2

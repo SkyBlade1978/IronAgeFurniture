@@ -5,6 +5,8 @@ item placement, interactions, and client-only rendering without registering
 storage furniture. The update feed continues to advertise published
 `0.4.0.110021`.
 
+- Let wooden and canopy beds burn like chairs. Fire consuming any bed part
+  removes the whole bed, without leaving stray parts or dropping an intact bed.
 - Preserve the original metal when a floor or wall lava-lamp sconce is mined.
   Silk Touch returns the empty sconce and intact lamp; ordinary mining drops
   the empty sconce and shatters the lamp into fire. Creative mining produces

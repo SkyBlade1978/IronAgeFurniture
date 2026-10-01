@@ -87,6 +87,7 @@ public final class OptionalIntegrationRecipeProbe {
     @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        BedFireProbe.verify(server);
         String requested = System.getProperty("iaf.probe.mods", "all");
         boolean absenceProbe = "absent".equals(requested);
         List<String> selected = absenceProbe ? new ArrayList<String>()
