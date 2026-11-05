@@ -124,6 +124,9 @@ gradlew.bat prepareEclipse verifyEclipseProductionClasspath
 
 The build tasks and their scripts are described in [gradle/README.md](gradle/README.md).
 
+For the Phase 5 addon development stack, run `gradlew.bat preparePhase5Eclipse`
+and refresh the Eclipse project. See the [profile setup and smoke tests](gradle/README.md#phase-5-eclipse-profiles).
+
 The release process only publishes commits that have passed the hosted build,
 test, artifact, and security checks. Running the Gradle commands above creates
 local artifacts only.

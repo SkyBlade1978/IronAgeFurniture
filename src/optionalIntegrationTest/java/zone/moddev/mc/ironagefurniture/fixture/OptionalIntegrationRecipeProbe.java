@@ -88,6 +88,11 @@ public final class OptionalIntegrationRecipeProbe {
     public void serverStarted(FMLServerStartedEvent event) {
         if (Boolean.getBoolean("iaf.probe.lampMiningClient")) return;
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        if (System.getProperty("iaf.probe.phase5Mods") != null) {
+            try { Phase5StackProbe.verify(server); }
+            finally { server.initiateShutdown(); }
+            return;
+        }
         if (Boolean.getBoolean("iaf.probe.sconceRedstone")) {
             CandleSconceRedstoneProbe.start(server);
             return;

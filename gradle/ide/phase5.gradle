@@ -1,0 +1,296 @@
+import groovy.json.JsonSlurper
+import groovy.xml.XmlParser
+import groovy.xml.XmlUtil
+import org.gradle.process.ExecOperations
+
+import javax.inject.Inject
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+import java.util.jar.Manifest
+import java.util.zip.GZIPInputStream
+import java.util.zip.ZipFile
+
+// Opt-in development harness. None of these archives enters the production
+// classpath, publication metadata, or normal Buildship synchronization.
+abstract class Phase5Processes {
+    @Inject abstract ExecOperations getExecOperations()
+}
+def processes = objects.newInstance(Phase5Processes).execOperations
+def manifest = new JsonSlurper().parse(file('gradle/ide/phase5-fixtures.json'))
+def woods = new JsonSlurper().parse(file('gradle/verification/optional-integration-mods.json'))
+def fixtures = manifest.fixtures.collectEntries { id, entry ->
+    def wood = entry.wood ? woods.mods.find { it.modId == id } : null
+    if (entry.wood && !wood) throw new GradleException("No existing wood pin for ${id}")
+    [(id): entry + (wood ? [sha256: wood.sha256, version: wood.version] : [:])]
+}
+def phaseRoot = layout.projectDirectory.dir('run-phase5')
+def original = { String id -> phaseRoot.file("fixtures/${id}.jar").asFile }
+def mapped = { String id -> phaseRoot.file("mapped/${id}.jar") }
+def hash = project.iafBuild.sha256Of
+
+def fetchFixtures = tasks.register('fetchPhase5Fixtures') {
+    group = 'ide'
+    description = 'Resolves and verifies the pinned public Phase 5 runtime fixtures.'
+    doLast {
+        if (manifest.minecraft != minecraft_version || manifest.forge != forge_version
+                || woods.minecraft != minecraft_version) {
+            throw new GradleException('Phase 5 fixtures are for a different Minecraft/Forge target')
+        }
+        fixtures.each { String id, Map spec ->
+            File destination = original(id)
+            if (!destination.isFile()) {
+                String coordinate = spec.coordinate ?: "curse.maven:${spec.slug}-${spec.project}:${spec.file}"
+                def config = configurations.detachedConfiguration(dependencies.create(coordinate))
+                config.transitive = false
+                File source = config.singleFile
+                if (!hash(source).equalsIgnoreCase(spec.sha256)) {
+                    throw new GradleException("Checksum mismatch for ${coordinate}; expected ${spec.sha256}")
+                }
+                destination.parentFile.mkdirs()
+                Files.copy(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            }
+            if (!hash(destination).equalsIgnoreCase(spec.sha256)) {
+                throw new GradleException("Checksum mismatch for ${destination}; expected ${spec.sha256}")
+            }
+        }
+    }
+}
+
+def fixtureMaps = fixtures.collectEntries { String id, Map spec ->
+    [(id): renamer.classes("mapPhase5${id.capitalize()}") {
+        dependsOn fetchFixtures
+        input.set(original(id))
+        map.from minecraft.dependency.toSrgFile
+        libraries.setFrom(configurations.runtimeClasspath)
+        reverse = true
+        legacyAccessTransformers = true
+        output.set(mapped(id))
+    }]
+}
+
+// Forge 1.10 skips mod AT discovery in a deobfuscated environment. Apply the
+// relevant verified mod rules to separate mapped Forge copies per stack.
+def originalForge = providers.provider {
+    configurations.runtimeClasspath.files.find { File jar ->
+        jar.name == "forge-${minecraft_version}-${forge_version}-${mapping_channel}-${mapping_version}.jar"
+    } ?: { throw new GradleException('Could not identify the mapped Forge runtime') }()
+}
+def atFixtures = [
+    Advantage: ['orespawn'],
+    AdvantageClient: ['orespawn', 'jei'],
+    Woods: ['BiomesOPlenty', 'mantle', 'forestry', 'immersiveengineering']
+]
+def accessGroup = { List<String> ids ->
+    if ('orespawn' in ids) return 'jei' in ids ? 'AdvantageClient' : 'Advantage'
+    'BiomesOPlenty' in ids ? 'Woods' : null
+}
+def patchedForge = { String group -> originalForge.map { phaseRoot.file("forge/${group}/${it.name}").asFile } }
+def srgMappings = files(minecraft.dependency.toSrgFile)
+def prepareProfileForge = atFixtures.collect { String group, List<String> ids ->
+    tasks.register("preparePhase5${group}Forge") {
+        dependsOn fetchFixtures
+        inputs.file originalForge
+        inputs.files(ids.collect(original), srgMappings)
+        outputs.file patchedForge(group)
+        doLast {
+            File forgeCopy = patchedForge(group).get()
+            forgeCopy.parentFile.mkdirs()
+            File rules = new File(forgeCopy.parentFile, 'mods-at.cfg')
+            // Build the inverse member map from FG7's stable/29 mappings.
+            Map<String, String> members = [:]
+            String owner = null
+            new GZIPInputStream(srgMappings.singleFile.newInputStream()).withCloseable { mappings ->
+                mappings.eachLine('UTF-8') { String line ->
+                    List<String> parts = line.trim().tokenize()
+                    if (parts.size() == 2 && !line.startsWith('\t') && !line.startsWith('#')) {
+                        owner = parts[1].replace('/', '.')
+                    } else if (owner && line.startsWith('\t')) {
+                        if (parts.size() == 2) members["${owner} ${parts[1]}".toString()] = parts[0]
+                        if (parts.size() == 3) members["${owner} ${parts[2]}${parts[1]}".toString()] = parts[0] + parts[1]
+                    }
+                }
+            }
+            List<String> access = ids.collectMany { String id ->
+                new ZipFile(original(id)).withCloseable { zip ->
+                    Manifest jarManifest = zip.getInputStream(zip.getEntry('META-INF/MANIFEST.MF'))
+                        .withCloseable { new Manifest(it) }
+                    List<String> configs = (jarManifest.mainAttributes.getValue('FMLAT') ?: '').tokenize()
+                    if (!configs) throw new GradleException("Expected access rules in ${id}")
+                    configs.collectMany { String config ->
+                        def entry = zip.getEntry("META-INF/${config}")
+                        if (entry == null) throw new GradleException("Missing ${id} access transformer: ${config}")
+                        zip.getInputStream(entry).withCloseable { it.getText('UTF-8') }.readLines()
+                    }
+                }
+            }
+            List<String> mcpRules = access.collect { it.split('#', 2)[0].trim() }.findAll { it }.collect { line ->
+                List<String> parts = line.tokenize()
+                if (parts.size() == 3 && parts[2] ==~ /(?:field|func)_.+/) {
+                    String name = members["${parts[1]} ${parts[2]}".toString()]
+                    if (!name) throw new GradleException("No stable/29 mapping for access rule: ${line}")
+                    parts[2] = name
+                }
+                parts.join(' ')
+            }.unique()
+            rules.setText(mcpRules.join('\n') + '\n', 'UTF-8')
+            Files.copy(originalForge.get().toPath(), forgeCopy.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            processes.exec {
+                executable project.iafBuild.java8Launcher.get().executablePath.asFile
+                args '-cp', configurations.runtimeClasspath.asPath,
+                    'net.minecraftforge.fml.common.asm.transformers.AccessTransformer',
+                    forgeCopy.absolutePath, rules.absolutePath
+            }
+        }
+    }
+}
+
+def brewingProject = providers.gradleProperty('phase5BrewingDir').map { file(it) }
+    .orElse(file('../../IAB110/IronAgeBrewing'))
+def harvestProject = providers.gradleProperty('phase5HarvestCraftAddonDir').map { file(it) }
+    .orElse(file('../../IAFPHC110/IronAgeFurniture-PamsHarvestCraft-Addon'))
+def iafDevJar = tasks.named('jar', Jar).flatMap { it.archiveFile }
+def addonArtifact = { File directory, boolean development ->
+    def props = new Properties()
+    new File(directory, 'gradle.properties').withInputStream { props.load(it) }
+    def suffix = development ? '-dev' : ''
+    def classifier = development ? '-deobf' : ''
+    new File(directory, "build/libs${suffix}/${props.mod_archive_name}-${props.mod_version}${classifier}.jar")
+}
+def runAddonBuild = { File directory, List<String> arguments ->
+    boolean windows = System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')
+    File wrapper = new File(directory, windows ? 'gradlew.bat' : 'gradlew')
+    if (!wrapper.isFile()) throw new GradleException("Missing Phase 5 addon checkout: ${directory}")
+    List<String> prefix = windows ? ['cmd.exe', '/d', '/c', 'gradlew.bat'] : ['./gradlew']
+    processes.exec {
+        workingDir directory
+        environment 'JAVA_HOME', System.getProperty('java.home')
+        commandLine(prefix + ['-g', gradle.gradleUserHomeDir.absolutePath, '--console=plain']
+            + (gradle.startParameter.offline ? ['--offline'] : []) + arguments)
+    }
+}
+def buildAddons = tasks.register('buildPhase5AddonJars') {
+    dependsOn tasks.named('jar'), fetchFixtures
+    doLast {
+        String iaf = "-PiafDeobfJar=${iafDevJar.get().asFile.absolutePath}"
+        runAddonBuild(brewingProject.get(), ['check', 'build', 'javadoc', iaf,
+            "-PbasePowerJar=${original('basepower').absolutePath}"])
+        runAddonBuild(harvestProject.get(), ['check', 'build', 'javadoc', iaf,
+            "-PiabDeobfJar=${addonArtifact(brewingProject.get(), true).absolutePath}",
+            "-PharvestCraftJar=${original('harvestcraft').absolutePath}"])
+    }
+}
+
+def validateStack = { List<String> ids ->
+    if (ids.toSet().size() != ids.size()) throw new GradleException("Duplicate mods: ${ids}")
+    if ('poweradvantage' in ids && ids.any { it in ['basepower', 'basesteam', 'baseelectric'] }) {
+        throw new GradleException('Original and renamed Advantage mods must use separate profiles')
+    }
+    if (ids.any { it in ['basepower', 'poweradvantage'] } && !ids.containsAll(['basemetals', 'orespawn'])) {
+        throw new GradleException('Advantage profiles require Base Metals and OreSpawn')
+    }
+    if (ids.any { it in ['basesteam', 'baseelectric'] } && !ids.contains('basepower')) {
+        throw new GradleException('baseSteam and baseElectric require basePower')
+    }
+    if ('iafphcaddon' in ids && !ids.contains('harvestcraft')) {
+        throw new GradleException('The HarvestCraft addon requires HarvestCraft')
+    }
+}
+def stageStack = { File run, Map<String, File> archives ->
+    File mods = new File(run, 'mods')
+    mods.mkdirs()
+    def root = phaseRoot.asFile.toPath().toRealPath()
+    if (!root.startsWith(projectDir.toPath().toRealPath()) || !mods.isDirectory()
+            || !mods.toPath().toRealPath().startsWith(root)) {
+        throw new GradleException("Unsafe Phase 5 mod directory: ${mods}")
+    }
+    Set<String> expected = archives.keySet().collect { it + '.jar' } as Set
+    def unexpected = (mods.listFiles() ?: []).findAll { !expected.contains(it.name) }
+    if (unexpected) throw new GradleException("Unexpected files in ${mods}; move them out before refreshing: ${unexpected*.name}")
+    archives.each { String id, File source ->
+        File destination = new File(mods, "${id}.jar")
+        if (!source.isFile() || Files.isSymbolicLink(destination.toPath()) || destination.isDirectory()) {
+            throw new GradleException("Cannot stage ${source} in ${mods}")
+        }
+        if (!destination.isFile() || hash(source) != hash(destination)) {
+            Files.copy(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        }
+    }
+}
+
+def makeLaunch = { String profile, String side, File run, List<String> ids ->
+    String stem = side.capitalize()
+    File template = [file("run${stem}.launch"), file(".eclipse/run${stem}.launch")].find { it.isFile() }
+    if (template == null) throw new GradleException("Missing Eclipse ${side} template")
+    def launch = new XmlParser().parse(template)
+    def workDir = launch.stringAttribute.find { it.@key == 'org.eclipse.jdt.launching.WORKING_DIRECTORY' }
+    workDir.@value = run.absolutePath
+    def jreKey = 'org.eclipse.jdt.launching.JRE_CONTAINER'
+    def java8 = 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+    def jre = launch.stringAttribute.find { it.@key == jreKey }
+    if (jre == null) launch.appendNode('stringAttribute', [key: jreKey, value: java8])
+    else jre.@value = java8
+    def entries = launch.listAttribute.find { it.@key == 'org.eclipse.jdt.launching.CLASSPATH' }
+    int projectEntries = 0
+    int forgeEntries = 0
+    String group = accessGroup(ids)
+    entries.listEntry.each { node ->
+        def entry = new XmlParser().parseText(node.@value)
+        if (entry.@projectName == project.name) {
+            entry.attributes().remove('projectName')
+            entry.@externalArchive = iafDevJar.get().asFile.absolutePath
+            entry.@type = '2'
+            projectEntries++
+        } else if (group != null && entry.@externalArchive == originalForge.get().absolutePath) {
+            entry.@externalArchive = patchedForge(group).get().absolutePath
+            forgeEntries++
+        } else if (entry.@containerPath?.startsWith(jreKey)) {
+            entry.@containerPath = java8
+        } else {
+            return
+        }
+        node.@value = XmlUtil.serialize(entry)
+    }
+    if (projectEntries != 1 || (group != null && forgeEntries != 1)) {
+        throw new GradleException("Unexpected generated classpath for ${profile}/${side}")
+    }
+    file("Phase5-${profile}-${side}.launch").setText(XmlUtil.serialize(launch), 'UTF-8')
+}
+def profileArchives = { List<String> ids, boolean development ->
+    ids.collectEntries { String id ->
+        [(id): id == 'ironagebrewing' ? addonArtifact(brewingProject.get(), development)
+            : id == 'iafphcaddon' ? addonArtifact(harvestProject.get(), development)
+            : development ? mapped(id).asFile : original(id)]
+    }
+}
+
+tasks.register('preparePhase5Eclipse') {
+    group = 'ide'
+    description = 'Builds the Phase 5 stack and prepares isolated Eclipse client/server launches.'
+    dependsOn tasks.named('prepareEclipse'), buildAddons, fixtureMaps.values(), prepareProfileForge
+    doLast {
+        manifest.profiles.each { String profile, List<String> mods ->
+            ['client', 'server'].each { String side ->
+                List<String> ids = mods + (side == 'client' ? (manifest.clientExtras[profile] ?: []) : [])
+                validateStack(ids)
+                File run = phaseRoot.dir("profiles/${profile}/${side}").asFile
+                stageStack(run, profileArchives(ids, true))
+                makeLaunch(profile, side, run, ids)
+            }
+        }
+        logger.lifecycle("Prepared ${manifest.profiles.size() * 2} Phase 5 Eclipse launches; refresh the Eclipse project.")
+    }
+}
+
+tasks.register('stagePhase5PackagedServers') {
+    group = 'verification'
+    description = 'Stages original public JARs and distributable IAF/addon JARs for stock Forge smoke tests.'
+    dependsOn buildAddons, tasks.named('assemble'), tasks.named('optionalIntegrationFixtureJar')
+    doLast {
+        manifest.profiles.each { String profile, List<String> ids ->
+            validateStack(ids)
+            File run = phaseRoot.dir("packaged/${profile}").asFile
+            stageStack(run, profileArchives(ids, false) + [ironagefurniture:
+                layout.buildDirectory.file("libs/${base.archivesName.get()}-${project.version}.jar").get().asFile])
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+  "minecraft": "1.10.2",
+  "forge": "12.18.3.2511",
+  "fixtures": {
+    "basepower": {"slug":"basepower","project":1780140,"file":9408450,"version":"2.4.4.110021","sha256":"164693E756A935A8C51085CF95AECCCAF3506390A6F0A3888E46765F29896F31"},
+    "basesteam": {"slug":"basesteam","project":1781373,"file":9420177,"version":"2.2.6.110021","sha256":"728E37A1A0551596D8167976A7022E31EF075A383640BB385470160DD9A8F07D"},
+    "baseelectric": {"slug":"baseelectric","project":1783006,"file":9432137,"version":"2.2.6.110021","sha256":"05F1CF02C97C6112C7EB4913DB46F65C45058CC6E818D81E159DBF5AD0F93DD1"},
+    "basemetals": {"slug":"base-metals","project":240967,"file":2323100,"version":"2.4.0.11","sha256":"F919CEF794C73F02758BBD967346DBA0B53F6383153C7E29BD79F211CDA8C319"},
+    "orespawn": {"slug":"mmd-orespawn","project":245586,"file":8727034,"version":"4.0.8.110021","sha256":"FD27D4F5B4B6087C5F64344903C0E0124115E08FA2D465ECDB88D291F36B2B21"},
+    "harvestcraft": {"slug":"pams-harvestcraft","project":221857,"file":2428363,"version":"1.10.2j","sha256":"9BFA607843A865CF819F8A7DC21DBF3D5181165AD9DCF807FF69019BB75A5A26"},
+    "poweradvantage": {"slug":"power-advantage","project":240982,"file":2323095,"version":"2.3.0","sha256":"47CD509C1141095BFE1C8C7DD689C2ECD3F99C89195E34A88CC9E0B5FC12413E"},
+    "jei": {"coordinate":"mezz.jei:jei_1.10.2:3.14.7.420","version":"3.14.7.420","sha256":"B29DC3077772543E765432CC2C91AAA657F2AC70E664707B3F1D9ACB2A02706A"},
+    "BiomesOPlenty": {"slug":"biomes-o-plenty","project":220318,"file":2425769,"wood":true},
+    "natura": {"slug":"natura","project":74120,"file":2496387,"wood":true},
+    "mantle": {"slug":"mantle","project":74924,"file":2380279,"wood":true},
+    "forestry": {"slug":"forestry","project":59751,"file":2463644,"wood":true},
+    "immersiveengineering": {"slug":"immersive-engineering","project":231951,"file":2435559,"wood":true}
+  },
+  "profiles": {
+    "furniture-only": [],
+    "furniture-brewing": ["ironagebrewing"],
+    "furniture-harvestcraft": ["iafphcaddon", "harvestcraft"],
+    "furniture-brewing-harvestcraft": ["ironagebrewing", "iafphcaddon", "harvestcraft"],
+    "full-modern-advantage": ["ironagebrewing", "iafphcaddon", "harvestcraft", "basepower", "basesteam", "baseelectric", "basemetals", "orespawn"],
+    "brewing-legacy-advantage": ["ironagebrewing", "poweradvantage", "basemetals", "orespawn"],
+    "optional-woods": ["BiomesOPlenty", "natura", "mantle", "forestry", "immersiveengineering"]
+  },
+  "clientExtras": {"full-modern-advantage":["jei"]}
+}
