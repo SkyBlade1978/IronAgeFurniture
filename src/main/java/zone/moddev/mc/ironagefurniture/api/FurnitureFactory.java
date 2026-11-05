@@ -80,19 +80,27 @@ public class FurnitureFactory {
 
 	public static void AddWingbackChairRecipe(ItemStack planks, Block chairIn, Block chairOut) {
 		for (UpholsteryColour colour : UpholsteryColour.values()) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(UpholsteryColourHelper.createStack(chairOut, 1, colour), "z", "x", "y",
-				'z', new ItemStack(Blocks.CARPET, 1, colour.getCarpetMetadata()), 'x', planks, 'y', chairIn));
+			GameRegistry.addRecipe(new ShapelessOreRecipe(UpholsteryColourHelper.createStack(chairOut, 1, colour),
+				new ItemStack(Blocks.CARPET, 1, colour.getCarpetMetadata()), planks, chairIn));
 		}
 	}
 
 	public static void AddThroneChairRecipe(ItemStack planks, Block chairIn, Block chairOut) {
-		AddWingbackChairRecipe(planks, chairIn, chairOut);
+		for (UpholsteryColour colour : UpholsteryColour.values()) {
+			GameRegistry.addRecipe(new zone.moddev.mc.ironagefurniture.api.recipes.UpholsteryUpgradeRecipe(
+				chairIn, chairOut, planks, colour));
+		}
 	}
 
 	public static void AddSingleCanopyBedRecipe(ItemStack planks, Block bed) {
+		String wood = bed.getRegistryName().getResourcePath().substring("bed_canopy_foot_lower_".length());
+		AddSingleCanopyBedRecipe(planks, BlockObjectHolder.bed_wood_single.get(wood), bed);
+	}
+
+	public static void AddSingleCanopyBedRecipe(ItemStack planks, Block woodenBed, Block bed) {
 		for (UpholsteryColour colour : UpholsteryColour.values()) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(UpholsteryColourHelper.createStack(bed, 1, colour),
-				Items.BED, planks, new ItemStack(Blocks.CARPET, 1, colour.getCarpetMetadata())));
+			GameRegistry.addRecipe(new zone.moddev.mc.ironagefurniture.api.recipes.UpholsteryUpgradeRecipe(
+				woodenBed, bed, planks, colour));
 		}
 	}
 
@@ -151,7 +159,7 @@ public class FurnitureFactory {
 
 	public static void AddIronSconceRecipe(Block sconce) {
 		Object ironInput = "nuggetIron";
-		int outputCount = 5;
+		int outputCount = 4;
 		if (!OreDictionary.doesOreNameExist("nuggetIron")
 				|| OreDictionary.getOres("nuggetIron").isEmpty()) {
 			ironInput = "ingotIron";

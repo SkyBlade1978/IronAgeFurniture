@@ -130,6 +130,12 @@ public class LightHolderSconceFloor extends BlockHBase {
 	}
 
 	@Override
+	public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+		// A pickaxe is faster, but breaking the holder by hand must still return its contents.
+		return true;
+	}
+
+	@Override
 	public void harvestBlock(World world, EntityPlayer player, BlockPos pos,
 			IBlockState state, TileEntity tile, ItemStack tool) {
 		try {

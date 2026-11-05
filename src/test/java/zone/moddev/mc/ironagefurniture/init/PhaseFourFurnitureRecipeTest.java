@@ -138,7 +138,7 @@ public class PhaseFourFurnitureRecipeTest {
 					Blocks.COBBLESTONE));
 			for (UpholsteryColour colour : UpholsteryColour.values()) {
 				ItemStack carpet = new ItemStack(Blocks.CARPET, 1, colour.getCarpetMetadata());
-				ItemStack canopy = craft(added, shapeless(new ItemStack(Items.BED),
+				ItemStack canopy = craft(added, shapeless(UpholsteryColourHelper.createStack(Blocks.STONE, 1, colour),
 						new ItemStack(Blocks.PLANKS, 1, 0), carpet), Blocks.BRICK_BLOCK);
 				assertNotNull("single canopy " + colour, canopy);
 				assertSame(colour, UpholsteryColourHelper.getColour(canopy));

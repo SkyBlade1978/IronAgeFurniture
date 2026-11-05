@@ -7,8 +7,8 @@
 IronAgeFurniture adds functional chairs, stools, benches, beds, lamps, and
 sconces to Minecraft. The published `0.4.0.110021` release adds Phase 4
 furniture and lighting for Minecraft 1.10.2 with Forge 12.18.3.2511.
-The unreleased `0.5.0.110021` candidate adds extension APIs but no Phase 5
-storage furniture yet.
+The unreleased `0.5.0.110021` candidate adds extension APIs and fixes to
+Phase 4 crafting and sconce drops, but no Phase 5 storage furniture yet.
 
 Phase 3 contains the established seating collection plus empty, torch,
 redstone-torch, glow, lava, and redstone lighting, including throwable lava
@@ -21,10 +21,16 @@ release their lamp on redstone, landing intact in Creative but shattering and
 igniting the landing area in other modes. Seventeen locale choices and CFM
 wooden-chair migration support are included.
 
+Water buckets extinguish candle sconces. Redstone relights them, including
+when power was already present before the bucket was used. Removing the
+signal does not extinguish these dry candles; their count and metal stay intact.
+
 Mining a lava-lamp sconce with a suitable Silk Touch pickaxe returns the empty
 sconce and intact lamp separately. Without Silk Touch, the sconce still drops
-in its original metal, but the lamp shatters and starts a fire. This applies
-to floor and wall sconces, including available Base Metals materials.
+in its original metal. A wall-mounted lamp falls before shattering on dry
+ground, or cooling into an obsidian chunk in water. A floor-mounted lamp
+shatters where it stands. Right-click removal is safe and returns the intact
+lamp without breaking the frame. These rules include available Base Metals.
 
 Carried candles show a small animated flame and a little smoke without any
 extra mod. With OptiFine's Dynamic Lights enabled, a held candle can also light
@@ -33,6 +39,20 @@ placed light block.
 
 Wooden and canopy beds are flammable like chairs. If fire consumes any part,
 the whole bed burns away.
+
+Sconces return their holder and contents even when broken by hand or when
+their support is removed. A pickaxe is still faster, and the chosen metal
+still determines toughness. Lava lamps retain the shattering behaviour above.
+
+Chair upgrades are shapeless: a classic chair, matching plank and carpet make
+a wingback; a wingback, matching plank and matching carpet make a throne.
+The throne keeps the wingback's colour rather than recolouring it.
+
+Minecraft 1.10 has only red vanilla beds. A vanilla bed and one plank make a
+red wooden bed; recolour it with carpet if you want another colour. Add a
+matching plank and matching carpet to that wooden bed to make a canopy bed.
+Two matching single beds make a double bed. Three iron nuggets make four
+empty sconces; without iron nuggets, the older three-ingot recipe makes 32.
 
 ## Requirements
 

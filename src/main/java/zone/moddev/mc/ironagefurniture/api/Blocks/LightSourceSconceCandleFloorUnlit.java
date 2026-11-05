@@ -74,6 +74,13 @@ public class LightSourceSconceCandleFloorUnlit extends LightSourceSconceCandleFl
     }
 
     @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        super.onBlockAdded(worldIn, pos, state);
+        // A bucket can extinguish candles without changing the existing signal.
+        if (!worldIn.isRemote) neighborChanged(state, worldIn, pos, this);
+    }
+
+    @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, java.util.Random rand) {
         if (!worldIn.isBlockPowered(pos)) {
             return;

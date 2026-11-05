@@ -86,7 +86,21 @@ public final class OptionalIntegrationRecipeProbe {
 
     @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
+        if (Boolean.getBoolean("iaf.probe.lampMiningClient")) return;
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        if (Boolean.getBoolean("iaf.probe.sconceRedstone")) {
+            CandleSconceRedstoneProbe.start(server);
+            return;
+        }
+        if (Boolean.getBoolean("iaf.probe.wallLavaMiningOnly")) {
+            try { WallLavaMiningProbe.verify(server); }
+            finally { server.initiateShutdown(); }
+            return;
+        }
+        if (LegacyReloadProbe.run(server)) return;
+        WallLavaMiningProbe.verify(server);
+        LampHarvestProbe.verify(server);
+        SconceHarvestProbe.verify(server);
         BedFireProbe.verify(server);
         String requested = System.getProperty("iaf.probe.mods", "all");
         boolean absenceProbe = "absent".equals(requested);
@@ -337,6 +351,9 @@ public final class OptionalIntegrationRecipeProbe {
                             require(lamps == (lava && silkTouch && !creative ? 1 : 0),
                                     "Incorrect intact-lamp drop count: " + context + " got=" + lamps);
                             if (lava && !silkTouch && !creative) {
+                                // The wall vial now falls before shattering. This fixture's
+                                // floor is immediately underneath it, so settle it first.
+                                WallLavaMiningProbe.settleReleased(world, pos);
                                 require(world.getBlockState(pos).getBlock() == Blocks.FIRE,
                                         "Ordinary mining did not leave shattered-lamp fire: " + context);
                             } else {
@@ -361,9 +378,8 @@ public final class OptionalIntegrationRecipeProbe {
                 BlockObjectHolder.light_metal_ironage_sconce_floor_empty_iron);
         int checked = 0;
         for (MetalVariant metal : MetalVariantHelper.getAvailableVariants()) {
-            if (metal == MetalVariant.IRON) continue;
             List<String> matchingTags = new ArrayList<>();
-            if (metal != MetalVariant.GOLD) {
+            if (metal != MetalVariant.GOLD && metal != MetalVariant.IRON) {
                 for (String tag : OreDictionary.getOreNames()) {
                     if (tag.equalsIgnoreCase("nugget" + metal.name().toLowerCase(Locale.ENGLISH))
                             && !OreDictionary.getOres(tag).isEmpty()) {
@@ -378,7 +394,12 @@ public final class OptionalIntegrationRecipeProbe {
             for (IRecipe recipe : CraftingManager.getInstance().getRecipeList()) {
                 ItemStack output = recipe.getRecipeOutput();
                 if (output != null && output.getItem() == sconce
-                        && output.getMetadata() == metal.getMeta()) recipes++;
+                        && output.getMetadata() == metal.getMeta()) {
+                    int expectedCount = metal == MetalVariant.IRON
+                            && OreDictionary.getOres("nuggetIron").isEmpty() ? 32 : 4;
+                    require(output.stackSize == expectedCount, "Wrong sconce yield for " + metal.name());
+                    recipes++;
+                }
             }
             require(recipes == 1, "Expected one sconce recipe for " + metal.name()
                     + ", found " + recipes);

@@ -38,6 +38,9 @@ public class RecipeInitialiser {
 		RecipeSorter.register("ironagefurniture:bed_recolour",
 			zone.moddev.mc.ironagefurniture.api.recipes.BedRecolourRecipe.class,
 			RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register("ironagefurniture:upholstery_upgrade",
+			zone.moddev.mc.ironagefurniture.api.recipes.UpholsteryUpgradeRecipe.class,
+			RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 	}
 
 	private static void generateLightRecipes() {

@@ -1,9 +1,28 @@
 # IronAgeFurniture 0.5.0.110021 (unreleased)
 
+- Relight candle sconces when they are extinguished by a bucket while already
+  receiving redstone power. Preserve the candle count, metal and facing;
+  dry candles stay lit when the signal stops.
+
+- Make a wall-mounted lava lamp fall out when its sconce is mined without
+  Silk Touch. It shatters on landing, lighting dry ground or cooling into an
+  obsidian chunk in water. The empty frame keeps its metal; right-click removal
+  and Silk Touch still return an intact lamp.
+
 Phase 5 foundation for Minecraft 1.10.2. Add extension points for surface
 item placement, interactions, and client-only rendering without registering
 storage furniture. The update feed continues to advertise published
 `0.4.0.110021`.
+
+- Return sconce holders and their contents when mined by hand or with a weak
+  tool, including twin torches, candles and hidden lighting states. Keep the
+  original metal, tool-dependent mining speed and lava-lamp Silk Touch rules.
+- Make wingback and throne upgrades shapeless. Require a matching carpet for
+  a throne, so upgrading a wingback does not silently change its colour.
+- Build canopy beds from a wooden bed, matching plank and matching carpet.
+  Keep the wooden bed's colour, including older metadata-only bed items.
+- Align the iron-nugget recipe with other metals: three nuggets make four
+  empty sconces. Keep the 32-sconce ingot fallback when nuggets are unavailable.
 
 - Let wooden and canopy beds burn like chairs. Fire consuming any bed part
   removes the whole bed, without leaving stray parts or dropping an intact bed.
@@ -14,8 +33,8 @@ storage furniture. The update feed continues to advertise published
 
 # IronAgeFurniture 0.4.0.110021
 
-Phase 4 candidate for Minecraft 1.10.2 and Forge 12.18.3.2511. The update
-feed continues to advertise the published `0.3.0.110021` release.
+Phase 4 furniture and lighting update for Minecraft 1.10.2 and Forge
+12.18.3.2511.
 
 - Add colour-preserving multiblock wooden and canopy beds, wingback chairs,
   and thrones. Untagged old items and placed furniture retain red upholstery.

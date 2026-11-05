@@ -64,7 +64,7 @@ public final class PhaseFourFurnitureInitialiser {
 				}
 				Block canopy = BlockObjectHolder.bed_canopy_single.get(suffix);
 				if (canopy != null) {
-					FurnitureFactory.AddSingleCanopyBedRecipe(planks, canopy);
+					FurnitureFactory.AddSingleCanopyBedRecipe(planks, BlockObjectHolder.bed_wood_single.get(suffix), canopy);
 					FurnitureFactory.AddBedRecolourRecipe(canopy);
 				}
 			}

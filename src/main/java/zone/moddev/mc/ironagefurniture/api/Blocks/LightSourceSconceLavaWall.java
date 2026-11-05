@@ -10,12 +10,10 @@ import zone.moddev.mc.ironagefurniture.api.MetalVariantHelper.MetalVariant;
 import zone.moddev.mc.ironagefurniture.api.entity.EntityReleasedLavaLamp;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -92,20 +90,11 @@ public class LightSourceSconceLavaWall extends LightSourceSconceGlowWall {
 			.getDefaultState().withProperty(FACING, facing);
 		if (!MetalVariantHelper.replaceBlockPreservingMetal(world, pos, emptyState)) return;
 
-		EnumFacing outwards = facing.getOpposite();
-		Block lamp = LightDrop();
 		EntityPlayer nearest = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D,
-			pos.getZ() + 0.5D, -1.0D, false);
-		boolean preserveOnLanding = nearest != null && nearest.capabilities.isCreativeMode;
-		EntityReleasedLavaLamp falling = new EntityReleasedLavaLamp(world,
-			pos.getX() + 0.5D + 0.27D * outwards.getFrontOffsetX(),
-			pos.getY() + 5.0D / 16.0D,
-			pos.getZ() + 0.5D + 0.27D * outwards.getFrontOffsetZ(),
-			lamp.getDefaultState().withProperty(FACING, facing), pos.getY(), preserveOnLanding);
-		if (world.spawnEntity(falling)) {
-			((LightSourceLava)lamp).onStartFalling(falling);
-		} else if (world.getBlockState(pos).getBlock() == emptyState.getBlock()) {
-			world.setBlockState(pos, MetalVariantHelper.withMetal(state, metal), 3);
+            pos.getZ() + 0.5D, -1.0D, false);
+        if (!releaseLamp(world, pos, state, nearest != null && nearest.capabilities.isCreativeMode)
+                && world.getBlockState(pos).getBlock() == emptyState.getBlock()) {
+            world.setBlockState(pos, MetalVariantHelper.withMetal(state, metal), 3);
 			MetalVariantHelper.setMetal(world, pos, metal);
 		}
 	}
@@ -118,40 +107,41 @@ public class LightSourceSconceLavaWall extends LightSourceSconceGlowWall {
 
     @Override
     public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-        if (willHarvest || (player != null && player.capabilities.isCreativeMode)) {
-            // Keep the metal-bearing tile entity until Forge has collected the holder drop.
-            return super.removedByPlayer(state, world, pos, player, willHarvest);
-        }
-
-        boolean silkTouch = player != null && hasSilkTouch(player.getHeldItemMainhand());
-
-        if (!silkTouch) {
-            if (!world.isRemote) {
-                breakIntoFire(world, pos, player);
-            } else {
-                world.setBlockToAir(pos);
+        MetalVariant metal = MetalVariantHelper.getMetal(world, pos);
+        boolean destroyed = super.removedByPlayer(state, world, pos, player, willHarvest);
+        if (destroyed && !world.isRemote && (player == null || !player.capabilities.isCreativeMode)
+                && (player == null || !hasSilkTouch(player.getHeldItemMainhand()))) {
+            // Keep the holder intact if another mod refuses the falling vial.
+            if (!releaseLamp(world, pos, state, false)) {
+                world.setBlockState(pos, MetalVariantHelper.withMetal(state, metal), 3);
+                MetalVariantHelper.setMetal(world, pos, metal);
+                return false;
             }
-
-            return true;
+            if (!willHarvest) spawnAsEntity(world, pos, MetalVariantHelper.getDrop(
+                    BlockObjectHolder.light_metal_ironage_sconce_floor_empty_iron, metal, 1));
         }
-
-        return super.removedByPlayer(state, world, pos, player, willHarvest);
+        return destroyed;
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state,
-            TileEntity te, ItemStack stack) {
-        boolean silkTouch = hasSilkTouch(stack);
-        super.harvestBlock(worldIn, player, pos, state, te, stack);
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state,
+            TileEntity tile, ItemStack tool) {
+        super.harvestBlock(world, player, pos, state, tile, tool);
+        if (!world.isRemote && !player.capabilities.isCreativeMode && hasSilkTouch(tool))
+            spawnAsEntity(world, pos, new ItemStack(LightDrop(), 1));
+    }
 
-        if (!player.capabilities.isCreativeMode && !worldIn.isRemote) {
-            if (silkTouch) {
-                spawnAsEntity(worldIn, pos, new ItemStack(LightDrop(), 1));
-            } else {
-                // Shatter after removing the holder, so its cleanup cannot erase the fire.
-                breakIntoFire(worldIn, pos, player);
-            }
-        }
+    private boolean releaseLamp(World world, BlockPos pos, IBlockState state, boolean preserveOnLanding) {
+        EnumFacing outwards = state.getValue(FACING).getOpposite();
+        Block lamp = LightDrop();
+        EntityReleasedLavaLamp falling = new EntityReleasedLavaLamp(world,
+            pos.getX() + 0.5D + 0.27D * outwards.getFrontOffsetX(),
+            pos.getY() + 5.0D / 16.0D,
+            pos.getZ() + 0.5D + 0.27D * outwards.getFrontOffsetZ(),
+            lamp.getDefaultState().withProperty(FACING, state.getValue(FACING)), pos.getY(), preserveOnLanding);
+        if (!world.spawnEntity(falling)) return false;
+        ((LightSourceLava)lamp).onStartFalling(falling);
+        return true;
     }
 
     @Override
@@ -181,39 +171,6 @@ public class LightSourceSconceLavaWall extends LightSourceSconceGlowWall {
 
     private boolean hasSilkTouch(ItemStack stack) {
         return stack != null && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0;
-    }
-
-    protected void breakIntoFire(World worldIn, BlockPos pos, EntityPlayer player) {
-        worldIn.playSound(player, pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        BlockPos firePos = findFirePosition(worldIn, pos);
-
-        if (firePos.equals(pos)) {
-            worldIn.setBlockState(pos, Blocks.FIRE.getDefaultState(), 3);
-        } else {
-            worldIn.setBlockToAir(pos);
-            worldIn.setBlockState(firePos, Blocks.FIRE.getDefaultState(), 3);
-        }
-    }
-
-    private BlockPos findFirePosition(World worldIn, BlockPos pos) {
-        if (Blocks.FIRE.canPlaceBlockAt(worldIn, pos)) {
-            return pos;
-        }
-
-        BlockPos cursor = pos.down();
-        BlockPos lastFallThrough = pos;
-
-        while (cursor.getY() > 0
-                && (worldIn.isAirBlock(cursor) || BlockFalling.canFallThrough(worldIn.getBlockState(cursor)))) {
-            lastFallThrough = cursor;
-            cursor = cursor.down();
-        }
-
-        if (!lastFallThrough.equals(pos) && Blocks.FIRE.canPlaceBlockAt(worldIn, lastFallThrough)) {
-            return lastFallThrough;
-        }
-
-        return pos;
     }
 
     @Override
