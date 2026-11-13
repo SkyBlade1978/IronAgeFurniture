@@ -42,7 +42,7 @@ public class SurfaceExtensionTest {
 	}
 
 	@Test public void unknownItemsHaveGenericFallbackAndExactNbtRoundTrip() {
-		ItemStack original = new ItemStack(Items.APPLE, 3);
+		ItemStack original = new ItemStack(Items.ARMOR_STAND, 3);
 		original.setStackDisplayName("Harvest feast");
 		original.getTagCompound().setInteger("CustomData", 41);
 		assertEquals(Category.SINGLETON, SurfaceSetting.classify(original));
@@ -84,6 +84,6 @@ public class SurfaceExtensionTest {
 		SurfaceRenderRegistry.Renderer renderer = (stack, context) -> { };
 		SurfaceRenderRegistry.register(Items.GLASS_BOTTLE, renderer);
 		assertSame(renderer, SurfaceRenderRegistry.get(bottle));
-		assertNull(SurfaceRenderRegistry.get(new ItemStack(Items.APPLE)));
+		assertNull(SurfaceRenderRegistry.get(new ItemStack(Items.ARMOR_STAND)));
 	}
 }

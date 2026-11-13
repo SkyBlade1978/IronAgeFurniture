@@ -4,6 +4,11 @@ import zone.moddev.mc.ironagefurniture.BlockObjectHolder;
 import zone.moddev.mc.ironagefurniture.api.entity.EntityThrownLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.entity.EntityReleasedLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShieldChair;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityDiningTable;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityVanillaFoodDisplay;
+import zone.moddev.mc.ironagefurniture.client.render.SurfaceFurnitureRenderer;
+import zone.moddev.mc.ironagefurniture.client.render.VanillaFoodRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityShieldChairRenderer;
 
 import net.minecraft.client.Minecraft;
@@ -29,6 +34,16 @@ public final class ClientRenderInitialiser {
 	public static void registerShieldChairRenderer() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShieldChair.class,
 			new TileEntityShieldChairRenderer());
+	}
+
+	public static void registerSurfaceFurnitureRenderers() {
+		VanillaFoodRenderer.register();
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCabinet.class,
+			new SurfaceFurnitureRenderer<TileEntityCabinet>());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDiningTable.class,
+			new SurfaceFurnitureRenderer<TileEntityDiningTable>());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityVanillaFoodDisplay.class,
+			new SurfaceFurnitureRenderer<TileEntityVanillaFoodDisplay>(0.0D));
 	}
 
     public static void registerEntityRenderers() {

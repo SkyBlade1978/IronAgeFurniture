@@ -5,6 +5,7 @@ import java.util.Map;
 
 import zone.moddev.mc.ironagefurniture.api.entity.Seat;
 import zone.moddev.mc.ironagefurniture.api.CreativeModeBreakTracker;
+import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceReservationRepair;
 import zone.moddev.mc.ironagefurniture.api.entity.EntityThrownLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.entity.EntityReleasedLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.CfmChairMigration;
@@ -16,6 +17,7 @@ import zone.moddev.mc.ironagefurniture.client.particle.HeldCandleSmoke;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityPaddedBench;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry;
+import zone.moddev.mc.ironagefurniture.api.surface.VanillaFoodPlacement;
 import zone.moddev.mc.ironagefurniture.api.FluidAgingRegistry;
 import zone.moddev.mc.ironagefurniture.api.LegacyFluidRegistration;
 import zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry;
@@ -25,6 +27,7 @@ import zone.moddev.mc.ironagefurniture.init.ClientModelInitialiser;
 import zone.moddev.mc.ironagefurniture.init.ClientRenderInitialiser;
 import zone.moddev.mc.ironagefurniture.init.RecipeInitialiser;
 import zone.moddev.mc.ironagefurniture.init.PhaseFourFurnitureInitialiser;
+import zone.moddev.mc.ironagefurniture.init.PhaseFiveFurnitureInitialiser;
 import zone.moddev.mc.ironagefurniture.init.PhaseFourLightingRecipes;
 import zone.moddev.mc.ironagefurniture.init.ItemInitialiser;
 
@@ -80,6 +83,7 @@ public class Ironagefurniture
 
     	RecipeInitialiser.init();
 		PhaseFourFurnitureInitialiser.registerRecipes();
+		PhaseFiveFurnitureInitialiser.registerRecipes();
 		PhaseFourLightingRecipes.register();
     }
 
@@ -88,8 +92,10 @@ public class Ironagefurniture
 		LegacyFluidRegistration.runPending();
 	IronAgeFurnitureConfiguration.init(event);
 		MinecraftForge.EVENT_BUS.register(new CreativeModeBreakTracker());
+		MinecraftForge.EVENT_BUS.register(new VanillaFoodPlacement());
 		MinecraftForge.EVENT_BUS.register(cfmChairMigration);
 		FMLCommonHandler.instance().bus().register(cfmChairMigration);
+		FMLCommonHandler.instance().bus().register(new SurfaceReservationRepair());
 		GameRegistry.registerTileEntity(TileEntityPaddedBench.class, MODID + ":padded_bench_colour");
 		GameRegistry.registerTileEntity(TileEntityUpholstery.class, MODID + ":upholstery_colour");
 		GameRegistry.registerTileEntity(TileEntityShieldChair.class, MODID + ":shield_chair");
@@ -100,6 +106,7 @@ public class Ironagefurniture
 		}
 		BlockInitialiser.init();
 		PhaseFourFurnitureInitialiser.registerBlocks();
+		PhaseFiveFurnitureInitialiser.registerBlocks();
 		if (event.getSide().isClient()) {
 			GeneratedModelResourcePack.install();
 			FMLCommonHandler.instance().bus().register(new HeldCandleSmoke());
@@ -107,6 +114,7 @@ public class Ironagefurniture
 			ClientModelInitialiser.registerUpholsteryItemModels();
 			ClientItemInitialiser.registerPhaseFourItemModels();
 			ClientRenderInitialiser.registerShieldChairRenderer();
+			ClientRenderInitialiser.registerSurfaceFurnitureRenderers();
 			ClientRenderInitialiser.registerEntityRenderers();
 		}
 

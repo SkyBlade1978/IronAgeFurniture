@@ -36,6 +36,7 @@ final class Phase5StackProbe {
         Set<String> expected = new HashSet<String>();
         if (!expectedProperty.isEmpty()) expected.addAll(Arrays.asList(expectedProperty.split(",")));
         require(actual.equals(expected), "Expected Phase 5 mods " + expected + ", got " + actual);
+        Phase5FurnitureProbe.verify(server.worldServerForDimension(0), expected);
         if (expected.contains("ironagebrewing")) {
             require(FluidRegistry.getFluid(WASH) != null, "Brewing did not register its wash");
         }

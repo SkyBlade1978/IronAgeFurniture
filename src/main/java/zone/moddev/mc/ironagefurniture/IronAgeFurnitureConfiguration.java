@@ -21,6 +21,7 @@ public class IronAgeFurnitureConfiguration {
 	public static boolean GENERATE_CANDLES = true;
 	public static boolean CFM_CONVERSION_RECIPES = true;
 	public static boolean FORCE_CFM_CHAIR_CONVERSION = false;
+	public static boolean VANILLA_FOOD_SURFACES = true;
 	public static boolean INTEGRATION_BASEMETALS = true;
 	public static boolean INTEGRATION_MINERALOGY = true;
 	public static boolean INTEGRATION_BIOMESOPLENTY = true;
@@ -58,6 +59,8 @@ public class IronAgeFurnitureConfiguration {
 
 		CFM_CONVERSION_RECIPES = config.getBoolean("CFM_CONVERSION_RECIPES", "options", CFM_CONVERSION_RECIPES, "If true, recipes for converting chairs from Crayfish Furniture Mod will be added");
 		FORCE_CFM_CHAIR_CONVERSION = config.getBoolean("FORCE_CFM_CHAIR_CONVERSION", "options", false, "Convert CFM wooden chairs to classic chairs even while CFM is installed");
+		VANILLA_FOOD_SURFACES = config.getBoolean("VANILLA_FOOD_SURFACES", "options", true,
+			"Sneak-right-click a full-height vanilla surface with a known vanilla food to display one portion; ordinary item use and IAF furniture are unchanged");
 		config.save();
 	}
 }

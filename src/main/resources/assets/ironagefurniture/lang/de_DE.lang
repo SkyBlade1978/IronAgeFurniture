@@ -3748,3 +3748,7 @@ tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.starsteel.name
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.steel.name=Wandleuchter (Stahl)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.tin.name=Wandleuchter (Tin)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.zinc.name=Wandleuchter (Zinc)
+
+tile.ironagefurniture.table_dining_oak.name=Esstisch (Eiche)
+container.ironagefurniture.cabinet=Schrank
+tile.ironagefurniture.cabinet_wood_ironage_oak.name=Schrank (Eiche)

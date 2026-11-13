@@ -3748,3 +3748,7 @@ tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.starsteel.name
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.steel.name=Настенный светильник (Сталь)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.tin.name=Настенный светильник (Tin)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.zinc.name=Настенный светильник (Zinc)
+
+tile.ironagefurniture.table_dining_oak.name=Обеденный стол (Дуб)
+container.ironagefurniture.cabinet=Шкаф
+tile.ironagefurniture.cabinet_wood_ironage_oak.name=Шкаф (Дуб)

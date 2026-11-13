@@ -86,7 +86,8 @@ public final class OptionalIntegrationRecipeProbe {
 
     @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
-        if (Boolean.getBoolean("iaf.probe.lampMiningClient")) return;
+        if (Boolean.getBoolean("iaf.probe.lampMiningClient")
+                || Boolean.getBoolean("iaf.probe.surfaceBoundsClient")) return;
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (System.getProperty("iaf.probe.phase5Mods") != null) {
             try { Phase5StackProbe.verify(server); }

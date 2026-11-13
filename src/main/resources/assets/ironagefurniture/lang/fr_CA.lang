@@ -3748,3 +3748,7 @@ tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.starsteel.name
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.steel.name=Applique murale (Acier)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.tin.name=Applique murale (Tin)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.zinc.name=Applique murale (Zinc)
+
+tile.ironagefurniture.table_dining_oak.name=Table à manger (Chêne)
+container.ironagefurniture.cabinet=Armoire
+tile.ironagefurniture.cabinet_wood_ironage_oak.name=Armoire (Chêne)

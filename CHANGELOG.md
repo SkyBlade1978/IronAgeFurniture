@@ -1,5 +1,18 @@
 # IronAgeFurniture 0.5.0.110021 (unreleased)
 
+- Sneak-place known vanilla foods on full-height vanilla surfaces with an
+  empty offhand. Keep their exact item data and the supporting block intact;
+  broader item displays remain on IAF furniture. Modpacks can disable new
+  food placements with `VANILLA_FOOD_SURFACES`.
+
+- Give vanilla foods 3D surface models, including scored bread loaves,
+  apples, vegetables, fish, meats, desserts, and soups in wooden bowls.
+  Food uses the place-setting API and keeps its exact item data.
+
+- Add the oak dining table and oak cabinet. Tables connect to their
+  neighbours, and cabinets can pair into 54-slot storage. Both tops display
+  items, with specialised renderers available through the surface API.
+
 - Relight candle sconces when they are extinguished by a bucket while already
   receiving redstone power. Preserve the candle count, metal and facing;
   dry candles stay lit when the signal stops.
@@ -9,9 +22,8 @@
   obsidian chunk in water. The empty frame keeps its metal; right-click removal
   and Silk Touch still return an intact lamp.
 
-Phase 5 foundation for Minecraft 1.10.2. Add extension points for surface
-item placement, interactions, and client-only rendering without registering
-storage furniture. The update feed continues to advertise published
+Add extension points for surface item placement, interactions, and
+client-only rendering. The update feed continues to advertise published
 `0.4.0.110021`.
 
 - Return sconce holders and their contents when mined by hand or with a weak

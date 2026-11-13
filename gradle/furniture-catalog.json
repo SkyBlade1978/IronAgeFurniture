@@ -97,5 +97,9 @@
       "chair_oak", "chair_spruce", "chair_birch", "chair_jungle",
       "chair_acacia", "chair_dark_oak"
     ]
+  },
+  "phaseFive": {
+    "furniture": ["table_dining_oak", "cabinet_wood_ironage_oak"],
+    "hidden": ["surface_display_blocker", "vanilla_food_display"]
   }
 }

@@ -3748,3 +3748,7 @@ tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.starsteel.name
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.steel.name=Aplique (Acero)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.tin.name=Aplique (Tin)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.zinc.name=Aplique (Zinc)
+
+tile.ironagefurniture.table_dining_oak.name=Mesa de comedor (Roble)
+container.ironagefurniture.cabinet=Armario
+tile.ironagefurniture.cabinet_wood_ironage_oak.name=Armario (Roble)

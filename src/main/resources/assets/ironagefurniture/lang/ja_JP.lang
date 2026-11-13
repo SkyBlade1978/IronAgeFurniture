@@ -3748,3 +3748,7 @@ tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.starsteel.name
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.steel.name=燭台 (鋼鉄)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.tin.name=燭台 (Tin)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.zinc.name=燭台 (Zinc)
+
+tile.ironagefurniture.table_dining_oak.name=ダイニングテーブル (オーク)
+container.ironagefurniture.cabinet=戸棚
+tile.ironagefurniture.cabinet_wood_ironage_oak.name=戸棚 (オーク)

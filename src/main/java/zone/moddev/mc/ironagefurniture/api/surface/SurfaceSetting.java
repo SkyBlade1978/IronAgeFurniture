@@ -169,7 +169,8 @@ public class SurfaceSetting {
 		if (!this.hasAnyItem()) {
 			this.axis = incoming == Category.SINGLETON ? null : chooseAxis(hitX, hitZ, facing, forcedAxis);
 
-			if (incoming == Category.BOTTLE || incoming == Category.CANDLE || incoming == Category.SINGLETON) {
+			if (incoming == Category.BOTTLE || incoming == Category.CANDLE
+					|| incoming == Category.MEAL || incoming == Category.SINGLETON) {
 				this.put(Slot.CENTER, copySingle(itemStack), facing);
 			} else {
 				this.put(this.preferredGuest(hitX, hitZ, this.axis), copySingle(itemStack), facing);
@@ -486,14 +487,7 @@ public class SurfaceSetting {
 
 	private AxisAlignedBB getItemBounds(Slot slot, ItemStack itemStack) {
 		SurfaceContentRegistry.Descriptor descriptor = SurfaceContentRegistry.describe(itemStack);
-		double width = descriptor.getWidth();
-		double height = descriptor.getHeight();
-
-		double centerX = this.getX(slot);
-		double centerZ = this.getZ(slot);
-		double half = width / 2.0D;
-		return new AxisAlignedBB(centerX - half, 0.0D, centerZ - half,
-			centerX + half, height, centerZ + half);
+		return descriptor.getBounds(this.getFacing(slot)).offset(this.getX(slot), 0.0D, this.getZ(slot));
 	}
 
 	private void put(Slot slot, ItemStack itemStack, EnumFacing facing) {

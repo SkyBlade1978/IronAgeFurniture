@@ -3748,3 +3748,7 @@ tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.starsteel.name
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.steel.name=Steel Sconce
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.tin.name=Tin Sconce
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.zinc.name=Zinc Sconce
+
+tile.ironagefurniture.table_dining_oak.name=Oak Dining Table
+container.ironagefurniture.cabinet=Cabinet
+tile.ironagefurniture.cabinet_wood_ironage_oak.name=Oak Cabinet

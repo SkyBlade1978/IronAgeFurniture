@@ -3748,3 +3748,7 @@ tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.starsteel.name
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.steel.name=Arandela (Aço)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.tin.name=Arandela (Tin)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.zinc.name=Arandela (Zinc)
+
+tile.ironagefurniture.table_dining_oak.name=Mesa de jantar (Carvalho)
+container.ironagefurniture.cabinet=Armário
+tile.ironagefurniture.cabinet_wood_ironage_oak.name=Armário (Carvalho)

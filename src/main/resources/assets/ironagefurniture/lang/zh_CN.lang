@@ -3748,3 +3748,7 @@ tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.starsteel.name
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.steel.name=壁灯 (钢)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.tin.name=壁灯 (Tin)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.zinc.name=壁灯 (Zinc)
+
+tile.ironagefurniture.table_dining_oak.name=餐桌 (橡木)
+container.ironagefurniture.cabinet=柜子
+tile.ironagefurniture.cabinet_wood_ironage_oak.name=柜子 (橡木)

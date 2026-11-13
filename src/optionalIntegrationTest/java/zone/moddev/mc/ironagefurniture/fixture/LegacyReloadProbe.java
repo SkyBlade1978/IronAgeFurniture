@@ -32,7 +32,8 @@ public final class LegacyReloadProbe {
         }
         if (chunks == 0) throw new IllegalStateException("The legacy fixture has no saved chunks");
         LogManager.getLogger().info("IAF LEGACY FULL-CHUNK RELOAD PASSED: {} saved chunks loaded", chunks);
-        server.initiateShutdown();
+        if (Boolean.getBoolean("iaf.probe.phase5Reload")) SurfaceReloadProbe.start(server, chunks);
+        else server.initiateShutdown();
         return true;
     }
 }

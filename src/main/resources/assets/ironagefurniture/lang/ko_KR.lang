@@ -3748,3 +3748,7 @@ tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.starsteel.name
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.steel.name=벽 촛대 (강철)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.tin.name=벽 촛대 (Tin)
 tile.ironagefurniture.light_metal_ironage_sconce_floor_empty_iron.zinc.name=벽 촛대 (Zinc)
+
+tile.ironagefurniture.table_dining_oak.name=식탁 (참나무)
+container.ironagefurniture.cabinet=수납장
+tile.ironagefurniture.cabinet_wood_ironage_oak.name=수납장 (참나무)

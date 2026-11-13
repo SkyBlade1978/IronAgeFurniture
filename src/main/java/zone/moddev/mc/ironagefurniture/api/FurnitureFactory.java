@@ -5,7 +5,10 @@ import zone.moddev.mc.ironagefurniture.IronAgeFurnitureConfiguration;
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.Blocks.BackBench;
 import zone.moddev.mc.ironagefurniture.api.Blocks.Bench;
+import zone.moddev.mc.ironagefurniture.api.Blocks.Cabinet;
 import zone.moddev.mc.ironagefurniture.api.Blocks.Chair;
+import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable;
+import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceDisplayBlocker;
 import zone.moddev.mc.ironagefurniture.api.Blocks.LightSourceCandleFloor;
 import zone.moddev.mc.ironagefurniture.api.Blocks.LightSourceCandleFloorUnlit;
 import zone.moddev.mc.ironagefurniture.api.Blocks.LightSourceCandleWall;
@@ -73,6 +76,22 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class FurnitureFactory {
+
+	public static Block createDiningTable(String name) {
+		return registerBlock(new DiningTable(Material.WOOD, 10, 1), name, 16);
+	}
+
+	public static Block createCabinet(String name) {
+		return registerBlock(new Cabinet(Material.WOOD, 10, 1.5F), name, 64);
+	}
+
+	public static void createSurfaceDisplayBlocker(String name) {
+		registerBlockWithoutItem(new SurfaceDisplayBlocker(), name);
+	}
+
+	public static void createVanillaFoodDisplay(String name) {
+		registerBlockWithoutItem(new zone.moddev.mc.ironagefurniture.api.Blocks.VanillaFoodDisplay(), name);
+	}
 
 	public static void AddClassicChairRecipe(ItemStack planks, Block chair) {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(chair, 1), "x  ", "xxx", "y y", 'x', planks, 'y', "stickWood"));

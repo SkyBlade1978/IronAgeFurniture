@@ -1,21 +1,29 @@
 # Phase 5 1.10 surface and vessel contract (unreleased)
 
-This is an API candidate for storage design, not a Phase 5 furniture release.
-It adds no cabinet, shelf, bottle rack, table, or craftable barrel. The
-published `0.4.0.110021` identities remain the baseline; `update.json` still
-advertises that release.
+The oak dining table and oak cabinet are the first production surface hosts.
+The published `0.4.0.110021` identities remain the baseline, and `update.json`
+still advertises that release.
 
 ## Surface host
 
-- A future furniture tile implements `SurfaceSettingHost` and owns one
+- Each furniture tile implements `SurfaceSettingHost` and owns one
   `SurfaceSetting`. The host persists it using `readFromNBT`/`writeToNBT`,
   marks changes after server-side insertion or removal, and drops the exact
-  stored ItemStacks when broken. The test-only host proves this without
-  registering a block.
+  stored ItemStacks when broken. The hidden `surface_display_blocker`
+  reserves the cell above an occupied display and routes item clicks to the
+  host below. Cabinet storage has its own inventory and automation.
 - Common-side `SurfaceContentRegistry` describes layout categories and
   footprints. `SurfaceInteractionRegistry` adds optional handling for an
   already displayed item. Duplicate item providers/handlers are errors.
   Registration closes at IAF post-init.
+- Descriptors can supply rectangular bounds relative to the item centre,
+  facing north. The host rotates these with the stored facing for selection
+  and server interactions. The width/height constructor remains available.
+- Vanilla edible items and cake use the catalogue at
+  `assets/ironagefurniture/surface_foods.json`. It selects 35 surface models,
+  including fish metadata variants, and supplies their common bounds.
+  The client bakes the dedicated models during resource loading.
+  A single meal sits in the centre; adding a drink forms a place setting.
 - Client-side `SurfaceRenderRegistry` accepts specialised visuals before
   post-init. Unclaimed stacks use the generic Minecraft item renderer.
   Persistent NBT contains real ItemStacks and orientation, never renderer
@@ -23,6 +31,32 @@ advertises that release.
 - Current tags are `SurfaceItems` and `SurfaceAxis`; an older single
   `DisplayedItem` is read and rewritten to the current form. The three
   slots are `GUEST_A`, `CENTER`, and `GUEST_B`.
+
+## Food on vanilla surfaces
+
+- With `options.VANILLA_FOOD_SURFACES=true` (default), sneak-right-click the
+  top of a full-height vanilla block with a known vanilla food in the main
+  hand and an empty offhand. Ordinary clicks keep their normal behaviour.
+  Containers/tile entities, crafting tables, partial-height surfaces,
+  modded blocks and occupied cells are excluded. The handler honours
+  cancelled events, explicit block/item-use results and edit permissions.
+  Automated fake-player clicks are left to their owning mod.
+- Only the edible items listed in `surface_foods.json` are accepted. This
+  is independent of the general surface-content registry: addon drinkware,
+  arbitrary items and unknown modded foods remain furniture-only. Cake
+  keeps its native block-placement/eating behaviour on vanilla surfaces.
+- One portion is stored in the hidden, no-item `vanilla_food_display`
+  block above the unchanged support, with `vanilla_food_display` tile data.
+  It uses the same food models and bounds as furniture. Empty-hand
+  right-click returns the exact item; Survival breaking, support loss,
+  explosions and piston clearance drop it once. Creative mining deletes
+  the displayed portion. It has no collision and does not block pistons.
+- Forge 1.10 falls through from a cancelled block click to item use in air.
+  A four-tick cooldown on the placed food suppresses this immediate eating
+  attempt; no general item-use interceptor is registered. An occupied
+  offhand opts out so this gesture cannot also activate an offhand item.
+- Disabling placement preserves existing displays and their retrieval.
+  No world lookups occur during the food tile's loading callback.
 
 ## Vessel and addon seam
 
@@ -41,12 +75,10 @@ advertises that release.
   the corresponding donor IDs. This callback does not register IAB content
   when IAB is absent.
 
-## 4a handoff
+## Furniture slices
 
-First expand and agree the storage furniture set in the 1.0 donor. For each
-4b slice, implement inventory/capability, surface host, interactions, exact
-drops, NBT round-trip, facing, and vanilla generic rendering in IAF alone.
-Then test IAB and HarvestCraft specialised visuals separately. Do not port
-the whole 1.0 checkout or add ordinary barrels until their independent
-storage behaviour is proven. Older 1.10 saves and removed-addon cases need
-disposable copied-world tests before a release or upward port.
+The oak slice retains the donor table's lazy tile and the cabinet's 27-slot
+inventory, paired models and joins. Check the standalone host behaviour
+before testing IAB and HarvestCraft visuals. Older 1.10 saves and
+removed-addon cases need disposable copied-world tests before release or
+upward port.

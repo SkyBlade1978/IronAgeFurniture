@@ -53,6 +53,8 @@ def catalogSnapshotText = { Map catalog ->
     lines.add("phaseFour.lighting=${(phaseFour.lighting as List).join(',')}")
     lines.add("phaseFour.locales=${(phaseFour.locales as List).join(',')}")
     lines.add("phaseFour.cfmChairs=${(phaseFour.cfmChairs as List).join(',')}")
+    lines.add("phaseFive.furniture=${(catalog.phaseFive.furniture as List).join(',')}")
+    lines.add("phaseFive.hidden=${(catalog.phaseFive.hidden as List).join(',')}")
     lines.join('\n') + '\n'
 }
 
@@ -228,13 +230,13 @@ tasks.register('verifyFurnitureCatalog') {
         }
 
         List<String> forbiddenUnrelatedContent = [
-                'chandelier', 'hanging_inn_sign', 'table_wood_', 'shelf_wood_', 'cabinet_wood_',
+                'chandelier', 'hanging_inn_sign', 'table_wood_', 'shelf_wood_', 'half_cabinet_wood_',
                 'PowerAdvantage', 'poweradvantage'
         ]
         String maintainedSource = blockSource + '\n' + recipeSource
         forbiddenUnrelatedContent.each { value ->
             if (maintainedSource.contains(value)) {
-                throw new GradleException("Unselected 1.0 content leaked into the Phase 4 catalog: ${value}")
+                throw new GradleException("Unselected 1.0 content leaked into the furniture catalog: ${value}")
             }
         }
 
@@ -497,20 +499,20 @@ tasks.register('verifyFurnitureCatalog') {
         File generatedModelsFile = file(
                 'src/main/resources/assets/ironagefurniture/generated/simple_model_resources.json')
         Map generatedModels = (new JsonSlurper().parse(generatedModelsFile) as Map).generatedModels as Map
-        Closure verifyPhaseFourState = { String id ->
+        Closure verifyFurnitureState = { String id ->
             File stateFile = new File(blockstateRoot, "${id}.json")
             if (!stateFile.isFile()) {
-                throw new GradleException("Phase 4 blockstate is missing: ${id}")
+                throw new GradleException("Furniture blockstate is missing: ${id}")
             }
             Map state = new JsonSlurper().parse(stateFile) as Map
             Map variants = state.variants as Map
             if (variants == null || variants.isEmpty()) {
-                throw new GradleException("Phase 4 blockstate has no variants: ${id}")
+                throw new GradleException("Furniture blockstate has no variants: ${id}")
             }
             variants.values().collectMany { it instanceof List ? it : [it] }.each { value ->
                 String modelName = (value as Map).model?.toString()
                 if (modelName == null || !modelName.startsWith('ironagefurniture:')) {
-                    throw new GradleException("Phase 4 model reference is invalid: ${id}")
+                    throw new GradleException("Furniture model reference is invalid: ${id}")
                 }
                 String path = modelName.substring('ironagefurniture:'.length())
                 if (path.startsWith('upholstered/')) {
@@ -518,16 +520,23 @@ tasks.register('verifyFurnitureCatalog') {
                 }
                 if (!generatedModels.containsKey("models/block/${path}.json".toString())
                         && !new File(blockModelRoot, "${path}.json").isFile()) {
-                    throw new GradleException("Phase 4 model is missing: ${id} -> ${path}")
+                    throw new GradleException("Furniture model is missing: ${id} -> ${path}")
                 }
             }
         }
         (catalog.phaseFour.woodPrefixes as List).each { String prefix ->
             catalogWoods.each { String wood ->
-                verifyPhaseFourState("${prefix}${wood}")
+                verifyFurnitureState("${prefix}${wood}")
             }
         }
-        phaseFourLighting.each { String id -> verifyPhaseFourState(id) }
+        phaseFourLighting.each { String id -> verifyFurnitureState(id) }
+        (catalog.phaseFive.hidden as List).each { String id -> verifyFurnitureState(id) }
+        (catalog.phaseFive.furniture as List).each { String id ->
+            verifyFurnitureState(id)
+            if (!file("src/main/resources/assets/ironagefurniture/models/item/${id}.json").isFile()) {
+                throw new GradleException("Phase 5 furniture is missing its item model: ${id}")
+            }
+        }
         if (!generatedModels.containsKey('models/item/tallow.json')
                 || !generatedModels.containsKey('models/item/shield_chair_filled/chair_wood_ironage_shield_oak.json')
                 || generatedModels.keySet().any { String path ->
@@ -535,12 +544,13 @@ tasks.register('verifyFurnitureCatalog') {
                 }) {
             throw new GradleException('Phase 4 generated model manifest is missing selected assets or contains 1.0-only assets')
         }
-        ['bed_canopy_foot_lower_oak', 'bed_wood_foot_oak',
+        (['bed_canopy_foot_lower_oak', 'bed_wood_foot_oak',
          'chair_wood_ironage_wingback_oak', 'chair_wood_ironage_throne_oak',
-         'light_metal_ironage_candle_floor', 'light_metal_ironage_sconce_floor_empty_iron.gold'].each { id ->
+         'light_metal_ironage_candle_floor', 'light_metal_ironage_sconce_floor_empty_iron.gold']
+         + (catalog.phaseFive.furniture as List)).each { id ->
             String key = "tile.ironagefurniture.${id}.name"
             if (!locales.values().every { it.containsKey(key) }) {
-                throw new GradleException("Phase 4 locale key is missing: ${key}")
+                throw new GradleException("Furniture locale key is missing: ${key}")
             }
         }
     }
