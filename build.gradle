@@ -402,6 +402,7 @@ ext.iafBuild = [
 // The release scripts refer to catalog and audit tasks by name, so those
 // tasks are registered first.
 apply from: 'gradle/furniture-catalog.gradle'
+apply from: 'gradle/phase5-furniture-assets.gradle'
 apply from: 'gradle/verification/legacy-fixtures.gradle'
 apply from: 'gradle/verification/optional-integrations.gradle'
 apply from: 'gradle/verification/project-audits.gradle'

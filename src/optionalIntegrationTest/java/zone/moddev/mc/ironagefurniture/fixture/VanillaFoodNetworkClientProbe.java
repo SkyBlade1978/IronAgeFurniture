@@ -40,6 +40,8 @@ public final class VanillaFoodNetworkClientProbe {
 	private VanillaFoodNetworkClientProbe() { }
 
 	static void start(Minecraft client, int verifiedCases) {
+		client.gameSettings.pauseOnLostFocus = false;
+		client.displayGuiScreen(null);
 		cases = verifiedCases;
 		support = client.player.getPosition().east(2);
 		client.player.inventory.currentItem = 0;

@@ -53,7 +53,7 @@ def catalogSnapshotText = { Map catalog ->
     lines.add("phaseFour.lighting=${(phaseFour.lighting as List).join(',')}")
     lines.add("phaseFour.locales=${(phaseFour.locales as List).join(',')}")
     lines.add("phaseFour.cfmChairs=${(phaseFour.cfmChairs as List).join(',')}")
-    lines.add("phaseFive.furniture=${(catalog.phaseFive.furniture as List).join(',')}")
+    lines.add("phaseFive.woodPrefixes=${(catalog.phaseFive.woodPrefixes as List).join(',')}")
     lines.add("phaseFive.hidden=${(catalog.phaseFive.hidden as List).join(',')}")
     lines.join('\n') + '\n'
 }
@@ -499,6 +499,8 @@ tasks.register('verifyFurnitureCatalog') {
         File generatedModelsFile = file(
                 'src/main/resources/assets/ironagefurniture/generated/simple_model_resources.json')
         Map generatedModels = (new JsonSlurper().parse(generatedModelsFile) as Map).generatedModels as Map
+        generatedModels = generatedModels + ((new JsonSlurper().parse(file(
+                'src/main/resources/assets/ironagefurniture/generated/phase5_model_resources.json')) as Map).generatedModels as Map)
         Closure verifyFurnitureState = { String id ->
             File stateFile = new File(blockstateRoot, "${id}.json")
             if (!stateFile.isFile()) {
@@ -531,7 +533,10 @@ tasks.register('verifyFurnitureCatalog') {
         }
         phaseFourLighting.each { String id -> verifyFurnitureState(id) }
         (catalog.phaseFive.hidden as List).each { String id -> verifyFurnitureState(id) }
-        (catalog.phaseFive.furniture as List).each { String id ->
+        List<String> phaseFiveFurniture = (catalog.phaseFive.woodPrefixes as List).collectMany { String prefix ->
+            catalogWoods.collect { String wood -> "${prefix}${wood}".toString() }
+        }
+        phaseFiveFurniture.each { String id ->
             verifyFurnitureState(id)
             if (!file("src/main/resources/assets/ironagefurniture/models/item/${id}.json").isFile()) {
                 throw new GradleException("Phase 5 furniture is missing its item model: ${id}")
@@ -547,7 +552,7 @@ tasks.register('verifyFurnitureCatalog') {
         (['bed_canopy_foot_lower_oak', 'bed_wood_foot_oak',
          'chair_wood_ironage_wingback_oak', 'chair_wood_ironage_throne_oak',
          'light_metal_ironage_candle_floor', 'light_metal_ironage_sconce_floor_empty_iron.gold']
-         + (catalog.phaseFive.furniture as List)).each { id ->
+         + phaseFiveFurniture).each { id ->
             String key = "tile.ironagefurniture.${id}.name"
             if (!locales.values().every { it.containsKey(key) }) {
                 throw new GradleException("Furniture locale key is missing: ${key}")

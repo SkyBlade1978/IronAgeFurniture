@@ -8,6 +8,7 @@ part of this repository; they are not separate Gradle plugins.
 | Script | Purpose |
 | --- | --- |
 | `furniture-catalog.gradle` | Check the generated furniture catalog and update it only when explicitly requested. |
+| `phase5-furniture-assets.gradle` | Generate and verify the four Phase 5 furniture families from the chair wood catalog. |
 | `verification/legacy-fixtures.gradle` | Rebuild and compare the checked-in old-world migration fixtures. |
 | `verification/optional-integrations.gradle` | Inspect pinned optional-mod jars and run the opt-in packaged-server probe. |
 | `verification/project-audits.gradle` | Check source resources, metadata, namespace, workflows and repository hygiene. |
@@ -52,6 +53,16 @@ Default sibling projects are `../../IAB110/IronAgeBrewing` and
 `../../IAFPHC110/IronAgeFurniture-PamsHarvestCraft-Addon`. Override them with
 `-Pphase5BrewingDir=...` and `-Pphase5HarvestCraftAddonDir=...` as needed.
 Ordinary `prepareEclipse` and Buildship sync still work with IAF alone.
+
+The `optional-woods` client uses an 8 GB heap because baking all of the
+enabled furniture models exceeds 4 GB. Other client profiles and all servers
+use 2 GB. These limits are recorded in the fixture manifest and regenerated
+with the launches.
+
+After changing the Phase 5 family templates or wood catalog, run
+`gradlew.bat updatePhaseFiveFurnitureAssets updateFurnitureCatalog` and
+review the generated resource changes. Ordinary builds verify those files
+without rewriting them.
 
 [The fixture manifest](ide/phase5-fixtures.json) locks published file IDs and
 checksums. The task fetches them through Curse Maven (JEI from BlameJared),

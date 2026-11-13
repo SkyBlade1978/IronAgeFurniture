@@ -1,0 +1,1410 @@
+{
+  "dining": {
+    "prefix": "table_dining_",
+    "inventory": "single",
+    "models": {
+      "center": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_dining_center",
+        "textures": {}
+      },
+      "corner": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_dining_corner",
+        "textures": {}
+      },
+      "end": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_dining_end",
+        "textures": {}
+      },
+      "single": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_dining_single",
+        "textures": {}
+      },
+      "straight": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_dining_straight",
+        "textures": {}
+      },
+      "tee": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_dining_tee",
+        "textures": {}
+      }
+    }
+  },
+  "low": {
+    "prefix": "table_low_",
+    "inventory": "single",
+    "models": {
+      "center_candle": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_center_candle",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "metal": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "wax": "ironagefurniture:blocks/candle_wax",
+          "wick": "minecraft:blocks/coal_block"
+        }
+      },
+      "center_flower_pot": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_center_flower_pot",
+        "textures": {
+          "dirt": "minecraft:blocks/dirt",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "pot": "ironagefurniture:blocks/ornament_clay_red"
+        }
+      },
+      "center_glow": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_center_glow",
+        "textures": {
+          "contents": "minecraft:blocks/glowstone",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "center_lava": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_center_lava",
+        "textures": {
+          "contents": "minecraft:blocks/lava_still",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "center_rock_salt": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_center_rock_salt",
+        "textures": {
+          "contents": "ironagefurniture:blocks/rocksalt_lamp",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "center": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_center",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "corner_candle": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_corner_candle",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "metal": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "wax": "ironagefurniture:blocks/candle_wax",
+          "wick": "minecraft:blocks/coal_block"
+        }
+      },
+      "corner_flower_pot": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_corner_flower_pot",
+        "textures": {
+          "dirt": "minecraft:blocks/dirt",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "pot": "ironagefurniture:blocks/ornament_clay_red"
+        }
+      },
+      "corner_glow": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_corner_glow",
+        "textures": {
+          "contents": "minecraft:blocks/glowstone",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "corner_lava": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_corner_lava",
+        "textures": {
+          "contents": "minecraft:blocks/lava_still",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "corner_rock_salt": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_corner_rock_salt",
+        "textures": {
+          "contents": "ironagefurniture:blocks/rocksalt_lamp",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "corner": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_corner",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "end_candle": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_end_candle",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "metal": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "wax": "ironagefurniture:blocks/candle_wax",
+          "wick": "minecraft:blocks/coal_block"
+        }
+      },
+      "end_flower_pot": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_end_flower_pot",
+        "textures": {
+          "dirt": "minecraft:blocks/dirt",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "pot": "ironagefurniture:blocks/ornament_clay_red"
+        }
+      },
+      "end_glow": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_end_glow",
+        "textures": {
+          "contents": "minecraft:blocks/glowstone",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "end_lava": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_end_lava",
+        "textures": {
+          "contents": "minecraft:blocks/lava_still",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "end_rock_salt": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_end_rock_salt",
+        "textures": {
+          "contents": "ironagefurniture:blocks/rocksalt_lamp",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "end": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_end",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "single_candle": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_single_candle",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "metal": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "wax": "ironagefurniture:blocks/candle_wax",
+          "wick": "minecraft:blocks/coal_block"
+        }
+      },
+      "single_flower_pot": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_single_flower_pot",
+        "textures": {
+          "dirt": "minecraft:blocks/dirt",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "pot": "ironagefurniture:blocks/ornament_clay_red"
+        }
+      },
+      "single_glow": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_single_glow",
+        "textures": {
+          "contents": "minecraft:blocks/glowstone",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "single_lava": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_single_lava",
+        "textures": {
+          "contents": "minecraft:blocks/lava_still",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "single_rock_salt": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_single_rock_salt",
+        "textures": {
+          "contents": "ironagefurniture:blocks/rocksalt_lamp",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "single": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_single",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_candle": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_straight_candle",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "metal": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "wax": "ironagefurniture:blocks/candle_wax",
+          "wick": "minecraft:blocks/coal_block"
+        }
+      },
+      "straight_flower_pot": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_straight_flower_pot",
+        "textures": {
+          "dirt": "minecraft:blocks/dirt",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "pot": "ironagefurniture:blocks/ornament_clay_red"
+        }
+      },
+      "straight_glow": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_straight_glow",
+        "textures": {
+          "contents": "minecraft:blocks/glowstone",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_lava": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_straight_lava",
+        "textures": {
+          "contents": "minecraft:blocks/lava_still",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_rock_salt": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_straight_rock_salt",
+        "textures": {
+          "contents": "ironagefurniture:blocks/rocksalt_lamp",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_straight",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "tee_candle": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_tee_candle",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "metal": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "wax": "ironagefurniture:blocks/candle_wax",
+          "wick": "minecraft:blocks/coal_block"
+        }
+      },
+      "tee_flower_pot": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_tee_flower_pot",
+        "textures": {
+          "dirt": "minecraft:blocks/dirt",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "pot": "ironagefurniture:blocks/ornament_clay_red"
+        }
+      },
+      "tee_glow": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_tee_glow",
+        "textures": {
+          "contents": "minecraft:blocks/glowstone",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "tee_lava": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_tee_lava",
+        "textures": {
+          "contents": "minecraft:blocks/lava_still",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "tee_rock_salt": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_tee_rock_salt",
+        "textures": {
+          "contents": "ironagefurniture:blocks/rocksalt_lamp",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "tee": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_table_low_tee",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      }
+    }
+  },
+  "shelf": {
+    "prefix": "shelf_wall_",
+    "inventory": "straight_support",
+    "models": {
+      "inner_corner_books_1": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_books_1",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "inner_corner_books_2": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_books_2",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "inner_corner_books_3": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_books_3",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "inner_corner_books_4": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_books_4",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "inner_corner_books_5": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_books_5",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "inner_corner_candle": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_candle",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "metal": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "wax": "ironagefurniture:blocks/candle_wax",
+          "wick": "minecraft:blocks/coal_block"
+        }
+      },
+      "inner_corner_flower_pot": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_flower_pot",
+        "textures": {
+          "dirt": "minecraft:blocks/dirt",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "pot": "ironagefurniture:blocks/ornament_clay_red"
+        }
+      },
+      "inner_corner_glow": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_glow",
+        "textures": {
+          "contents": "minecraft:blocks/glowstone",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "inner_corner_lava": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_lava",
+        "textures": {
+          "contents": "minecraft:blocks/lava_still",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "inner_corner_records_1": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_records_1",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "inner_corner_records_2": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_records_2",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "inner_corner_records_3": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_records_3",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "inner_corner_records_4": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_records_4",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "inner_corner_records_5": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_records_5",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "inner_corner_records_6": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_records_6",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "inner_corner_rock_salt": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner_rock_salt",
+        "textures": {
+          "contents": "ironagefurniture:blocks/rocksalt_lamp",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "inner_corner": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_inner_corner",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "outer_corner_books_1": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_books_1",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "outer_corner_books_2": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_books_2",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "outer_corner_books_3": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_books_3",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "outer_corner_books_4": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_books_4",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "outer_corner_books_5": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_books_5",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "outer_corner_candle": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_candle",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "metal": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "wax": "ironagefurniture:blocks/candle_wax",
+          "wick": "minecraft:blocks/coal_block"
+        }
+      },
+      "outer_corner_flower_pot": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_flower_pot",
+        "textures": {
+          "dirt": "minecraft:blocks/dirt",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "pot": "ironagefurniture:blocks/ornament_clay_red"
+        }
+      },
+      "outer_corner_glow": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_glow",
+        "textures": {
+          "contents": "minecraft:blocks/glowstone",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "outer_corner_lava": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_lava",
+        "textures": {
+          "contents": "minecraft:blocks/lava_still",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "outer_corner_records_1": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_records_1",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "outer_corner_records_2": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_records_2",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "outer_corner_records_3": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_records_3",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "outer_corner_records_4": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_records_4",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "outer_corner_records_5": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_records_5",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "outer_corner_records_6": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_records_6",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "outer_corner_rock_salt": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner_rock_salt",
+        "textures": {
+          "contents": "ironagefurniture:blocks/rocksalt_lamp",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "outer_corner": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_outer_corner",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_books_1": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_books_1",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_books_2": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_books_2",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_books_3": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_books_3",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_books_4": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_books_4",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_books_5": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_books_5",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_candle": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_candle",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "metal": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "wax": "ironagefurniture:blocks/candle_wax",
+          "wick": "minecraft:blocks/coal_block"
+        }
+      },
+      "straight_flower_pot": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_flower_pot",
+        "textures": {
+          "dirt": "minecraft:blocks/dirt",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "pot": "ironagefurniture:blocks/ornament_clay_red"
+        }
+      },
+      "straight_glow": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_glow",
+        "textures": {
+          "contents": "minecraft:blocks/glowstone",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_lava": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_lava",
+        "textures": {
+          "contents": "minecraft:blocks/lava_still",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_records_1": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_records_1",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_records_2": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_records_2",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_records_3": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_records_3",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_records_4": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_records_4",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_records_5": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_records_5",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_records_6": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_records_6",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_rock_salt": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_rock_salt",
+        "textures": {
+          "contents": "ironagefurniture:blocks/rocksalt_lamp",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_support_books_1": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_books_1",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_support_books_2": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_books_2",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_support_books_3": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_books_3",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_support_books_4": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_books_4",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_support_books_5": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_books_5",
+        "textures": {
+          "book_0": "ironagefurniture:blocks/shelf_book_red",
+          "book_1": "ironagefurniture:blocks/shelf_book_green",
+          "book_2": "ironagefurniture:blocks/shelf_book_blue",
+          "book_3": "ironagefurniture:blocks/shelf_book_brown",
+          "book_4": "ironagefurniture:blocks/shelf_book_purple",
+          "book_pages": "ironagefurniture:blocks/shelf_book_pages",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_support_candle": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_candle",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "metal": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "wax": "ironagefurniture:blocks/candle_wax",
+          "wick": "minecraft:blocks/coal_block"
+        }
+      },
+      "straight_support_flower_pot": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_flower_pot",
+        "textures": {
+          "dirt": "minecraft:blocks/dirt",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "pot": "ironagefurniture:blocks/ornament_clay_red"
+        }
+      },
+      "straight_support_glow": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_glow",
+        "textures": {
+          "contents": "minecraft:blocks/glowstone",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_support_lava": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_lava",
+        "textures": {
+          "contents": "minecraft:blocks/lava_still",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_support_records_1": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_records_1",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_support_records_2": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_records_2",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_support_records_3": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_records_3",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_support_records_4": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_records_4",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_support_records_5": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_records_5",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_support_records_6": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_records_6",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak",
+          "record_0": "ironagefurniture:blocks/shelf_record_brown",
+          "record_1": "ironagefurniture:blocks/shelf_record_red",
+          "record_2": "ironagefurniture:blocks/shelf_record_blue",
+          "record_3": "ironagefurniture:blocks/shelf_record_green",
+          "record_4": "ironagefurniture:blocks/shelf_record_purple",
+          "record_5": "ironagefurniture:blocks/shelf_record_gold",
+          "record_edge": "ironagefurniture:blocks/shelf_record_edge"
+        }
+      },
+      "straight_support_rock_salt": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support_rock_salt",
+        "textures": {
+          "contents": "ironagefurniture:blocks/rocksalt_lamp",
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight_support": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight_support",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "straight": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_shelf_wall_straight",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      }
+    }
+  },
+  "cabinet": {
+    "prefix": "cabinet_wood_ironage_",
+    "inventory": "single",
+    "models": {
+      "left_open": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_cabinet_wood_ironage_left_open",
+        "textures": {}
+      },
+      "left": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_cabinet_wood_ironage_left",
+        "textures": {}
+      },
+      "lower_open": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_cabinet_wood_ironage_lower_open",
+        "textures": {}
+      },
+      "lower": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_cabinet_wood_ironage_lower",
+        "textures": {}
+      },
+      "right_open": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_cabinet_wood_ironage_right_open",
+        "textures": {}
+      },
+      "right": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_cabinet_wood_ironage_right",
+        "textures": {}
+      },
+      "single_open": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_cabinet_wood_ironage_single_open",
+        "textures": {}
+      },
+      "single": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_cabinet_wood_ironage_single",
+        "textures": {}
+      },
+      "upper_open": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_cabinet_wood_ironage_upper_open",
+        "textures": {}
+      },
+      "upper": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_cabinet_wood_ironage_upper",
+        "textures": {}
+      }
+    }
+  }
+}

@@ -33,7 +33,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public final class GeneratedModelResourcePack implements IResourcePack {
 	private static final String PACK_NAME = "Iron Age Furniture Generated Models";
-	private static final String MANIFEST_PATH = "/assets/ironagefurniture/generated/simple_model_resources.json";
+	private static final String[] MANIFEST_PATHS = {
+		"/assets/ironagefurniture/generated/simple_model_resources.json",
+		"/assets/ironagefurniture/generated/phase5_model_resources.json"
+	};
 	private static final String GENERATED_MODELS = "generatedModels";
 	private static final Set<String> RESOURCE_DOMAINS = Collections.singleton(Ironagefurniture.MODID);
 	private static final Gson GSON = new Gson();
@@ -97,9 +100,14 @@ public final class GeneratedModelResourcePack implements IResourcePack {
 
 	private static Map<ResourceLocation, byte[]> loadGeneratedResources() {
 		Map<ResourceLocation, byte[]> resources = new LinkedHashMap<ResourceLocation, byte[]>();
-		InputStream input = GeneratedModelResourcePack.class.getResourceAsStream(MANIFEST_PATH);
+		for (String path : MANIFEST_PATHS) loadManifest(resources, path);
+		return resources;
+	}
+
+	private static void loadManifest(Map<ResourceLocation, byte[]> resources, String path) {
+		InputStream input = GeneratedModelResourcePack.class.getResourceAsStream(path);
 		if (input == null) {
-			return resources;
+			return;
 		}
 
 		try {
@@ -108,7 +116,7 @@ public final class GeneratedModelResourcePack implements IResourcePack {
 				JsonObject root = new JsonParser().parse(reader).getAsJsonObject();
 				JsonObject models = root.getAsJsonObject(GENERATED_MODELS);
 				if (models == null) {
-					return resources;
+					return;
 				}
 
 				for (Map.Entry<String, JsonElement> model : models.entrySet()) {
@@ -127,6 +135,5 @@ public final class GeneratedModelResourcePack implements IResourcePack {
 			throw new IllegalStateException("Unable to load generated model resource manifest", e);
 		}
 
-		return resources;
 	}
 }

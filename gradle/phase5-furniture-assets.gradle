@@ -1,0 +1,118 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+def phase5Root = file('src/main/resources/assets/ironagefurniture')
+def phase5Definitions = file('gradle/furniture-assets')
+def phase5Manifest = new File(phase5Root, 'generated/phase5_model_resources.json')
+def phase5Catalog = { new JsonSlurper().parse(file('gradle/furniture-catalog.json')) as Map }
+def phase5Families = { new JsonSlurper().parse(new File(phase5Definitions, 'phase5-families.json')) as Map }
+def phase5Woods = { (phase5Catalog().woods as Map).values().flatten() as List<String> }
+def phase5Models = {
+    Map<String, Object> models = new TreeMap<>()
+    phase5Woods().each { String wood ->
+        Map chair = new JsonSlurper().parse(new File(phase5Root,
+                "models/block/chair_wood_ironage_classic_${wood}.json")) as Map
+        Map woodTextures = chair.textures as Map
+        if (!woodTextures['0'] || !woodTextures['1']) throw new GradleException("Missing chair wood textures: ${wood}")
+        phase5Families().each { family, definition ->
+            definition.models.each { suffix, source ->
+                Map model = new JsonSlurper().parseText(JsonOutput.toJson(source)) as Map
+                model.textures.log = woodTextures['0']
+                model.textures.planks = woodTextures['1']
+                model.textures.particle = family == 'cabinet' ? woodTextures['1'] : woodTextures['0']
+                models["models/block/${definition.prefix}${wood}_${suffix}.json".toString()] = model
+            }
+        }
+    }
+    [generatedModels: models]
+}
+def phase5Write = { File target, Object value ->
+    target.parentFile.mkdirs()
+    target.setText(JsonOutput.prettyPrint(JsonOutput.toJson(value)) + '\n', 'UTF-8')
+}
+def phase5WoodName = { String value ->
+    def bracket = value =~ /\(([^()]*)\)$/
+    bracket.find() ? bracket.group(1) : value.replaceFirst(/ Classic Chair$/, '')
+}
+def phase5Titles = [
+    de_AU: ['Niedriger Tisch (%s)', 'Wandregal (%s)'], de_DE: ['Niedriger Tisch (%s)', 'Wandregal (%s)'],
+    es_ES: ['Mesa baja (%s)', 'Estante de pared (%s)'], es_MX: ['Mesa baja (%s)', 'Estante de pared (%s)'],
+    fr_CA: ['Table basse (%s)', 'Étagère murale (%s)'],
+    fr_FR: ['Table basse (%s)', 'Étagère murale (%s)'], ja_JP: ['ローテーブル (%s)', '壁棚 (%s)'],
+    ko_KR: ['낮은 탁자 (%s)', '벽 선반 (%s)'], pt_BR: ['Mesa baixa (%s)', 'Prateleira de parede (%s)'],
+    pt_PT: ['Mesa baixa (%s)', 'Prateleira de parede (%s)'], ru_RU: ['Низкий стол (%s)', 'Настенная полка (%s)'],
+    zh_CN: ['矮桌 (%s)', '壁架 (%s)']
+]
+
+tasks.register('updatePhaseFiveFurnitureAssets') {
+    group = 'generation'
+    description = 'Regenerates Phase 5 models, states and names from the same wood catalog and textures as chairs.'
+    doLast {
+        Map families = phase5Families()
+        phase5Write(phase5Manifest, phase5Models())
+        phase5Woods().each { String wood ->
+            families.each { family, definition ->
+                String id = "${definition.prefix}${wood}"
+                String template = new File(phase5Definitions, "${family}.blockstate.json").getText('UTF-8')
+                new File(phase5Root, "blockstates/${id}.json").setText(
+                        template.replace("${definition.prefix}oak", id), 'UTF-8')
+                phase5Write(new File(phase5Root, "models/item/${id}.json"),
+                        [parent: "ironagefurniture:block/${id}_${definition.inventory}"])
+            }
+        }
+        fileTree(new File(phase5Root, 'lang')).matching { include '*.lang' }.files.each { File locale ->
+            String text = locale.getText('UTF-8').replace('\r\n', '\n')
+            Map<String, String> names = [:]
+            text.readLines().findAll { it.contains('=') }.each { String line ->
+                int equals = line.indexOf('='); names[line.substring(0, equals)] = line.substring(equals + 1)
+            }
+            String oak = phase5WoodName(names['tile.ironagefurniture.chair_wood_ironage_classic_oak.name'])
+            String dining = names['tile.ironagefurniture.table_dining_oak.name']
+            String cabinet = names['tile.ironagefurniture.cabinet_wood_ironage_oak.name']
+            if (!dining.contains(oak) || !cabinet.contains(oak)) throw new GradleException("Missing wood title in ${locale.name}")
+            List<String> titles = phase5Titles[locale.name - '.lang'] ?: ['%s Low Table', '%s Wall Shelf']
+            List<String> retained = text.readLines().findAll { String line ->
+                !(line ==~ /^tile\.ironagefurniture\.(table_dining_|table_low_|shelf_wall_|cabinet_wood_ironage_).*/)
+            }
+            while (retained && retained.last().isEmpty()) retained.remove(retained.size() - 1)
+            retained.add('')
+            phase5Woods().sort().each { String wood ->
+                String woodName = phase5WoodName(names["tile.ironagefurniture.chair_wood_ironage_classic_${wood}.name"])
+                Map familyNames = [dining: dining.replace(oak, woodName), cabinet: cabinet.replace(oak, woodName),
+                        low: titles[0].replace('%s', woodName), shelf: titles[1].replace('%s', woodName)]
+                families.each { family, definition ->
+                    retained.add("tile.ironagefurniture.${definition.prefix}${wood}.name=${familyNames[family]}")
+                }
+            }
+            locale.setText(retained.join('\n') + '\n', 'UTF-8')
+        }
+        logger.lifecycle("Generated four furniture families for ${phase5Woods().size()} chair woods.")
+    }
+}
+
+tasks.register('verifyPhaseFiveFurnitureAssets') {
+    group = 'verification'
+    inputs.file phase5Manifest
+    inputs.file 'gradle/furniture-catalog.json'
+    inputs.dir phase5Definitions
+    doLast {
+        if (!phase5Manifest.isFile() || new JsonSlurper().parse(phase5Manifest) != phase5Models()) {
+            throw new GradleException('Phase 5 wood models are stale; run updatePhaseFiveFurnitureAssets')
+        }
+        Set prefixes = phase5Families().values().collect { it.prefix } as Set
+        if (prefixes != phase5Catalog().phaseFive.woodPrefixes as Set) {
+            throw new GradleException('Phase 5 asset families and wood catalog differ')
+        }
+        phase5Woods().each { String wood ->
+            phase5Families().each { family, definition ->
+                String id = "${definition.prefix}${wood}"
+                Map actual = new JsonSlurper().parse(new File(phase5Root, "blockstates/${id}.json")) as Map
+                String source = new File(phase5Definitions, "${family}.blockstate.json").getText('UTF-8')
+                Map expected = new JsonSlurper().parseText(source.replace("${definition.prefix}oak", id)) as Map
+                if (actual != expected) throw new GradleException("Stale Phase 5 blockstate: ${id}")
+            }
+        }
+    }
+}
+
+tasks.named('check') { dependsOn tasks.named('verifyPhaseFiveFurnitureAssets') }

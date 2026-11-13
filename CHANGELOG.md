@@ -1,5 +1,14 @@
 # IronAgeFurniture 0.5.0.110021 (unreleased)
 
+- Port the connected low tables and corner-aware wall shelves, including
+  their lamps, candles, flower pots, books and records. Use the shared
+  surface renderer for loose foods and addon items, with targeting and
+  mining at the actual surface height.
+- Expand dining tables, low tables, shelves and cabinets to the same
+  65 wood variants as chairs, with matching recipes, textures and locale
+  entries. Add reproducible asset generation and an 8 GB optional-woods
+  client profile for the complete model set.
+
 - Sneak-place known vanilla foods on full-height vanilla surfaces with an
   empty offhand. Keep their exact item data and the supporting block intact;
   broader item displays remain on IAF furniture. Modpacks can disable new

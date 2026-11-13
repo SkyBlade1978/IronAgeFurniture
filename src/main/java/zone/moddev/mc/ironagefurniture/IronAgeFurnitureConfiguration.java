@@ -22,6 +22,10 @@ public class IronAgeFurnitureConfiguration {
 	public static boolean CFM_CONVERSION_RECIPES = true;
 	public static boolean FORCE_CFM_CHAIR_CONVERSION = false;
 	public static boolean VANILLA_FOOD_SURFACES = true;
+	public static boolean GENERATE_DINING_TABLES = true;
+	public static boolean GENERATE_LOW_TABLES = true;
+	public static boolean GENERATE_WALL_SHELVES = true;
+	public static boolean GENERATE_CABINETS = true;
 	public static boolean INTEGRATION_BASEMETALS = true;
 	public static boolean INTEGRATION_MINERALOGY = true;
 	public static boolean INTEGRATION_BIOMESOPLENTY = true;
@@ -61,6 +65,10 @@ public class IronAgeFurnitureConfiguration {
 		FORCE_CFM_CHAIR_CONVERSION = config.getBoolean("FORCE_CFM_CHAIR_CONVERSION", "options", false, "Convert CFM wooden chairs to classic chairs even while CFM is installed");
 		VANILLA_FOOD_SURFACES = config.getBoolean("VANILLA_FOOD_SURFACES", "options", true,
 			"Sneak-right-click a full-height vanilla surface with a known vanilla food to display one portion; ordinary item use and IAF furniture are unchanged");
+		GENERATE_DINING_TABLES = config.getBoolean("GENERATE_DINING_TABLES", "options", true, "Generate dining tables for enabled woods");
+		GENERATE_LOW_TABLES = config.getBoolean("GENERATE_LOW_TABLES", "options", true, "Generate low tables for enabled woods");
+		GENERATE_WALL_SHELVES = config.getBoolean("GENERATE_WALL_SHELVES", "options", true, "Generate wall shelves for enabled woods");
+		GENERATE_CABINETS = config.getBoolean("GENERATE_CABINETS", "options", true, "Generate cabinets for enabled woods");
 		config.save();
 	}
 }

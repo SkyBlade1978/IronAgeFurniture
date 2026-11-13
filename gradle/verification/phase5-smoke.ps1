@@ -100,7 +100,9 @@ foreach ($name in $Profile) {
                 }
             }
         }
-        $arguments = @('-Xmx2G') + @(Split-LaunchArguments $attributes['org.eclipse.jdt.launching.VM_ARGUMENTS']) +
+        $launchVm = @(Split-LaunchArguments $attributes['org.eclipse.jdt.launching.VM_ARGUMENTS'])
+        if (!($launchVm | Where-Object { $_ -like '-Xmx*' })) { $launchVm = @('-Xmx2G') + $launchVm }
+        $arguments = $launchVm +
             @('-cp', ($classpath -join [IO.Path]::PathSeparator), $attributes['org.eclipse.jdt.launching.MAIN_TYPE']) +
             @(Split-LaunchArguments $attributes['org.eclipse.jdt.launching.PROGRAM_ARGUMENTS'])
     }

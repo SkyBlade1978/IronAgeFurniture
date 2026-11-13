@@ -222,6 +222,11 @@ def makeLaunch = { String profile, String side, File run, List<String> ids ->
     File template = [file("run${stem}.launch"), file(".eclipse/run${stem}.launch")].find { it.isFile() }
     if (template == null) throw new GradleException("Missing Eclipse ${side} template")
     def launch = new XmlParser().parse(template)
+    String heap = side == 'client' ? (manifest.clientHeap[profile] ?: manifest.clientHeap.default) : '2G'
+    if (!(heap ==~ /[1-9][0-9]*[MG]/)) throw new GradleException("Invalid Phase 5 heap: ${heap}")
+    def vm = launch.stringAttribute.find { it.@key == 'org.eclipse.jdt.launching.VM_ARGUMENTS' }
+    if (vm == null) launch.appendNode('stringAttribute', [key: 'org.eclipse.jdt.launching.VM_ARGUMENTS', value: "-Xmx${heap}"])
+    else vm.@value = vm.@value.toString().replaceAll(/(?:^|\s)-Xmx\S+/, '').trim() + " -Xmx${heap}"
     def workDir = launch.stringAttribute.find { it.@key == 'org.eclipse.jdt.launching.WORKING_DIRECTORY' }
     workDir.@value = run.absolutePath
     def jreKey = 'org.eclipse.jdt.launching.JRE_CONTAINER'

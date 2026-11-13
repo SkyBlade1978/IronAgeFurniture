@@ -150,6 +150,7 @@ final class Phase5FurnitureProbe {
         require(displayDrops == 1 && storageDrops == 7, "Cabinet break lost or duplicated tagged items");
         verifyDisplayBreaking(world, player, table, cabinet, mods);
         VanillaFoodSurfaceProbe.verify(world);
+        Phase5ShelfTableProbe.verify(world, mods);
         LogManager.getLogger().info("IAF PHASE 5 FURNITURE PROBE PASSED");
     }
 

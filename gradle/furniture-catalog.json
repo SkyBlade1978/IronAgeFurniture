@@ -99,7 +99,7 @@
     ]
   },
   "phaseFive": {
-    "furniture": ["table_dining_oak", "cabinet_wood_ironage_oak"],
+    "woodPrefixes": ["table_dining_", "table_low_", "shelf_wall_", "cabinet_wood_ironage_"],
     "hidden": ["surface_display_blocker", "vanilla_food_display"]
   }
 }

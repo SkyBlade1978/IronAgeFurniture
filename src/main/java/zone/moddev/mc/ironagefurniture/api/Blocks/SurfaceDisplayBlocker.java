@@ -46,6 +46,7 @@ public final class SurfaceDisplayBlocker extends Block {
 		if (!(stack.getItem() instanceof ItemBlock)) return false;
 		Block block = ((ItemBlock)stack.getItem()).getBlock();
 		return block == Blocks.HOPPER || block instanceof Cabinet || block instanceof DiningTable
+			|| block instanceof WallShelf
 			|| block instanceof Barrel || block instanceof LightSourceCandleFloor
 			|| block instanceof LightSourceGlowdust || block instanceof LightSourceLava
 			|| block instanceof LightSourceRed;
@@ -54,7 +55,19 @@ public final class SurfaceDisplayBlocker extends Block {
 	static boolean hasRoom(World world, BlockPos pos) {
 		BlockPos above = pos.up();
 		return above.getY() < world.getHeight()
-			&& (world.isAirBlock(above) || world.getBlockState(above).getBlock() == registeredBlock);
+			&& (world.isAirBlock(above) || world.getBlockState(above).getBlock() == registeredBlock
+				|| world.getBlockState(pos).getBlock() instanceof WallShelf
+					&& world.getBlockState(above).getBlock() instanceof WallShelf);
+	}
+
+	public static boolean reserve(World world, BlockPos pos) {
+		if (!hasRoom(world, pos)) return false;
+		return world.isRemote || world.getBlockState(pos.up()).getBlock() == registeredBlock
+			|| world.setBlockState(pos.up(), registeredBlock.getDefaultState(), 2);
+	}
+
+	public static boolean reserveForShelf(World world, BlockPos pos) {
+		return world.getBlockState(pos.up()).getBlock() instanceof WallShelf || reserve(world, pos);
 	}
 
 	static void restoreReservation(World world, BlockPos pos) {
@@ -72,25 +85,28 @@ public final class SurfaceDisplayBlocker extends Block {
 		SurfaceSetting setting = host.getSurfaceSetting();
 		if (held != null && held.stackSize > 0 && !setting.hasAnyItem()) {
 			if (!hasRoom(world, pos)) return true;
-			if (!world.isRemote && world.getBlockState(pos.up()).getBlock() != registeredBlock
+			if (!world.isRemote && !(world.getBlockState(pos).getBlock() instanceof WallShelf
+					&& world.getBlockState(pos.up()).getBlock() instanceof WallShelf)
+					&& world.getBlockState(pos.up()).getBlock() != registeredBlock
 					&& !world.setBlockState(pos.up(), registeredBlock.getDefaultState(), 2)) {
 				return true;
 			}
 		}
 
-		Result result = SurfaceSettingInteraction.handle(host, player, hand, held, hitX, hitZ, null, true);
+		Result result = SurfaceSettingInteraction.handle(host, player, hand, held,
+			(float)(hitX - host.getSurfaceOffsetX()), (float)(hitZ - host.getSurfaceOffsetZ()), host.getSurfaceAxis(), true);
 		if (!setting.hasAnyItem()) release(world, pos);
 		return result != Result.NOT_HANDLED;
 	}
 
-	static void release(World world, BlockPos pos) {
+	public static void release(World world, BlockPos pos) {
 		BlockPos above = pos.up();
 		if (!world.isRemote && world.getBlockState(above).getBlock() == registeredBlock) {
 			world.setBlockState(above, Blocks.AIR.getDefaultState(), 2);
 		}
 	}
 
-	static void dropItems(World world, BlockPos pos, SurfaceSettingHost host) {
+	public static void dropItems(World world, BlockPos pos, SurfaceSettingHost host) {
 		for (Slot slot : Slot.values()) {
 			ItemStack displayed = host.getSurfaceSetting().remove(slot);
 			if (displayed != null) Block.spawnAsEntity(world, pos, displayed);
@@ -99,7 +115,7 @@ public final class SurfaceDisplayBlocker extends Block {
 
 	private SurfaceSettingHost getHost(IBlockAccess world, BlockPos pos) {
 		Block owner = world.getBlockState(pos.down()).getBlock();
-		if (!(owner instanceof Cabinet) && !(owner instanceof DiningTable)) return null;
+		if (!(owner instanceof Cabinet) && !(owner instanceof DiningTable) && !(owner instanceof WallShelf)) return null;
 		TileEntity tile = world.getTileEntity(pos.down());
 		return tile instanceof SurfaceSettingHost ? (SurfaceSettingHost)tile : null;
 	}
@@ -118,8 +134,8 @@ public final class SurfaceDisplayBlocker extends Block {
 			-Math.sin(pitch) * 6.0D, Math.cos(yaw) * horizontalReach);
 		RayTraceResult hit = this.collisionRayTrace(state, world, pos, eye, end);
 		Slot target = hit != null
-			? setting.findTarget((float)(hit.hitVec.xCoord - pos.getX()),
-				(float)(hit.hitVec.zCoord - pos.getZ())) : null;
+			? setting.findTarget((float)(hit.hitVec.xCoord - pos.getX() - host.getSurfaceOffsetX()),
+				(float)(hit.hitVec.zCoord - pos.getZ() - host.getSurfaceOffsetZ())) : null;
 		if (target == null && setting.getItemCount() == 1) {
 			for (Slot slot : Slot.values()) {
 				if (setting.getItem(slot) != null) target = slot;
@@ -181,7 +197,8 @@ public final class SurfaceDisplayBlocker extends Block {
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		SurfaceSettingHost host = this.getHost(world, pos);
 		AxisAlignedBB bounds = host == null ? null : host.getSurfaceSetting().getCombinedBounds();
-		return bounds == null ? FULL_BLOCK_AABB : bounds;
+		return bounds == null ? FULL_BLOCK_AABB : bounds.offset(host.getSurfaceOffsetX(),
+			host.getSurfaceHeight() - 1.0D, host.getSurfaceOffsetZ());
 	}
 
 	@Override
@@ -193,7 +210,7 @@ public final class SurfaceDisplayBlocker extends Block {
 			SurfaceSetting setting = host.getSurfaceSetting();
 			for (Slot slot : Slot.values()) {
 				if (setting.getItem(slot) == null) continue;
-				AxisAlignedBB bounds = SurfaceDisplayRenderHelper.getItemBounds(setting, slot);
+				AxisAlignedBB bounds = SurfaceItemHit.bounds(host, slot, true).offset(0.0D, -1.0D, 0.0D);
 				combined = combined == null ? bounds : combined.union(bounds);
 			}
 		}
@@ -208,8 +225,9 @@ public final class SurfaceDisplayBlocker extends Block {
 		RayTraceResult nearest = null;
 		for (Slot slot : Slot.values()) {
 			if (setting.getItem(slot) == null) continue;
-			AxisAlignedBB bounds = world.isRemote
-				? SurfaceDisplayRenderHelper.getItemBounds(setting, slot) : setting.getItemBounds(slot);
+			AxisAlignedBB bounds = SurfaceItemHit.bounds(host, slot, world.isRemote).offset(0.0D, -1.0D, 0.0D);
+			if (bounds.maxY <= 0.0D) continue;
+			bounds = new AxisAlignedBB(bounds.minX, Math.max(0.0D, bounds.minY), bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ);
 			RayTraceResult hit = this.rayTrace(pos, start, end, bounds);
 			if (hit != null && (nearest == null
 					|| start.squareDistanceTo(hit.hitVec) < start.squareDistanceTo(nearest.hitVec))) {

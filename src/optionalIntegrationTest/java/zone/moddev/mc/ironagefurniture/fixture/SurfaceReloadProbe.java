@@ -7,6 +7,8 @@ import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityDiningTable;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityVanillaFoodDisplay;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
+import zone.moddev.mc.ironagefurniture.api.Blocks.LowTable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -35,7 +37,7 @@ public final class SurfaceReloadProbe {
         for (int dimension : new int[]{0, -1, 1}) {
             for (TileEntity tile : server.worldServerForDimension(dimension).loadedTileEntityList) {
                 if (tile instanceof TileEntityDiningTable || tile instanceof TileEntityCabinet
-                        || tile instanceof TileEntityVanillaFoodDisplay) {
+                        || tile instanceof TileEntityVanillaFoodDisplay || tile instanceof TileEntityWallShelf) {
                     SNAPSHOTS.add(new Snapshot(tile));
                 }
             }
@@ -51,9 +53,12 @@ public final class SurfaceReloadProbe {
         try {
             int repaired = 0;
             int foods = 0;
+            int shelves = 0, lowTables = 0;
             Block blocker = Block.getBlockFromName("ironagefurniture:surface_display_blocker");
             for (Snapshot snapshot : SNAPSHOTS) {
                 TileEntity tile = snapshot.tile;
+                if (tile instanceof TileEntityWallShelf) shelves++;
+                if (tile.getWorld().getBlockState(tile.getPos()).getBlock() instanceof LowTable) lowTables++;
                 require(tile.getWorld().getTileEntity(tile.getPos()) == tile, "Reload removed a furniture tile");
                 require(tile.writeToNBT(new NBTTagCompound()).equals(snapshot.data),
                         "Reload changed furniture inventory or surface NBT at " + tile.getPos());
@@ -77,6 +82,7 @@ public final class SurfaceReloadProbe {
                     "IAF SAVED SURFACE RELOAD PASSED: {} saved chunks, {} furniture, {} repaired displays",
                     chunks, SNAPSHOTS.size(), repaired);
             LogManager.getLogger().info("IAF SAVED VANILLA FOOD RELOAD PASSED: {} food displays", foods);
+            LogManager.getLogger().info("IAF SAVED SHELF/LOW TABLE RELOAD PASSED: {} shelves, {} low tables", shelves, lowTables);
         } finally {
             completedServer.initiateShutdown();
         }

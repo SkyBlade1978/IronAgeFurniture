@@ -1,6 +1,7 @@
 # Phase 5 1.10 surface and vessel contract (unreleased)
 
-The oak dining table and oak cabinet are the first production surface hosts.
+Dining tables, low tables, wall shelves and cabinets are production surface
+hosts for the same enabled woods as the chairs.
 The published `0.4.0.110021` identities remain the baseline, and `update.json`
 still advertises that release.
 
@@ -16,6 +17,19 @@ still advertises that release.
   footprints. `SurfaceInteractionRegistry` adds optional handling for an
   already displayed item. Duplicate item providers/handlers are errors.
   Registration closes at IAF post-init.
+- `SurfaceSettingHost` supplies a surface height and layout offsets, with
+  defaults preserving full-height tables and cabinets. Low tables use
+  9/16 block height; shelves use 13/16 and a facing-relative offset.
+  Below-ceiling displays participate in the owner's ray tracing, selection
+  and mining. Their rendered bounds also drive selection; removing a loose
+  item leaves the furniture in place.
+- Shelves retain a separate exact-stack inventory for built-in books,
+  records, lights, pots, plants and vessel arrangements. Loose settings use
+  the shared registries. Vessel arrangements render through the same
+  per-item renderer registry, without referencing addon classes. Low-table
+  embedded content retains the donor's `EmbeddedContent`, `EmbeddedItem`
+  and `EmbeddedFlowerPotPlant` tags. Shelf `EmbeddedKind`/`EmbeddedItems`
+  remain compatible; legacy `DisplayedItem` data reads into `SurfaceItems`.
 - Descriptors can supply rectangular bounds relative to the item centre,
   facing north. The host rotates these with the stored facing for selection
   and server interactions. The width/height constructor remains available.
@@ -77,8 +91,8 @@ still advertises that release.
 
 ## Furniture slices
 
-The oak slice retains the donor table's lazy tile and the cabinet's 27-slot
-inventory, paired models and joins. Check the standalone host behaviour
+The furniture retains the donor tables' lazy tiles, shelf corners and the
+cabinet's 27-slot inventory, paired models and joins. Check standalone behaviour
 before testing IAB and HarvestCraft visuals. Older 1.10 saves and
 removed-addon cases need disposable copied-world tests before release or
 upward port.

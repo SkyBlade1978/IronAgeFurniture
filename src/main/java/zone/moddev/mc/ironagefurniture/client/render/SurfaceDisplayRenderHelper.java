@@ -29,6 +29,17 @@ public final class SurfaceDisplayRenderHelper {
 
 	private SurfaceDisplayRenderHelper() { }
 
+	public static void renderPottedPlant(ItemStack stack, double x, double y, double z,
+			double itemX, double itemZ, double surfaceY) {
+		if (stack == null || stack.stackSize <= 0) return;
+		GlStateManager.pushMatrix();
+		try {
+			GlStateManager.translate(x + itemX, y + surfaceY + 0.46D, z + itemZ);
+			GlStateManager.scale(0.52F, 0.52F, 0.52F);
+			Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
+		} finally { GlStateManager.popMatrix(); }
+	}
+
 	public static void renderSurfaceItem(ItemStack stack, SurfaceRenderContext context) {
 		if (stack == null || stack.stackSize <= 0) return;
 		SurfaceRenderRegistry.Renderer renderer = SurfaceRenderRegistry.get(stack);

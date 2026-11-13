@@ -42,6 +42,7 @@ public final class SurfaceBoundsClientProbe {
         if (complete || !Boolean.getBoolean("iaf.probe.surfaceBoundsClient")
                 || event.phase != TickEvent.Phase.END) return;
         Minecraft client = Minecraft.getMinecraft();
+        client.gameSettings.pauseOnLostFocus = false;
         if (!started && client.currentScreen instanceof GuiMainMenu) {
             started = true;
             client.launchIntegratedServer("surface-bounds-world", "IAF surface bounds test",
@@ -135,7 +136,7 @@ public final class SurfaceBoundsClientProbe {
                 }
             }
         }
-        return cases + VanillaFoodClientProbe.verify(client, owner);
+        return cases + VanillaFoodClientProbe.verify(client, owner) + Phase5ShelfTableClientProbe.verify(client);
     }
 
     private static void close(double actual, double expected, String description, double tolerance) {

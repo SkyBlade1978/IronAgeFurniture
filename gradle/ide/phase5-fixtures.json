@@ -25,5 +25,6 @@
     "brewing-legacy-advantage": ["ironagebrewing", "poweradvantage", "basemetals", "orespawn"],
     "optional-woods": ["BiomesOPlenty", "natura", "mantle", "forestry", "immersiveengineering"]
   },
-  "clientExtras": {"full-modern-advantage":["jei"]}
+  "clientExtras": {"full-modern-advantage":["jei"]},
+  "clientHeap": {"default":"2G", "optional-woods":"8G"}
 }

@@ -211,6 +211,11 @@ public final class VanillaFoodClientProbe {
         }
         if (galleryTicks == 95) {
             screenshot(client, "vanilla-food-plank-bar.png");
+            gallery = Phase5ShelfTableClientProbe.prepareScene(client, gallery.east(8));
+            positionCamera(client, 2.5D, 2.2D, -4.5D, 2.5D, 0.8D, 1.7D);
+        }
+        if (galleryTicks == 125) {
+            screenshot(client, "phase5-low-tables-and-shelves.png");
             gallery = null;
             client.shutdown();
         }

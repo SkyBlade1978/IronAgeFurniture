@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -32,6 +33,47 @@ import net.minecraft.world.World;
 public class DiningTable extends Block {
 	public static final PropertyInteger CONNECTIONS = PropertyInteger.create("connections", 0, 15);
 	public static final PropertyBool DATA = PropertyBool.create("data");
+
+	public static enum TableEmbeddedContent implements IStringSerializable {
+		NONE("none", 0),
+		GLOW("glow", 15),
+		LAVA("lava", 15),
+		ROCK_SALT("rock_salt", 15),
+		CANDLE("candle", 12),
+		FLOWER_POT("flower_pot", 0);
+
+		private final String name;
+		private final int lightLevel;
+
+		private TableEmbeddedContent(String name, int lightLevel) {
+			this.name = name;
+			this.lightLevel = lightLevel;
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+
+		public int getLightLevel() {
+			return this.lightLevel;
+		}
+
+		public static TableEmbeddedContent byName(String name) {
+			for (TableEmbeddedContent content : values()) {
+				if (content.name.equals(name)) {
+					return content;
+				}
+			}
+
+			return NONE;
+		}
+
+		@Override
+		public String toString() {
+			return this.name;
+		}
+	}
 
 	protected static final int NORTH = 1;
 	protected static final int EAST = 2;
@@ -119,6 +161,7 @@ public class DiningTable extends Block {
 			if (tileEntity instanceof TileEntityDiningTable) {
 				TileEntityDiningTable table = (TileEntityDiningTable)tileEntity;
 				SurfaceDisplayBlocker.dropItems(worldIn, pos, table);
+				table.dropEmbeddedItem(worldIn, pos);
 			}
 
 			SurfaceDisplayBlocker.release(worldIn, pos);
@@ -134,7 +177,7 @@ public class DiningTable extends Block {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
 			EnumHand hand, ItemStack held, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (side != EnumFacing.UP || player.isSneaking() || SurfaceDisplayBlocker.placesAsBlock(held)) {
+		if (side != EnumFacing.UP || player.isSneaking() || this.isDisplayExcluded(held)) {
 			return false;
 		}
 		TileEntityDiningTable table = this.getTableEntity(world, pos, false);
@@ -150,7 +193,39 @@ public class DiningTable extends Block {
 
 	@Override
 	public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return side == EnumFacing.UP;
+		return side == EnumFacing.UP && this.supportsSurfaceBlocks();
+	}
+
+	public double getDisplayItemYOffset() { return this.getDisplayBlockSurfaceYOffset() + 0.04D; }
+	public double getDisplayBlockSurfaceYOffset() { return 1.0D; }
+	protected boolean isDisplayExcluded(ItemStack stack) { return SurfaceDisplayBlocker.placesAsBlock(stack); }
+	protected boolean supportsSurfaceBlocks() { return true; }
+	protected boolean isSameItemStack(ItemStack first, ItemStack second) {
+		return first != null && second != null && ItemStack.areItemsEqual(first, second)
+			&& ItemStack.areItemStackTagsEqual(first, second);
+	}
+	protected boolean isFlowerPotItem(ItemStack stack) { return stack != null && stack.getItem() == net.minecraft.init.Items.FLOWER_POT; }
+
+	@Override
+	public net.minecraft.util.math.RayTraceResult collisionRayTrace(IBlockState state, World world, BlockPos pos,
+			net.minecraft.util.math.Vec3d start, net.minecraft.util.math.Vec3d end) {
+		return SurfaceItemHit.trace(world, pos, start, end, super.collisionRayTrace(state, world, pos, start, end));
+	}
+
+	@Override
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+		return SurfaceItemHit.removeIfHit(world, pos, player) || super.removedByPlayer(state, world, pos, player, willHarvest);
+	}
+
+	@Override
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity tile, ItemStack tool) {
+		if (world.getBlockState(pos).getBlock() != this) super.harvestBlock(world, player, pos, state, tile, tool);
+	}
+
+	@Override
+	@net.minecraftforge.fml.relauncher.SideOnly(net.minecraftforge.fml.relauncher.Side.CLIENT)
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
+		return SurfaceItemHit.selected(world, pos, this.getBoundingBox(state, world, pos).offset(pos));
 	}
 
 	@Override

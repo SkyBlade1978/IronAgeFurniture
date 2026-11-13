@@ -42,6 +42,8 @@ public final class ClientRenderInitialiser {
 			new SurfaceFurnitureRenderer<TileEntityCabinet>());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDiningTable.class,
 			new SurfaceFurnitureRenderer<TileEntityDiningTable>());
+		ClientRegistry.bindTileEntitySpecialRenderer(zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf.class,
+			new SurfaceFurnitureRenderer<zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf>());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityVanillaFoodDisplay.class,
 			new SurfaceFurnitureRenderer<TileEntityVanillaFoodDisplay>(0.0D));
 	}

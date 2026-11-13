@@ -7,8 +7,11 @@
 IronAgeFurniture adds functional chairs, stools, benches, beds, lamps, and
 sconces to Minecraft. The published `0.4.0.110021` release adds Phase 4
 furniture and lighting for Minecraft 1.10.2 with Forge 12.18.3.2511.
-The unreleased `0.5.0.110021` candidate adds an oak dining table, an oak
-cabinet, surface extension APIs, and fixes to Phase 4 crafting and sconce drops.
+The unreleased `0.5.0.110021` candidate adds dining tables, low tables, wall
+shelves and cabinets, surface extension APIs, and fixes to Phase 4 crafting
+and sconce drops. These four furniture families cover the same 65 woods as
+the chairs: six vanilla woods plus the enabled Biomes O' Plenty, Natura,
+Forestry and Immersive Engineering variants.
 
 - Craft an oak dining table with three oak slabs across the top row and
   sticks below the outer slabs. Adjacent tables join. Sneak-place against
@@ -16,13 +19,23 @@ cabinet, surface extension APIs, and fixes to Phase 4 crafting and sconce drops.
 - Craft an oak cabinet with a chest, an oak plank, and an iron nugget
   (an iron ingot when no mod supplies iron nuggets). Right-click the cabinet
   to open its 27 slots. Matching cabinets can pair side by side or vertically.
-- Right-click either top with an item to display it. Right-click the
+- Craft a low table with three matching wood slabs across the top row,
+  another slab in the centre, and sticks in the two bottom corners.
+- Craft three wall shelves with three matching slabs across the top row
+  and a stick below the centre slab. Shelves extend along walls and around
+  corners. They hold books, records, lamps, candles, flower pots and plants,
+  as well as loose surface items. Empty-hand clicks retrieve their contents.
+- Right-click a furniture surface with an item to display it. Right-click the
   displayed item with an empty hand to retrieve it. The cabinet inventory
   is separate from its display.
 - To put a known vanilla food on a full-height vanilla surface, hold it in
   the main hand, empty the offhand, and sneak-right-click the top. Pick it
   up with an empty-hand right-click. Modpacks can disable new placements
   using `options.VANILLA_FOOD_SURFACES`; general item displays stay on IAF furniture.
+
+The dining-table, low-table, shelf and cabinet recipes use the matching
+wood throughout. Optional wood variants appear when their source mod and
+the corresponding integration setting are enabled.
 
 Phase 3 contains the established seating collection plus empty, torch,
 redstone-torch, glow, lava, and redstone lighting, including throwable lava

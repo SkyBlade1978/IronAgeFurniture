@@ -85,6 +85,14 @@ public class FurnitureFactory {
 		return registerBlock(new Cabinet(Material.WOOD, 10, 1.5F), name, 64);
 	}
 
+	public static Block createLowTable(String name) {
+		return registerBlock(new zone.moddev.mc.ironagefurniture.api.Blocks.LowTable(Material.WOOD, name, 10, 1), name, 16);
+	}
+
+	public static Block createWallShelf(String name) {
+		return registerBlock(new zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf(Material.WOOD, name, 10, 1), name, 16);
+	}
+
 	public static void createSurfaceDisplayBlocker(String name) {
 		registerBlockWithoutItem(new SurfaceDisplayBlocker(), name);
 	}
@@ -445,11 +453,16 @@ public class FurnitureFactory {
 			ItemBlock itemBlock = block instanceof MultiBlockBed || block instanceof MultiBlockWoodBed
 					|| block instanceof MultiBlockChair ? new ItemBlockUpholsteredFurniture(block)
 					: MetalVariantHelper.isMetalVariantBlock(block) ? new ItemBlockMetalVariant(block)
+					: block instanceof zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf
+						? new zone.moddev.mc.ironagefurniture.api.Items.ItemBlockWallShelf(block)
 					: block instanceof LightSourceLava ? new ItemBlockThrowableLavaLamp(block) : new ItemBlock(block);
 			itemBlock.setMaxStackSize(maxStackSize);
 			ItemInitialiser.RegisterItem(itemBlock, name);
 		}
 		Ironagefurniture.BlockRegistry.put(name, block);
+		if (block instanceof DiningTable || block instanceof Cabinet || block instanceof zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf) {
+			Blocks.FIRE.setFireInfo(block, 5, 20);
+		}
 		return block;
     }
 
