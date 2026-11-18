@@ -31,6 +31,7 @@ public final class ClientItemInitialiser {
     public static void registerItemRenders() {
         for (String name : Ironagefurniture.ItemRegistry.keySet()) {
             Item item = Ironagefurniture.ItemRegistry.get(name);
+			if (item instanceof zone.moddev.mc.ironagefurniture.api.Items.ItemBlockGlassVase) continue;
             if (item instanceof ItemBlockPaddedBench) {
                 // The colour-aware loader supplies these models. A generic
                 // registration here would replace every colour with one item model.
@@ -64,7 +65,11 @@ public final class ClientItemInitialiser {
 	public static void registerPhaseFourItemModels() {
 		for (String name : Ironagefurniture.ItemRegistry.keySet()) {
 			Item item = Ironagefurniture.ItemRegistry.get(name);
-			if (item instanceof ItemBlockMetalVariant) {
+			if (item instanceof zone.moddev.mc.ironagefurniture.api.Items.ItemBlockGlassVase) {
+				zone.moddev.mc.ironagefurniture.api.Items.ItemBlockGlassVase vase = (zone.moddev.mc.ironagefurniture.api.Items.ItemBlockGlassVase)item;
+				for (int meta = 0; meta < vase.getVariantCount(); meta++)
+					ModelLoader.setCustomModelResourceLocation(item, meta, model(vase.getModelName(meta)));
+			} else if (item instanceof ItemBlockMetalVariant) {
 				ItemBlockMetalVariant metal = (ItemBlockMetalVariant)item;
 				for (int i = 0; i < metal.getVariantCount(); i++) {
 					int meta = metal.getVariantMeta(i);

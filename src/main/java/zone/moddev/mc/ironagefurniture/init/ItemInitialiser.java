@@ -15,6 +15,10 @@ public class ItemInitialiser {
 		}
 	}
 	public static Item RegisterItem(Item item, String name) {
+		item.setCreativeTab(FurnitureCreativeTabs.forName(name));
+		if (item instanceof net.minecraft.item.ItemBlock) {
+			((net.minecraft.item.ItemBlock)item).getBlock().setCreativeTab(FurnitureCreativeTabs.forName(name));
+		}
 		GameRegistry.register(item.setRegistryName(Ironagefurniture.MODID, name));
 		Ironagefurniture.ItemRegistry.put(name, item);
 		item.setUnlocalizedName(Ironagefurniture.MODID + "." + name);

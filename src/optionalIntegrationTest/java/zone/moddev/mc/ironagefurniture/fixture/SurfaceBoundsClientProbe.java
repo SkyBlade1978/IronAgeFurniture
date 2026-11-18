@@ -136,7 +136,8 @@ public final class SurfaceBoundsClientProbe {
                 }
             }
         }
-        return cases + VanillaFoodClientProbe.verify(client, owner) + Phase5ShelfTableClientProbe.verify(client);
+        return cases + VanillaFoodClientProbe.verify(client, owner) + Phase5ShelfTableClientProbe.verify(client)
+                + SurfaceBottleClientProbe.verify(client, owner.east(8));
     }
 
     private static void close(double actual, double expected, String description, double tolerance) {

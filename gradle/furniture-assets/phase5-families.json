@@ -1406,5 +1406,436 @@
         "textures": {}
       }
     }
+  },
+  "half_cabinet": {
+    "prefix": "half_cabinet_wood_ironage_",
+    "inventory": "single",
+    "models": {
+      "left_open": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_left_open",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "left": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_left",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "lower_open": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_lower_open",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "lower": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_lower",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "right_open": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_right_open",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "right": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_right",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "single_open": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_single_open",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "single": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_single",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "upper_open": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_upper_open",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "upper": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_upper",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      }
+    }
+  },
+  "barrel": {
+    "prefix": "barrel_wood_ironage_",
+    "inventory": "single",
+    "models": {
+      "single": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_barrel_wood_ironage",
+        "textures": {
+          "0": "minecraft:blocks/log_oak",
+          "1": "minecraft:blocks/planks_oak",
+          "inside": "minecraft:blocks/coal_block",
+          "iron": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak"
+        }
+      }
+    }
+  },
+  "side_barrel": {
+    "prefix": "side_barrel_wood_ironage_",
+    "inventory": "single",
+    "models": {
+      "single": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_side_barrel_wood_ironage",
+        "textures": {
+          "0": "minecraft:blocks/log_oak",
+          "1": "minecraft:blocks/planks_oak",
+          "inside": "minecraft:blocks/coal_block",
+          "iron": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak"
+        }
+      }
+    }
+  },
+  "bottle_rack": {
+    "prefix": "bottle_rack_wood_ironage_",
+    "inventory": "0",
+    "itemDisplay": {
+      "gui": {
+        "rotation": [30, 225, 0],
+        "translation": [2.33, -1.17, 0],
+        "scale": [0.65, 0.65, 0.65]
+      }
+    },
+    "models": {
+      "0": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_0",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "1": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_1",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "10": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_10",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "11": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_11",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "12": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_12",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "13": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_13",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "14": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_14",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "15": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_15",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "2": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_2",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "3": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_3",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "4": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_4",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "5": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_5",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "6": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_6",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "7": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_7",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "8": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_8",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "9": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_9",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_0": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_0",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_1": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_1",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_10": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_10",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_11": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_11",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_12": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_12",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_13": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_13",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_14": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_14",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_15": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_15",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_2": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_2",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_3": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_3",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_4": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_4",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_5": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_5",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_6": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_6",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_7": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_7",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_8": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_8",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      },
+      "standing_9": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_bottle_rack_wood_ironage_standing_9",
+        "textures": {
+          "log": "minecraft:blocks/log_oak",
+          "particle": "minecraft:blocks/log_oak",
+          "planks": "minecraft:blocks/planks_oak"
+        }
+      }
+    }
   }
 }

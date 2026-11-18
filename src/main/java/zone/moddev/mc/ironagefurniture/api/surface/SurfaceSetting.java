@@ -12,6 +12,8 @@ public class SurfaceSetting {
 	private static final double GUEST_A_POSITION = 0.25D;
 	private static final double CENTER_POSITION = 0.5D;
 	private static final double GUEST_B_POSITION = 0.75D;
+	// Ray traces use doubles; block-use packets round their local hit positions to floats.
+	private static final double HIT_EPSILON = 0.000001D;
 
 	public static enum Slot {
 		GUEST_A(0),
@@ -223,7 +225,8 @@ public class SurfaceSetting {
 
 			AxisAlignedBB bounds = this.getItemBounds(slot, itemStack);
 
-			if (hitX >= bounds.minX && hitX <= bounds.maxX && hitZ >= bounds.minZ && hitZ <= bounds.maxZ) {
+			if (hitX >= bounds.minX - HIT_EPSILON && hitX <= bounds.maxX + HIT_EPSILON
+					&& hitZ >= bounds.minZ - HIT_EPSILON && hitZ <= bounds.maxZ + HIT_EPSILON) {
 				double dx = hitX - (bounds.minX + bounds.maxX) / 2.0D;
 				double dz = hitZ - (bounds.minZ + bounds.maxZ) / 2.0D;
 				double distance = dx * dx + dz * dz;

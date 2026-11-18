@@ -37,7 +37,15 @@ public final class ClientRenderInitialiser {
 	}
 
 	public static void registerSurfaceFurnitureRenderers() {
+		zone.moddev.mc.ironagefurniture.api.BarrelGuiHandler.setClientFactory(zone.moddev.mc.ironagefurniture.client.gui.GuiBarrel::new);
+		ClientRegistry.bindTileEntitySpecialRenderer(zone.moddev.mc.ironagefurniture.api.tile.TileEntityHalfCabinet.class,
+			new SurfaceFurnitureRenderer<zone.moddev.mc.ironagefurniture.api.tile.TileEntityHalfCabinet>());
+		ClientRegistry.bindTileEntitySpecialRenderer(zone.moddev.mc.ironagefurniture.api.tile.TileEntityBottleRack.class,
+			new zone.moddev.mc.ironagefurniture.client.render.TileEntityBottleRackRenderer());
 		VanillaFoodRenderer.register();
+		zone.moddev.mc.ironagefurniture.client.render.GlassVaseRenderer.register();
+		ClientRegistry.bindTileEntitySpecialRenderer(zone.moddev.mc.ironagefurniture.api.tile.TileEntityGlassVase.class,
+			new zone.moddev.mc.ironagefurniture.client.render.TileEntityGlassVaseRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCabinet.class,
 			new SurfaceFurnitureRenderer<TileEntityCabinet>());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDiningTable.class,

@@ -1,0 +1,22 @@
+{
+    "parent": "ironagefurniture:block/bottle_rack_wood_ironage_natura_bloodwood_0",
+    "display": {
+        "gui": {
+            "rotation": [
+                30,
+                225,
+                0
+            ],
+            "translation": [
+                2.33,
+                -1.17,
+                0
+            ],
+            "scale": [
+                0.65,
+                0.65,
+                0.65
+            ]
+        }
+    }
+}

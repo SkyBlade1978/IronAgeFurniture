@@ -51,21 +51,13 @@ public class Ironagefurniture
 {
     public static final String MODID = "ironagefurniture";
     public static final String VERSION = "0.5.0.110021";
+	@Mod.Instance(MODID) public static Ironagefurniture instance;
 
 	public static final Map<String,Block> BlockRegistry = new HashMap<String, Block>();
 	public static final Map<String,Item> ItemRegistry = new HashMap<String, Item>();
 	private final CfmChairMigration cfmChairMigration = new CfmChairMigration();
 
-    public static CreativeTabs ironagefurnitureTab = new CreativeTabs("ironagefurnitureTab"){
-		@Override
-		public Item getTabIconItem(){
-			return Item.getItemFromBlock(BlockObjectHolder.chair_wood_ironage_classic_big_oak);
-		}
-
-		public boolean hasSearchBar() {
-			return true;
-		};
-	};
+    public static CreativeTabs ironagefurnitureTab = zone.moddev.mc.ironagefurniture.init.FurnitureCreativeTabs.CHAIRS;
 
 
     @EventHandler
@@ -107,6 +99,9 @@ public class Ironagefurniture
 		BlockInitialiser.init();
 		PhaseFourFurnitureInitialiser.registerBlocks();
 		PhaseFiveFurnitureInitialiser.registerBlocks();
+		zone.moddev.mc.ironagefurniture.api.network.StorageNetwork.init();
+		net.minecraftforge.fml.common.network.NetworkRegistry.INSTANCE.registerGuiHandler(this,
+			new zone.moddev.mc.ironagefurniture.api.BarrelGuiHandler());
 		if (event.getSide().isClient()) {
 			GeneratedModelResourcePack.install();
 			FMLCommonHandler.instance().bus().register(new HeldCandleSmoke());
@@ -125,6 +120,7 @@ public class Ironagefurniture
 		SurfaceContentRegistry.freeze();
 		SurfaceInteractionRegistry.freeze();
 		FluidAgingRegistry.freeze();
+		zone.moddev.mc.ironagefurniture.api.FluidVesselInteractions.freeze();
 		if (event.getSide().isClient()) SurfaceRenderRegistry.freeze();
 	}
 

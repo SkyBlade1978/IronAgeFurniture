@@ -37,7 +37,10 @@ public final class SurfaceReloadProbe {
         for (int dimension : new int[]{0, -1, 1}) {
             for (TileEntity tile : server.worldServerForDimension(dimension).loadedTileEntityList) {
                 if (tile instanceof TileEntityDiningTable || tile instanceof TileEntityCabinet
-                        || tile instanceof TileEntityVanillaFoodDisplay || tile instanceof TileEntityWallShelf) {
+                        || tile instanceof TileEntityVanillaFoodDisplay || tile instanceof TileEntityWallShelf
+                        || tile instanceof zone.moddev.mc.ironagefurniture.api.tile.TileEntityGlassVase
+                        || tile instanceof zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel
+                        || tile instanceof zone.moddev.mc.ironagefurniture.api.tile.TileEntityBottleRack) {
                     SNAPSHOTS.add(new Snapshot(tile));
                 }
             }
@@ -53,11 +56,15 @@ public final class SurfaceReloadProbe {
         try {
             int repaired = 0;
             int foods = 0;
-            int shelves = 0, lowTables = 0;
+            int shelves = 0, lowTables = 0, vases = 0, halfCabinets = 0, barrels = 0, racks = 0;
             Block blocker = Block.getBlockFromName("ironagefurniture:surface_display_blocker");
             for (Snapshot snapshot : SNAPSHOTS) {
                 TileEntity tile = snapshot.tile;
+                if (tile instanceof zone.moddev.mc.ironagefurniture.api.tile.TileEntityHalfCabinet) halfCabinets++;
+                if (tile instanceof zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel) barrels++;
+                if (tile instanceof zone.moddev.mc.ironagefurniture.api.tile.TileEntityBottleRack) racks++;
                 if (tile instanceof TileEntityWallShelf) shelves++;
+                if (tile instanceof zone.moddev.mc.ironagefurniture.api.tile.TileEntityGlassVase) vases++;
                 if (tile.getWorld().getBlockState(tile.getPos()).getBlock() instanceof LowTable) lowTables++;
                 require(tile.getWorld().getTileEntity(tile.getPos()) == tile, "Reload removed a furniture tile");
                 require(tile.writeToNBT(new NBTTagCompound()).equals(snapshot.data),
@@ -68,7 +75,7 @@ public final class SurfaceReloadProbe {
                     foods++;
                     require(tile.getWorld().getBlockState(tile.getPos().down()).getBlock() == snapshot.below,
                             "Reload changed the vanilla food support");
-                } else if (((SurfaceSettingHost)tile).getSurfaceSetting().hasAnyItem()) {
+                } else if (tile instanceof SurfaceSettingHost && ((SurfaceSettingHost)tile).getSurfaceSetting().hasAnyItem()) {
                     Block above = tile.getWorld().getBlockState(tile.getPos().up()).getBlock();
                     if (snapshot.above == Blocks.AIR) {
                         require(above == blocker, "Missing display reservation after real chunk loading");
@@ -83,6 +90,8 @@ public final class SurfaceReloadProbe {
                     chunks, SNAPSHOTS.size(), repaired);
             LogManager.getLogger().info("IAF SAVED VANILLA FOOD RELOAD PASSED: {} food displays", foods);
             LogManager.getLogger().info("IAF SAVED SHELF/LOW TABLE RELOAD PASSED: {} shelves, {} low tables", shelves, lowTables);
+            LogManager.getLogger().info("IAF SAVED GLASS VASE RELOAD PASSED: {} placed vases", vases);
+            LogManager.getLogger().info("IAF SAVED STORAGE RELOAD PASSED: {} half cabinets, {} barrels, {} racks", halfCabinets, barrels, racks);
         } finally {
             completedServer.initiateShutdown();
         }

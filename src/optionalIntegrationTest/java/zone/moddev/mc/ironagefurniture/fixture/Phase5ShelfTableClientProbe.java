@@ -30,10 +30,31 @@ final class Phase5ShelfTableClientProbe {
 
 	static int verify(Minecraft client) {
 		int models = 0, cases = 0;
+		Ironagefurniture.ItemRegistry.forEach((id, item) -> require(item.getCreativeTab()
+			== zone.moddev.mc.ironagefurniture.init.FurnitureCreativeTabs.forName(id), "Wrong creative category: " + id));
+		net.minecraft.item.Item vaseItem = Ironagefurniture.ItemRegistry.get("ornament_glass_vase");
+		java.util.List<ItemStack> vases = new java.util.ArrayList<ItemStack>();
+		vaseItem.getSubItems(vaseItem, zone.moddev.mc.ironagefurniture.init.FurnitureCreativeTabs.DECORATIONS, vases);
+		require(vases.size() == 16, "Decorations tab must provide sixteen vase colours");
+		for (ItemStack vase : vases) {
+			IBakedModel model = client.getRenderItem().getItemModelWithOverrides(vase, client.world, client.player);
+			require(model != client.getRenderItem().getItemModelMesher().getModelManager().getMissingModel(), "Missing vase item model " + vase.getMetadata());
+			require(zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry.get(vase) != null, "Missing vase surface renderer");
+			cases++;
+		}
 		for (String id : Ironagefurniture.BlockRegistry.keySet()) {
 			if (!id.startsWith("table_dining_") && !id.startsWith("table_low_")
-					&& !id.startsWith("shelf_wall_") && !id.startsWith("cabinet_wood_ironage_")) continue;
+					&& !id.startsWith("shelf_wall_") && !id.startsWith("cabinet_wood_ironage_")
+					&& !id.startsWith("half_cabinet_") && !id.startsWith("barrel_")
+					&& !id.startsWith("side_barrel_") && !id.startsWith("bottle_rack_")) continue;
 			Block block = Ironagefurniture.BlockRegistry.get(id);
+			if (id.startsWith("bottle_rack_")) {
+				IBakedModel itemModel = client.getRenderItem().getItemModelWithOverrides(new ItemStack(block), client.world, client.player);
+				net.minecraft.client.renderer.block.model.ItemTransformVec3f gui = itemModel.getItemCameraTransforms()
+					.getTransform(net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.GUI);
+				require(Math.abs(gui.rotation.x - 30) < 0.001F && Math.abs(gui.rotation.y - 225) < 0.001F
+					&& Math.abs(gui.scale.x - 0.65F) < 0.001F, "Bottle rack inventory transform was not applied: " + id);
+			}
 			for (IBlockState state : block.getBlockState().getValidStates()) {
 				IBakedModel model = client.getBlockRendererDispatcher().getBlockModelShapes().getModelForState(state);
 				require(model != client.getRenderItem().getItemModelMesher().getModelManager().getMissingModel(), "Missing furniture model: " + id + " " + state);
@@ -117,7 +138,12 @@ final class Phase5ShelfTableClientProbe {
 				tile.addEmbeddedContent(WallShelf.ShelfContentKind.FLOWER_POT, new ItemStack(Items.FLOWER_POT));
 				tile.addEmbeddedContent(WallShelf.ShelfContentKind.FLOWER_POT, new ItemStack(Blocks.RED_FLOWER));
 			} else if (i == 3) tile.addEmbeddedContent(WallShelf.ShelfContentKind.CANDLE, new ItemStack(Ironagefurniture.BlockRegistry.get("light_metal_ironage_candle_floor")));
-			else tile.getSurfaceSetting().setSingleItem(new ItemStack(i == 4 ? Items.BREAD : Items.APPLE), EnumFacing.NORTH);
+			else {
+				ItemStack vase = new ItemStack(Ironagefurniture.ItemRegistry.get("ornament_glass_vase"), 1, i == 4 ? 0 : 3);
+				if (i == 4) zone.moddev.mc.ironagefurniture.api.VasePlantHelper.addPlant(vase, new ItemStack(Blocks.RED_FLOWER, 1, 8));
+				tile.getSurfaceSetting().setSingleItem(vase, EnumFacing.NORTH);
+				tableTile.getSurfaceSetting().setSingleItem(vase, EnumFacing.NORTH);
+			}
 		}
 		return origin;
 	}

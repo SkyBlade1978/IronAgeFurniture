@@ -55,6 +55,7 @@ def catalogSnapshotText = { Map catalog ->
     lines.add("phaseFour.cfmChairs=${(phaseFour.cfmChairs as List).join(',')}")
     lines.add("phaseFive.woodPrefixes=${(catalog.phaseFive.woodPrefixes as List).join(',')}")
     lines.add("phaseFive.hidden=${(catalog.phaseFive.hidden as List).join(',')}")
+    lines.add("phaseFive.decorations=${(catalog.phaseFive.decorations as List).join(',')}")
     lines.join('\n') + '\n'
 }
 
@@ -533,6 +534,7 @@ tasks.register('verifyFurnitureCatalog') {
         }
         phaseFourLighting.each { String id -> verifyFurnitureState(id) }
         (catalog.phaseFive.hidden as List).each { String id -> verifyFurnitureState(id) }
+        (catalog.phaseFive.decorations as List).each { String id -> verifyFurnitureState(id) }
         List<String> phaseFiveFurniture = (catalog.phaseFive.woodPrefixes as List).collectMany { String prefix ->
             catalogWoods.collect { String wood -> "${prefix}${wood}".toString() }
         }

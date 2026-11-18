@@ -1,5 +1,39 @@
 # IronAgeFurniture 0.5.0.110021 (unreleased)
 
+- Restore upright 3D surface bottles for vanilla potions, empty and
+  experience bottles, and registered addon bottles. Reuse the rack's
+  liquid/tint model with bounds fitted to each surface descriptor.
+- Read bottle tank contents directly so saved partial bottles retain their
+  visible fill level and fluid colour on surfaces and in racks.
+- Craft three barrels from six matching wooden planks and one central
+  iron ingot, replacing the iron-nugget recipe.
+- Simplify cabinet crafting to one chest and one matching wooden plank;
+  no iron is required.
+- Remove overlapping rail/divider faces in joined wall-mounted and
+  freestanding bottle racks, including vertically stacked arrangements.
+- Restore visible flower stalks and leaves inside surface vases by drawing
+  plants before the glass and restoring the original stalk lighting.
+- Reduce and angle bottle-rack inventory models for a centred isometric view.
+- Keep displayed vases targetable when side-hit coordinates are rounded in
+  click packets, restoring plant interactions and empty-hand retrieval.
+
+- Port half-depth cabinets, upright and side fluid barrels, and wall or
+  freestanding nine-bottle racks across all 65 supported woods. Preserve
+  donor save identities, exact inventories, fluids, seals and bottle data.
+- Give cabinet frames proportional bark UVs, aligned along each rail and
+  post, for all full/half cabinet models and their open/paired variants.
+- Add ordinary-barrel fluid controls and a container-gated seal packet.
+  Brewing retains ownership of foudres, distilling equipment, drinks and
+  container conversions through an optional vessel-interaction hook.
+
+- Complete the exposed underside rails on inside and outside shelf corners,
+  including every built-in content variant and supported wood.
+- Split the creative inventory into chairs, benches, beds, lighting,
+  tables/shelves, storage and decorations.
+- Port all sixteen glass vase colours, their matching stained-glass recipes
+  and removable plants. Vases use the shared surface renderer and preserve
+  plant data on furniture and across reloads; drops separate vase and plant.
+
 - Port the connected low tables and corner-aware wall shelves, including
   their lamps, candles, flower pots, books and records. Use the shared
   surface renderer for loose foods and addon items, with targeting and

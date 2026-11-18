@@ -7,6 +7,11 @@ def phase5Manifest = new File(phase5Root, 'generated/phase5_model_resources.json
 def phase5Catalog = { new JsonSlurper().parse(file('gradle/furniture-catalog.json')) as Map }
 def phase5Families = { new JsonSlurper().parse(new File(phase5Definitions, 'phase5-families.json')) as Map }
 def phase5Woods = { (phase5Catalog().woods as Map).values().flatten() as List<String> }
+def phase5ItemModel = { Map definition, String id ->
+    Map model = [parent: "ironagefurniture:block/${id}_${definition.inventory}"]
+    if (definition.itemDisplay) model.display = definition.itemDisplay
+    model
+}
 def phase5Models = {
     Map<String, Object> models = new TreeMap<>()
     phase5Woods().each { String wood ->
@@ -19,7 +24,9 @@ def phase5Models = {
                 Map model = new JsonSlurper().parseText(JsonOutput.toJson(source)) as Map
                 model.textures.log = woodTextures['0']
                 model.textures.planks = woodTextures['1']
-                model.textures.particle = family == 'cabinet' ? woodTextures['1'] : woodTextures['0']
+                if (model.textures.containsKey('0')) model.textures['0'] = woodTextures['0']
+                if (model.textures.containsKey('1')) model.textures['1'] = woodTextures['1']
+                model.textures.particle = family.contains('cabinet') ? woodTextures['1'] : woodTextures['0']
                 models["models/block/${definition.prefix}${wood}_${suffix}.json".toString()] = model
             }
         }
@@ -57,7 +64,7 @@ tasks.register('updatePhaseFiveFurnitureAssets') {
                 new File(phase5Root, "blockstates/${id}.json").setText(
                         template.replace("${definition.prefix}oak", id), 'UTF-8')
                 phase5Write(new File(phase5Root, "models/item/${id}.json"),
-                        [parent: "ironagefurniture:block/${id}_${definition.inventory}"])
+                        phase5ItemModel(definition as Map, id))
             }
         }
         fileTree(new File(phase5Root, 'lang')).matching { include '*.lang' }.files.each { File locale ->
@@ -69,10 +76,15 @@ tasks.register('updatePhaseFiveFurnitureAssets') {
             String oak = phase5WoodName(names['tile.ironagefurniture.chair_wood_ironage_classic_oak.name'])
             String dining = names['tile.ironagefurniture.table_dining_oak.name']
             String cabinet = names['tile.ironagefurniture.cabinet_wood_ironage_oak.name']
+            Map extraTitles = ['half_cabinet', 'barrel', 'side_barrel', 'bottle_rack'].collectEntries { family ->
+                String title = names["tile.ironagefurniture.${families[family].prefix}oak.name"]
+                if (!title || !title.contains(oak)) throw new GradleException("Missing ${family} oak title in ${locale.name}")
+                [(family): title]
+            }
             if (!dining.contains(oak) || !cabinet.contains(oak)) throw new GradleException("Missing wood title in ${locale.name}")
             List<String> titles = phase5Titles[locale.name - '.lang'] ?: ['%s Low Table', '%s Wall Shelf']
             List<String> retained = text.readLines().findAll { String line ->
-                !(line ==~ /^tile\.ironagefurniture\.(table_dining_|table_low_|shelf_wall_|cabinet_wood_ironage_).*/)
+                !families.values().any { line.startsWith("tile.ironagefurniture.${it.prefix}") }
             }
             while (retained && retained.last().isEmpty()) retained.remove(retained.size() - 1)
             retained.add('')
@@ -80,13 +92,14 @@ tasks.register('updatePhaseFiveFurnitureAssets') {
                 String woodName = phase5WoodName(names["tile.ironagefurniture.chair_wood_ironage_classic_${wood}.name"])
                 Map familyNames = [dining: dining.replace(oak, woodName), cabinet: cabinet.replace(oak, woodName),
                         low: titles[0].replace('%s', woodName), shelf: titles[1].replace('%s', woodName)]
+                extraTitles.each { family, title -> familyNames[family] = title.replace(oak, woodName) }
                 families.each { family, definition ->
                     retained.add("tile.ironagefurniture.${definition.prefix}${wood}.name=${familyNames[family]}")
                 }
             }
             locale.setText(retained.join('\n') + '\n', 'UTF-8')
         }
-        logger.lifecycle("Generated four furniture families for ${phase5Woods().size()} chair woods.")
+        logger.lifecycle("Generated ${families.size()} furniture families for ${phase5Woods().size()} chair woods.")
     }
 }
 
@@ -110,6 +123,69 @@ tasks.register('verifyPhaseFiveFurnitureAssets') {
                 String source = new File(phase5Definitions, "${family}.blockstate.json").getText('UTF-8')
                 Map expected = new JsonSlurper().parseText(source.replace("${definition.prefix}oak", id)) as Map
                 if (actual != expected) throw new GradleException("Stale Phase 5 blockstate: ${id}")
+                Map itemModel = new JsonSlurper().parse(new File(phase5Root, "models/item/${id}.json")) as Map
+                if (itemModel != phase5ItemModel(definition as Map, id))
+                    throw new GradleException("Stale Phase 5 inventory model: ${id}")
+            }
+        }
+        ['inner_corner', 'outer_corner'].each { String shape ->
+            List rails = shape == 'inner_corner' ? [[[8,9,0],[10,10,8]], [[10,9,6],[16,10,8]]]
+                    : [[[0,9,6],[10,10,8]], [[8,9,8],[10,10,16]]]
+            fileTree(new File(phase5Root, 'models/block')).matching {
+                include "template_shelf_wall_${shape}*.json"
+            }.files.each { File model ->
+                List elements = new JsonSlurper().parse(model).elements
+                rails.each { List rail ->
+                    if (!elements.any { it.from == rail[0] && it.to == rail[1] && it.faces.north.texture == '#log' })
+                        throw new GradleException("Missing exposed underside rail in ${model.name}")
+                }
+            }
+        }
+        fileTree(new File(phase5Root, 'lang')).matching { include '*.lang' }.files.each { File locale ->
+            String text = locale.getText('UTF-8')
+            ['chairs','benches','beds','lights','tables','storage','decorations'].each { String tab ->
+                if (!text.contains("itemGroup.ironagefurniture.${tab}="))
+                    throw new GradleException("Missing creative category ${tab} in ${locale.name}")
+            }
+            ['white','orange','magenta','light_blue','yellow','lime','pink','gray','silver','cyan','purple','blue','brown','green','red','black'].each { String colour ->
+                if (!text.contains("tile.ironagefurniture.ornament_glass_vase.${colour}.name="))
+                    throw new GradleException("Missing glass vase ${colour} in ${locale.name}")
+            }
+        }
+        fileTree(new File(phase5Root, 'models/block')).matching {
+            include 'template_bottle_rack_wood_ironage_*.json'
+        }.files.each { File model ->
+            List elements = new JsonSlurper().parse(model).elements
+            ['west':[0,0,1,2], 'east':[0,1,1,2], 'down':[1,0,0,2],
+             'up':[1,1,0,2], 'north':[2,0,0,1], 'south':[2,1,0,1]].each { face, axes ->
+                elements.eachWithIndex { a, int i ->
+                    if (!a.faces.containsKey(face)) return
+                    elements.drop(i + 1).each { b ->
+                        if (!b.faces.containsKey(face)) return
+                        int normal = axes[0], horizontal = axes[2], vertical = axes[3]
+                        def planeA = axes[1] ? a.to[normal] : a.from[normal]
+                        def planeB = axes[1] ? b.to[normal] : b.from[normal]
+                        if (Math.abs((planeA as double) - (planeB as double)) < 0.000001D
+                                && Math.min(a.to[horizontal] as double, b.to[horizontal] as double) - Math.max(a.from[horizontal] as double, b.from[horizontal] as double) > 0.000001D
+                                && Math.min(a.to[vertical] as double, b.to[vertical] as double) - Math.max(a.from[vertical] as double, b.from[vertical] as double) > 0.000001D)
+                            throw new GradleException("Overlapping bottle-rack ${face} faces in ${model.name}: ${a.from}/${a.to}, ${b.from}/${b.to}")
+                    }
+                }
+            }
+        }
+        fileTree(new File(phase5Root, 'models/block')).matching {
+            include 'template_*cabinet_wood_ironage_*.json'
+        }.files.each { File file ->
+            new JsonSlurper().parse(file).elements.each { element ->
+                element.faces.each { face, data ->
+                    if (data.texture != '#log') return
+                    List axes = ['north':[0,1], 'south':[0,1], 'east':[2,1], 'west':[2,1], 'up':[0,2], 'down':[0,2]][face]
+                    List lengths = axes.collect { element.to[it] - element.from[it] }
+                    if ((data.rotation ?: 0) % 180 == 90) lengths = lengths.reverse()
+                    if (Math.abs(data.uv[2] - data.uv[0] - lengths[0]) > 0.0001
+                            || Math.abs(data.uv[3] - data.uv[1] - lengths[1]) > 0.0001)
+                        throw new GradleException("Stretched cabinet bark UV in ${file.name}: ${face}")
+                }
             }
         }
     }

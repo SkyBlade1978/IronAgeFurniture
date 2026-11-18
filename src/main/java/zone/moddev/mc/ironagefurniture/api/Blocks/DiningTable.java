@@ -177,10 +177,12 @@ public class DiningTable extends Block {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
 			EnumHand hand, ItemStack held, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (side != EnumFacing.UP || player.isSneaking() || this.isDisplayExcluded(held)) {
+		if (player.isSneaking() || this.isDisplayExcluded(held)) {
 			return false;
 		}
 		TileEntityDiningTable table = this.getTableEntity(world, pos, false);
+		if (side != EnumFacing.UP && (table == null || table.getSurfaceHeight() >= 1.0D
+				|| !table.getSurfaceSetting().hasAnyItem())) return false;
 		if (table == null) {
 			if (held == null || held.stackSize <= 0) return false;
 			if (!SurfaceDisplayBlocker.hasRoom(world, pos) || world.isRemote) return true;

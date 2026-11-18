@@ -12,9 +12,11 @@ import zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry;
 
 import net.minecraft.init.Bootstrap;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class SurfaceExtensionTest {
 	private static final class TestSurfaceHost implements SurfaceSettingHost {
@@ -25,6 +27,24 @@ public class SurfaceExtensionTest {
 	}
 
 	@BeforeClass public static void bootstrap() { Bootstrap.register(); }
+
+	@Test public void rayHitEdgesRemainTargetableAfterClickPacketFloatConversion() {
+		for (double width : new double[]{4.5D / 16.0D * GlassVaseSurface.SCALE, 0.56D * GlassVaseSurface.SCALE}) {
+			Item item = new Item();
+			SurfaceContentRegistry.register(item, stack -> new Descriptor(Category.SINGLETON, width, 0.5D));
+			for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+				SurfaceSetting setting = new SurfaceSetting();
+				setting.setSingleItem(new ItemStack(item), facing);
+				AxisAlignedBB bounds = setting.getItemBounds(Slot.CENTER);
+				for (double x : new double[]{bounds.minX, bounds.maxX})
+					assertEquals("Packet rounded X outside the displayed vase", Slot.CENTER, setting.findTarget((float)x, 0.5F));
+				for (double z : new double[]{bounds.minZ, bounds.maxZ})
+					assertEquals("Packet rounded Z outside the displayed vase", Slot.CENTER, setting.findTarget(0.5F, (float)z));
+				assertNull(setting.findTarget((float)(bounds.minX - 0.001D), 0.5F));
+				assertNull(setting.findTarget(0.5F, (float)(bounds.maxZ + 0.001D)));
+			}
+		}
+	}
 
 	@Test public void testOnlyHostRetainsContentsAndSignalsChanges() {
 		TestSurfaceHost host = new TestSurfaceHost();
@@ -76,14 +96,44 @@ public class SurfaceExtensionTest {
 	}
 
 	@Test public void registeredItemControlsCategoryBoundsAndRendererLookup() {
-		SurfaceContentRegistry.register(Items.GLASS_BOTTLE,
+		Item item = new Item();
+		SurfaceContentRegistry.register(item,
 			stack -> new Descriptor(Category.BOTTLE, 0.22D, 0.68D));
-		ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
+		ItemStack bottle = new ItemStack(item);
 		assertEquals(Category.BOTTLE, SurfaceSetting.classify(bottle));
 		assertEquals(0.22D, SurfaceContentRegistry.describe(bottle).getWidth(), 0.0001D);
 		SurfaceRenderRegistry.Renderer renderer = (stack, context) -> { };
-		SurfaceRenderRegistry.register(Items.GLASS_BOTTLE, renderer);
+		SurfaceRenderRegistry.register(item, renderer);
 		assertSame(renderer, SurfaceRenderRegistry.get(bottle));
 		assertNull(SurfaceRenderRegistry.get(new ItemStack(Items.ARMOR_STAND)));
+	}
+
+	@Test public void vanillaPotionsRetainExactDataAndAllowTwoBottleSettings() {
+		VanillaSurfaceBottles.register();
+		for (Item item : new Item[]{Items.GLASS_BOTTLE, Items.POTIONITEM, Items.SPLASH_POTION,
+				Items.LINGERING_POTION, Items.EXPERIENCE_BOTTLE}) {
+			ItemStack original = new ItemStack(item).setStackDisplayName("Named bottle");
+			original.getTagCompound().setInteger("TestData", 42);
+			if (item == Items.POTIONITEM) {
+				net.minecraft.potion.PotionUtils.addPotionToItemStack(original, net.minecraft.init.PotionTypes.HEALING);
+				net.minecraft.potion.PotionUtils.appendEffects(original, java.util.Collections.singletonList(
+					new net.minecraft.potion.PotionEffect(net.minecraft.init.MobEffects.SPEED, 600, 2)));
+			}
+			SurfaceSetting setting = new SurfaceSetting();
+			assertEquals(Category.BOTTLE, SurfaceSetting.classify(original));
+			NBTTagCompound legacy = new NBTTagCompound();
+			legacy.setTag("DisplayedItem", original.writeToNBT(new NBTTagCompound()));
+			setting.readFromNBT(legacy);
+			assertTrue(ItemStack.areItemStacksEqual(original, setting.getCompatibilityItem()));
+			setting.clear();
+			assertTrue(setting.insert(original, EnumFacing.NORTH, 0.5F, 0.5F, null));
+			assertTrue(setting.insert(new ItemStack(Items.GLASS_BOTTLE), EnumFacing.NORTH, 0.75F, 0.5F, null));
+			assertEquals(2, setting.getItemCount());
+			NBTTagCompound tag = new NBTTagCompound(); setting.writeToNBT(tag);
+			SurfaceSetting reloaded = new SurfaceSetting(); reloaded.readFromNBT(tag);
+			boolean found = false;
+			for (Slot slot : Slot.values()) if (ItemStack.areItemStacksEqual(original, reloaded.getItem(slot))) found = true;
+			assertTrue("Bottle data changed in the surface save", found);
+		}
 	}
 }

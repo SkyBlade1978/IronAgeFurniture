@@ -2,6 +2,9 @@
 
 Dining tables, low tables, wall shelves and cabinets are production surface
 hosts for the same enabled woods as the chairs.
+Half-depth cabinets share that surface API with a facing-relative quarter-block
+offset and an 18-slot inventory. Full and half cabinets pair only with their
+own family and wood; their inventories remain separate from the display.
 The published `0.4.0.110021` identities remain the baseline, and `update.json`
 still advertises that release.
 
@@ -39,12 +42,35 @@ still advertises that release.
   The client bakes the dedicated models during resource loading.
   A single meal sits in the centre; adding a drink forms a place setting.
 - Client-side `SurfaceRenderRegistry` accepts specialised visuals before
-  post-init. Unclaimed stacks use the generic Minecraft item renderer.
+  post-init. An explicit renderer takes priority; otherwise `BOTTLE`
+  descriptors use the rack's upright 3D bottle model, fitted to the exact
+  registered bounds. Other unclaimed stacks use the generic item renderer.
   Persistent NBT contains real ItemStacks and orientation, never renderer
   names. No client renderer is loaded by a dedicated server.
+- Empty glass bottles, potions (including splash and lingering) and
+  experience bottles register vanilla `BOTTLE` descriptors. Brewing and
+  other addons opt in through their own descriptors; the shared renderer
+  reads fluid capabilities and potion tints without importing addon types.
+  Existing displayed stacks acquire the new visuals without changing NBT.
 - Current tags are `SurfaceItems` and `SurfaceAxis`; an older single
   `DisplayedItem` is read and rewritten to the current form. The three
   slots are `GUEST_A`, `CENTER`, and `GUEST_B`.
+
+## Glass vases
+
+- `ornament_glass_vase` retains the donor's sixteen dye metadata values;
+  placed plants use the donor's `ornament_glass_vase` tile and its `Plant`
+  tag; the initial prototype's `glass_vase` alias also remains readable. Displayed
+  vases store the exact plant under `VasePlant` on their real ItemStack.
+- The same surface provider, interaction handler and client renderer work
+  on tables, cabinets, low tables and shelves. An empty-hand click removes
+  a plant before retrieving the vase. Breaking the display or its furniture
+  returns separate vase and plant stacks. Creative display mining deletes
+  both without mining the furniture underneath.
+- `SurfaceInteractionRegistry.Handler.getDrops` is a default method for
+  exact singleton drops; stored containers can override it. The central
+  `drops` helper passes a copy, preserving the saved stack. Retrieval,
+  owner destruction and native item mining share this path.
 
 ## Food on vanilla surfaces
 
@@ -74,10 +100,20 @@ still advertises that release.
 
 ## Vessel and addon seam
 
-- `api.Blocks.Barrel` and `api.tile.TileEntityBarrel` are non-craftable,
-  unregistered base types for a future ordinary barrel and the separate
-  Brewing foudre. They preserve `Tank` and `Sealed` fluid NBT. IAF does not
-  register brewing fluids or a generic barrel block.
+- `api.Blocks.Barrel` remains the shared vessel base for IAF storage and
+  Brewing's foudre. IAF registers `StorageBarrel` and `SideBarrel` with the
+  donor's `barrel_wood_ironage_*` and `side_barrel_wood_ironage_*` identities
+  and `barrel_wood_ironage` tile. They preserve `Tank`/`Sealed` NBT and the
+  16,000 mB capacity. Orientation conversion preserves all item NBT.
+- `FluidVesselInteractions` freezes at post-init. Brewing registers its
+  existing bottle/drinkware conversion handler; IAF falls back to Forge
+  container capabilities. No IAF source imports Brewing classes or registers
+  its fluids, foudres or stills. Client GUI construction is registered by
+  the client initialiser, keeping client types out of the common GUI handler.
+- Bottle racks retain the donor's `bottle_rack_wood_ironage_*` IDs, nine
+  exact `Bottles` stacks and stored facings. Vanilla bottles/potions work
+  alone; addons opt in through the existing `BOTTLE` surface category.
+  Their renderer reads generic fluid capabilities for fill and colour.
 - `FluidAgingRegistry` accepts optional fluid policies during initialization
   and freezes at post-init. IAB contributes its brewing-specific ageing
   policies; IAF alone has none.

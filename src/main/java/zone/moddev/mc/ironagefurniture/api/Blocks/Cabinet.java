@@ -208,6 +208,10 @@ public class Cabinet extends Block {
 		return "container.ironagefurniture.cabinet";
 	}
 
+	public double getDisplayItemXOffset(IBlockState state) { return 0.5D; }
+	public double getDisplayItemZOffset(IBlockState state) { return 0.5D; }
+	public EnumFacing.Axis getSurfaceSettingAxis(IBlockState state) { return null; }
+
 	private void blockPotentialJoins(World worldIn, BlockPos pos, IBlockState state) {
 		EnumFacing facing = state.getValue(FACING);
 		this.blockJoinToAdjacent(worldIn, pos, state, facing.rotateY());

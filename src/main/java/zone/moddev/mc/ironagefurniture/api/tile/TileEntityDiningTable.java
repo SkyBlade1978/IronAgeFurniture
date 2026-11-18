@@ -167,7 +167,7 @@ public class TileEntityDiningTable extends TileEntity implements SurfaceSettingH
 			}
 
 
-			net.minecraft.block.Block.spawnAsEntity(worldIn, pos, itemStack);
+			zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry.drop(worldIn, pos, itemStack);
 		}
 
 		this.markSurfaceSettingChanged();

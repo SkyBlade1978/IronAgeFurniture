@@ -423,6 +423,22 @@ public class TileEntityCabinet extends TileEntityLockable
 		return this.surfaceSetting;
 	}
 
+	@Override public double getSurfaceOffsetX() {
+		IBlockState state = this.world == null ? null : this.world.getBlockState(this.pos);
+		return state != null && state.getBlock() instanceof Cabinet
+			? ((Cabinet)state.getBlock()).getDisplayItemXOffset(state) - 0.5D : 0;
+	}
+	@Override public double getSurfaceOffsetZ() {
+		IBlockState state = this.world == null ? null : this.world.getBlockState(this.pos);
+		return state != null && state.getBlock() instanceof Cabinet
+			? ((Cabinet)state.getBlock()).getDisplayItemZOffset(state) - 0.5D : 0;
+	}
+	@Override public EnumFacing.Axis getSurfaceAxis() {
+		IBlockState state = this.world == null ? null : this.world.getBlockState(this.pos);
+		return state != null && state.getBlock() instanceof Cabinet
+			? ((Cabinet)state.getBlock()).getSurfaceSettingAxis(state) : null;
+	}
+
 	@Override
 	public void markSurfaceSettingChanged() {
 		this.markForDisplayUpdate();

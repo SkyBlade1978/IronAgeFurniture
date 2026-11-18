@@ -89,6 +89,22 @@ public class FurnitureFactory {
 		return registerBlock(new zone.moddev.mc.ironagefurniture.api.Blocks.LowTable(Material.WOOD, name, 10, 1), name, 16);
 	}
 
+	public static Block createGlassVase() {
+		return registerBlock(new zone.moddev.mc.ironagefurniture.api.Blocks.GlassVaseBlock(Material.GLASS,
+			"ornament_glass_vase", 1, 0.3F), "ornament_glass_vase", 16);
+	}
+
+	public static Block createHalfCabinet(String name) {
+		return registerBlock(new zone.moddev.mc.ironagefurniture.api.Blocks.HalfCabinet(Material.WOOD, name, 10, 1.5F), name, 64);
+	}
+	public static Block createBarrel(String name, boolean side) {
+		return registerBlock(side ? new zone.moddev.mc.ironagefurniture.api.Blocks.SideBarrel(Material.WOOD, name, 10, 1.5F)
+			: new zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel(Material.WOOD, name, 10, 1.5F), name, 16);
+	}
+	public static Block createBottleRack(String name) {
+		return registerBlock(new zone.moddev.mc.ironagefurniture.api.Blocks.BottleRack(Material.WOOD, name, 10, 1), name, 16);
+	}
+
 	public static Block createWallShelf(String name) {
 		return registerBlock(new zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf(Material.WOOD, name, 10, 1), name, 16);
 	}
@@ -448,9 +464,12 @@ public class FurnitureFactory {
 	private static Block registerBlock(Block block, String name, int maxStackSize, boolean registerItem) {
 		GameRegistry.register(block.setRegistryName(Ironagefurniture.MODID, name));
 		block.setUnlocalizedName(Ironagefurniture.MODID + "." + name);
-		block.setCreativeTab(Ironagefurniture.ironagefurnitureTab);
+		block.setCreativeTab(registerItem ? zone.moddev.mc.ironagefurniture.init.FurnitureCreativeTabs.forName(name) : null);
 		if (registerItem) {
-			ItemBlock itemBlock = block instanceof MultiBlockBed || block instanceof MultiBlockWoodBed
+			ItemBlock itemBlock = block instanceof zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel ? new zone.moddev.mc.ironagefurniture.api.Items.ItemBlockBarrel(block)
+					: block instanceof zone.moddev.mc.ironagefurniture.api.Blocks.BottleRack ? new zone.moddev.mc.ironagefurniture.api.Items.ItemBlockBottleRack(block)
+					: block instanceof zone.moddev.mc.ironagefurniture.api.Blocks.GlassVaseBlock ? new zone.moddev.mc.ironagefurniture.api.Items.ItemBlockGlassVase(block)
+					: block instanceof MultiBlockBed || block instanceof MultiBlockWoodBed
 					|| block instanceof MultiBlockChair ? new ItemBlockUpholsteredFurniture(block)
 					: MetalVariantHelper.isMetalVariantBlock(block) ? new ItemBlockMetalVariant(block)
 					: block instanceof zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf
@@ -460,7 +479,8 @@ public class FurnitureFactory {
 			ItemInitialiser.RegisterItem(itemBlock, name);
 		}
 		Ironagefurniture.BlockRegistry.put(name, block);
-		if (block instanceof DiningTable || block instanceof Cabinet || block instanceof zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf) {
+		if (block instanceof DiningTable || block instanceof Cabinet || block instanceof zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf
+				|| block instanceof zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel || block instanceof zone.moddev.mc.ironagefurniture.api.Blocks.BottleRack) {
 			Blocks.FIRE.setFireInfo(block, 5, 20);
 		}
 		return block;

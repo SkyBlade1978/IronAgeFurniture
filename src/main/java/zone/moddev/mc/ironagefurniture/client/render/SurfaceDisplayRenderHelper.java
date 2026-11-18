@@ -42,7 +42,7 @@ public final class SurfaceDisplayRenderHelper {
 
 	public static void renderSurfaceItem(ItemStack stack, SurfaceRenderContext context) {
 		if (stack == null || stack.stackSize <= 0) return;
-		SurfaceRenderRegistry.Renderer renderer = SurfaceRenderRegistry.get(stack);
+		SurfaceRenderRegistry.Renderer renderer = rendererFor(stack);
 		if (renderer != null) {
 			renderer.render(stack, context);
 			return;
@@ -65,6 +65,17 @@ public final class SurfaceDisplayRenderHelper {
 		GlStateManager.popMatrix();
 	}
 
+	private static SurfaceRenderRegistry.Renderer rendererFor(ItemStack stack) {
+		SurfaceRenderRegistry.Renderer registered = SurfaceRenderRegistry.get(stack);
+		if (registered != null) return registered;
+		return SurfaceSetting.classify(stack) == SurfaceSetting.Category.BOTTLE ? SurfaceBottleRenderer.INSTANCE : null;
+	}
+
+	public static void renderGlassVasePlant(ItemStack stack, double x, double y, double z,
+			double itemX, double itemZ, double surfaceY, float yaw) {
+		GlassVaseRenderer.renderPlant(stack, x + itemX, y + surfaceY, z + itemZ, yaw);
+	}
+
 	private static Pair<? extends IBakedModel, Matrix4f> fixedPerspective(IBakedModel model) {
 		ItemCameraTransforms.TransformType fixed = ItemCameraTransforms.TransformType.FIXED;
 		if (model instanceof IPerspectiveAwareModel) {
@@ -76,7 +87,7 @@ public final class SurfaceDisplayRenderHelper {
 	/** Bounds relative to the reserved cell above the furniture. */
 	public static AxisAlignedBB getItemBounds(SurfaceSetting setting, Slot slot) {
 		ItemStack stack = setting.getItem(slot);
-		if (stack == null || SurfaceRenderRegistry.get(stack) != null) {
+		if (stack == null || rendererFor(stack) != null) {
 			return setting.getItemBounds(slot);
 		}
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, null, null);

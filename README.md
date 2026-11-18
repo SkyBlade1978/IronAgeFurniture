@@ -13,12 +13,33 @@ and sconce drops. These four furniture families cover the same 65 woods as
 the chairs: six vanilla woods plus the enabled Biomes O' Plenty, Natura,
 Forestry and Immersive Engineering variants.
 
+The remaining storage set includes half-depth cabinets, upright fluid barrels,
+side barrels and bottle racks in those same woods. Half cabinets hold 18
+stacks and pair into 36 slots. Barrels hold 16,000 mB and preserve their
+contents and seal when mined or converted between orientations. Bottle racks
+hold nine exact bottles and can stand on the floor or mount on a wall.
+Foudres, pot stills and brewing recipes belong to the separate Brewing addon.
+
+- One full cabinet crafts into two matching half cabinets.
+- Six matching planks across the top and bottom rows, with one iron ingot
+  in the centre, craft three matching barrels.
+- A barrel and two wooden sticks craft a side barrel. Craft it alone to
+  recover the upright barrel and both sticks; fluid data stays intact.
+- Four matching slabs in the crafting-grid corners and a central stick
+  craft two bottle racks.
+
+Barrels accept buckets and Forge fluid containers. With Brewing installed,
+its bottles and drinkware use the same barrel without duplicating Brewing
+content in IAF. Right-click an empty-handed barrel to open its fluid gauge
+and seal controls. Sealing blocks fluid transfer; Brewing supplies any
+applicable ageing policies.
+
 - Craft an oak dining table with three oak slabs across the top row and
   sticks below the outer slabs. Adjacent tables join. Sneak-place against
   another table to leave a seam.
-- Craft an oak cabinet with a chest, an oak plank, and an iron nugget
-  (an iron ingot when no mod supplies iron nuggets). Right-click the cabinet
-  to open its 27 slots. Matching cabinets can pair side by side or vertically.
+- Craft an oak cabinet with a chest and an oak plank, in any arrangement.
+  Right-click it to open its 27 slots. Matching cabinets can pair side by
+  side or vertically.
 - Craft a low table with three matching wood slabs across the top row,
   another slab in the centre, and sticks in the two bottom corners.
 - Craft three wall shelves with three matching slabs across the top row
@@ -28,6 +49,9 @@ Forestry and Immersive Engineering variants.
 - Right-click a furniture surface with an item to display it. Right-click the
   displayed item with an empty hand to retrieve it. The cabinet inventory
   is separate from its display.
+- Empty bottles, drinking/splash/lingering potions and experience bottles
+  stand upright in 3D on furniture, with their liquid colour and exact item
+  data preserved. Addon items registered as bottles share this renderer.
 - To put a known vanilla food on a full-height vanilla surface, hold it in
   the main hand, empty the offhand, and sneak-right-click the top. Pick it
   up with an empty-hand right-click. Modpacks can disable new placements
@@ -36,6 +60,14 @@ Forestry and Immersive Engineering variants.
 The dining-table, low-table, shelf and cabinet recipes use the matching
 wood throughout. Optional wood variants appear when their source mod and
 the corresponding integration setting are enabled.
+
+Creative inventory categories separate chairs, benches, beds, lighting,
+tables/shelves, storage and decorations. Decorations include sixteen glass
+vase colours: arrange four matching stained-glass blocks in a diamond
+(` x `, `x x`, ` x `) to craft four vases. Place them normally or display
+them on furniture. Right-click a vase with a flower or other supported
+potted plant to add it; an empty-hand click removes the plant first.
+Breaking a planted vase returns the vase and plant separately in Survival.
 
 Phase 3 contains the established seating collection plus empty, torch,
 redstone-torch, glow, lava, and redstone lighting, including throwable lava

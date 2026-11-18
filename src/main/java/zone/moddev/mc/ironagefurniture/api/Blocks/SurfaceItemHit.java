@@ -63,7 +63,8 @@ public final class SurfaceItemHit {
 		SurfaceSettingHost host = (SurfaceSettingHost)tile;
 		ItemStack removed = host.getSurfaceSetting().remove(Slot.byIndex(hit.subHit - ITEM_HIT));
 		host.markSurfaceSettingChanged();
-		if (!world.isRemote && !player.capabilities.isCreativeMode && removed != null) Block.spawnAsEntity(world, pos, removed);
+		if (!world.isRemote && !player.capabilities.isCreativeMode)
+			zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry.drop(world, pos, removed);
 		if (!host.getSurfaceSetting().hasAnyItem()) SurfaceDisplayBlocker.release(world, pos);
 		Block block = state.getBlock();
 		if (block instanceof DiningTable) ((DiningTable)block).removeTableEntityIfEmpty(world, pos);

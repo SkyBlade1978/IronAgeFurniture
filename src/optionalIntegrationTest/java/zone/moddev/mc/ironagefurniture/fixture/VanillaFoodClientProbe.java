@@ -216,6 +216,57 @@ public final class VanillaFoodClientProbe {
         }
         if (galleryTicks == 125) {
             screenshot(client, "phase5-low-tables-and-shelves.png");
+            positionCamera(client, 4.5D, 1.05D - client.player.getEyeHeight(), -0.8D, 4.5D, 0.8D, 0.5D);
+        }
+        if (galleryTicks == 140) {
+            screenshot(client, "phase5-vase-closeup-front.png");
+            positionCamera(client, 4.5D, 1.05D - client.player.getEyeHeight(), 1.8D, 4.5D, 0.8D, 0.5D);
+        }
+        if (galleryTicks == 155) {
+            screenshot(client, "phase5-vase-closeup-back.png");
+            gallery = Phase5StorageClientScene.scene(client, gallery.east(12));
+            positionCamera(client, 4.0D, 1.8D, -4.5D, 4.0D, 0.8D, 3.0D);
+        }
+        if (galleryTicks == 185) {
+            screenshot(client, "phase5-storage.png");
+            Phase5StorageClientScene.gui(client, gallery);
+        }
+        if (galleryTicks == 215) {
+            screenshot(client, "phase5-barrel-gui.png");
+            client.displayGuiScreen(new net.minecraft.client.gui.inventory.GuiInventory(client.player));
+        }
+        if (galleryTicks == 245) {
+            screenshot(client, "phase5-rack-inventory.png");
+            client.displayGuiScreen(null);
+            client.gameSettings.hideGUI = true;
+            gallery = Phase5StorageClientScene.rackJoins(client, gallery.east(16));
+            positionCamera(client, 3.5D, 4.3D - client.player.getEyeHeight(), -1.5D, 3.5D, 0.8D, 1.6D);
+        }
+        if (galleryTicks == 275) {
+            screenshot(client, "phase5-rack-joins-wall.png");
+            positionCamera(client, 3.5D, 4.3D - client.player.getEyeHeight(), 8.0D, 3.5D, 0.8D, 5.5D);
+        }
+        if (galleryTicks == 305) {
+            screenshot(client, "phase5-rack-joins-standing.png");
+            gallery = SurfaceBottleClientProbe.scene(client, gallery.east(16));
+            double centre = Phase5BottleProbe.samples().size() / 2.0D;
+            positionCamera(client, centre, 3.0D - client.player.getEyeHeight(), -4.5D, centre, 1.0D, 1.3D);
+        }
+        if (galleryTicks == 335) {
+            screenshot(client, "phase5-surface-bottles.png");
+            positionCamera(client, 1.5D, 1.2D - client.player.getEyeHeight(), -0.8D, 1.5D, 0.75D, 0.5D);
+        }
+        if (galleryTicks == 365) {
+            screenshot(client, "phase5-potion-closeup.png");
+            if (Phase5BottleProbe.samples().size() > 6) {
+                positionCamera(client, 8.0D, 1.2D - client.player.getEyeHeight(), -1.2D, 8.0D, 0.85D, 0.5D);
+            } else {
+                gallery = null;
+                client.shutdown();
+            }
+        }
+        if (galleryTicks == 395) {
+            screenshot(client, "phase5-brewing-bottle-levels.png");
             gallery = null;
             client.shutdown();
         }

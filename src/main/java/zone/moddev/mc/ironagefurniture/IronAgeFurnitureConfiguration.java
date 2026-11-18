@@ -26,6 +26,11 @@ public class IronAgeFurnitureConfiguration {
 	public static boolean GENERATE_LOW_TABLES = true;
 	public static boolean GENERATE_WALL_SHELVES = true;
 	public static boolean GENERATE_CABINETS = true;
+	public static boolean GENERATE_HALF_CABINETS = true;
+	public static boolean GENERATE_BARRELS = true;
+	public static boolean GENERATE_SIDE_BARRELS = true;
+	public static boolean GENERATE_BOTTLE_RACKS = true;
+	public static boolean GENERATE_GLASS_VASES = true;
 	public static boolean INTEGRATION_BASEMETALS = true;
 	public static boolean INTEGRATION_MINERALOGY = true;
 	public static boolean INTEGRATION_BIOMESOPLENTY = true;
@@ -69,6 +74,11 @@ public class IronAgeFurnitureConfiguration {
 		GENERATE_LOW_TABLES = config.getBoolean("GENERATE_LOW_TABLES", "options", true, "Generate low tables for enabled woods");
 		GENERATE_WALL_SHELVES = config.getBoolean("GENERATE_WALL_SHELVES", "options", true, "Generate wall shelves for enabled woods");
 		GENERATE_CABINETS = config.getBoolean("GENERATE_CABINETS", "options", true, "Generate cabinets for enabled woods");
+		GENERATE_HALF_CABINETS = config.getBoolean("GENERATE_HALF_CABINETS", "options", true, "Generate half-depth cabinets for enabled woods");
+		GENERATE_BARRELS = config.getBoolean("GENERATE_BARRELS", "options", true, "Generate ordinary 16000 mB fluid barrels");
+		GENERATE_SIDE_BARRELS = config.getBoolean("GENERATE_SIDE_BARRELS", "options", true, "Generate side barrels and their conversion recipes");
+		GENERATE_BOTTLE_RACKS = config.getBoolean("GENERATE_BOTTLE_RACKS", "options", true, "Generate wall and freestanding bottle racks");
+		GENERATE_GLASS_VASES = config.getBoolean("GENERATE_GLASS_VASES", "options", true, "Generate the sixteen coloured glass vases");
 		config.save();
 	}
 }

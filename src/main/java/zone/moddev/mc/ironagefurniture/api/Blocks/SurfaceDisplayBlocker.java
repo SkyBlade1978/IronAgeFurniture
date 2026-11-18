@@ -47,6 +47,7 @@ public final class SurfaceDisplayBlocker extends Block {
 		Block block = ((ItemBlock)stack.getItem()).getBlock();
 		return block == Blocks.HOPPER || block instanceof Cabinet || block instanceof DiningTable
 			|| block instanceof WallShelf
+			|| block instanceof BottleRack
 			|| block instanceof Barrel || block instanceof LightSourceCandleFloor
 			|| block instanceof LightSourceGlowdust || block instanceof LightSourceLava
 			|| block instanceof LightSourceRed;
@@ -109,7 +110,7 @@ public final class SurfaceDisplayBlocker extends Block {
 	public static void dropItems(World world, BlockPos pos, SurfaceSettingHost host) {
 		for (Slot slot : Slot.values()) {
 			ItemStack displayed = host.getSurfaceSetting().remove(slot);
-			if (displayed != null) Block.spawnAsEntity(world, pos, displayed);
+			zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry.drop(world, pos, displayed);
 		}
 	}
 
@@ -144,7 +145,8 @@ public final class SurfaceDisplayBlocker extends Block {
 		if (target == null) return false;
 		ItemStack removed = setting.remove(target);
 		host.markSurfaceSettingChanged();
-		if (!world.isRemote && !player.capabilities.isCreativeMode) Block.spawnAsEntity(world, pos, removed);
+		if (!world.isRemote && !player.capabilities.isCreativeMode)
+			zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry.drop(world, pos, removed);
 		if (setting.hasAnyItem()) {
 			world.notifyBlockUpdate(pos, state, state, 2);
 			return true;

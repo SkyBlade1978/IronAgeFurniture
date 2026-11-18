@@ -32,8 +32,8 @@ public final class SurfaceSettingInteraction {
 				if (!player.getEntityWorld().isRemote) {
 					ItemStack removed = setting.remove(target);
 					host.markSurfaceSettingChanged();
-					if (removed != null && !player.inventory.addItemStackToInventory(removed)) {
-						player.dropItem(removed, false);
+					for (ItemStack stack : SurfaceInteractionRegistry.drops(removed)) {
+						if (!player.inventory.addItemStackToInventory(stack)) player.dropItem(stack, false);
 					}
 				}
 				return last ? Result.HANDLED_AND_EMPTIED : Result.HANDLED;

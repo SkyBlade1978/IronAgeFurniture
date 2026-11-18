@@ -43,7 +43,6 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.logging.log4j.LogManager;
 
@@ -108,8 +107,6 @@ final class Phase5ShelfTableProbe {
 			if (prefix.startsWith("cabinet")) {
 				grid.setInventorySlotContents(0, new ItemStack(Blocks.CHEST));
 				grid.setInventorySlotContents(4, plank.copy());
-				grid.setInventorySlotContents(8, OreDictionary.getOres("nuggetIron").isEmpty()
-					? new ItemStack(Items.IRON_INGOT) : OreDictionary.getOres("nuggetIron").get(0).copy());
 			} else {
 				for (int i = 0; i < 3; i++) grid.setInventorySlotContents(i, slab.copy());
 				if (prefix.equals("table_dining_")) {

@@ -8,7 +8,7 @@ part of this repository; they are not separate Gradle plugins.
 | Script | Purpose |
 | --- | --- |
 | `furniture-catalog.gradle` | Check the generated furniture catalog and update it only when explicitly requested. |
-| `phase5-furniture-assets.gradle` | Generate and verify the four Phase 5 furniture families from the chair wood catalog. |
+| `phase5-furniture-assets.gradle` | Generate and verify the eight Phase 5 furniture families from the chair wood catalog. |
 | `verification/legacy-fixtures.gradle` | Rebuild and compare the checked-in old-world migration fixtures. |
 | `verification/optional-integrations.gradle` | Inspect pinned optional-mod jars and run the opt-in packaged-server probe. |
 | `verification/project-audits.gradle` | Check source resources, metadata, namespace, workflows and repository hygiene. |

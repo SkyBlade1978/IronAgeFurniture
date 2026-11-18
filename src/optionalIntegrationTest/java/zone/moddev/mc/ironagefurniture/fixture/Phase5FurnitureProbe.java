@@ -43,7 +43,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 
 final class Phase5FurnitureProbe {
@@ -151,6 +150,9 @@ final class Phase5FurnitureProbe {
         verifyDisplayBreaking(world, player, table, cabinet, mods);
         VanillaFoodSurfaceProbe.verify(world);
         Phase5ShelfTableProbe.verify(world, mods);
+        Phase5VaseProbe.verify(world);
+        Phase5StorageProbe.verify(world, mods);
+        Phase5BottleProbe.verify(world);
         LogManager.getLogger().info("IAF PHASE 5 FURNITURE PROBE PASSED");
     }
 
@@ -305,8 +307,6 @@ final class Phase5FurnitureProbe {
         grid.clear();
         grid.setInventorySlotContents(0, new ItemStack(Blocks.CHEST));
         grid.setInventorySlotContents(4, new ItemStack(Blocks.PLANKS, 1, 0));
-        grid.setInventorySlotContents(8, OreDictionary.getOres("nuggetIron").isEmpty()
-                ? new ItemStack(Items.IRON_INGOT) : OreDictionary.getOres("nuggetIron").get(0).copy());
         require(output(world, grid) == Item.getItemFromBlock(cabinet), "Oak cabinet recipe missing");
     }
 
