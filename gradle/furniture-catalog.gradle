@@ -188,13 +188,14 @@ tasks.register('verifyFurnitureCatalog') {
                 'src/main/java/zone/moddev/mc/ironagefurniture/init/RecipeInitialiser.java')
         String blockSource = blockInitializer.getText('UTF-8')
         String recipeSource = recipeInitializer.getText('UTF-8')
-        String factorySource = file(
-                'src/main/java/zone/moddev/mc/ironagefurniture/api/FurnitureFactory.java')
-                .getText('UTF-8')
-        if (!(factorySource ==~ /(?s).*private static Block registerBlockWithoutItem\(Block block, String name\)\s*\{\s*return registerBlock\(block, name, 16, false\);\s*\}.*/)) {
+        File factoryRoot = file('src/main/java/zone/moddev/mc/ironagefurniture/api')
+        String registrationSource = new File(factoryRoot, 'FurnitureRegistration.java').getText('UTF-8')
+        String lightingFactorySource = new File(factoryRoot, 'LightingFactory.java').getText('UTF-8')
+        String seatingFactorySource = new File(factoryRoot, 'SeatingFactory.java').getText('UTF-8')
+        if (!(registrationSource ==~ /(?s).*static Block registerBlockWithoutItem\(Block block, String name\)\s*\{\s*return registerBlock\(block, name, 16, false\);\s*\}.*/)) {
             throw new GradleException('Hidden lighting state blocks must be registered without ItemBlocks')
         }
-        if (!(factorySource ==~ /(?s).*CreateRedLampVariant\(String name, int lightLevel\)\s*\{\s*return createRedLamp\(name, lightLevel, false\);\s*\}.*/)) {
+        if (!(lightingFactorySource ==~ /(?s).*CreateRedLampVariant\(String name, int lightLevel\)\s*\{\s*return createRedLamp\(name, lightLevel, false\);\s*\}.*/)) {
             throw new GradleException('Hidden red-lamp light-level states must be registered without ItemBlocks')
         }
         String modSource = file(
@@ -231,7 +232,7 @@ tasks.register('verifyFurnitureCatalog') {
         }
 
         List<String> forbiddenUnrelatedContent = [
-                'chandelier', 'hanging_inn_sign', 'table_wood_', 'shelf_wood_', 'half_cabinet_wood_',
+                'chandelier', 'hanging_inn_sign', 'table_wood_', 'shelf_wood_',
                 'PowerAdvantage', 'poweradvantage'
         ]
         String maintainedSource = blockSource + '\n' + recipeSource
@@ -250,7 +251,7 @@ tasks.register('verifyFurnitureCatalog') {
         }
 
         Set<String> registeredIds = [] as TreeSet<String>
-        def registrationMatcher = blockSource =~ /FurnitureFactory\.Create\w*\(\"([^\"]+)\"/
+        def registrationMatcher = blockSource =~ /(?:Seating|Lighting)Factory\.Create\w*\(\"([^\"]+)\"/
         registrationMatcher.each { match -> registeredIds.add(match[1].toString()) }
         if (registeredIds.isEmpty()) {
             throw new GradleException('No furniture registrations were discovered')
@@ -272,19 +273,19 @@ tasks.register('verifyFurnitureCatalog') {
             throw new GradleException('Coloured padded benches must reuse the existing 649 block/item IDs '
                     + 'and both existing padded forms for every catalog wood')
         }
-        if ((blockSource =~ /FurnitureFactory\.CreateWoodPaddedBench\("/).count
+        if ((blockSource =~ /SeatingFactory\.CreateWoodPaddedBench\("/).count
                 != catalogWoods.size()
-                || (blockSource =~ /FurnitureFactory\.CreateWoodPaddedBackBench\("/).count
+                || (blockSource =~ /SeatingFactory\.CreateWoodPaddedBackBench\("/).count
                 != catalogWoods.size()) {
             throw new GradleException('Every padded registration must use its padded-specific subclass')
         }
-        if ((recipeSource =~ /FurnitureFactory\.AddPaddedBenchRecipe\(/).count
+        if ((recipeSource =~ /SeatingFactory\.AddPaddedBenchRecipe\(/).count
                 != expectedPaddedIds.size()) {
             throw new GradleException('Every padded block must have one sixteen-colour recipe family')
         }
-        if (!factorySource.contains('for (PaddedBenchColour colour : PaddedBenchColour.values())')
-                || !factorySource.contains('PaddedBenchColourHelper.createStack(chairOut, 1, colour)')
-                || !factorySource.contains('colour.getCarpetMetadata()')) {
+        if (!seatingFactorySource.contains('for (PaddedBenchColour colour : PaddedBenchColour.values())')
+                || !seatingFactorySource.contains('PaddedBenchColourHelper.createStack(chairOut, 1, colour)')
+                || !seatingFactorySource.contains('colour.getCarpetMetadata()')) {
             throw new GradleException('Padded recipes must translate every carpet colour to stable item metadata and NBT')
         }
 
@@ -469,22 +470,25 @@ tasks.register('verifyFurnitureCatalog') {
             }
         }
 
-        String phaseFourSource = file(
-                'src/main/java/zone/moddev/mc/ironagefurniture/init/PhaseFourFurnitureInitialiser.java')
-                .getText('UTF-8')
+        String bedSource = file('src/main/java/zone/moddev/mc/ironagefurniture/init/BedInitialiser.java').getText('UTF-8')
+        String chairUpgradeSource = file('src/main/java/zone/moddev/mc/ironagefurniture/init/ChairUpgradeInitialiser.java').getText('UTF-8')
         String cfmSource = file(
                 'src/main/java/zone/moddev/mc/ironagefurniture/api/CfmChairMigration.java')
                 .getText('UTF-8')
-        if (!modSource.contains('PhaseFourFurnitureInitialiser.registerBlocks();')
-                || !modSource.contains('PhaseFourFurnitureInitialiser.registerRecipes();')
+        if (!modSource.contains('BlockInitialiser.init();')
+                || !modSource.contains('RecipeInitialiser.init();')
                 || !modSource.contains('CfmChairMigration.remapMissingMappings(event);')
-                || !phaseFourSource.contains('WoodVariantHelper.getEnabledWoodSuffixes()')
-                || !phaseFourSource.contains('FurnitureFactory.AddWingbackChairRecipe')
-                || !phaseFourSource.contains('FurnitureFactory.AddThroneChairRecipe')
-                || !phaseFourSource.contains('FurnitureFactory.AddBedRecolourRecipe')
-                || !factorySource.contains('new ShieldChair(Material.WOOD')
-                || !factorySource.contains('new ShieldChairRecipe(chairIn, chairOut)')) {
-            throw new GradleException('Phase 4 furniture, shield, and migration registration is incomplete')
+                || !blockSource.contains('BedInitialiser.registerBlocks(suffix);')
+                || !blockSource.contains('ChairUpgradeInitialiser.registerBlocks(suffix);')
+                || !recipeSource.contains('BedInitialiser.registerSingleBedRecipes(suffix, planks);')
+                || !recipeSource.contains('BedInitialiser.registerDoubleBedRecipes(suffix);')
+                || !recipeSource.contains('ChairUpgradeInitialiser.registerRecipes(suffix, planks);')
+                || !chairUpgradeSource.contains('SeatingFactory.AddWingbackChairRecipe')
+                || !chairUpgradeSource.contains('SeatingFactory.AddThroneChairRecipe')
+                || !bedSource.contains('BedFactory.AddBedRecolourRecipe')
+                || !seatingFactorySource.contains('new ShieldChair(Material.WOOD')
+                || !seatingFactorySource.contains('new ShieldChairRecipe(chairIn, chairOut)')) {
+            throw new GradleException('Bed, chair upgrade, shield, or CFM migration registration is incomplete')
         }
         (catalog.phaseFour.cfmChairs as List).each { String id ->
             if (!cfmSource.contains("cfm:${id}")) {

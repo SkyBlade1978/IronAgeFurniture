@@ -1,6 +1,7 @@
 package zone.moddev.mc.ironagefurniture.client.render;
 
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
+
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -12,10 +13,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public final class SurfaceBottleRenderer implements SurfaceRenderRegistry.Renderer {
 	static final SurfaceBottleRenderer INSTANCE = new SurfaceBottleRenderer();
-	private SurfaceBottleRenderer() { }
-	@Override public void render(ItemStack stack, SurfaceRenderContext context) {
+
+	private SurfaceBottleRenderer() {
+	}
+
+	@Override
+	public void render(ItemStack stack, SurfaceRenderContext context) {
 		AxisAlignedBB bounds = SurfaceContentRegistry.describe(stack).getBounds(EnumFacing.NORTH);
 		GlStateManager.pushMatrix();
+
 		try {
 			GlStateManager.translate(context.x + context.itemX, context.y + context.blockSurfaceY, context.z + context.itemZ);
 			GlStateManager.rotate(context.yaw, 0, 1, 0);
@@ -25,6 +31,8 @@ public final class SurfaceBottleRenderer implements SurfaceRenderRegistry.Render
 			GlStateManager.translate(0, 0.228D, 0);
 			GlStateManager.rotate(90, 1, 0, 0);
 			TileEntityBottleRackRenderer.renderBottleModel(stack);
-		} finally { GlStateManager.popMatrix(); }
+		} finally {
+			GlStateManager.popMatrix();
+		}
 	}
 }

@@ -1,11 +1,13 @@
 package zone.moddev.mc.ironagefurniture.init;
 
+import java.util.Map;
+
 import zone.moddev.mc.ironagefurniture.BlockObjectHolder;
 import zone.moddev.mc.ironagefurniture.IronAgeFurnitureConfiguration;
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
-import zone.moddev.mc.ironagefurniture.api.FurnitureFactory;
 import zone.moddev.mc.ironagefurniture.api.CfmChairMigration;
-import java.util.Map;
+import zone.moddev.mc.ironagefurniture.api.LightingFactory;
+import zone.moddev.mc.ironagefurniture.api.SeatingFactory;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -13,9 +15,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import net.minecraftforge.oredict.RecipeSorter;
 
 public class RecipeInitialiser {
 	protected RecipeInitialiser() {
@@ -26,6 +28,32 @@ public class RecipeInitialiser {
 		registerCustomRecipeTypes();
 		generateChairRecipes();
 		generateLightRecipes();
+		generateBedAndChairUpgradeRecipes();
+		generateSurfaceFurnitureRecipes();
+		SconceAndCandleRecipes.register();
+	}
+
+	private static void generateBedAndChairUpgradeRecipes() {
+		WoodVariantHelper.forEachEnabledPlankVariant((suffix, planks) -> {
+			ChairUpgradeInitialiser.registerRecipes(suffix, planks);
+			BedInitialiser.registerSingleBedRecipes(suffix, planks);
+		});
+
+		for (String suffix : WoodVariantHelper.getEnabledWoodSuffixes()) {
+			BedInitialiser.registerDoubleBedRecipes(suffix);
+		}
+	}
+
+	private static void generateSurfaceFurnitureRecipes() {
+		StorageInitialiser.registerRecipeTypes();
+		GlassVaseInitialiser.registerRecipes();
+
+		WoodVariantHelper.forEachEnabledSlabVariant((suffix, slab) -> {
+			StorageInitialiser.registerBottleRackRecipe(suffix, slab);
+			TableAndShelfInitialiser.registerRecipes(suffix, slab);
+		});
+
+		WoodVariantHelper.forEachEnabledPlankVariant(StorageInitialiser::registerCabinetAndBarrelRecipes);
 	}
 
 	private static void registerCustomRecipeTypes() {
@@ -48,7 +76,7 @@ public class RecipeInitialiser {
 			return;
 		}
 		if (IronAgeFurnitureConfiguration.GENERATE_SCONCES) {
-			FurnitureFactory.AddIronSconceRecipe(
+			LightingFactory.AddIronSconceRecipe(
 					BlockObjectHolder.light_metal_ironage_sconce_floor_empty_iron);
 		}
 		if (IronAgeFurnitureConfiguration.GENERATE_GLOW_LAMPS) {
@@ -78,83 +106,83 @@ public class RecipeInitialiser {
 				Block oldChair = Block.getBlockFromName(chair.getKey());
 				Block newChair = Ironagefurniture.BlockRegistry.get(chair.getValue());
 				if (oldChair != null && newChair != null) {
-					FurnitureFactory.AddChairConversionRecipe(oldChair, newChair);
+					SeatingFactory.AddChairConversionRecipe(oldChair, newChair);
 				}
 			}
 		}
 
 
 		if (IronAgeFurnitureConfiguration.GENERATE_CLASSIC_CHAIRS) {
-			FurnitureFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 0), BlockObjectHolder.chair_wood_ironage_classic_oak);
-			FurnitureFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 1), BlockObjectHolder.chair_wood_ironage_classic_spruce);
-			FurnitureFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 2), BlockObjectHolder.chair_wood_ironage_classic_birch);
-			FurnitureFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 3), BlockObjectHolder.chair_wood_ironage_classic_jungle);
-			FurnitureFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 4), BlockObjectHolder.chair_wood_ironage_classic_acacia);
-			FurnitureFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 5), BlockObjectHolder.chair_wood_ironage_classic_big_oak);
+			SeatingFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 0), BlockObjectHolder.chair_wood_ironage_classic_oak);
+			SeatingFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 1), BlockObjectHolder.chair_wood_ironage_classic_spruce);
+			SeatingFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 2), BlockObjectHolder.chair_wood_ironage_classic_birch);
+			SeatingFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 3), BlockObjectHolder.chair_wood_ironage_classic_jungle);
+			SeatingFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 4), BlockObjectHolder.chair_wood_ironage_classic_acacia);
+			SeatingFactory.AddClassicChairRecipe(new ItemStack(Blocks.PLANKS, 1, 5), BlockObjectHolder.chair_wood_ironage_classic_big_oak);
 		}
 
 		if (IronAgeFurnitureConfiguration.GENERATE_SHIELD_CHAIRS) {
-			FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_oak, BlockObjectHolder.chair_wood_ironage_shield_oak);
-			FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_spruce, BlockObjectHolder.chair_wood_ironage_shield_spruce);
-			FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_birch, BlockObjectHolder.chair_wood_ironage_shield_birch);
-			FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_jungle, BlockObjectHolder.chair_wood_ironage_shield_jungle);
-			FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_acacia, BlockObjectHolder.chair_wood_ironage_shield_acacia);
-			FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_big_oak, BlockObjectHolder.chair_wood_ironage_shield_big_oak);
+			SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_oak, BlockObjectHolder.chair_wood_ironage_shield_oak);
+			SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_spruce, BlockObjectHolder.chair_wood_ironage_shield_spruce);
+			SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_birch, BlockObjectHolder.chair_wood_ironage_shield_birch);
+			SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_jungle, BlockObjectHolder.chair_wood_ironage_shield_jungle);
+			SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_acacia, BlockObjectHolder.chair_wood_ironage_shield_acacia);
+			SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_big_oak, BlockObjectHolder.chair_wood_ironage_shield_big_oak);
 		}
 
 		if (IronAgeFurnitureConfiguration.GENERATE_SHORT_STOOLS) {
-			FurnitureFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 0), BlockObjectHolder.chair_wood_ironage_stool_short_oak);
-			FurnitureFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 1), BlockObjectHolder.chair_wood_ironage_stool_short_spruce);
-			FurnitureFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 2), BlockObjectHolder.chair_wood_ironage_stool_short_birch);
-			FurnitureFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 3), BlockObjectHolder.chair_wood_ironage_stool_short_jungle);
-			FurnitureFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 4), BlockObjectHolder.chair_wood_ironage_stool_short_acacia);
-			FurnitureFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 5), BlockObjectHolder.chair_wood_ironage_stool_short_big_oak);
+			SeatingFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 0), BlockObjectHolder.chair_wood_ironage_stool_short_oak);
+			SeatingFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 1), BlockObjectHolder.chair_wood_ironage_stool_short_spruce);
+			SeatingFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 2), BlockObjectHolder.chair_wood_ironage_stool_short_birch);
+			SeatingFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 3), BlockObjectHolder.chair_wood_ironage_stool_short_jungle);
+			SeatingFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 4), BlockObjectHolder.chair_wood_ironage_stool_short_acacia);
+			SeatingFactory.AddShortStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 5), BlockObjectHolder.chair_wood_ironage_stool_short_big_oak);
 		}
 
 		if (IronAgeFurnitureConfiguration.GENERATE_TALL_STOOLS) {
-			FurnitureFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 0), BlockObjectHolder.chair_wood_ironage_stool_tall_oak);
-			FurnitureFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 1), BlockObjectHolder.chair_wood_ironage_stool_tall_spruce);
-			FurnitureFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 2), BlockObjectHolder.chair_wood_ironage_stool_tall_birch);
-			FurnitureFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 3), BlockObjectHolder.chair_wood_ironage_stool_tall_jungle);
-			FurnitureFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 4), BlockObjectHolder.chair_wood_ironage_stool_tall_acacia);
-			FurnitureFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 5), BlockObjectHolder.chair_wood_ironage_stool_tall_big_oak);
+			SeatingFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 0), BlockObjectHolder.chair_wood_ironage_stool_tall_oak);
+			SeatingFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 1), BlockObjectHolder.chair_wood_ironage_stool_tall_spruce);
+			SeatingFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 2), BlockObjectHolder.chair_wood_ironage_stool_tall_birch);
+			SeatingFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 3), BlockObjectHolder.chair_wood_ironage_stool_tall_jungle);
+			SeatingFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 4), BlockObjectHolder.chair_wood_ironage_stool_tall_acacia);
+			SeatingFactory.AddTallStoolRecipe(new ItemStack(Blocks.PLANKS, 1, 5), BlockObjectHolder.chair_wood_ironage_stool_tall_big_oak);
 		}
 
 		if (IronAgeFurnitureConfiguration.GENERATE_WOOD_BENCHES) {
-			FurnitureFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 0), BlockObjectHolder.chair_wood_ironage_bench_single_oak);
-			FurnitureFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 1), BlockObjectHolder.chair_wood_ironage_bench_single_spruce);
-			FurnitureFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 2), BlockObjectHolder.chair_wood_ironage_bench_single_birch);
-			FurnitureFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 3), BlockObjectHolder.chair_wood_ironage_bench_single_jungle);
-			FurnitureFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 4), BlockObjectHolder.chair_wood_ironage_bench_single_acacia);
-			FurnitureFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 5), BlockObjectHolder.chair_wood_ironage_bench_single_big_oak);
+			SeatingFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 0), BlockObjectHolder.chair_wood_ironage_bench_single_oak);
+			SeatingFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 1), BlockObjectHolder.chair_wood_ironage_bench_single_spruce);
+			SeatingFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 2), BlockObjectHolder.chair_wood_ironage_bench_single_birch);
+			SeatingFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 3), BlockObjectHolder.chair_wood_ironage_bench_single_jungle);
+			SeatingFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 4), BlockObjectHolder.chair_wood_ironage_bench_single_acacia);
+			SeatingFactory.AddBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 5), BlockObjectHolder.chair_wood_ironage_bench_single_big_oak);
 
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_oak, BlockObjectHolder.chair_wood_ironage_bench_padded_single_oak);
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_spruce, BlockObjectHolder.chair_wood_ironage_bench_padded_single_spruce);
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_birch, BlockObjectHolder.chair_wood_ironage_bench_padded_single_birch);
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_jungle, BlockObjectHolder.chair_wood_ironage_bench_padded_single_jungle);
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_acacia, BlockObjectHolder.chair_wood_ironage_bench_padded_single_acacia);
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_big_oak, BlockObjectHolder.chair_wood_ironage_bench_padded_single_oak);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_oak, BlockObjectHolder.chair_wood_ironage_bench_padded_single_oak);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_spruce, BlockObjectHolder.chair_wood_ironage_bench_padded_single_spruce);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_birch, BlockObjectHolder.chair_wood_ironage_bench_padded_single_birch);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_jungle, BlockObjectHolder.chair_wood_ironage_bench_padded_single_jungle);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_acacia, BlockObjectHolder.chair_wood_ironage_bench_padded_single_acacia);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_big_oak, BlockObjectHolder.chair_wood_ironage_bench_padded_single_oak);
 
-			FurnitureFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG, 1, 0), BlockObjectHolder.chair_wood_ironage_bench_log_single_oak);
-			FurnitureFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG, 1, 1), BlockObjectHolder.chair_wood_ironage_bench_log_single_spruce);
-			FurnitureFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG, 1, 2), BlockObjectHolder.chair_wood_ironage_bench_log_single_birch);
-			FurnitureFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG, 1, 3), BlockObjectHolder.chair_wood_ironage_bench_log_single_jungle);
-			FurnitureFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG2, 1, 0), BlockObjectHolder.chair_wood_ironage_bench_log_single_acacia);
-			FurnitureFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG2, 1, 1), BlockObjectHolder.chair_wood_ironage_bench_log_single_big_oak);
+			SeatingFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG, 1, 0), BlockObjectHolder.chair_wood_ironage_bench_log_single_oak);
+			SeatingFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG, 1, 1), BlockObjectHolder.chair_wood_ironage_bench_log_single_spruce);
+			SeatingFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG, 1, 2), BlockObjectHolder.chair_wood_ironage_bench_log_single_birch);
+			SeatingFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG, 1, 3), BlockObjectHolder.chair_wood_ironage_bench_log_single_jungle);
+			SeatingFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG2, 1, 0), BlockObjectHolder.chair_wood_ironage_bench_log_single_acacia);
+			SeatingFactory.AddLogBenchRecipe(new ItemStack(Blocks.LOG2, 1, 1), BlockObjectHolder.chair_wood_ironage_bench_log_single_big_oak);
 
-			FurnitureFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 0), BlockObjectHolder.chair_wood_ironage_bench_back_single_oak);
-			FurnitureFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 1), BlockObjectHolder.chair_wood_ironage_bench_back_single_spruce);
-			FurnitureFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 2), BlockObjectHolder.chair_wood_ironage_bench_back_single_birch);
-			FurnitureFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 3), BlockObjectHolder.chair_wood_ironage_bench_back_single_jungle);
-			FurnitureFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 4), BlockObjectHolder.chair_wood_ironage_bench_back_single_acacia);
-			FurnitureFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 5), BlockObjectHolder.chair_wood_ironage_bench_back_single_big_oak);
+			SeatingFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 0), BlockObjectHolder.chair_wood_ironage_bench_back_single_oak);
+			SeatingFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 1), BlockObjectHolder.chair_wood_ironage_bench_back_single_spruce);
+			SeatingFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 2), BlockObjectHolder.chair_wood_ironage_bench_back_single_birch);
+			SeatingFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 3), BlockObjectHolder.chair_wood_ironage_bench_back_single_jungle);
+			SeatingFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 4), BlockObjectHolder.chair_wood_ironage_bench_back_single_acacia);
+			SeatingFactory.AddBackBenchRecipe(new ItemStack(Blocks.PLANKS, 1, 5), BlockObjectHolder.chair_wood_ironage_bench_back_single_big_oak);
 
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_oak, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_oak);
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_spruce, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_spruce);
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_birch, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_birch);
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_jungle, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_jungle);
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_acacia, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_acacia);
-			FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_big_oak, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_big_oak);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_oak, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_oak);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_spruce, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_spruce);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_birch, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_birch);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_jungle, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_jungle);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_acacia, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_acacia);
+			SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_big_oak, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_big_oak);
 
 		}
 
@@ -207,167 +235,167 @@ public class RecipeInitialiser {
 			ItemStack EUCALYPTUS_LOG = new ItemStack(logs3, 1, 7);
 
 			if (IronAgeFurnitureConfiguration.GENERATE_CLASSIC_CHAIRS) {
-				FurnitureFactory.AddClassicChairRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_cherry);
-				FurnitureFactory.AddClassicChairRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_ebony);
-				FurnitureFactory.AddClassicChairRecipe(ETHEREAL, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_ethereal);
-				FurnitureFactory.AddClassicChairRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_eucalyptus);
-				FurnitureFactory.AddClassicChairRecipe(FIR, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_fir);
-				FurnitureFactory.AddClassicChairRecipe(HELLBARK, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_hellbark);
-				FurnitureFactory.AddClassicChairRecipe(JACARANDA, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_jacaranda);
-				FurnitureFactory.AddClassicChairRecipe(MAGIC, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_magic);
-				FurnitureFactory.AddClassicChairRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_mahogany);
-				FurnitureFactory.AddClassicChairRecipe(MANGROVE, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_mangrove);
-				FurnitureFactory.AddClassicChairRecipe(PALM, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_palm);
-				FurnitureFactory.AddClassicChairRecipe(PINE, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_pine);
-				FurnitureFactory.AddClassicChairRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_redwood);
-				FurnitureFactory.AddClassicChairRecipe(SACRED_OAK, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_sacred_oak);
-				FurnitureFactory.AddClassicChairRecipe(UMBRAN, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_umbran);
-				FurnitureFactory.AddClassicChairRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_willow);
+				SeatingFactory.AddClassicChairRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_cherry);
+				SeatingFactory.AddClassicChairRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_ebony);
+				SeatingFactory.AddClassicChairRecipe(ETHEREAL, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_ethereal);
+				SeatingFactory.AddClassicChairRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_eucalyptus);
+				SeatingFactory.AddClassicChairRecipe(FIR, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_fir);
+				SeatingFactory.AddClassicChairRecipe(HELLBARK, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_hellbark);
+				SeatingFactory.AddClassicChairRecipe(JACARANDA, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_jacaranda);
+				SeatingFactory.AddClassicChairRecipe(MAGIC, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_magic);
+				SeatingFactory.AddClassicChairRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_mahogany);
+				SeatingFactory.AddClassicChairRecipe(MANGROVE, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_mangrove);
+				SeatingFactory.AddClassicChairRecipe(PALM, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_palm);
+				SeatingFactory.AddClassicChairRecipe(PINE, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_pine);
+				SeatingFactory.AddClassicChairRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_redwood);
+				SeatingFactory.AddClassicChairRecipe(SACRED_OAK, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_sacred_oak);
+				SeatingFactory.AddClassicChairRecipe(UMBRAN, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_umbran);
+				SeatingFactory.AddClassicChairRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_willow);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_SHIELD_CHAIRS) {
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_cherry, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_cherry);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_ebony, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_ebony);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_ethereal, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_ethereal);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_eucalyptus, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_eucalyptus);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_fir, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_fir);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_hellbark, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_hellbark);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_jacaranda, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_jacaranda);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_magic, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_magic);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_mahogany, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_mahogany);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_mangrove, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_mangrove);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_palm, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_palm);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_pine, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_pine);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_redwood, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_redwood);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_sacred_oak, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_sacred_oak);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_umbran, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_umbran);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_willow, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_willow);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_cherry, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_cherry);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_ebony, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_ebony);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_ethereal, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_ethereal);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_eucalyptus, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_eucalyptus);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_fir, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_fir);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_hellbark, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_hellbark);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_jacaranda, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_jacaranda);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_magic, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_magic);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_mahogany, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_mahogany);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_mangrove, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_mangrove);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_palm, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_palm);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_pine, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_pine);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_redwood, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_redwood);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_sacred_oak, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_sacred_oak);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_umbran, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_umbran);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_biomesoplenty_willow, BlockObjectHolder.chair_wood_ironage_shield_biomesoplenty_willow);
 
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_SHORT_STOOLS) {
-				FurnitureFactory.AddShortStoolRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_cherry);
-				FurnitureFactory.AddShortStoolRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_ebony);
-				FurnitureFactory.AddShortStoolRecipe(ETHEREAL, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_ethereal);
-				FurnitureFactory.AddShortStoolRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_eucalyptus);
-				FurnitureFactory.AddShortStoolRecipe(FIR, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_fir);
-				FurnitureFactory.AddShortStoolRecipe(HELLBARK, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_hellbark);
-				FurnitureFactory.AddShortStoolRecipe(JACARANDA, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_jacaranda);
-				FurnitureFactory.AddShortStoolRecipe(MAGIC, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_magic);
-				FurnitureFactory.AddShortStoolRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_mahogany);
-				FurnitureFactory.AddShortStoolRecipe(MANGROVE, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_mangrove);
-				FurnitureFactory.AddShortStoolRecipe(PALM, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_palm);
-				FurnitureFactory.AddShortStoolRecipe(PINE, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_pine);
-				FurnitureFactory.AddShortStoolRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_redwood);
-				FurnitureFactory.AddShortStoolRecipe(SACRED_OAK, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_sacred_oak);
-				FurnitureFactory.AddShortStoolRecipe(UMBRAN, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_umbran);
-				FurnitureFactory.AddShortStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_willow);
+				SeatingFactory.AddShortStoolRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_cherry);
+				SeatingFactory.AddShortStoolRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_ebony);
+				SeatingFactory.AddShortStoolRecipe(ETHEREAL, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_ethereal);
+				SeatingFactory.AddShortStoolRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_eucalyptus);
+				SeatingFactory.AddShortStoolRecipe(FIR, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_fir);
+				SeatingFactory.AddShortStoolRecipe(HELLBARK, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_hellbark);
+				SeatingFactory.AddShortStoolRecipe(JACARANDA, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_jacaranda);
+				SeatingFactory.AddShortStoolRecipe(MAGIC, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_magic);
+				SeatingFactory.AddShortStoolRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_mahogany);
+				SeatingFactory.AddShortStoolRecipe(MANGROVE, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_mangrove);
+				SeatingFactory.AddShortStoolRecipe(PALM, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_palm);
+				SeatingFactory.AddShortStoolRecipe(PINE, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_pine);
+				SeatingFactory.AddShortStoolRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_redwood);
+				SeatingFactory.AddShortStoolRecipe(SACRED_OAK, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_sacred_oak);
+				SeatingFactory.AddShortStoolRecipe(UMBRAN, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_umbran);
+				SeatingFactory.AddShortStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_short_biomesoplenty_willow);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_TALL_STOOLS) {
-				FurnitureFactory.AddTallStoolRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_cherry);
-				FurnitureFactory.AddTallStoolRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_ebony);
-				FurnitureFactory.AddTallStoolRecipe(ETHEREAL, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_ethereal);
-				FurnitureFactory.AddTallStoolRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_eucalyptus);
-				FurnitureFactory.AddTallStoolRecipe(FIR, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_fir);
-				FurnitureFactory.AddTallStoolRecipe(HELLBARK, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_hellbark);
-				FurnitureFactory.AddTallStoolRecipe(JACARANDA, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_jacaranda);
-				FurnitureFactory.AddTallStoolRecipe(MAGIC, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_magic);
-				FurnitureFactory.AddTallStoolRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_mahogany);
-				FurnitureFactory.AddTallStoolRecipe(MANGROVE, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_mangrove);
-				FurnitureFactory.AddTallStoolRecipe(PALM, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_palm);
-				FurnitureFactory.AddTallStoolRecipe(PINE, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_pine);
-				FurnitureFactory.AddTallStoolRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_redwood);
-				FurnitureFactory.AddTallStoolRecipe(SACRED_OAK, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_sacred_oak);
-				FurnitureFactory.AddTallStoolRecipe(UMBRAN, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_umbran);
-				FurnitureFactory.AddTallStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_willow);
+				SeatingFactory.AddTallStoolRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_cherry);
+				SeatingFactory.AddTallStoolRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_ebony);
+				SeatingFactory.AddTallStoolRecipe(ETHEREAL, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_ethereal);
+				SeatingFactory.AddTallStoolRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_eucalyptus);
+				SeatingFactory.AddTallStoolRecipe(FIR, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_fir);
+				SeatingFactory.AddTallStoolRecipe(HELLBARK, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_hellbark);
+				SeatingFactory.AddTallStoolRecipe(JACARANDA, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_jacaranda);
+				SeatingFactory.AddTallStoolRecipe(MAGIC, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_magic);
+				SeatingFactory.AddTallStoolRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_mahogany);
+				SeatingFactory.AddTallStoolRecipe(MANGROVE, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_mangrove);
+				SeatingFactory.AddTallStoolRecipe(PALM, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_palm);
+				SeatingFactory.AddTallStoolRecipe(PINE, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_pine);
+				SeatingFactory.AddTallStoolRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_redwood);
+				SeatingFactory.AddTallStoolRecipe(SACRED_OAK, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_sacred_oak);
+				SeatingFactory.AddTallStoolRecipe(UMBRAN, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_umbran);
+				SeatingFactory.AddTallStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_tall_biomesoplenty_willow);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_WOOD_BENCHES) {
-				FurnitureFactory.AddBenchRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_cherry);
-				FurnitureFactory.AddBenchRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_ebony);
-				FurnitureFactory.AddBenchRecipe(ETHEREAL, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_ethereal);
-				FurnitureFactory.AddBenchRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_eucalyptus);
-				FurnitureFactory.AddBenchRecipe(FIR, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_fir);
-				FurnitureFactory.AddBenchRecipe(HELLBARK, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_hellbark);
-				FurnitureFactory.AddBenchRecipe(JACARANDA, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_jacaranda);
-				FurnitureFactory.AddBenchRecipe(MAGIC, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_magic);
-				FurnitureFactory.AddBenchRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_mahogany);
-				FurnitureFactory.AddBenchRecipe(MANGROVE, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_mangrove);
-				FurnitureFactory.AddBenchRecipe(PALM, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_palm);
-				FurnitureFactory.AddBenchRecipe(PINE, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_pine);
-				FurnitureFactory.AddBenchRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_redwood);
-				FurnitureFactory.AddBenchRecipe(SACRED_OAK, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_sacred_oak);
-				FurnitureFactory.AddBenchRecipe(UMBRAN, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_umbran);
-				FurnitureFactory.AddBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_willow);
+				SeatingFactory.AddBenchRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_cherry);
+				SeatingFactory.AddBenchRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_ebony);
+				SeatingFactory.AddBenchRecipe(ETHEREAL, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_ethereal);
+				SeatingFactory.AddBenchRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_eucalyptus);
+				SeatingFactory.AddBenchRecipe(FIR, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_fir);
+				SeatingFactory.AddBenchRecipe(HELLBARK, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_hellbark);
+				SeatingFactory.AddBenchRecipe(JACARANDA, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_jacaranda);
+				SeatingFactory.AddBenchRecipe(MAGIC, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_magic);
+				SeatingFactory.AddBenchRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_mahogany);
+				SeatingFactory.AddBenchRecipe(MANGROVE, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_mangrove);
+				SeatingFactory.AddBenchRecipe(PALM, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_palm);
+				SeatingFactory.AddBenchRecipe(PINE, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_pine);
+				SeatingFactory.AddBenchRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_redwood);
+				SeatingFactory.AddBenchRecipe(SACRED_OAK, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_sacred_oak);
+				SeatingFactory.AddBenchRecipe(UMBRAN, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_umbran);
+				SeatingFactory.AddBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_willow);
 
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_cherry, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_cherry);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_ebony, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_ebony);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_ethereal, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_ethereal);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_eucalyptus, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_eucalyptus);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_fir, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_fir);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_hellbark, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_hellbark);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_jacaranda, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_jacaranda);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_magic, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_magic);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_mahogany, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_mahogany);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_mangrove, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_mangrove);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_palm, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_palm);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_pine, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_pine);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_redwood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_redwood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_sacred_oak, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_sacred_oak);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_umbran, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_umbran);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_willow, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_willow);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_cherry, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_cherry);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_ebony, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_ebony);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_ethereal, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_ethereal);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_eucalyptus, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_eucalyptus);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_fir, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_fir);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_hellbark, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_hellbark);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_jacaranda, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_jacaranda);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_magic, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_magic);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_mahogany, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_mahogany);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_mangrove, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_mangrove);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_palm, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_palm);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_pine, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_pine);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_redwood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_redwood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_sacred_oak, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_sacred_oak);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_umbran, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_umbran);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_biomesoplenty_willow, BlockObjectHolder.chair_wood_ironage_bench_padded_single_biomesoplenty_willow);
 
-				FurnitureFactory.AddLogBenchRecipe(CHERRY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_cherry);
-				FurnitureFactory.AddLogBenchRecipe(EBONY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_ebony);
-				FurnitureFactory.AddLogBenchRecipe(ETHEREAL_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_ethereal);
-				FurnitureFactory.AddLogBenchRecipe(EUCALYPTUS_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_eucalyptus);
-				FurnitureFactory.AddLogBenchRecipe(FIR_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_fir);
-				FurnitureFactory.AddLogBenchRecipe(HELLBARK_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_hellbark);
-				FurnitureFactory.AddLogBenchRecipe(JACARANDA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_jacaranda);
-				FurnitureFactory.AddLogBenchRecipe(MAGIC_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_magic);
-				FurnitureFactory.AddLogBenchRecipe(MAHOGANY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_mahogany);
-				FurnitureFactory.AddLogBenchRecipe(MANGROVE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_mangrove);
-				FurnitureFactory.AddLogBenchRecipe(PALM_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_palm);
-				FurnitureFactory.AddLogBenchRecipe(PINE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_pine);
-				FurnitureFactory.AddLogBenchRecipe(REDWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_redwood);
-				FurnitureFactory.AddLogBenchRecipe(SACRED_OAK_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_sacred_oak);
-				FurnitureFactory.AddLogBenchRecipe(UMBRAN_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_umbran);
-				FurnitureFactory.AddLogBenchRecipe(WILLOW_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_willow);
+				SeatingFactory.AddLogBenchRecipe(CHERRY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_cherry);
+				SeatingFactory.AddLogBenchRecipe(EBONY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_ebony);
+				SeatingFactory.AddLogBenchRecipe(ETHEREAL_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_ethereal);
+				SeatingFactory.AddLogBenchRecipe(EUCALYPTUS_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_eucalyptus);
+				SeatingFactory.AddLogBenchRecipe(FIR_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_fir);
+				SeatingFactory.AddLogBenchRecipe(HELLBARK_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_hellbark);
+				SeatingFactory.AddLogBenchRecipe(JACARANDA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_jacaranda);
+				SeatingFactory.AddLogBenchRecipe(MAGIC_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_magic);
+				SeatingFactory.AddLogBenchRecipe(MAHOGANY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_mahogany);
+				SeatingFactory.AddLogBenchRecipe(MANGROVE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_mangrove);
+				SeatingFactory.AddLogBenchRecipe(PALM_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_palm);
+				SeatingFactory.AddLogBenchRecipe(PINE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_pine);
+				SeatingFactory.AddLogBenchRecipe(REDWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_redwood);
+				SeatingFactory.AddLogBenchRecipe(SACRED_OAK_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_sacred_oak);
+				SeatingFactory.AddLogBenchRecipe(UMBRAN_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_umbran);
+				SeatingFactory.AddLogBenchRecipe(WILLOW_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_biomesoplenty_willow);
 
-				FurnitureFactory.AddBackBenchRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_cherry);
-				FurnitureFactory.AddBackBenchRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_ebony);
-				FurnitureFactory.AddBackBenchRecipe(ETHEREAL, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_ethereal);
-				FurnitureFactory.AddBackBenchRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_eucalyptus);
-				FurnitureFactory.AddBackBenchRecipe(FIR, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_fir);
-				FurnitureFactory.AddBackBenchRecipe(HELLBARK, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_hellbark);
-				FurnitureFactory.AddBackBenchRecipe(JACARANDA, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_jacaranda);
-				FurnitureFactory.AddBackBenchRecipe(MAGIC, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_magic);
-				FurnitureFactory.AddBackBenchRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_mahogany);
-				FurnitureFactory.AddBackBenchRecipe(MANGROVE, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_mangrove);
-				FurnitureFactory.AddBackBenchRecipe(PALM, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_palm);
-				FurnitureFactory.AddBackBenchRecipe(PINE, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_pine);
-				FurnitureFactory.AddBackBenchRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_redwood);
-				FurnitureFactory.AddBackBenchRecipe(SACRED_OAK, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_sacred_oak);
-				FurnitureFactory.AddBackBenchRecipe(UMBRAN, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_umbran);
-				FurnitureFactory.AddBackBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_willow);
+				SeatingFactory.AddBackBenchRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_cherry);
+				SeatingFactory.AddBackBenchRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_ebony);
+				SeatingFactory.AddBackBenchRecipe(ETHEREAL, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_ethereal);
+				SeatingFactory.AddBackBenchRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_eucalyptus);
+				SeatingFactory.AddBackBenchRecipe(FIR, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_fir);
+				SeatingFactory.AddBackBenchRecipe(HELLBARK, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_hellbark);
+				SeatingFactory.AddBackBenchRecipe(JACARANDA, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_jacaranda);
+				SeatingFactory.AddBackBenchRecipe(MAGIC, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_magic);
+				SeatingFactory.AddBackBenchRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_mahogany);
+				SeatingFactory.AddBackBenchRecipe(MANGROVE, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_mangrove);
+				SeatingFactory.AddBackBenchRecipe(PALM, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_palm);
+				SeatingFactory.AddBackBenchRecipe(PINE, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_pine);
+				SeatingFactory.AddBackBenchRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_redwood);
+				SeatingFactory.AddBackBenchRecipe(SACRED_OAK, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_sacred_oak);
+				SeatingFactory.AddBackBenchRecipe(UMBRAN, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_umbran);
+				SeatingFactory.AddBackBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_willow);
 
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_cherry, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_cherry);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_ebony, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_ebony);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_ethereal, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_ethereal);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_eucalyptus, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_eucalyptus);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_fir, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_fir);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_hellbark, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_hellbark);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_jacaranda, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_jacaranda);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_magic, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_magic);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_mahogany, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_mahogany);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_mangrove, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_mangrove);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_palm, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_palm);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_pine, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_pine);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_redwood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_redwood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_sacred_oak, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_sacred_oak);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_umbran, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_umbran);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_willow, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_willow);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_cherry, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_cherry);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_ebony, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_ebony);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_ethereal, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_ethereal);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_eucalyptus, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_eucalyptus);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_fir, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_fir);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_hellbark, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_hellbark);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_jacaranda, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_jacaranda);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_magic, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_magic);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_mahogany, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_mahogany);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_mangrove, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_mangrove);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_palm, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_palm);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_pine, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_pine);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_redwood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_redwood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_sacred_oak, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_sacred_oak);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_umbran, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_umbran);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_biomesoplenty_willow, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_biomesoplenty_willow);
 			}
 		}
 
@@ -416,138 +444,138 @@ public class RecipeInitialiser {
 			ItemStack BLOODWOOD_LOG = new ItemStack(logs4, 1, 0);
 
 			if (IronAgeFurnitureConfiguration.GENERATE_CLASSIC_CHAIRS) {
-				FurnitureFactory.AddClassicChairRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_classic_natura_maple);
-				FurnitureFactory.AddClassicChairRecipe(SILVERBELL, BlockObjectHolder.chair_wood_ironage_classic_natura_silverbell);
-				FurnitureFactory.AddClassicChairRecipe(AMARANTH, BlockObjectHolder.chair_wood_ironage_classic_natura_amaranth);
-				FurnitureFactory.AddClassicChairRecipe(TIGER, BlockObjectHolder.chair_wood_ironage_classic_natura_tiger);
-				FurnitureFactory.AddClassicChairRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_classic_natura_willow);
-				FurnitureFactory.AddClassicChairRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_classic_natura_eucalyptus);
-				FurnitureFactory.AddClassicChairRecipe(HOPSEED, BlockObjectHolder.chair_wood_ironage_classic_natura_hopseed);
-				FurnitureFactory.AddClassicChairRecipe(SAKURA, BlockObjectHolder.chair_wood_ironage_classic_natura_sakura);
-				FurnitureFactory.AddClassicChairRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_classic_natura_redwood);
-				FurnitureFactory.AddClassicChairRecipe(GHOSTWOOD, BlockObjectHolder.chair_wood_ironage_classic_natura_ghostwood);
-				FurnitureFactory.AddClassicChairRecipe(BLOODWOOD, BlockObjectHolder.chair_wood_ironage_classic_natura_bloodwood);
-				FurnitureFactory.AddClassicChairRecipe(FUSEWOOD, BlockObjectHolder.chair_wood_ironage_classic_natura_fusewood);
-				FurnitureFactory.AddClassicChairRecipe(DARKWOOD, BlockObjectHolder.chair_wood_ironage_classic_natura_darkwood);
+				SeatingFactory.AddClassicChairRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_classic_natura_maple);
+				SeatingFactory.AddClassicChairRecipe(SILVERBELL, BlockObjectHolder.chair_wood_ironage_classic_natura_silverbell);
+				SeatingFactory.AddClassicChairRecipe(AMARANTH, BlockObjectHolder.chair_wood_ironage_classic_natura_amaranth);
+				SeatingFactory.AddClassicChairRecipe(TIGER, BlockObjectHolder.chair_wood_ironage_classic_natura_tiger);
+				SeatingFactory.AddClassicChairRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_classic_natura_willow);
+				SeatingFactory.AddClassicChairRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_classic_natura_eucalyptus);
+				SeatingFactory.AddClassicChairRecipe(HOPSEED, BlockObjectHolder.chair_wood_ironage_classic_natura_hopseed);
+				SeatingFactory.AddClassicChairRecipe(SAKURA, BlockObjectHolder.chair_wood_ironage_classic_natura_sakura);
+				SeatingFactory.AddClassicChairRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_classic_natura_redwood);
+				SeatingFactory.AddClassicChairRecipe(GHOSTWOOD, BlockObjectHolder.chair_wood_ironage_classic_natura_ghostwood);
+				SeatingFactory.AddClassicChairRecipe(BLOODWOOD, BlockObjectHolder.chair_wood_ironage_classic_natura_bloodwood);
+				SeatingFactory.AddClassicChairRecipe(FUSEWOOD, BlockObjectHolder.chair_wood_ironage_classic_natura_fusewood);
+				SeatingFactory.AddClassicChairRecipe(DARKWOOD, BlockObjectHolder.chair_wood_ironage_classic_natura_darkwood);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_SHIELD_CHAIRS) {
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_maple, BlockObjectHolder.chair_wood_ironage_shield_natura_maple);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_silverbell, BlockObjectHolder.chair_wood_ironage_shield_natura_silverbell);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_amaranth, BlockObjectHolder.chair_wood_ironage_shield_natura_amaranth);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_tiger, BlockObjectHolder.chair_wood_ironage_shield_natura_tiger);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_willow, BlockObjectHolder.chair_wood_ironage_shield_natura_willow);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_eucalyptus, BlockObjectHolder.chair_wood_ironage_shield_natura_eucalyptus);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_hopseed, BlockObjectHolder.chair_wood_ironage_shield_natura_hopseed);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_sakura, BlockObjectHolder.chair_wood_ironage_shield_natura_sakura);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_redwood, BlockObjectHolder.chair_wood_ironage_shield_natura_redwood);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_ghostwood, BlockObjectHolder.chair_wood_ironage_shield_natura_ghostwood);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_bloodwood, BlockObjectHolder.chair_wood_ironage_shield_natura_bloodwood );
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_fusewood, BlockObjectHolder.chair_wood_ironage_shield_natura_fusewood);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_darkwood, BlockObjectHolder.chair_wood_ironage_shield_natura_darkwood);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_maple, BlockObjectHolder.chair_wood_ironage_shield_natura_maple);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_silverbell, BlockObjectHolder.chair_wood_ironage_shield_natura_silverbell);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_amaranth, BlockObjectHolder.chair_wood_ironage_shield_natura_amaranth);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_tiger, BlockObjectHolder.chair_wood_ironage_shield_natura_tiger);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_willow, BlockObjectHolder.chair_wood_ironage_shield_natura_willow);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_eucalyptus, BlockObjectHolder.chair_wood_ironage_shield_natura_eucalyptus);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_hopseed, BlockObjectHolder.chair_wood_ironage_shield_natura_hopseed);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_sakura, BlockObjectHolder.chair_wood_ironage_shield_natura_sakura);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_redwood, BlockObjectHolder.chair_wood_ironage_shield_natura_redwood);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_ghostwood, BlockObjectHolder.chair_wood_ironage_shield_natura_ghostwood);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_bloodwood, BlockObjectHolder.chair_wood_ironage_shield_natura_bloodwood );
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_fusewood, BlockObjectHolder.chair_wood_ironage_shield_natura_fusewood);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_natura_darkwood, BlockObjectHolder.chair_wood_ironage_shield_natura_darkwood);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_SHORT_STOOLS) {
-				FurnitureFactory.AddShortStoolRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_stool_short_natura_maple);
-				FurnitureFactory.AddShortStoolRecipe(SILVERBELL, BlockObjectHolder.chair_wood_ironage_stool_short_natura_silverbell);
-				FurnitureFactory.AddShortStoolRecipe(AMARANTH, BlockObjectHolder.chair_wood_ironage_stool_short_natura_amaranth);
-				FurnitureFactory.AddShortStoolRecipe(TIGER, BlockObjectHolder.chair_wood_ironage_stool_short_natura_tiger);
-				FurnitureFactory.AddShortStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_short_natura_willow);
-				FurnitureFactory.AddShortStoolRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_stool_short_natura_eucalyptus);
-				FurnitureFactory.AddShortStoolRecipe(HOPSEED, BlockObjectHolder.chair_wood_ironage_stool_short_natura_hopseed);
-				FurnitureFactory.AddShortStoolRecipe(SAKURA, BlockObjectHolder.chair_wood_ironage_stool_short_natura_sakura);
-				FurnitureFactory.AddShortStoolRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_natura_redwood);
-				FurnitureFactory.AddShortStoolRecipe(GHOSTWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_natura_ghostwood);
-				FurnitureFactory.AddShortStoolRecipe(BLOODWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_natura_bloodwood);
-				FurnitureFactory.AddShortStoolRecipe(FUSEWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_natura_fusewood);
-				FurnitureFactory.AddShortStoolRecipe(DARKWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_natura_darkwood);
+				SeatingFactory.AddShortStoolRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_stool_short_natura_maple);
+				SeatingFactory.AddShortStoolRecipe(SILVERBELL, BlockObjectHolder.chair_wood_ironage_stool_short_natura_silverbell);
+				SeatingFactory.AddShortStoolRecipe(AMARANTH, BlockObjectHolder.chair_wood_ironage_stool_short_natura_amaranth);
+				SeatingFactory.AddShortStoolRecipe(TIGER, BlockObjectHolder.chair_wood_ironage_stool_short_natura_tiger);
+				SeatingFactory.AddShortStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_short_natura_willow);
+				SeatingFactory.AddShortStoolRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_stool_short_natura_eucalyptus);
+				SeatingFactory.AddShortStoolRecipe(HOPSEED, BlockObjectHolder.chair_wood_ironage_stool_short_natura_hopseed);
+				SeatingFactory.AddShortStoolRecipe(SAKURA, BlockObjectHolder.chair_wood_ironage_stool_short_natura_sakura);
+				SeatingFactory.AddShortStoolRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_natura_redwood);
+				SeatingFactory.AddShortStoolRecipe(GHOSTWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_natura_ghostwood);
+				SeatingFactory.AddShortStoolRecipe(BLOODWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_natura_bloodwood);
+				SeatingFactory.AddShortStoolRecipe(FUSEWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_natura_fusewood);
+				SeatingFactory.AddShortStoolRecipe(DARKWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_natura_darkwood);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_TALL_STOOLS) {
-				FurnitureFactory.AddTallStoolRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_maple);
-				FurnitureFactory.AddTallStoolRecipe(SILVERBELL, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_silverbell);
-				FurnitureFactory.AddTallStoolRecipe(AMARANTH, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_amaranth);
-				FurnitureFactory.AddTallStoolRecipe(TIGER, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_tiger);
-				FurnitureFactory.AddTallStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_willow);
-				FurnitureFactory.AddTallStoolRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_eucalyptus);
-				FurnitureFactory.AddTallStoolRecipe(HOPSEED, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_hopseed);
-				FurnitureFactory.AddTallStoolRecipe(SAKURA, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_sakura);
-				FurnitureFactory.AddTallStoolRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_redwood);
-				FurnitureFactory.AddTallStoolRecipe(GHOSTWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_ghostwood);
-				FurnitureFactory.AddTallStoolRecipe(BLOODWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_bloodwood);
-				FurnitureFactory.AddTallStoolRecipe(FUSEWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_fusewood);
-				FurnitureFactory.AddTallStoolRecipe(DARKWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_darkwood);
+				SeatingFactory.AddTallStoolRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_maple);
+				SeatingFactory.AddTallStoolRecipe(SILVERBELL, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_silverbell);
+				SeatingFactory.AddTallStoolRecipe(AMARANTH, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_amaranth);
+				SeatingFactory.AddTallStoolRecipe(TIGER, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_tiger);
+				SeatingFactory.AddTallStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_willow);
+				SeatingFactory.AddTallStoolRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_eucalyptus);
+				SeatingFactory.AddTallStoolRecipe(HOPSEED, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_hopseed);
+				SeatingFactory.AddTallStoolRecipe(SAKURA, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_sakura);
+				SeatingFactory.AddTallStoolRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_redwood);
+				SeatingFactory.AddTallStoolRecipe(GHOSTWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_ghostwood);
+				SeatingFactory.AddTallStoolRecipe(BLOODWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_bloodwood);
+				SeatingFactory.AddTallStoolRecipe(FUSEWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_fusewood);
+				SeatingFactory.AddTallStoolRecipe(DARKWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_natura_darkwood);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_WOOD_BENCHES) {
-				FurnitureFactory.AddBenchRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_bench_single_natura_maple);
-				FurnitureFactory.AddBenchRecipe(SILVERBELL, BlockObjectHolder.chair_wood_ironage_bench_single_natura_silverbell);
-				FurnitureFactory.AddBenchRecipe(AMARANTH, BlockObjectHolder.chair_wood_ironage_bench_single_natura_amaranth);
-				FurnitureFactory.AddBenchRecipe(TIGER, BlockObjectHolder.chair_wood_ironage_bench_single_natura_tiger);
-				FurnitureFactory.AddBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_single_natura_willow);
-				FurnitureFactory.AddBenchRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_bench_single_natura_eucalyptus);
-				FurnitureFactory.AddBenchRecipe(HOPSEED, BlockObjectHolder.chair_wood_ironage_bench_single_natura_hopseed);
-				FurnitureFactory.AddBenchRecipe(SAKURA, BlockObjectHolder.chair_wood_ironage_bench_single_natura_sakura);
-				FurnitureFactory.AddBenchRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_natura_redwood);
-				FurnitureFactory.AddBenchRecipe(GHOSTWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_natura_ghostwood);
-				FurnitureFactory.AddBenchRecipe(BLOODWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_natura_bloodwood);
-				FurnitureFactory.AddBenchRecipe(FUSEWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_natura_fusewood);
-				FurnitureFactory.AddBenchRecipe(DARKWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_natura_darkwood);
+				SeatingFactory.AddBenchRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_bench_single_natura_maple);
+				SeatingFactory.AddBenchRecipe(SILVERBELL, BlockObjectHolder.chair_wood_ironage_bench_single_natura_silverbell);
+				SeatingFactory.AddBenchRecipe(AMARANTH, BlockObjectHolder.chair_wood_ironage_bench_single_natura_amaranth);
+				SeatingFactory.AddBenchRecipe(TIGER, BlockObjectHolder.chair_wood_ironage_bench_single_natura_tiger);
+				SeatingFactory.AddBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_single_natura_willow);
+				SeatingFactory.AddBenchRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_bench_single_natura_eucalyptus);
+				SeatingFactory.AddBenchRecipe(HOPSEED, BlockObjectHolder.chair_wood_ironage_bench_single_natura_hopseed);
+				SeatingFactory.AddBenchRecipe(SAKURA, BlockObjectHolder.chair_wood_ironage_bench_single_natura_sakura);
+				SeatingFactory.AddBenchRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_natura_redwood);
+				SeatingFactory.AddBenchRecipe(GHOSTWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_natura_ghostwood);
+				SeatingFactory.AddBenchRecipe(BLOODWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_natura_bloodwood);
+				SeatingFactory.AddBenchRecipe(FUSEWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_natura_fusewood);
+				SeatingFactory.AddBenchRecipe(DARKWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_natura_darkwood);
 
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_eucalyptus, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_eucalyptus);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_amaranth, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_amaranth);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_hopseed, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_hopseed);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_maple, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_maple);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_redwood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_redwood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_sakura, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_sakura);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_silverbell, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_silverbell);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_tiger, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_tiger);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_willow, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_willow);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_bloodwood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_bloodwood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_darkwood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_darkwood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_fusewood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_fusewood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_ghostwood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_ghostwood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_eucalyptus, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_eucalyptus);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_amaranth, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_amaranth);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_hopseed, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_hopseed);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_maple, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_maple);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_redwood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_redwood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_sakura, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_sakura);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_silverbell, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_silverbell);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_tiger, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_tiger);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_willow, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_willow);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_bloodwood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_bloodwood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_darkwood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_darkwood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_fusewood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_fusewood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_natura_ghostwood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_natura_ghostwood);
 
-				FurnitureFactory.AddLogBenchRecipe(MAPLE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_maple);
-				FurnitureFactory.AddLogBenchRecipe(SILVERBELL_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_silverbell);
-				FurnitureFactory.AddLogBenchRecipe(AMARANTH_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_amaranth);
-				FurnitureFactory.AddLogBenchRecipe(TIGER_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_tiger);
-				FurnitureFactory.AddLogBenchRecipe(WILLOW_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_willow);
-				FurnitureFactory.AddLogBenchRecipe(EUCALYPTUS_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_eucalyptus);
-				FurnitureFactory.AddLogBenchRecipe(HOPSEED_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_hopseed);
-				FurnitureFactory.AddLogBenchRecipe(SAKURA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_sakura);
-				FurnitureFactory.AddLogBenchRecipe(GHOSTWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_ghostwood);
-				FurnitureFactory.AddLogBenchRecipe(BLOODWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_bloodwood);
-				FurnitureFactory.AddLogBenchRecipe(FUSEWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_fusewood);
-				FurnitureFactory.AddLogBenchRecipe(DARKWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_darkwood);
+				SeatingFactory.AddLogBenchRecipe(MAPLE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_maple);
+				SeatingFactory.AddLogBenchRecipe(SILVERBELL_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_silverbell);
+				SeatingFactory.AddLogBenchRecipe(AMARANTH_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_amaranth);
+				SeatingFactory.AddLogBenchRecipe(TIGER_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_tiger);
+				SeatingFactory.AddLogBenchRecipe(WILLOW_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_willow);
+				SeatingFactory.AddLogBenchRecipe(EUCALYPTUS_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_eucalyptus);
+				SeatingFactory.AddLogBenchRecipe(HOPSEED_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_hopseed);
+				SeatingFactory.AddLogBenchRecipe(SAKURA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_sakura);
+				SeatingFactory.AddLogBenchRecipe(GHOSTWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_ghostwood);
+				SeatingFactory.AddLogBenchRecipe(BLOODWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_bloodwood);
+				SeatingFactory.AddLogBenchRecipe(FUSEWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_fusewood);
+				SeatingFactory.AddLogBenchRecipe(DARKWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_natura_darkwood);
 
-				FurnitureFactory.AddBackBenchRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_maple);
-				FurnitureFactory.AddBackBenchRecipe(SILVERBELL, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_silverbell);
-				FurnitureFactory.AddBackBenchRecipe(AMARANTH, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_amaranth);
-				FurnitureFactory.AddBackBenchRecipe(TIGER, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_tiger);
-				FurnitureFactory.AddBackBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_willow);
-				FurnitureFactory.AddBackBenchRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_eucalyptus);
-				FurnitureFactory.AddBackBenchRecipe(HOPSEED, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_hopseed);
-				FurnitureFactory.AddBackBenchRecipe(SAKURA, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_sakura);
-				FurnitureFactory.AddBackBenchRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_redwood);
-				FurnitureFactory.AddBackBenchRecipe(GHOSTWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_ghostwood);
-				FurnitureFactory.AddBackBenchRecipe(BLOODWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_bloodwood);
-				FurnitureFactory.AddBackBenchRecipe(FUSEWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_fusewood);
-				FurnitureFactory.AddBackBenchRecipe(DARKWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_darkwood);
+				SeatingFactory.AddBackBenchRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_maple);
+				SeatingFactory.AddBackBenchRecipe(SILVERBELL, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_silverbell);
+				SeatingFactory.AddBackBenchRecipe(AMARANTH, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_amaranth);
+				SeatingFactory.AddBackBenchRecipe(TIGER, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_tiger);
+				SeatingFactory.AddBackBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_willow);
+				SeatingFactory.AddBackBenchRecipe(EUCALYPTUS, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_eucalyptus);
+				SeatingFactory.AddBackBenchRecipe(HOPSEED, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_hopseed);
+				SeatingFactory.AddBackBenchRecipe(SAKURA, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_sakura);
+				SeatingFactory.AddBackBenchRecipe(REDWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_redwood);
+				SeatingFactory.AddBackBenchRecipe(GHOSTWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_ghostwood);
+				SeatingFactory.AddBackBenchRecipe(BLOODWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_bloodwood);
+				SeatingFactory.AddBackBenchRecipe(FUSEWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_fusewood);
+				SeatingFactory.AddBackBenchRecipe(DARKWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_darkwood);
 
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_eucalyptus, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_eucalyptus);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_amaranth, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_amaranth);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_hopseed, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_hopseed);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_maple, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_maple);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_redwood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_redwood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_sakura, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_sakura);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_silverbell, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_silverbell);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_tiger, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_tiger);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_willow, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_willow);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_bloodwood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_bloodwood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_darkwood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_darkwood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_fusewood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_fusewood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_ghostwood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_ghostwood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_eucalyptus, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_eucalyptus);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_amaranth, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_amaranth);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_hopseed, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_hopseed);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_maple, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_maple);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_redwood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_redwood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_sakura, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_sakura);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_silverbell, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_silverbell);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_tiger, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_tiger);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_willow, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_willow);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_bloodwood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_bloodwood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_darkwood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_darkwood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_fusewood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_fusewood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_natura_ghostwood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_natura_ghostwood);
 			}
 		}
 
@@ -560,37 +588,37 @@ public class RecipeInitialiser {
 			ItemStack PACKAGED = new ItemStack(wood, 1, 2);
 
 			if (IronAgeFurnitureConfiguration.GENERATE_CLASSIC_CHAIRS) {
-				FurnitureFactory.AddClassicChairRecipe(HORIZONTAL, BlockObjectHolder.chair_wood_ironage_classic_immersiveengineering_treatedWood);
-				FurnitureFactory.AddClassicChairRecipe(VERTICAL, BlockObjectHolder.chair_wood_ironage_classic_immersiveengineering_treatedWood);
-				FurnitureFactory.AddClassicChairRecipe(PACKAGED, BlockObjectHolder.chair_wood_ironage_classic_immersiveengineering_treatedWood);
+				SeatingFactory.AddClassicChairRecipe(HORIZONTAL, BlockObjectHolder.chair_wood_ironage_classic_immersiveengineering_treatedWood);
+				SeatingFactory.AddClassicChairRecipe(VERTICAL, BlockObjectHolder.chair_wood_ironage_classic_immersiveengineering_treatedWood);
+				SeatingFactory.AddClassicChairRecipe(PACKAGED, BlockObjectHolder.chair_wood_ironage_classic_immersiveengineering_treatedWood);
 
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_SHIELD_CHAIRS) {
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_immersiveengineering_treatedWood, BlockObjectHolder.chair_wood_ironage_shield_immersiveengineering_treatedWood);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_immersiveengineering_treatedWood, BlockObjectHolder.chair_wood_ironage_shield_immersiveengineering_treatedWood);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_SHORT_STOOLS) {
-				FurnitureFactory.AddShortStoolRecipe(HORIZONTAL, BlockObjectHolder.chair_wood_ironage_stool_short_immersiveengineering_treatedWood);
-				FurnitureFactory.AddShortStoolRecipe(VERTICAL, BlockObjectHolder.chair_wood_ironage_stool_short_immersiveengineering_treatedWood);
-				FurnitureFactory.AddShortStoolRecipe(PACKAGED, BlockObjectHolder.chair_wood_ironage_stool_short_immersiveengineering_treatedWood);
+				SeatingFactory.AddShortStoolRecipe(HORIZONTAL, BlockObjectHolder.chair_wood_ironage_stool_short_immersiveengineering_treatedWood);
+				SeatingFactory.AddShortStoolRecipe(VERTICAL, BlockObjectHolder.chair_wood_ironage_stool_short_immersiveengineering_treatedWood);
+				SeatingFactory.AddShortStoolRecipe(PACKAGED, BlockObjectHolder.chair_wood_ironage_stool_short_immersiveengineering_treatedWood);
 
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_TALL_STOOLS) {
-				FurnitureFactory.AddTallStoolRecipe(HORIZONTAL, BlockObjectHolder.chair_wood_ironage_stool_tall_immersiveengineering_treatedWood);
-				FurnitureFactory.AddTallStoolRecipe(VERTICAL, BlockObjectHolder.chair_wood_ironage_stool_tall_immersiveengineering_treatedWood);
-				FurnitureFactory.AddTallStoolRecipe(PACKAGED, BlockObjectHolder.chair_wood_ironage_stool_tall_immersiveengineering_treatedWood);
+				SeatingFactory.AddTallStoolRecipe(HORIZONTAL, BlockObjectHolder.chair_wood_ironage_stool_tall_immersiveengineering_treatedWood);
+				SeatingFactory.AddTallStoolRecipe(VERTICAL, BlockObjectHolder.chair_wood_ironage_stool_tall_immersiveengineering_treatedWood);
+				SeatingFactory.AddTallStoolRecipe(PACKAGED, BlockObjectHolder.chair_wood_ironage_stool_tall_immersiveengineering_treatedWood);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_WOOD_BENCHES) {
-				FurnitureFactory.AddBenchRecipe(HORIZONTAL, BlockObjectHolder.chair_wood_ironage_bench_single_immersiveengineering_treatedWood);
-				FurnitureFactory.AddBenchRecipe(VERTICAL, BlockObjectHolder.chair_wood_ironage_bench_single_immersiveengineering_treatedWood);
-				FurnitureFactory.AddBenchRecipe(PACKAGED, BlockObjectHolder.chair_wood_ironage_bench_single_immersiveengineering_treatedWood);
+				SeatingFactory.AddBenchRecipe(HORIZONTAL, BlockObjectHolder.chair_wood_ironage_bench_single_immersiveengineering_treatedWood);
+				SeatingFactory.AddBenchRecipe(VERTICAL, BlockObjectHolder.chair_wood_ironage_bench_single_immersiveengineering_treatedWood);
+				SeatingFactory.AddBenchRecipe(PACKAGED, BlockObjectHolder.chair_wood_ironage_bench_single_immersiveengineering_treatedWood);
 
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_immersiveengineering_treatedWood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_immersiveengineering_treatedWood);
-				FurnitureFactory.AddBackBenchRecipe(PACKAGED, BlockObjectHolder.chair_wood_ironage_bench_back_single_immersiveengineering_treatedWood);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_immersiveengineering_treatedWood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_immersiveengineering_treatedWood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_immersiveengineering_treatedWood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_immersiveengineering_treatedWood);
+				SeatingFactory.AddBackBenchRecipe(PACKAGED, BlockObjectHolder.chair_wood_ironage_bench_back_single_immersiveengineering_treatedWood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_immersiveengineering_treatedWood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_immersiveengineering_treatedWood);
 			}
 		}
 
@@ -682,285 +710,285 @@ public class RecipeInitialiser {
 			ItemStack ZEBRAWOOD_LOG = new ItemStack(logs7, 1, 0);
 
 			if (IronAgeFurnitureConfiguration.GENERATE_CLASSIC_CHAIRS) {
-				FurnitureFactory.AddClassicChairRecipe(ACACIA, BlockObjectHolder.chair_wood_ironage_classic_forestry_acacia);
-				FurnitureFactory.AddClassicChairRecipe(BALSA, BlockObjectHolder.chair_wood_ironage_classic_forestry_balsa);
-				FurnitureFactory.AddClassicChairRecipe(BAOBAB, BlockObjectHolder.chair_wood_ironage_classic_forestry_baobab);
-				FurnitureFactory.AddClassicChairRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_classic_forestry_cherry);
-				FurnitureFactory.AddClassicChairRecipe(CHESTNUT, BlockObjectHolder.chair_wood_ironage_classic_forestry_chestnut);
-				FurnitureFactory.AddClassicChairRecipe(CITRUS, BlockObjectHolder.chair_wood_ironage_classic_forestry_citrus);
-				FurnitureFactory.AddClassicChairRecipe(COCOBOLO, BlockObjectHolder.chair_wood_ironage_classic_forestry_cocobolo);
-				FurnitureFactory.AddClassicChairRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_classic_forestry_ebony);
-				FurnitureFactory.AddClassicChairRecipe(GIGANTEUM, BlockObjectHolder.chair_wood_ironage_classic_forestry_giganteum);
-				FurnitureFactory.AddClassicChairRecipe(GREENHEART, BlockObjectHolder.chair_wood_ironage_classic_forestry_greenheart);
-				FurnitureFactory.AddClassicChairRecipe(IPE, BlockObjectHolder.chair_wood_ironage_classic_forestry_ipe);
-				FurnitureFactory.AddClassicChairRecipe(KAPOK, BlockObjectHolder.chair_wood_ironage_classic_forestry_kapok);
-				FurnitureFactory.AddClassicChairRecipe(LARCH, BlockObjectHolder.chair_wood_ironage_classic_forestry_larch);
-				FurnitureFactory.AddClassicChairRecipe(LIME, BlockObjectHolder.chair_wood_ironage_classic_forestry_lime);
-				FurnitureFactory.AddClassicChairRecipe(MAHOE, BlockObjectHolder.chair_wood_ironage_classic_forestry_mahoe);
-				FurnitureFactory.AddClassicChairRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_classic_forestry_mahogany);
-				FurnitureFactory.AddClassicChairRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_classic_forestry_maple);
-				FurnitureFactory.AddClassicChairRecipe(PADAUK, BlockObjectHolder.chair_wood_ironage_classic_forestry_padauk);
-				FurnitureFactory.AddClassicChairRecipe(PALM, BlockObjectHolder.chair_wood_ironage_classic_forestry_palm);
-				FurnitureFactory.AddClassicChairRecipe(PAPAYA, BlockObjectHolder.chair_wood_ironage_classic_forestry_papaya);
-				FurnitureFactory.AddClassicChairRecipe(PINE, BlockObjectHolder.chair_wood_ironage_classic_forestry_pine);
-				FurnitureFactory.AddClassicChairRecipe(PLUM, BlockObjectHolder.chair_wood_ironage_classic_forestry_plum);
-				FurnitureFactory.AddClassicChairRecipe(POPLAR, BlockObjectHolder.chair_wood_ironage_classic_forestry_poplar);
-				FurnitureFactory.AddClassicChairRecipe(SEQUOIA, BlockObjectHolder.chair_wood_ironage_classic_forestry_sequoia);
-				FurnitureFactory.AddClassicChairRecipe(TEAK, BlockObjectHolder.chair_wood_ironage_classic_forestry_teak);
-				FurnitureFactory.AddClassicChairRecipe(WALNUT, BlockObjectHolder.chair_wood_ironage_classic_forestry_walnut);
-				FurnitureFactory.AddClassicChairRecipe(WENGE, BlockObjectHolder.chair_wood_ironage_classic_forestry_wenge);
-				FurnitureFactory.AddClassicChairRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_classic_forestry_willow);
-				FurnitureFactory.AddClassicChairRecipe(ZEBRAWOOD, BlockObjectHolder.chair_wood_ironage_classic_forestry_zebrawood);
+				SeatingFactory.AddClassicChairRecipe(ACACIA, BlockObjectHolder.chair_wood_ironage_classic_forestry_acacia);
+				SeatingFactory.AddClassicChairRecipe(BALSA, BlockObjectHolder.chair_wood_ironage_classic_forestry_balsa);
+				SeatingFactory.AddClassicChairRecipe(BAOBAB, BlockObjectHolder.chair_wood_ironage_classic_forestry_baobab);
+				SeatingFactory.AddClassicChairRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_classic_forestry_cherry);
+				SeatingFactory.AddClassicChairRecipe(CHESTNUT, BlockObjectHolder.chair_wood_ironage_classic_forestry_chestnut);
+				SeatingFactory.AddClassicChairRecipe(CITRUS, BlockObjectHolder.chair_wood_ironage_classic_forestry_citrus);
+				SeatingFactory.AddClassicChairRecipe(COCOBOLO, BlockObjectHolder.chair_wood_ironage_classic_forestry_cocobolo);
+				SeatingFactory.AddClassicChairRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_classic_forestry_ebony);
+				SeatingFactory.AddClassicChairRecipe(GIGANTEUM, BlockObjectHolder.chair_wood_ironage_classic_forestry_giganteum);
+				SeatingFactory.AddClassicChairRecipe(GREENHEART, BlockObjectHolder.chair_wood_ironage_classic_forestry_greenheart);
+				SeatingFactory.AddClassicChairRecipe(IPE, BlockObjectHolder.chair_wood_ironage_classic_forestry_ipe);
+				SeatingFactory.AddClassicChairRecipe(KAPOK, BlockObjectHolder.chair_wood_ironage_classic_forestry_kapok);
+				SeatingFactory.AddClassicChairRecipe(LARCH, BlockObjectHolder.chair_wood_ironage_classic_forestry_larch);
+				SeatingFactory.AddClassicChairRecipe(LIME, BlockObjectHolder.chair_wood_ironage_classic_forestry_lime);
+				SeatingFactory.AddClassicChairRecipe(MAHOE, BlockObjectHolder.chair_wood_ironage_classic_forestry_mahoe);
+				SeatingFactory.AddClassicChairRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_classic_forestry_mahogany);
+				SeatingFactory.AddClassicChairRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_classic_forestry_maple);
+				SeatingFactory.AddClassicChairRecipe(PADAUK, BlockObjectHolder.chair_wood_ironage_classic_forestry_padauk);
+				SeatingFactory.AddClassicChairRecipe(PALM, BlockObjectHolder.chair_wood_ironage_classic_forestry_palm);
+				SeatingFactory.AddClassicChairRecipe(PAPAYA, BlockObjectHolder.chair_wood_ironage_classic_forestry_papaya);
+				SeatingFactory.AddClassicChairRecipe(PINE, BlockObjectHolder.chair_wood_ironage_classic_forestry_pine);
+				SeatingFactory.AddClassicChairRecipe(PLUM, BlockObjectHolder.chair_wood_ironage_classic_forestry_plum);
+				SeatingFactory.AddClassicChairRecipe(POPLAR, BlockObjectHolder.chair_wood_ironage_classic_forestry_poplar);
+				SeatingFactory.AddClassicChairRecipe(SEQUOIA, BlockObjectHolder.chair_wood_ironage_classic_forestry_sequoia);
+				SeatingFactory.AddClassicChairRecipe(TEAK, BlockObjectHolder.chair_wood_ironage_classic_forestry_teak);
+				SeatingFactory.AddClassicChairRecipe(WALNUT, BlockObjectHolder.chair_wood_ironage_classic_forestry_walnut);
+				SeatingFactory.AddClassicChairRecipe(WENGE, BlockObjectHolder.chair_wood_ironage_classic_forestry_wenge);
+				SeatingFactory.AddClassicChairRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_classic_forestry_willow);
+				SeatingFactory.AddClassicChairRecipe(ZEBRAWOOD, BlockObjectHolder.chair_wood_ironage_classic_forestry_zebrawood);
 
 
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_SHIELD_CHAIRS) {
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_acacia, BlockObjectHolder.chair_wood_ironage_shield_forestry_acacia);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_balsa, BlockObjectHolder.chair_wood_ironage_shield_forestry_balsa);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_baobab, BlockObjectHolder.chair_wood_ironage_shield_forestry_baobab);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_cherry, BlockObjectHolder.chair_wood_ironage_shield_forestry_cherry);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_chestnut, BlockObjectHolder.chair_wood_ironage_shield_forestry_chestnut);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_citrus, BlockObjectHolder.chair_wood_ironage_shield_forestry_citrus);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_cocobolo, BlockObjectHolder.chair_wood_ironage_shield_forestry_cocobolo);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_ebony, BlockObjectHolder.chair_wood_ironage_shield_forestry_ebony);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_giganteum, BlockObjectHolder.chair_wood_ironage_shield_forestry_giganteum);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_greenheart, BlockObjectHolder.chair_wood_ironage_shield_forestry_greenheart);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_ipe, BlockObjectHolder.chair_wood_ironage_shield_forestry_ipe);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_kapok, BlockObjectHolder.chair_wood_ironage_shield_forestry_kapok);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_larch, BlockObjectHolder.chair_wood_ironage_shield_forestry_larch);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_lime, BlockObjectHolder.chair_wood_ironage_shield_forestry_lime);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_mahoe, BlockObjectHolder.chair_wood_ironage_shield_forestry_mahoe);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_mahogany, BlockObjectHolder.chair_wood_ironage_shield_forestry_mahogany);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_maple, BlockObjectHolder.chair_wood_ironage_shield_forestry_maple);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_padauk, BlockObjectHolder.chair_wood_ironage_shield_forestry_padauk);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_palm, BlockObjectHolder.chair_wood_ironage_shield_forestry_palm);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_papaya, BlockObjectHolder.chair_wood_ironage_shield_forestry_papaya);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_pine, BlockObjectHolder.chair_wood_ironage_shield_forestry_pine);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_plum, BlockObjectHolder.chair_wood_ironage_shield_forestry_plum);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_poplar, BlockObjectHolder.chair_wood_ironage_shield_forestry_poplar);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_sequoia, BlockObjectHolder.chair_wood_ironage_shield_forestry_sequoia);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_teak, BlockObjectHolder.chair_wood_ironage_shield_forestry_teak);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_walnut, BlockObjectHolder.chair_wood_ironage_shield_forestry_walnut);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_wenge, BlockObjectHolder.chair_wood_ironage_shield_forestry_wenge);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_willow, BlockObjectHolder.chair_wood_ironage_shield_forestry_willow);
-				FurnitureFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_zebrawood, BlockObjectHolder.chair_wood_ironage_shield_forestry_zebrawood);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_acacia, BlockObjectHolder.chair_wood_ironage_shield_forestry_acacia);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_balsa, BlockObjectHolder.chair_wood_ironage_shield_forestry_balsa);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_baobab, BlockObjectHolder.chair_wood_ironage_shield_forestry_baobab);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_cherry, BlockObjectHolder.chair_wood_ironage_shield_forestry_cherry);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_chestnut, BlockObjectHolder.chair_wood_ironage_shield_forestry_chestnut);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_citrus, BlockObjectHolder.chair_wood_ironage_shield_forestry_citrus);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_cocobolo, BlockObjectHolder.chair_wood_ironage_shield_forestry_cocobolo);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_ebony, BlockObjectHolder.chair_wood_ironage_shield_forestry_ebony);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_giganteum, BlockObjectHolder.chair_wood_ironage_shield_forestry_giganteum);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_greenheart, BlockObjectHolder.chair_wood_ironage_shield_forestry_greenheart);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_ipe, BlockObjectHolder.chair_wood_ironage_shield_forestry_ipe);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_kapok, BlockObjectHolder.chair_wood_ironage_shield_forestry_kapok);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_larch, BlockObjectHolder.chair_wood_ironage_shield_forestry_larch);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_lime, BlockObjectHolder.chair_wood_ironage_shield_forestry_lime);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_mahoe, BlockObjectHolder.chair_wood_ironage_shield_forestry_mahoe);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_mahogany, BlockObjectHolder.chair_wood_ironage_shield_forestry_mahogany);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_maple, BlockObjectHolder.chair_wood_ironage_shield_forestry_maple);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_padauk, BlockObjectHolder.chair_wood_ironage_shield_forestry_padauk);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_palm, BlockObjectHolder.chair_wood_ironage_shield_forestry_palm);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_papaya, BlockObjectHolder.chair_wood_ironage_shield_forestry_papaya);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_pine, BlockObjectHolder.chair_wood_ironage_shield_forestry_pine);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_plum, BlockObjectHolder.chair_wood_ironage_shield_forestry_plum);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_poplar, BlockObjectHolder.chair_wood_ironage_shield_forestry_poplar);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_sequoia, BlockObjectHolder.chair_wood_ironage_shield_forestry_sequoia);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_teak, BlockObjectHolder.chair_wood_ironage_shield_forestry_teak);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_walnut, BlockObjectHolder.chair_wood_ironage_shield_forestry_walnut);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_wenge, BlockObjectHolder.chair_wood_ironage_shield_forestry_wenge);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_willow, BlockObjectHolder.chair_wood_ironage_shield_forestry_willow);
+				SeatingFactory.AddShieldChairRecipe(BlockObjectHolder.chair_wood_ironage_classic_forestry_zebrawood, BlockObjectHolder.chair_wood_ironage_shield_forestry_zebrawood);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_SHORT_STOOLS) {
-				FurnitureFactory.AddShortStoolRecipe(ACACIA, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_acacia);
-				FurnitureFactory.AddShortStoolRecipe(BALSA, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_balsa);
-				FurnitureFactory.AddShortStoolRecipe(BAOBAB, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_baobab);
-				FurnitureFactory.AddShortStoolRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_cherry);
-				FurnitureFactory.AddShortStoolRecipe(CHESTNUT, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_chestnut);
-				FurnitureFactory.AddShortStoolRecipe(CITRUS, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_citrus);
-				FurnitureFactory.AddShortStoolRecipe(COCOBOLO, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_cocobolo);
-				FurnitureFactory.AddShortStoolRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_ebony);
-				FurnitureFactory.AddShortStoolRecipe(GIGANTEUM, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_giganteum);
-				FurnitureFactory.AddShortStoolRecipe(GREENHEART, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_greenheart);
-				FurnitureFactory.AddShortStoolRecipe(IPE, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_ipe);
-				FurnitureFactory.AddShortStoolRecipe(KAPOK, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_kapok);
-				FurnitureFactory.AddShortStoolRecipe(LARCH, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_larch);
-				FurnitureFactory.AddShortStoolRecipe(LIME, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_lime);
-				FurnitureFactory.AddShortStoolRecipe(MAHOE, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_mahoe);
-				FurnitureFactory.AddShortStoolRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_mahogany);
-				FurnitureFactory.AddShortStoolRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_maple);
-				FurnitureFactory.AddShortStoolRecipe(PADAUK, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_padauk);
-				FurnitureFactory.AddShortStoolRecipe(PALM, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_palm);
-				FurnitureFactory.AddShortStoolRecipe(PAPAYA, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_papaya);
-				FurnitureFactory.AddShortStoolRecipe(PINE, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_pine);
-				FurnitureFactory.AddShortStoolRecipe(PLUM, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_plum);
-				FurnitureFactory.AddShortStoolRecipe(POPLAR, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_poplar);
-				FurnitureFactory.AddShortStoolRecipe(SEQUOIA, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_sequoia);
-				FurnitureFactory.AddShortStoolRecipe(TEAK, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_teak);
-				FurnitureFactory.AddShortStoolRecipe(WALNUT, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_walnut);
-				FurnitureFactory.AddShortStoolRecipe(WENGE, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_wenge);
-				FurnitureFactory.AddShortStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_willow);
-				FurnitureFactory.AddShortStoolRecipe(ZEBRAWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_zebrawood);
+				SeatingFactory.AddShortStoolRecipe(ACACIA, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_acacia);
+				SeatingFactory.AddShortStoolRecipe(BALSA, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_balsa);
+				SeatingFactory.AddShortStoolRecipe(BAOBAB, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_baobab);
+				SeatingFactory.AddShortStoolRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_cherry);
+				SeatingFactory.AddShortStoolRecipe(CHESTNUT, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_chestnut);
+				SeatingFactory.AddShortStoolRecipe(CITRUS, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_citrus);
+				SeatingFactory.AddShortStoolRecipe(COCOBOLO, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_cocobolo);
+				SeatingFactory.AddShortStoolRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_ebony);
+				SeatingFactory.AddShortStoolRecipe(GIGANTEUM, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_giganteum);
+				SeatingFactory.AddShortStoolRecipe(GREENHEART, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_greenheart);
+				SeatingFactory.AddShortStoolRecipe(IPE, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_ipe);
+				SeatingFactory.AddShortStoolRecipe(KAPOK, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_kapok);
+				SeatingFactory.AddShortStoolRecipe(LARCH, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_larch);
+				SeatingFactory.AddShortStoolRecipe(LIME, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_lime);
+				SeatingFactory.AddShortStoolRecipe(MAHOE, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_mahoe);
+				SeatingFactory.AddShortStoolRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_mahogany);
+				SeatingFactory.AddShortStoolRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_maple);
+				SeatingFactory.AddShortStoolRecipe(PADAUK, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_padauk);
+				SeatingFactory.AddShortStoolRecipe(PALM, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_palm);
+				SeatingFactory.AddShortStoolRecipe(PAPAYA, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_papaya);
+				SeatingFactory.AddShortStoolRecipe(PINE, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_pine);
+				SeatingFactory.AddShortStoolRecipe(PLUM, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_plum);
+				SeatingFactory.AddShortStoolRecipe(POPLAR, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_poplar);
+				SeatingFactory.AddShortStoolRecipe(SEQUOIA, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_sequoia);
+				SeatingFactory.AddShortStoolRecipe(TEAK, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_teak);
+				SeatingFactory.AddShortStoolRecipe(WALNUT, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_walnut);
+				SeatingFactory.AddShortStoolRecipe(WENGE, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_wenge);
+				SeatingFactory.AddShortStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_willow);
+				SeatingFactory.AddShortStoolRecipe(ZEBRAWOOD, BlockObjectHolder.chair_wood_ironage_stool_short_forestry_zebrawood);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_TALL_STOOLS) {
-				FurnitureFactory.AddTallStoolRecipe(ACACIA, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_acacia);
-				FurnitureFactory.AddTallStoolRecipe(BALSA, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_balsa);
-				FurnitureFactory.AddTallStoolRecipe(BAOBAB, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_baobab);
-				FurnitureFactory.AddTallStoolRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_cherry);
-				FurnitureFactory.AddTallStoolRecipe(CHESTNUT, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_chestnut);
-				FurnitureFactory.AddTallStoolRecipe(CITRUS, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_citrus);
-				FurnitureFactory.AddTallStoolRecipe(COCOBOLO, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_cocobolo);
-				FurnitureFactory.AddTallStoolRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_ebony);
-				FurnitureFactory.AddTallStoolRecipe(GIGANTEUM, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_giganteum);
-				FurnitureFactory.AddTallStoolRecipe(GREENHEART, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_greenheart);
-				FurnitureFactory.AddTallStoolRecipe(IPE, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_ipe);
-				FurnitureFactory.AddTallStoolRecipe(KAPOK, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_kapok);
-				FurnitureFactory.AddTallStoolRecipe(LARCH, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_larch);
-				FurnitureFactory.AddTallStoolRecipe(LIME, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_lime);
-				FurnitureFactory.AddTallStoolRecipe(MAHOE, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_mahoe);
-				FurnitureFactory.AddTallStoolRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_mahogany);
-				FurnitureFactory.AddTallStoolRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_maple);
-				FurnitureFactory.AddTallStoolRecipe(PADAUK, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_padauk);
-				FurnitureFactory.AddTallStoolRecipe(PALM, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_palm);
-				FurnitureFactory.AddTallStoolRecipe(PAPAYA, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_papaya);
-				FurnitureFactory.AddTallStoolRecipe(PINE, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_pine);
-				FurnitureFactory.AddTallStoolRecipe(PLUM, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_plum);
-				FurnitureFactory.AddTallStoolRecipe(POPLAR, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_poplar);
-				FurnitureFactory.AddTallStoolRecipe(SEQUOIA, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_sequoia);
-				FurnitureFactory.AddTallStoolRecipe(TEAK, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_teak);
-				FurnitureFactory.AddTallStoolRecipe(WALNUT, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_walnut);
-				FurnitureFactory.AddTallStoolRecipe(WENGE, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_wenge);
-				FurnitureFactory.AddTallStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_willow);
-				FurnitureFactory.AddTallStoolRecipe(ZEBRAWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_zebrawood);
+				SeatingFactory.AddTallStoolRecipe(ACACIA, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_acacia);
+				SeatingFactory.AddTallStoolRecipe(BALSA, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_balsa);
+				SeatingFactory.AddTallStoolRecipe(BAOBAB, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_baobab);
+				SeatingFactory.AddTallStoolRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_cherry);
+				SeatingFactory.AddTallStoolRecipe(CHESTNUT, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_chestnut);
+				SeatingFactory.AddTallStoolRecipe(CITRUS, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_citrus);
+				SeatingFactory.AddTallStoolRecipe(COCOBOLO, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_cocobolo);
+				SeatingFactory.AddTallStoolRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_ebony);
+				SeatingFactory.AddTallStoolRecipe(GIGANTEUM, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_giganteum);
+				SeatingFactory.AddTallStoolRecipe(GREENHEART, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_greenheart);
+				SeatingFactory.AddTallStoolRecipe(IPE, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_ipe);
+				SeatingFactory.AddTallStoolRecipe(KAPOK, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_kapok);
+				SeatingFactory.AddTallStoolRecipe(LARCH, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_larch);
+				SeatingFactory.AddTallStoolRecipe(LIME, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_lime);
+				SeatingFactory.AddTallStoolRecipe(MAHOE, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_mahoe);
+				SeatingFactory.AddTallStoolRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_mahogany);
+				SeatingFactory.AddTallStoolRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_maple);
+				SeatingFactory.AddTallStoolRecipe(PADAUK, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_padauk);
+				SeatingFactory.AddTallStoolRecipe(PALM, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_palm);
+				SeatingFactory.AddTallStoolRecipe(PAPAYA, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_papaya);
+				SeatingFactory.AddTallStoolRecipe(PINE, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_pine);
+				SeatingFactory.AddTallStoolRecipe(PLUM, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_plum);
+				SeatingFactory.AddTallStoolRecipe(POPLAR, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_poplar);
+				SeatingFactory.AddTallStoolRecipe(SEQUOIA, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_sequoia);
+				SeatingFactory.AddTallStoolRecipe(TEAK, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_teak);
+				SeatingFactory.AddTallStoolRecipe(WALNUT, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_walnut);
+				SeatingFactory.AddTallStoolRecipe(WENGE, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_wenge);
+				SeatingFactory.AddTallStoolRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_willow);
+				SeatingFactory.AddTallStoolRecipe(ZEBRAWOOD, BlockObjectHolder.chair_wood_ironage_stool_tall_forestry_zebrawood);
 			}
 
 			if (IronAgeFurnitureConfiguration.GENERATE_WOOD_BENCHES) {
-				FurnitureFactory.AddBenchRecipe(ACACIA, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_acacia);
-				FurnitureFactory.AddBenchRecipe(BALSA, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_balsa);
-				FurnitureFactory.AddBenchRecipe(BAOBAB, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_baobab);
-				FurnitureFactory.AddBenchRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_cherry);
-				FurnitureFactory.AddBenchRecipe(CHESTNUT, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_chestnut);
-				FurnitureFactory.AddBenchRecipe(CITRUS, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_citrus);
-				FurnitureFactory.AddBenchRecipe(COCOBOLO, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_cocobolo);
-				FurnitureFactory.AddBenchRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_ebony);
-				FurnitureFactory.AddBenchRecipe(GIGANTEUM, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_giganteum);
-				FurnitureFactory.AddBenchRecipe(GREENHEART, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_greenheart);
-				FurnitureFactory.AddBenchRecipe(IPE, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_ipe);
-				FurnitureFactory.AddBenchRecipe(KAPOK, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_kapok);
-				FurnitureFactory.AddBenchRecipe(LARCH, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_larch);
-				FurnitureFactory.AddBenchRecipe(LIME, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_lime);
-				FurnitureFactory.AddBenchRecipe(MAHOE, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_mahoe);
-				FurnitureFactory.AddBenchRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_mahogany);
-				FurnitureFactory.AddBenchRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_maple);
-				FurnitureFactory.AddBenchRecipe(PADAUK, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_padauk);
-				FurnitureFactory.AddBenchRecipe(PALM, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_palm);
-				FurnitureFactory.AddBenchRecipe(PAPAYA, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_papaya);
-				FurnitureFactory.AddBenchRecipe(PINE, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_pine);
-				FurnitureFactory.AddBenchRecipe(PLUM, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_plum);
-				FurnitureFactory.AddBenchRecipe(POPLAR, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_poplar);
-				FurnitureFactory.AddBenchRecipe(SEQUOIA, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_sequoia);
-				FurnitureFactory.AddBenchRecipe(TEAK, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_teak);
-				FurnitureFactory.AddBenchRecipe(WALNUT, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_walnut);
-				FurnitureFactory.AddBenchRecipe(WENGE, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_wenge);
-				FurnitureFactory.AddBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_willow);
-				FurnitureFactory.AddBenchRecipe(ZEBRAWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_zebrawood);
+				SeatingFactory.AddBenchRecipe(ACACIA, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_acacia);
+				SeatingFactory.AddBenchRecipe(BALSA, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_balsa);
+				SeatingFactory.AddBenchRecipe(BAOBAB, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_baobab);
+				SeatingFactory.AddBenchRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_cherry);
+				SeatingFactory.AddBenchRecipe(CHESTNUT, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_chestnut);
+				SeatingFactory.AddBenchRecipe(CITRUS, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_citrus);
+				SeatingFactory.AddBenchRecipe(COCOBOLO, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_cocobolo);
+				SeatingFactory.AddBenchRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_ebony);
+				SeatingFactory.AddBenchRecipe(GIGANTEUM, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_giganteum);
+				SeatingFactory.AddBenchRecipe(GREENHEART, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_greenheart);
+				SeatingFactory.AddBenchRecipe(IPE, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_ipe);
+				SeatingFactory.AddBenchRecipe(KAPOK, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_kapok);
+				SeatingFactory.AddBenchRecipe(LARCH, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_larch);
+				SeatingFactory.AddBenchRecipe(LIME, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_lime);
+				SeatingFactory.AddBenchRecipe(MAHOE, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_mahoe);
+				SeatingFactory.AddBenchRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_mahogany);
+				SeatingFactory.AddBenchRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_maple);
+				SeatingFactory.AddBenchRecipe(PADAUK, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_padauk);
+				SeatingFactory.AddBenchRecipe(PALM, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_palm);
+				SeatingFactory.AddBenchRecipe(PAPAYA, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_papaya);
+				SeatingFactory.AddBenchRecipe(PINE, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_pine);
+				SeatingFactory.AddBenchRecipe(PLUM, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_plum);
+				SeatingFactory.AddBenchRecipe(POPLAR, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_poplar);
+				SeatingFactory.AddBenchRecipe(SEQUOIA, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_sequoia);
+				SeatingFactory.AddBenchRecipe(TEAK, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_teak);
+				SeatingFactory.AddBenchRecipe(WALNUT, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_walnut);
+				SeatingFactory.AddBenchRecipe(WENGE, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_wenge);
+				SeatingFactory.AddBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_willow);
+				SeatingFactory.AddBenchRecipe(ZEBRAWOOD, BlockObjectHolder.chair_wood_ironage_bench_single_forestry_zebrawood);
 
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_acacia, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_acacia);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_balsa, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_balsa);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_baobab, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_baobab);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_cherry, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_cherry);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_chestnut, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_chestnut);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_citrus, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_citrus);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_cocobolo, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_cocobolo);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_ebony, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_ebony);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_giganteum, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_giganteum);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_greenheart, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_greenheart);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_ipe, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_ipe);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_kapok, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_kapok);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_larch, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_larch);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_lime, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_lime);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_mahoe, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_mahoe);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_mahogany, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_mahogany);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_maple, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_maple);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_padauk, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_padauk);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_palm, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_palm);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_papaya, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_papaya);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_pine, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_pine);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_plum, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_plum);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_poplar, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_poplar);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_sequoia, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_sequoia);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_teak, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_teak);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_walnut, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_walnut);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_wenge, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_wenge);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_willow, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_willow);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_zebrawood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_zebrawood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_acacia, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_acacia);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_balsa, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_balsa);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_baobab, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_baobab);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_cherry, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_cherry);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_chestnut, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_chestnut);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_citrus, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_citrus);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_cocobolo, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_cocobolo);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_ebony, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_ebony);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_giganteum, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_giganteum);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_greenheart, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_greenheart);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_ipe, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_ipe);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_kapok, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_kapok);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_larch, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_larch);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_lime, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_lime);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_mahoe, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_mahoe);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_mahogany, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_mahogany);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_maple, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_maple);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_padauk, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_padauk);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_palm, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_palm);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_papaya, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_papaya);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_pine, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_pine);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_plum, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_plum);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_poplar, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_poplar);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_sequoia, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_sequoia);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_teak, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_teak);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_walnut, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_walnut);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_wenge, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_wenge);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_willow, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_willow);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_single_forestry_zebrawood, BlockObjectHolder.chair_wood_ironage_bench_padded_single_forestry_zebrawood);
 
-				FurnitureFactory.AddLogBenchRecipe(ACACIA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_acacia);
-				FurnitureFactory.AddLogBenchRecipe(BALSA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_balsa);
-				FurnitureFactory.AddLogBenchRecipe(BAOBAB_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_baobab);
-				FurnitureFactory.AddLogBenchRecipe(CHERRY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_cherry);
-				FurnitureFactory.AddLogBenchRecipe(CHESTNUT_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_chestnut);
-				FurnitureFactory.AddLogBenchRecipe(CITRUS_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_citrus);
-				FurnitureFactory.AddLogBenchRecipe(COCOBOLO_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_cocobolo);
-				FurnitureFactory.AddLogBenchRecipe(EBONY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_ebony);
-				FurnitureFactory.AddLogBenchRecipe(GIGANTEUM_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_giganteum);
-				FurnitureFactory.AddLogBenchRecipe(GREENHEART_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_greenheart);
-				FurnitureFactory.AddLogBenchRecipe(IPE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_ipe);
-				FurnitureFactory.AddLogBenchRecipe(KAPOK_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_kapok);
-				FurnitureFactory.AddLogBenchRecipe(LARCH_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_larch);
-				FurnitureFactory.AddLogBenchRecipe(LIME_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_lime);
-				FurnitureFactory.AddLogBenchRecipe(MAHOE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_mahoe);
-				FurnitureFactory.AddLogBenchRecipe(MAHOGANY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_mahogany);
-				FurnitureFactory.AddLogBenchRecipe(MAPLE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_maple);
-				FurnitureFactory.AddLogBenchRecipe(PADAUK_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_padauk);
-				FurnitureFactory.AddLogBenchRecipe(PALM_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_palm);
-				FurnitureFactory.AddLogBenchRecipe(PAPAYA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_papaya);
-				FurnitureFactory.AddLogBenchRecipe(PINE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_pine);
-				FurnitureFactory.AddLogBenchRecipe(PLUM_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_plum);
-				FurnitureFactory.AddLogBenchRecipe(POPLAR_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_poplar);
-				FurnitureFactory.AddLogBenchRecipe(SEQUOIA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_sequoia);
-				FurnitureFactory.AddLogBenchRecipe(TEAK_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_teak);
-				FurnitureFactory.AddLogBenchRecipe(WALNUT_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_walnut);
-				FurnitureFactory.AddLogBenchRecipe(WENGE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_wenge);
-				FurnitureFactory.AddLogBenchRecipe(WILLOW_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_willow);
-				FurnitureFactory.AddLogBenchRecipe(ZEBRAWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_zebrawood);
+				SeatingFactory.AddLogBenchRecipe(ACACIA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_acacia);
+				SeatingFactory.AddLogBenchRecipe(BALSA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_balsa);
+				SeatingFactory.AddLogBenchRecipe(BAOBAB_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_baobab);
+				SeatingFactory.AddLogBenchRecipe(CHERRY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_cherry);
+				SeatingFactory.AddLogBenchRecipe(CHESTNUT_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_chestnut);
+				SeatingFactory.AddLogBenchRecipe(CITRUS_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_citrus);
+				SeatingFactory.AddLogBenchRecipe(COCOBOLO_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_cocobolo);
+				SeatingFactory.AddLogBenchRecipe(EBONY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_ebony);
+				SeatingFactory.AddLogBenchRecipe(GIGANTEUM_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_giganteum);
+				SeatingFactory.AddLogBenchRecipe(GREENHEART_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_greenheart);
+				SeatingFactory.AddLogBenchRecipe(IPE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_ipe);
+				SeatingFactory.AddLogBenchRecipe(KAPOK_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_kapok);
+				SeatingFactory.AddLogBenchRecipe(LARCH_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_larch);
+				SeatingFactory.AddLogBenchRecipe(LIME_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_lime);
+				SeatingFactory.AddLogBenchRecipe(MAHOE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_mahoe);
+				SeatingFactory.AddLogBenchRecipe(MAHOGANY_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_mahogany);
+				SeatingFactory.AddLogBenchRecipe(MAPLE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_maple);
+				SeatingFactory.AddLogBenchRecipe(PADAUK_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_padauk);
+				SeatingFactory.AddLogBenchRecipe(PALM_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_palm);
+				SeatingFactory.AddLogBenchRecipe(PAPAYA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_papaya);
+				SeatingFactory.AddLogBenchRecipe(PINE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_pine);
+				SeatingFactory.AddLogBenchRecipe(PLUM_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_plum);
+				SeatingFactory.AddLogBenchRecipe(POPLAR_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_poplar);
+				SeatingFactory.AddLogBenchRecipe(SEQUOIA_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_sequoia);
+				SeatingFactory.AddLogBenchRecipe(TEAK_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_teak);
+				SeatingFactory.AddLogBenchRecipe(WALNUT_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_walnut);
+				SeatingFactory.AddLogBenchRecipe(WENGE_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_wenge);
+				SeatingFactory.AddLogBenchRecipe(WILLOW_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_willow);
+				SeatingFactory.AddLogBenchRecipe(ZEBRAWOOD_LOG, BlockObjectHolder.chair_wood_ironage_bench_log_single_forestry_zebrawood);
 
-				FurnitureFactory.AddBackBenchRecipe(ACACIA, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_acacia);
-				FurnitureFactory.AddBackBenchRecipe(BALSA, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_balsa);
-				FurnitureFactory.AddBackBenchRecipe(BAOBAB, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_baobab);
-				FurnitureFactory.AddBackBenchRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_cherry);
-				FurnitureFactory.AddBackBenchRecipe(CHESTNUT, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_chestnut);
-				FurnitureFactory.AddBackBenchRecipe(CITRUS, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_citrus);
-				FurnitureFactory.AddBackBenchRecipe(COCOBOLO, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_cocobolo);
-				FurnitureFactory.AddBackBenchRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_ebony);
-				FurnitureFactory.AddBackBenchRecipe(GIGANTEUM, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_giganteum);
-				FurnitureFactory.AddBackBenchRecipe(GREENHEART, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_greenheart);
-				FurnitureFactory.AddBackBenchRecipe(IPE, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_ipe);
-				FurnitureFactory.AddBackBenchRecipe(KAPOK, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_kapok);
-				FurnitureFactory.AddBackBenchRecipe(LARCH, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_larch);
-				FurnitureFactory.AddBackBenchRecipe(LIME, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_lime);
-				FurnitureFactory.AddBackBenchRecipe(MAHOE, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_mahoe);
-				FurnitureFactory.AddBackBenchRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_mahogany);
-				FurnitureFactory.AddBackBenchRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_maple);
-				FurnitureFactory.AddBackBenchRecipe(PADAUK, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_padauk);
-				FurnitureFactory.AddBackBenchRecipe(PALM, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_palm);
-				FurnitureFactory.AddBackBenchRecipe(PAPAYA, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_papaya);
-				FurnitureFactory.AddBackBenchRecipe(PINE, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_pine);
-				FurnitureFactory.AddBackBenchRecipe(PLUM, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_plum);
-				FurnitureFactory.AddBackBenchRecipe(POPLAR, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_poplar);
-				FurnitureFactory.AddBackBenchRecipe(SEQUOIA, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_sequoia);
-				FurnitureFactory.AddBackBenchRecipe(TEAK, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_teak);
-				FurnitureFactory.AddBackBenchRecipe(WALNUT, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_walnut);
-				FurnitureFactory.AddBackBenchRecipe(WENGE, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_wenge);
-				FurnitureFactory.AddBackBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_willow);
-				FurnitureFactory.AddBackBenchRecipe(ZEBRAWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_zebrawood);
+				SeatingFactory.AddBackBenchRecipe(ACACIA, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_acacia);
+				SeatingFactory.AddBackBenchRecipe(BALSA, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_balsa);
+				SeatingFactory.AddBackBenchRecipe(BAOBAB, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_baobab);
+				SeatingFactory.AddBackBenchRecipe(CHERRY, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_cherry);
+				SeatingFactory.AddBackBenchRecipe(CHESTNUT, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_chestnut);
+				SeatingFactory.AddBackBenchRecipe(CITRUS, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_citrus);
+				SeatingFactory.AddBackBenchRecipe(COCOBOLO, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_cocobolo);
+				SeatingFactory.AddBackBenchRecipe(EBONY, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_ebony);
+				SeatingFactory.AddBackBenchRecipe(GIGANTEUM, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_giganteum);
+				SeatingFactory.AddBackBenchRecipe(GREENHEART, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_greenheart);
+				SeatingFactory.AddBackBenchRecipe(IPE, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_ipe);
+				SeatingFactory.AddBackBenchRecipe(KAPOK, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_kapok);
+				SeatingFactory.AddBackBenchRecipe(LARCH, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_larch);
+				SeatingFactory.AddBackBenchRecipe(LIME, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_lime);
+				SeatingFactory.AddBackBenchRecipe(MAHOE, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_mahoe);
+				SeatingFactory.AddBackBenchRecipe(MAHOGANY, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_mahogany);
+				SeatingFactory.AddBackBenchRecipe(MAPLE, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_maple);
+				SeatingFactory.AddBackBenchRecipe(PADAUK, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_padauk);
+				SeatingFactory.AddBackBenchRecipe(PALM, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_palm);
+				SeatingFactory.AddBackBenchRecipe(PAPAYA, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_papaya);
+				SeatingFactory.AddBackBenchRecipe(PINE, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_pine);
+				SeatingFactory.AddBackBenchRecipe(PLUM, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_plum);
+				SeatingFactory.AddBackBenchRecipe(POPLAR, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_poplar);
+				SeatingFactory.AddBackBenchRecipe(SEQUOIA, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_sequoia);
+				SeatingFactory.AddBackBenchRecipe(TEAK, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_teak);
+				SeatingFactory.AddBackBenchRecipe(WALNUT, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_walnut);
+				SeatingFactory.AddBackBenchRecipe(WENGE, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_wenge);
+				SeatingFactory.AddBackBenchRecipe(WILLOW, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_willow);
+				SeatingFactory.AddBackBenchRecipe(ZEBRAWOOD, BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_zebrawood);
 
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_acacia, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_acacia);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_balsa, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_balsa);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_baobab, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_baobab);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_cherry, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_cherry);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_chestnut, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_chestnut);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_citrus, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_citrus);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_cocobolo, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_cocobolo);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_ebony, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_ebony);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_giganteum, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_giganteum);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_greenheart, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_greenheart);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_ipe, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_ipe);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_kapok, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_kapok);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_larch, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_larch);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_lime, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_lime);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_mahoe, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_mahoe);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_mahogany, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_mahogany);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_maple, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_maple);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_padauk, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_padauk);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_palm, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_palm);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_papaya, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_papaya);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_pine, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_pine);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_plum, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_plum);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_poplar, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_poplar);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_sequoia, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_sequoia);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_teak, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_teak);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_walnut, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_walnut);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_wenge, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_wenge);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_willow, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_willow);
-				FurnitureFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_zebrawood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_zebrawood);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_acacia, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_acacia);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_balsa, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_balsa);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_baobab, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_baobab);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_cherry, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_cherry);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_chestnut, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_chestnut);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_citrus, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_citrus);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_cocobolo, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_cocobolo);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_ebony, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_ebony);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_giganteum, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_giganteum);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_greenheart, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_greenheart);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_ipe, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_ipe);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_kapok, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_kapok);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_larch, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_larch);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_lime, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_lime);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_mahoe, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_mahoe);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_mahogany, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_mahogany);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_maple, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_maple);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_padauk, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_padauk);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_palm, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_palm);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_papaya, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_papaya);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_pine, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_pine);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_plum, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_plum);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_poplar, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_poplar);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_sequoia, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_sequoia);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_teak, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_teak);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_walnut, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_walnut);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_wenge, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_wenge);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_willow, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_willow);
+				SeatingFactory.AddPaddedBenchRecipe(BlockObjectHolder.chair_wood_ironage_bench_back_single_forestry_zebrawood, BlockObjectHolder.chair_wood_ironage_bench_back_padded_single_forestry_zebrawood);
 			}
 		}
 	}

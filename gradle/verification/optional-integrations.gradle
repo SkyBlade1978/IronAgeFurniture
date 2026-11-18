@@ -142,7 +142,7 @@ tasks.register('generateOptionalIntegrationFixtureData') {
         Map<String, Set<String>> blocks = integrationWoods.collectEntries {
             [(it.key): new TreeSet<String>()]
         }
-        def registrationMatcher = blockSource =~ /FurnitureFactory\.Create\w*\("([^"]+)"/
+        def registrationMatcher = blockSource =~ /SeatingFactory\.Create\w*\("([^"]+)"/
         registrationMatcher.each { match ->
             String id = match[1].toString()
             integrationWoods.each { profile, woods ->
@@ -185,7 +185,7 @@ tasks.register('generateOptionalIntegrationFixtureData') {
                 'CreateRedLampVariant', 'CreateIronFloorRedSconce', 'CreateIronWallRedSconce'
         ] as Set<String>
         Set<String> hiddenLightingIds = [] as TreeSet<String>
-        def lightingRegistrationMatcher = blockSource =~ /FurnitureFactory\.(Create\w+)\("([^"]+)"/
+        def lightingRegistrationMatcher = blockSource =~ /LightingFactory\.(Create\w+)\("([^"]+)"/
         lightingRegistrationMatcher.each { match ->
             if (hiddenLightingFactories.contains(match[1].toString())) {
                 hiddenLightingIds.add("ironagefurniture:${match[2]}")

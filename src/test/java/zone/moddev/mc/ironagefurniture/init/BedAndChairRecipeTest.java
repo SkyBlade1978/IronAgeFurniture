@@ -29,7 +29,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
 /** Tests the real Phase 4 registration path, not just a recipe helper. */
-public class PhaseFourFurnitureRecipeTest {
+public class BedAndChairRecipeTest {
 	@BeforeClass public static void bootstrap() { Bootstrap.register(); }
 
 	@Test public void wingbackAndThroneCraftForEveryCarpetColour() {
@@ -56,7 +56,7 @@ public class PhaseFourFurnitureRecipeTest {
 			Ironagefurniture.BlockRegistry.put("chair_wood_ironage_classic_oak", Blocks.BRICK_BLOCK);
 			BlockObjectHolder.chair_wood_ironage_wingback.put("oak", Blocks.STONE);
 			BlockObjectHolder.chair_wood_ironage_throne.put("oak", Blocks.COBBLESTONE);
-			PhaseFourFurnitureInitialiser.registerRecipes();
+			WoodVariantHelper.forEachEnabledPlankVariant(ChairUpgradeInitialiser::registerRecipes);
 			List<IRecipe> added = new ArrayList<IRecipe>(recipes);
 			added.removeAll(original);
 
@@ -86,7 +86,7 @@ public class PhaseFourFurnitureRecipeTest {
 			assertFalse(matchesAny(added, grid(UpholsteryColour.RED,
 					new ItemStack(Blocks.PLANKS, 1, 1), new ItemStack(Blocks.BRICK_BLOCK))));
 			IronAgeFurnitureConfiguration.GENERATE_WINGBACK_CHAIRS = false;
-			PhaseFourFurnitureInitialiser.registerRecipes();
+			WoodVariantHelper.forEachEnabledPlankVariant(ChairUpgradeInitialiser::registerRecipes);
 			assertEquals(original.size() + 32, recipes.size());
 		} finally {
 			recipes.clear();
@@ -126,7 +126,12 @@ public class PhaseFourFurnitureRecipeTest {
 			BlockObjectHolder.bed_wood_double.put("oak", Blocks.COBBLESTONE);
 			BlockObjectHolder.bed_canopy_single.put("oak", Blocks.BRICK_BLOCK);
 			BlockObjectHolder.bed_canopy_double_left.put("oak", Blocks.GOLD_BLOCK);
-			PhaseFourFurnitureInitialiser.registerRecipes();
+			WoodVariantHelper.forEachEnabledPlankVariant(BedInitialiser::registerSingleBedRecipes);
+
+			for (String suffix : WoodVariantHelper.getEnabledWoodSuffixes()) {
+				BedInitialiser.registerDoubleBedRecipes(suffix);
+			}
+
 			List<IRecipe> added = new ArrayList<IRecipe>(recipes);
 			added.removeAll(original);
 

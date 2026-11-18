@@ -21,7 +21,7 @@ import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/** Uses the same pre-baked per-wool-texture approach as the Phase 3 padded benches. */
+/** Bakes a separate model for each upholstery colour, as with padded benches. */
 @SideOnly(Side.CLIENT)
 public enum UpholsteryModelLoader implements ICustomModelLoader {
 	INSTANCE;

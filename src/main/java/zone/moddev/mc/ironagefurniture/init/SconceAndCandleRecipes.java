@@ -13,24 +13,36 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-/** Recipes for the additive lighting features; Phase 3 iron recipes remain unchanged. */
-public final class PhaseFourLightingRecipes {
-	private PhaseFourLightingRecipes() {
+/** Recipes for metal sconce variants, tallow, and candles. */
+final class SconceAndCandleRecipes {
+	private SconceAndCandleRecipes() {
 	}
 
-	public static void register() {
-		if (!IronAgeFurnitureConfiguration.GENERATE_LIGHTS) return;
+	static void register() {
+		if (!IronAgeFurnitureConfiguration.GENERATE_LIGHTS) {
+			return;
+		}
+
 		if (IronAgeFurnitureConfiguration.GENERATE_SCONCES) {
 			for (MetalVariant metal : MetalVariantHelper.getAvailableVariants()) {
-				if (metal == MetalVariant.IRON) continue;
-				Object nugget = metal == MetalVariant.GOLD ? Items.GOLD_NUGGET : metal.getNuggetOreName();
-				if (metal != MetalVariant.GOLD && (!OreDictionary.doesOreNameExist(metal.getNuggetOreName())
-						|| OreDictionary.getOres(metal.getNuggetOreName()).isEmpty())) continue;
+				if (metal == MetalVariant.IRON) {
+					continue;
+				}
+
+				String oreName = metal.getNuggetOreName();
+
+				if (metal != MetalVariant.GOLD && (!OreDictionary.doesOreNameExist(oreName)
+						|| OreDictionary.getOres(oreName).isEmpty())) {
+					continue;
+				}
+
+				Object nugget = metal == MetalVariant.GOLD ? Items.GOLD_NUGGET : oreName;
 				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(
 					BlockObjectHolder.light_metal_ironage_sconce_floor_empty_iron, 4, metal.getMeta()),
 					"xxx", "x  ", "x  ", 'x', nugget));
 			}
 		}
+
 		if (IronAgeFurnitureConfiguration.GENERATE_CANDLES && ItemObjectHolder.tallow != null
 				&& BlockObjectHolder.light_metal_ironage_candle_floor != null) {
 			GameRegistry.addSmelting(Items.COOKED_PORKCHOP, new ItemStack(ItemObjectHolder.tallow, 3), 0.1F);
