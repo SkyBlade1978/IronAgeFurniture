@@ -19,6 +19,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.GameType;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
@@ -44,6 +45,8 @@ public final class SurfaceBoundsClientProbe {
         client.gameSettings.pauseOnLostFocus = false;
         if (!started && client.currentScreen instanceof GuiMainMenu) {
             started = true;
+            // Keep mobs out of the test gallery while the probes exercise Survival.
+            client.gameSettings.difficulty = EnumDifficulty.PEACEFUL;
             client.launchIntegratedServer("surface-bounds-world", "IAF surface bounds test",
                     new WorldSettings(44L, GameType.CREATIVE, false, false, WorldType.FLAT));
             return;

@@ -5,6 +5,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class IronAgeFurnitureConfiguration {
 	public static boolean GENERATE_CLASSIC_CHAIRS = true;
+	public static boolean GENERATE_DINING_CHAIRS = true;
 	public static boolean GENERATE_WINGBACK_CHAIRS = true;
 	public static boolean GENERATE_THRONES = true;
 	public static boolean GENERATE_CANOPY_BEDS = true;
@@ -51,6 +52,7 @@ public class IronAgeFurnitureConfiguration {
 
     	GENERATE_SHIELD_CHAIRS = config.getBoolean("GENERATE_SHIELD_CHAIRS", "options", GENERATE_SHIELD_CHAIRS, "If true, then shield chairs will be generated");
 		GENERATE_CLASSIC_CHAIRS = config.getBoolean("GENERATE_CLASSIC_CHAIRS", "options", GENERATE_CLASSIC_CHAIRS, "If true, then classic chairs will be generated");
+		GENERATE_DINING_CHAIRS = config.getBoolean("GENERATE_DINING_CHAIRS", "options", true, "Generate dining chairs for enabled woods");
 		GENERATE_WINGBACK_CHAIRS = config.getBoolean("GENERATE_WINGBACK_CHAIRS", "options", GENERATE_WINGBACK_CHAIRS, "Generate multiblock wingback chairs when classic chairs are enabled");
 		GENERATE_THRONES = config.getBoolean("GENERATE_THRONES", "options", GENERATE_THRONES, "Generate multiblock throne chairs");
 		GENERATE_CANOPY_BEDS = config.getBoolean("GENERATE_CANOPY_BEDS", "options", GENERATE_CANOPY_BEDS, "Generate canopy beds");

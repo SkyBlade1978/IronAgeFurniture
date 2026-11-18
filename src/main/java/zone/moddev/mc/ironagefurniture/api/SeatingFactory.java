@@ -3,6 +3,7 @@ package zone.moddev.mc.ironagefurniture.api;
 import zone.moddev.mc.ironagefurniture.api.Blocks.BackBench;
 import zone.moddev.mc.ironagefurniture.api.Blocks.Bench;
 import zone.moddev.mc.ironagefurniture.api.Blocks.Chair;
+import zone.moddev.mc.ironagefurniture.api.Blocks.DiningChair;
 import zone.moddev.mc.ironagefurniture.api.Blocks.PaddedBackBench;
 import zone.moddev.mc.ironagefurniture.api.Blocks.PaddedBench;
 import zone.moddev.mc.ironagefurniture.api.Blocks.ShieldChair;
@@ -33,6 +34,10 @@ public final class SeatingFactory {
 
 	public static Block CreateWoodChair(String name) {
 		return CreateWoodChair(name, 10, 1);
+	}
+
+	public static Block CreateWoodDiningChair(String name) {
+		return FurnitureRegistration.registerBlock(new DiningChair(Material.WOOD, name, 10, 1), name);
 	}
 
 	public static Block CreateWoodShieldChair(String name, float resistance, float hardness) {
@@ -104,6 +109,11 @@ public final class SeatingFactory {
 	public static void AddClassicChairRecipe(ItemStack planks, Block chair) {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(chair, 1),
 				"x  ", "xxx", "y y", 'x', planks, 'y', "stickWood"));
+	}
+
+	public static void AddDiningChairRecipe(ItemStack slab, Block chair) {
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(chair, 1),
+				"s  ", "sss", "t t", 's', slab, 't', "stickWood"));
 	}
 
 	public static void AddWingbackChairRecipe(ItemStack planks, Block chairIn, Block chairOut) {

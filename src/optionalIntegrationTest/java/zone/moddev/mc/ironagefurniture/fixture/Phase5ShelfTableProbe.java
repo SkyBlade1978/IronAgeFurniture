@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Set;
 
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
+import zone.moddev.mc.ironagefurniture.api.Blocks.DiningChair;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceItemHit;
+import zone.moddev.mc.ironagefurniture.api.entity.Seat;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -71,6 +74,7 @@ final class Phase5ShelfTableProbe {
 					pos = pos.east(8);
 				}
 			}
+			verifyDiningChairs(world, player, pos.south(40));
 			verifyShelfShapes(world, player, pos.south(80));
 			verifyStackedShelves(world, player, pos.south(120));
 			verifyAddonPair(world, player, mods, pos.south(160));
@@ -79,7 +83,7 @@ final class Phase5ShelfTableProbe {
 			player.inventory.clear(); player.setSneaking(false);
 			player.interactionManager.setGameType(oldMode); player.connection = oldConnection;
 		}
-		LogManager.getLogger().info("IAF PHASE 5 SHELF/TABLE PROBE PASSED: {} chair woods, four furniture recipes per wood", woods.size());
+		LogManager.getLogger().info("IAF PHASE 5 SHELF/TABLE PROBE PASSED: {} woods, five furniture recipes per wood", woods.size());
 	}
 
 	private static void verifyWoodRecipes(WorldServer world, String wood) {
@@ -117,6 +121,100 @@ final class Phase5ShelfTableProbe {
 				&& crafted.stackSize == (prefix.equals("shelf_wall_") ? 3 : 1), "Wrong furniture recipe for " + prefix + wood + "; got " + crafted);
 			require(Blocks.FIRE.getFlammability(output) == 20, "Wood furniture is not flammable: " + prefix + wood);
 		}
+
+		grid.clear();
+		int[] chairWoodSlots = { 0, 3, 4, 5 };
+		for (int slot : chairWoodSlots) {
+			grid.setInventorySlotContents(slot, slab.copy());
+		}
+		grid.setInventorySlotContents(6, new ItemStack(Items.STICK));
+		grid.setInventorySlotContents(8, new ItemStack(Items.STICK));
+
+		Block diningChair = block("chair_wood_ironage_dining_" + wood);
+		ItemStack crafted = CraftingManager.getInstance().findMatchingRecipe(grid, world);
+		require(crafted != null && crafted.stackSize == 1 && crafted.getItem() == Item.getItemFromBlock(diningChair),
+			"Wrong dining chair recipe for " + wood + ": " + crafted);
+
+		for (int slot : chairWoodSlots) {
+			grid.setInventorySlotContents(slot, plank.copy());
+		}
+		ItemStack classic = CraftingManager.getInstance().findMatchingRecipe(grid, world);
+		require(classic != null && classic.stackSize == 1 && classic.getItem() == chair,
+			"Classic chair recipe changed for " + wood + ": " + classic);
+	}
+
+	private static void verifyDiningChairs(WorldServer world, FakePlayer player, BlockPos start) {
+		Block chair = block("chair_wood_ironage_dining_oak");
+		Block table = block("table_dining_oak");
+		Block lowTable = block("table_low_oak");
+		require(chair instanceof DiningChair, "Dining chair should use its own chair block");
+
+		for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+			BlockPos pos = start.east(6 * facing.getHorizontalIndex());
+			EnumFacing towardTable = facing.getOpposite();
+			BlockPos tablePos = pos.offset(towardTable);
+			IBlockState open = chair.getDefaultState().withProperty(BlockHorizontal.FACING, facing);
+			world.setBlockState(pos.down(), Blocks.STONE.getDefaultState());
+			world.setBlockState(tablePos.down(), Blocks.STONE.getDefaultState());
+			world.setBlockState(pos, open);
+
+			player.setSneaking(true);
+			world.setBlockState(tablePos, lowTable.getDefaultState());
+			require(world.getBlockState(tablePos).getBlock() == lowTable, "Low table fixture has no support");
+			require(!click(world, player, pos, null) && !world.getBlockState(pos).getValue(DiningChair.TUCKED),
+				"Dining chair tucked under a low table: " + facing);
+
+			world.setBlockState(tablePos, table.getDefaultState());
+			require(world.getBlockState(tablePos).getBlock() == table, "Dining table fixture has no support");
+			require(click(world, player, pos, null), "Dining chair tuck was not handled: " + facing);
+			IBlockState tucked = world.getBlockState(pos);
+			require(tucked.getValue(DiningChair.TUCKED), "Dining chair did not tuck: " + facing);
+			int metadata = chair.getMetaFromState(tucked);
+			require(metadata == (facing.getHorizontalIndex() | 4) && chair.getStateFromMeta(metadata).equals(tucked),
+				"Tucked chair metadata does not round-trip: " + facing);
+
+			double x = towardTable.getFrontOffsetX() * 10.0D / 16.0D;
+			double z = towardTable.getFrontOffsetZ() * 10.0D / 16.0D;
+			AxisAlignedBB openBounds = chair.getBoundingBox(open, world, pos);
+			require(chair.getBoundingBox(tucked, world, pos).equals(openBounds.offset(x, 0, z)),
+				"Tucked selection bounds did not move under the table: " + facing);
+			AxisAlignedBB query = new AxisAlignedBB(pos).expand(2, 2, 2);
+			List<AxisAlignedBB> openCollision = new ArrayList<>();
+			List<AxisAlignedBB> tuckedCollision = new ArrayList<>();
+			chair.addCollisionBoxToList(open, world, pos, query, openCollision, null);
+			chair.addCollisionBoxToList(tucked, world, pos, query, tuckedCollision, null);
+			require(openCollision.size() == 2 && tuckedCollision.size() == 2
+				&& tuckedCollision.get(0).equals(openCollision.get(0).offset(x, 0, z))
+				&& tuckedCollision.get(1).equals(openCollision.get(1).offset(x, 0, z)),
+				"Tucked chair collisions did not follow the model: " + facing);
+
+			player.setSneaking(false);
+			click(world, player, pos, null);
+			require(player.getRidingEntity() == null, "Tucked dining chair should not seat the player");
+			player.setSneaking(true);
+			require(click(world, player, pos, null) && !world.getBlockState(pos).getValue(DiningChair.TUCKED),
+				"Dining chair did not pull out: " + facing);
+
+			player.setSneaking(false);
+			require(click(world, player, pos, null) && player.getRidingEntity() instanceof Seat,
+				"Untucked dining chair did not seat the player: " + facing);
+			player.setSneaking(true);
+			click(world, player, pos, null);
+			require(!world.getBlockState(pos).getValue(DiningChair.TUCKED), "Occupied dining chair tucked");
+			player.dismountRidingEntity();
+
+			require(click(world, player, pos, null) && world.getBlockState(pos).getValue(DiningChair.TUCKED),
+				"Empty dining chair did not tuck again: " + facing);
+			List<ItemStack> drops = chair.getDrops(world, pos, world.getBlockState(pos), 0);
+			require(drops.size() == 1 && drops.get(0).getItem() == Item.getItemFromBlock(chair)
+				&& drops.get(0).stackSize == 1 && drops.get(0).getMetadata() == 0,
+				"Tucked dining chair did not drop its own item: " + facing);
+			world.setBlockToAir(tablePos);
+			require(world.getBlockState(pos).equals(open), "Dining chair did not untuck after table removal: " + facing);
+		}
+
+		player.setSneaking(false);
+		LogManager.getLogger().info("IAF DINING CHAIR PROBE PASSED: seating, tucking, collisions and drops in four facings");
 	}
 
 	private static void verifyLoose(WorldServer world, FakePlayer player, Block host, BlockPos pos, EnumFacing facing, Set<String> mods) {

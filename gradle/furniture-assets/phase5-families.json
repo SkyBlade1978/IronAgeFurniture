@@ -1,4 +1,34 @@
 {
+  "dining_chair": {
+    "prefix": "chair_wood_ironage_dining_",
+    "inventory": "inventory",
+    "models": {
+      "untucked": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+        "textures": {
+          "0": "minecraft:blocks/log_oak",
+          "1": "minecraft:blocks/planks_oak"
+        }
+      },
+      "tucked": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+        "textures": {
+          "0": "minecraft:blocks/log_oak",
+          "1": "minecraft:blocks/planks_oak"
+        }
+      },
+      "inventory": {
+        "credit": "By FoxNekitsune",
+        "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+        "textures": {
+          "0": "minecraft:blocks/log_oak",
+          "1": "minecraft:blocks/planks_oak"
+        }
+      }
+    }
+  },
   "dining": {
     "prefix": "table_dining_",
     "inventory": "single",

@@ -46,8 +46,15 @@ final class Phase5ShelfTableClientProbe {
 			if (!id.startsWith("table_dining_") && !id.startsWith("table_low_")
 					&& !id.startsWith("shelf_wall_") && !id.startsWith("cabinet_wood_ironage_")
 					&& !id.startsWith("half_cabinet_") && !id.startsWith("barrel_")
-					&& !id.startsWith("side_barrel_") && !id.startsWith("bottle_rack_")) continue;
+					&& !id.startsWith("side_barrel_") && !id.startsWith("bottle_rack_")
+					&& !id.startsWith("chair_wood_ironage_dining_")) continue;
 			Block block = Ironagefurniture.BlockRegistry.get(id);
+			if (id.startsWith("chair_wood_ironage_dining_")) {
+				IBakedModel itemModel = client.getRenderItem().getItemModelWithOverrides(
+					new ItemStack(block), client.world, client.player);
+				require(itemModel != client.getRenderItem().getItemModelMesher().getModelManager().getMissingModel(),
+					"Missing dining chair inventory model: " + id);
+			}
 			if (id.startsWith("bottle_rack_")) {
 				IBakedModel itemModel = client.getRenderItem().getItemModelWithOverrides(new ItemStack(block), client.world, client.player);
 				net.minecraft.client.renderer.block.model.ItemTransformVec3f gui = itemModel.getItemCameraTransforms()

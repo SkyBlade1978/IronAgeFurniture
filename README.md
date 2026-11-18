@@ -61,6 +61,11 @@ The dining-table, low-table, shelf and cabinet recipes use the matching
 wood throughout. Optional wood variants appear when their source mod and
 the corresponding integration setting are enabled.
 
+Dining chairs come in those same woods. Craft one with matching wooden slabs
+in the top-left slot and across the middle row, and sticks in the bottom corners.
+Sneak-right-click an empty chair facing a dining table to tuck it under the
+table. Sneak-right-click again to pull it out before sitting down.
+
 Creative inventory categories separate chairs, benches, beds, lighting,
 tables/shelves, storage and decorations. Decorations include sixteen glass
 vase colours: arrange four matching stained-glass blocks in a diamond

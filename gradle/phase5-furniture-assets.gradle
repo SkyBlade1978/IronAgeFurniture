@@ -42,13 +42,18 @@ def phase5WoodName = { String value ->
     bracket.find() ? bracket.group(1) : value.replaceFirst(/ Classic Chair$/, '')
 }
 def phase5Titles = [
-    de_AU: ['Niedriger Tisch (%s)', 'Wandregal (%s)'], de_DE: ['Niedriger Tisch (%s)', 'Wandregal (%s)'],
-    es_ES: ['Mesa baja (%s)', 'Estante de pared (%s)'], es_MX: ['Mesa baja (%s)', 'Estante de pared (%s)'],
-    fr_CA: ['Table basse (%s)', 'Étagère murale (%s)'],
-    fr_FR: ['Table basse (%s)', 'Étagère murale (%s)'], ja_JP: ['ローテーブル (%s)', '壁棚 (%s)'],
-    ko_KR: ['낮은 탁자 (%s)', '벽 선반 (%s)'], pt_BR: ['Mesa baixa (%s)', 'Prateleira de parede (%s)'],
-    pt_PT: ['Mesa baixa (%s)', 'Prateleira de parede (%s)'], ru_RU: ['Низкий стол (%s)', 'Настенная полка (%s)'],
-    zh_CN: ['矮桌 (%s)', '壁架 (%s)']
+    de_AU: ['Niedriger Tisch (%s)', 'Wandregal (%s)', 'Esszimmerstuhl (%s)'],
+    de_DE: ['Niedriger Tisch (%s)', 'Wandregal (%s)', 'Esszimmerstuhl (%s)'],
+    es_ES: ['Mesa baja (%s)', 'Estante de pared (%s)', 'Silla de comedor (%s)'],
+    es_MX: ['Mesa baja (%s)', 'Estante de pared (%s)', 'Silla de comedor (%s)'],
+    fr_CA: ['Table basse (%s)', 'Étagère murale (%s)', 'Chaise de salle à manger (%s)'],
+    fr_FR: ['Table basse (%s)', 'Étagère murale (%s)', 'Chaise de salle à manger (%s)'],
+    ja_JP: ['ローテーブル (%s)', '壁棚 (%s)', 'ダイニングチェア (%s)'],
+    ko_KR: ['낮은 탁자 (%s)', '벽 선반 (%s)', '식탁 의자 (%s)'],
+    pt_BR: ['Mesa baixa (%s)', 'Prateleira de parede (%s)', 'Cadeira de jantar (%s)'],
+    pt_PT: ['Mesa baixa (%s)', 'Prateleira de parede (%s)', 'Cadeira de jantar (%s)'],
+    ru_RU: ['Низкий стол (%s)', 'Настенная полка (%s)', 'Обеденный стул (%s)'],
+    zh_CN: ['矮桌 (%s)', '壁架 (%s)', '%s餐椅']
 ]
 
 tasks.register('updatePhaseFiveFurnitureAssets') {
@@ -82,7 +87,7 @@ tasks.register('updatePhaseFiveFurnitureAssets') {
                 [(family): title]
             }
             if (!dining.contains(oak) || !cabinet.contains(oak)) throw new GradleException("Missing wood title in ${locale.name}")
-            List<String> titles = phase5Titles[locale.name - '.lang'] ?: ['%s Low Table', '%s Wall Shelf']
+            List<String> titles = phase5Titles[locale.name - '.lang'] ?: ['%s Low Table', '%s Wall Shelf', '%s Dining Chair']
             List<String> retained = text.readLines().findAll { String line ->
                 !families.values().any { line.startsWith("tile.ironagefurniture.${it.prefix}") }
             }
@@ -91,7 +96,8 @@ tasks.register('updatePhaseFiveFurnitureAssets') {
             phase5Woods().sort().each { String wood ->
                 String woodName = phase5WoodName(names["tile.ironagefurniture.chair_wood_ironage_classic_${wood}.name"])
                 Map familyNames = [dining: dining.replace(oak, woodName), cabinet: cabinet.replace(oak, woodName),
-                        low: titles[0].replace('%s', woodName), shelf: titles[1].replace('%s', woodName)]
+                        low: titles[0].replace('%s', woodName), shelf: titles[1].replace('%s', woodName),
+                        dining_chair: titles[2].replace('%s', woodName)]
                 extraTitles.each { family, title -> familyNames[family] = title.replace(oak, woodName) }
                 families.each { family, definition ->
                     retained.add("tile.ironagefurniture.${definition.prefix}${wood}.name=${familyNames[family]}")

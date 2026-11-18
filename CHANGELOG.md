@@ -1,5 +1,8 @@
 # IronAgeFurniture 0.5.0.110021 (unreleased)
 
+- Port the v1 dining chairs in all 65 supported woods. Sneak-right-click an
+  empty chair facing a dining table to tuck it underneath or pull it out.
+  Craft one with four matching wooden slabs and two sticks.
 - Restore upright 3D surface bottles for vanilla potions, empty and
   experience bottles, and registered addon bottles. Reuse the rack's
   liquid/tint model with bounds fitted to each surface descriptor.

@@ -25415,6 +25415,2151 @@
                 "particle": "minecraft:blocks/planks_spruce"
             }
         },
+        "models/block/chair_wood_ironage_dining_acacia_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "minecraft:blocks/log_acacia",
+                "1": "minecraft:blocks/planks_acacia",
+                "log": "minecraft:blocks/log_acacia",
+                "planks": "minecraft:blocks/planks_acacia",
+                "particle": "minecraft:blocks/log_acacia"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_acacia_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "minecraft:blocks/log_acacia",
+                "1": "minecraft:blocks/planks_acacia",
+                "log": "minecraft:blocks/log_acacia",
+                "planks": "minecraft:blocks/planks_acacia",
+                "particle": "minecraft:blocks/log_acacia"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_acacia_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "minecraft:blocks/log_acacia",
+                "1": "minecraft:blocks/planks_acacia",
+                "log": "minecraft:blocks/log_acacia",
+                "planks": "minecraft:blocks/planks_acacia",
+                "particle": "minecraft:blocks/log_acacia"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_big_oak_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "minecraft:blocks/log_big_oak",
+                "1": "minecraft:blocks/planks_big_oak",
+                "log": "minecraft:blocks/log_big_oak",
+                "planks": "minecraft:blocks/planks_big_oak",
+                "particle": "minecraft:blocks/log_big_oak"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_big_oak_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "minecraft:blocks/log_big_oak",
+                "1": "minecraft:blocks/planks_big_oak",
+                "log": "minecraft:blocks/log_big_oak",
+                "planks": "minecraft:blocks/planks_big_oak",
+                "particle": "minecraft:blocks/log_big_oak"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_big_oak_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "minecraft:blocks/log_big_oak",
+                "1": "minecraft:blocks/planks_big_oak",
+                "log": "minecraft:blocks/log_big_oak",
+                "planks": "minecraft:blocks/planks_big_oak",
+                "particle": "minecraft:blocks/log_big_oak"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_cherry_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/cherry_log",
+                "1": "biomesoplenty:blocks/cherry_planks",
+                "log": "biomesoplenty:blocks/cherry_log",
+                "planks": "biomesoplenty:blocks/cherry_planks",
+                "particle": "biomesoplenty:blocks/cherry_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_cherry_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/cherry_log",
+                "1": "biomesoplenty:blocks/cherry_planks",
+                "log": "biomesoplenty:blocks/cherry_log",
+                "planks": "biomesoplenty:blocks/cherry_planks",
+                "particle": "biomesoplenty:blocks/cherry_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_cherry_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/cherry_log",
+                "1": "biomesoplenty:blocks/cherry_planks",
+                "log": "biomesoplenty:blocks/cherry_log",
+                "planks": "biomesoplenty:blocks/cherry_planks",
+                "particle": "biomesoplenty:blocks/cherry_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_ebony_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/ebony_log",
+                "1": "biomesoplenty:blocks/ebony_planks",
+                "log": "biomesoplenty:blocks/ebony_log",
+                "planks": "biomesoplenty:blocks/ebony_planks",
+                "particle": "biomesoplenty:blocks/ebony_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_ebony_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/ebony_log",
+                "1": "biomesoplenty:blocks/ebony_planks",
+                "log": "biomesoplenty:blocks/ebony_log",
+                "planks": "biomesoplenty:blocks/ebony_planks",
+                "particle": "biomesoplenty:blocks/ebony_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_ebony_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/ebony_log",
+                "1": "biomesoplenty:blocks/ebony_planks",
+                "log": "biomesoplenty:blocks/ebony_log",
+                "planks": "biomesoplenty:blocks/ebony_planks",
+                "particle": "biomesoplenty:blocks/ebony_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_ethereal_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/ethereal_log",
+                "1": "biomesoplenty:blocks/ethereal_planks",
+                "log": "biomesoplenty:blocks/ethereal_log",
+                "planks": "biomesoplenty:blocks/ethereal_planks",
+                "particle": "biomesoplenty:blocks/ethereal_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_ethereal_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/ethereal_log",
+                "1": "biomesoplenty:blocks/ethereal_planks",
+                "log": "biomesoplenty:blocks/ethereal_log",
+                "planks": "biomesoplenty:blocks/ethereal_planks",
+                "particle": "biomesoplenty:blocks/ethereal_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_ethereal_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/ethereal_log",
+                "1": "biomesoplenty:blocks/ethereal_planks",
+                "log": "biomesoplenty:blocks/ethereal_log",
+                "planks": "biomesoplenty:blocks/ethereal_planks",
+                "particle": "biomesoplenty:blocks/ethereal_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_eucalyptus_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/eucalyptus_log",
+                "1": "biomesoplenty:blocks/eucalyptus_planks",
+                "log": "biomesoplenty:blocks/eucalyptus_log",
+                "planks": "biomesoplenty:blocks/eucalyptus_planks",
+                "particle": "biomesoplenty:blocks/eucalyptus_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_eucalyptus_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/eucalyptus_log",
+                "1": "biomesoplenty:blocks/eucalyptus_planks",
+                "log": "biomesoplenty:blocks/eucalyptus_log",
+                "planks": "biomesoplenty:blocks/eucalyptus_planks",
+                "particle": "biomesoplenty:blocks/eucalyptus_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_eucalyptus_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/eucalyptus_log",
+                "1": "biomesoplenty:blocks/eucalyptus_planks",
+                "log": "biomesoplenty:blocks/eucalyptus_log",
+                "planks": "biomesoplenty:blocks/eucalyptus_planks",
+                "particle": "biomesoplenty:blocks/eucalyptus_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_fir_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/fir_log",
+                "1": "biomesoplenty:blocks/fir_planks",
+                "log": "biomesoplenty:blocks/fir_log",
+                "planks": "biomesoplenty:blocks/fir_planks",
+                "particle": "biomesoplenty:blocks/fir_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_fir_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/fir_log",
+                "1": "biomesoplenty:blocks/fir_planks",
+                "log": "biomesoplenty:blocks/fir_log",
+                "planks": "biomesoplenty:blocks/fir_planks",
+                "particle": "biomesoplenty:blocks/fir_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_fir_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/fir_log",
+                "1": "biomesoplenty:blocks/fir_planks",
+                "log": "biomesoplenty:blocks/fir_log",
+                "planks": "biomesoplenty:blocks/fir_planks",
+                "particle": "biomesoplenty:blocks/fir_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_hellbark_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/hellbark_log",
+                "1": "biomesoplenty:blocks/hellbark_planks",
+                "log": "biomesoplenty:blocks/hellbark_log",
+                "planks": "biomesoplenty:blocks/hellbark_planks",
+                "particle": "biomesoplenty:blocks/hellbark_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_hellbark_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/hellbark_log",
+                "1": "biomesoplenty:blocks/hellbark_planks",
+                "log": "biomesoplenty:blocks/hellbark_log",
+                "planks": "biomesoplenty:blocks/hellbark_planks",
+                "particle": "biomesoplenty:blocks/hellbark_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_hellbark_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/hellbark_log",
+                "1": "biomesoplenty:blocks/hellbark_planks",
+                "log": "biomesoplenty:blocks/hellbark_log",
+                "planks": "biomesoplenty:blocks/hellbark_planks",
+                "particle": "biomesoplenty:blocks/hellbark_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_jacaranda_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/jacaranda_log",
+                "1": "biomesoplenty:blocks/jacaranda_planks",
+                "log": "biomesoplenty:blocks/jacaranda_log",
+                "planks": "biomesoplenty:blocks/jacaranda_planks",
+                "particle": "biomesoplenty:blocks/jacaranda_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_jacaranda_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/jacaranda_log",
+                "1": "biomesoplenty:blocks/jacaranda_planks",
+                "log": "biomesoplenty:blocks/jacaranda_log",
+                "planks": "biomesoplenty:blocks/jacaranda_planks",
+                "particle": "biomesoplenty:blocks/jacaranda_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_jacaranda_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/jacaranda_log",
+                "1": "biomesoplenty:blocks/jacaranda_planks",
+                "log": "biomesoplenty:blocks/jacaranda_log",
+                "planks": "biomesoplenty:blocks/jacaranda_planks",
+                "particle": "biomesoplenty:blocks/jacaranda_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_magic_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/magic_log",
+                "1": "biomesoplenty:blocks/magic_planks",
+                "log": "biomesoplenty:blocks/magic_log",
+                "planks": "biomesoplenty:blocks/magic_planks",
+                "particle": "biomesoplenty:blocks/magic_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_magic_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/magic_log",
+                "1": "biomesoplenty:blocks/magic_planks",
+                "log": "biomesoplenty:blocks/magic_log",
+                "planks": "biomesoplenty:blocks/magic_planks",
+                "particle": "biomesoplenty:blocks/magic_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_magic_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/magic_log",
+                "1": "biomesoplenty:blocks/magic_planks",
+                "log": "biomesoplenty:blocks/magic_log",
+                "planks": "biomesoplenty:blocks/magic_planks",
+                "particle": "biomesoplenty:blocks/magic_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_mahogany_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/mahogany_log",
+                "1": "biomesoplenty:blocks/mahogany_planks",
+                "log": "biomesoplenty:blocks/mahogany_log",
+                "planks": "biomesoplenty:blocks/mahogany_planks",
+                "particle": "biomesoplenty:blocks/mahogany_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_mahogany_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/mahogany_log",
+                "1": "biomesoplenty:blocks/mahogany_planks",
+                "log": "biomesoplenty:blocks/mahogany_log",
+                "planks": "biomesoplenty:blocks/mahogany_planks",
+                "particle": "biomesoplenty:blocks/mahogany_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_mahogany_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/mahogany_log",
+                "1": "biomesoplenty:blocks/mahogany_planks",
+                "log": "biomesoplenty:blocks/mahogany_log",
+                "planks": "biomesoplenty:blocks/mahogany_planks",
+                "particle": "biomesoplenty:blocks/mahogany_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_mangrove_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/mangrove_log",
+                "1": "biomesoplenty:blocks/mangrove_planks",
+                "log": "biomesoplenty:blocks/mangrove_log",
+                "planks": "biomesoplenty:blocks/mangrove_planks",
+                "particle": "biomesoplenty:blocks/mangrove_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_mangrove_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/mangrove_log",
+                "1": "biomesoplenty:blocks/mangrove_planks",
+                "log": "biomesoplenty:blocks/mangrove_log",
+                "planks": "biomesoplenty:blocks/mangrove_planks",
+                "particle": "biomesoplenty:blocks/mangrove_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_mangrove_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/mangrove_log",
+                "1": "biomesoplenty:blocks/mangrove_planks",
+                "log": "biomesoplenty:blocks/mangrove_log",
+                "planks": "biomesoplenty:blocks/mangrove_planks",
+                "particle": "biomesoplenty:blocks/mangrove_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_palm_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/palm_log",
+                "1": "biomesoplenty:blocks/palm_planks",
+                "log": "biomesoplenty:blocks/palm_log",
+                "planks": "biomesoplenty:blocks/palm_planks",
+                "particle": "biomesoplenty:blocks/palm_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_palm_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/palm_log",
+                "1": "biomesoplenty:blocks/palm_planks",
+                "log": "biomesoplenty:blocks/palm_log",
+                "planks": "biomesoplenty:blocks/palm_planks",
+                "particle": "biomesoplenty:blocks/palm_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_palm_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/palm_log",
+                "1": "biomesoplenty:blocks/palm_planks",
+                "log": "biomesoplenty:blocks/palm_log",
+                "planks": "biomesoplenty:blocks/palm_planks",
+                "particle": "biomesoplenty:blocks/palm_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_pine_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/pine_log",
+                "1": "biomesoplenty:blocks/pine_planks",
+                "log": "biomesoplenty:blocks/pine_log",
+                "planks": "biomesoplenty:blocks/pine_planks",
+                "particle": "biomesoplenty:blocks/pine_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_pine_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/pine_log",
+                "1": "biomesoplenty:blocks/pine_planks",
+                "log": "biomesoplenty:blocks/pine_log",
+                "planks": "biomesoplenty:blocks/pine_planks",
+                "particle": "biomesoplenty:blocks/pine_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_pine_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/pine_log",
+                "1": "biomesoplenty:blocks/pine_planks",
+                "log": "biomesoplenty:blocks/pine_log",
+                "planks": "biomesoplenty:blocks/pine_planks",
+                "particle": "biomesoplenty:blocks/pine_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_redwood_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/redwood_log",
+                "1": "biomesoplenty:blocks/redwood_planks",
+                "log": "biomesoplenty:blocks/redwood_log",
+                "planks": "biomesoplenty:blocks/redwood_planks",
+                "particle": "biomesoplenty:blocks/redwood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_redwood_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/redwood_log",
+                "1": "biomesoplenty:blocks/redwood_planks",
+                "log": "biomesoplenty:blocks/redwood_log",
+                "planks": "biomesoplenty:blocks/redwood_planks",
+                "particle": "biomesoplenty:blocks/redwood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_redwood_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/redwood_log",
+                "1": "biomesoplenty:blocks/redwood_planks",
+                "log": "biomesoplenty:blocks/redwood_log",
+                "planks": "biomesoplenty:blocks/redwood_planks",
+                "particle": "biomesoplenty:blocks/redwood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_sacred_oak_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/sacred_oak_log",
+                "1": "biomesoplenty:blocks/sacred_oak_planks",
+                "log": "biomesoplenty:blocks/sacred_oak_log",
+                "planks": "biomesoplenty:blocks/sacred_oak_planks",
+                "particle": "biomesoplenty:blocks/sacred_oak_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_sacred_oak_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/sacred_oak_log",
+                "1": "biomesoplenty:blocks/sacred_oak_planks",
+                "log": "biomesoplenty:blocks/sacred_oak_log",
+                "planks": "biomesoplenty:blocks/sacred_oak_planks",
+                "particle": "biomesoplenty:blocks/sacred_oak_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_sacred_oak_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/sacred_oak_log",
+                "1": "biomesoplenty:blocks/sacred_oak_planks",
+                "log": "biomesoplenty:blocks/sacred_oak_log",
+                "planks": "biomesoplenty:blocks/sacred_oak_planks",
+                "particle": "biomesoplenty:blocks/sacred_oak_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_umbran_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/umbran_log",
+                "1": "biomesoplenty:blocks/umbran_planks",
+                "log": "biomesoplenty:blocks/umbran_log",
+                "planks": "biomesoplenty:blocks/umbran_planks",
+                "particle": "biomesoplenty:blocks/umbran_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_umbran_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/umbran_log",
+                "1": "biomesoplenty:blocks/umbran_planks",
+                "log": "biomesoplenty:blocks/umbran_log",
+                "planks": "biomesoplenty:blocks/umbran_planks",
+                "particle": "biomesoplenty:blocks/umbran_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_umbran_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/umbran_log",
+                "1": "biomesoplenty:blocks/umbran_planks",
+                "log": "biomesoplenty:blocks/umbran_log",
+                "planks": "biomesoplenty:blocks/umbran_planks",
+                "particle": "biomesoplenty:blocks/umbran_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_willow_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "biomesoplenty:blocks/willow_log",
+                "1": "biomesoplenty:blocks/willow_planks",
+                "log": "biomesoplenty:blocks/willow_log",
+                "planks": "biomesoplenty:blocks/willow_planks",
+                "particle": "biomesoplenty:blocks/willow_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_willow_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "biomesoplenty:blocks/willow_log",
+                "1": "biomesoplenty:blocks/willow_planks",
+                "log": "biomesoplenty:blocks/willow_log",
+                "planks": "biomesoplenty:blocks/willow_planks",
+                "particle": "biomesoplenty:blocks/willow_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_biomesoplenty_willow_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "biomesoplenty:blocks/willow_log",
+                "1": "biomesoplenty:blocks/willow_planks",
+                "log": "biomesoplenty:blocks/willow_log",
+                "planks": "biomesoplenty:blocks/willow_planks",
+                "particle": "biomesoplenty:blocks/willow_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_birch_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "minecraft:blocks/log_birch",
+                "1": "minecraft:blocks/planks_birch",
+                "log": "minecraft:blocks/log_birch",
+                "planks": "minecraft:blocks/planks_birch",
+                "particle": "minecraft:blocks/log_birch"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_birch_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "minecraft:blocks/log_birch",
+                "1": "minecraft:blocks/planks_birch",
+                "log": "minecraft:blocks/log_birch",
+                "planks": "minecraft:blocks/planks_birch",
+                "particle": "minecraft:blocks/log_birch"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_birch_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "minecraft:blocks/log_birch",
+                "1": "minecraft:blocks/planks_birch",
+                "log": "minecraft:blocks/log_birch",
+                "planks": "minecraft:blocks/planks_birch",
+                "particle": "minecraft:blocks/log_birch"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_acacia_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.acacia",
+                "1": "forestry:blocks/wood/planks.acacia",
+                "log": "forestry:blocks/wood/bark.acacia",
+                "planks": "forestry:blocks/wood/planks.acacia",
+                "particle": "forestry:blocks/wood/bark.acacia"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_acacia_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.acacia",
+                "1": "forestry:blocks/wood/planks.acacia",
+                "log": "forestry:blocks/wood/bark.acacia",
+                "planks": "forestry:blocks/wood/planks.acacia",
+                "particle": "forestry:blocks/wood/bark.acacia"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_acacia_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.acacia",
+                "1": "forestry:blocks/wood/planks.acacia",
+                "log": "forestry:blocks/wood/bark.acacia",
+                "planks": "forestry:blocks/wood/planks.acacia",
+                "particle": "forestry:blocks/wood/bark.acacia"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_balsa_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.balsa",
+                "1": "forestry:blocks/wood/planks.balsa",
+                "log": "forestry:blocks/wood/bark.balsa",
+                "planks": "forestry:blocks/wood/planks.balsa",
+                "particle": "forestry:blocks/wood/bark.balsa"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_balsa_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.balsa",
+                "1": "forestry:blocks/wood/planks.balsa",
+                "log": "forestry:blocks/wood/bark.balsa",
+                "planks": "forestry:blocks/wood/planks.balsa",
+                "particle": "forestry:blocks/wood/bark.balsa"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_balsa_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.balsa",
+                "1": "forestry:blocks/wood/planks.balsa",
+                "log": "forestry:blocks/wood/bark.balsa",
+                "planks": "forestry:blocks/wood/planks.balsa",
+                "particle": "forestry:blocks/wood/bark.balsa"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_baobab_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.baobab",
+                "1": "forestry:blocks/wood/planks.baobab",
+                "log": "forestry:blocks/wood/bark.baobab",
+                "planks": "forestry:blocks/wood/planks.baobab",
+                "particle": "forestry:blocks/wood/bark.baobab"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_baobab_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.baobab",
+                "1": "forestry:blocks/wood/planks.baobab",
+                "log": "forestry:blocks/wood/bark.baobab",
+                "planks": "forestry:blocks/wood/planks.baobab",
+                "particle": "forestry:blocks/wood/bark.baobab"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_baobab_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.baobab",
+                "1": "forestry:blocks/wood/planks.baobab",
+                "log": "forestry:blocks/wood/bark.baobab",
+                "planks": "forestry:blocks/wood/planks.baobab",
+                "particle": "forestry:blocks/wood/bark.baobab"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_cherry_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.cherry",
+                "1": "forestry:blocks/wood/planks.cherry",
+                "log": "forestry:blocks/wood/bark.cherry",
+                "planks": "forestry:blocks/wood/planks.cherry",
+                "particle": "forestry:blocks/wood/bark.cherry"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_cherry_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.cherry",
+                "1": "forestry:blocks/wood/planks.cherry",
+                "log": "forestry:blocks/wood/bark.cherry",
+                "planks": "forestry:blocks/wood/planks.cherry",
+                "particle": "forestry:blocks/wood/bark.cherry"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_cherry_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.cherry",
+                "1": "forestry:blocks/wood/planks.cherry",
+                "log": "forestry:blocks/wood/bark.cherry",
+                "planks": "forestry:blocks/wood/planks.cherry",
+                "particle": "forestry:blocks/wood/bark.cherry"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_chestnut_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.chestnut",
+                "1": "forestry:blocks/wood/planks.chestnut",
+                "log": "forestry:blocks/wood/bark.chestnut",
+                "planks": "forestry:blocks/wood/planks.chestnut",
+                "particle": "forestry:blocks/wood/bark.chestnut"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_chestnut_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.chestnut",
+                "1": "forestry:blocks/wood/planks.chestnut",
+                "log": "forestry:blocks/wood/bark.chestnut",
+                "planks": "forestry:blocks/wood/planks.chestnut",
+                "particle": "forestry:blocks/wood/bark.chestnut"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_chestnut_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.chestnut",
+                "1": "forestry:blocks/wood/planks.chestnut",
+                "log": "forestry:blocks/wood/bark.chestnut",
+                "planks": "forestry:blocks/wood/planks.chestnut",
+                "particle": "forestry:blocks/wood/bark.chestnut"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_citrus_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.citrus",
+                "1": "forestry:blocks/wood/planks.citrus",
+                "log": "forestry:blocks/wood/bark.citrus",
+                "planks": "forestry:blocks/wood/planks.citrus",
+                "particle": "forestry:blocks/wood/bark.citrus"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_citrus_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.citrus",
+                "1": "forestry:blocks/wood/planks.citrus",
+                "log": "forestry:blocks/wood/bark.citrus",
+                "planks": "forestry:blocks/wood/planks.citrus",
+                "particle": "forestry:blocks/wood/bark.citrus"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_citrus_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.citrus",
+                "1": "forestry:blocks/wood/planks.citrus",
+                "log": "forestry:blocks/wood/bark.citrus",
+                "planks": "forestry:blocks/wood/planks.citrus",
+                "particle": "forestry:blocks/wood/bark.citrus"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_cocobolo_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.cocobolo",
+                "1": "forestry:blocks/wood/planks.cocobolo",
+                "log": "forestry:blocks/wood/bark.cocobolo",
+                "planks": "forestry:blocks/wood/planks.cocobolo",
+                "particle": "forestry:blocks/wood/bark.cocobolo"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_cocobolo_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.cocobolo",
+                "1": "forestry:blocks/wood/planks.cocobolo",
+                "log": "forestry:blocks/wood/bark.cocobolo",
+                "planks": "forestry:blocks/wood/planks.cocobolo",
+                "particle": "forestry:blocks/wood/bark.cocobolo"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_cocobolo_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.cocobolo",
+                "1": "forestry:blocks/wood/planks.cocobolo",
+                "log": "forestry:blocks/wood/bark.cocobolo",
+                "planks": "forestry:blocks/wood/planks.cocobolo",
+                "particle": "forestry:blocks/wood/bark.cocobolo"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_ebony_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.ebony",
+                "1": "forestry:blocks/wood/planks.ebony",
+                "log": "forestry:blocks/wood/bark.ebony",
+                "planks": "forestry:blocks/wood/planks.ebony",
+                "particle": "forestry:blocks/wood/bark.ebony"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_ebony_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.ebony",
+                "1": "forestry:blocks/wood/planks.ebony",
+                "log": "forestry:blocks/wood/bark.ebony",
+                "planks": "forestry:blocks/wood/planks.ebony",
+                "particle": "forestry:blocks/wood/bark.ebony"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_ebony_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.ebony",
+                "1": "forestry:blocks/wood/planks.ebony",
+                "log": "forestry:blocks/wood/bark.ebony",
+                "planks": "forestry:blocks/wood/planks.ebony",
+                "particle": "forestry:blocks/wood/bark.ebony"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_giganteum_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.giganteum",
+                "1": "forestry:blocks/wood/planks.giganteum",
+                "log": "forestry:blocks/wood/bark.giganteum",
+                "planks": "forestry:blocks/wood/planks.giganteum",
+                "particle": "forestry:blocks/wood/bark.giganteum"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_giganteum_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.giganteum",
+                "1": "forestry:blocks/wood/planks.giganteum",
+                "log": "forestry:blocks/wood/bark.giganteum",
+                "planks": "forestry:blocks/wood/planks.giganteum",
+                "particle": "forestry:blocks/wood/bark.giganteum"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_giganteum_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.giganteum",
+                "1": "forestry:blocks/wood/planks.giganteum",
+                "log": "forestry:blocks/wood/bark.giganteum",
+                "planks": "forestry:blocks/wood/planks.giganteum",
+                "particle": "forestry:blocks/wood/bark.giganteum"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_greenheart_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.greenheart",
+                "1": "forestry:blocks/wood/planks.greenheart",
+                "log": "forestry:blocks/wood/bark.greenheart",
+                "planks": "forestry:blocks/wood/planks.greenheart",
+                "particle": "forestry:blocks/wood/bark.greenheart"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_greenheart_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.greenheart",
+                "1": "forestry:blocks/wood/planks.greenheart",
+                "log": "forestry:blocks/wood/bark.greenheart",
+                "planks": "forestry:blocks/wood/planks.greenheart",
+                "particle": "forestry:blocks/wood/bark.greenheart"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_greenheart_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.greenheart",
+                "1": "forestry:blocks/wood/planks.greenheart",
+                "log": "forestry:blocks/wood/bark.greenheart",
+                "planks": "forestry:blocks/wood/planks.greenheart",
+                "particle": "forestry:blocks/wood/bark.greenheart"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_ipe_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.ipe",
+                "1": "forestry:blocks/wood/planks.ipe",
+                "log": "forestry:blocks/wood/bark.ipe",
+                "planks": "forestry:blocks/wood/planks.ipe",
+                "particle": "forestry:blocks/wood/bark.ipe"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_ipe_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.ipe",
+                "1": "forestry:blocks/wood/planks.ipe",
+                "log": "forestry:blocks/wood/bark.ipe",
+                "planks": "forestry:blocks/wood/planks.ipe",
+                "particle": "forestry:blocks/wood/bark.ipe"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_ipe_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.ipe",
+                "1": "forestry:blocks/wood/planks.ipe",
+                "log": "forestry:blocks/wood/bark.ipe",
+                "planks": "forestry:blocks/wood/planks.ipe",
+                "particle": "forestry:blocks/wood/bark.ipe"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_kapok_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.kapok",
+                "1": "forestry:blocks/wood/planks.kapok",
+                "log": "forestry:blocks/wood/bark.kapok",
+                "planks": "forestry:blocks/wood/planks.kapok",
+                "particle": "forestry:blocks/wood/bark.kapok"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_kapok_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.kapok",
+                "1": "forestry:blocks/wood/planks.kapok",
+                "log": "forestry:blocks/wood/bark.kapok",
+                "planks": "forestry:blocks/wood/planks.kapok",
+                "particle": "forestry:blocks/wood/bark.kapok"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_kapok_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.kapok",
+                "1": "forestry:blocks/wood/planks.kapok",
+                "log": "forestry:blocks/wood/bark.kapok",
+                "planks": "forestry:blocks/wood/planks.kapok",
+                "particle": "forestry:blocks/wood/bark.kapok"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_larch_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.larch",
+                "1": "forestry:blocks/wood/planks.larch",
+                "log": "forestry:blocks/wood/bark.larch",
+                "planks": "forestry:blocks/wood/planks.larch",
+                "particle": "forestry:blocks/wood/bark.larch"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_larch_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.larch",
+                "1": "forestry:blocks/wood/planks.larch",
+                "log": "forestry:blocks/wood/bark.larch",
+                "planks": "forestry:blocks/wood/planks.larch",
+                "particle": "forestry:blocks/wood/bark.larch"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_larch_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.larch",
+                "1": "forestry:blocks/wood/planks.larch",
+                "log": "forestry:blocks/wood/bark.larch",
+                "planks": "forestry:blocks/wood/planks.larch",
+                "particle": "forestry:blocks/wood/bark.larch"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_lime_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.lime",
+                "1": "forestry:blocks/wood/planks.lime",
+                "log": "forestry:blocks/wood/bark.lime",
+                "planks": "forestry:blocks/wood/planks.lime",
+                "particle": "forestry:blocks/wood/bark.lime"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_lime_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.lime",
+                "1": "forestry:blocks/wood/planks.lime",
+                "log": "forestry:blocks/wood/bark.lime",
+                "planks": "forestry:blocks/wood/planks.lime",
+                "particle": "forestry:blocks/wood/bark.lime"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_lime_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.lime",
+                "1": "forestry:blocks/wood/planks.lime",
+                "log": "forestry:blocks/wood/bark.lime",
+                "planks": "forestry:blocks/wood/planks.lime",
+                "particle": "forestry:blocks/wood/bark.lime"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_mahoe_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.mahoe",
+                "1": "forestry:blocks/wood/planks.mahoe",
+                "log": "forestry:blocks/wood/bark.mahoe",
+                "planks": "forestry:blocks/wood/planks.mahoe",
+                "particle": "forestry:blocks/wood/bark.mahoe"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_mahoe_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.mahoe",
+                "1": "forestry:blocks/wood/planks.mahoe",
+                "log": "forestry:blocks/wood/bark.mahoe",
+                "planks": "forestry:blocks/wood/planks.mahoe",
+                "particle": "forestry:blocks/wood/bark.mahoe"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_mahoe_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.mahoe",
+                "1": "forestry:blocks/wood/planks.mahoe",
+                "log": "forestry:blocks/wood/bark.mahoe",
+                "planks": "forestry:blocks/wood/planks.mahoe",
+                "particle": "forestry:blocks/wood/bark.mahoe"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_mahogany_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.mahogany",
+                "1": "forestry:blocks/wood/planks.mahogany",
+                "log": "forestry:blocks/wood/bark.mahogany",
+                "planks": "forestry:blocks/wood/planks.mahogany",
+                "particle": "forestry:blocks/wood/bark.mahogany"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_mahogany_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.mahogany",
+                "1": "forestry:blocks/wood/planks.mahogany",
+                "log": "forestry:blocks/wood/bark.mahogany",
+                "planks": "forestry:blocks/wood/planks.mahogany",
+                "particle": "forestry:blocks/wood/bark.mahogany"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_mahogany_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.mahogany",
+                "1": "forestry:blocks/wood/planks.mahogany",
+                "log": "forestry:blocks/wood/bark.mahogany",
+                "planks": "forestry:blocks/wood/planks.mahogany",
+                "particle": "forestry:blocks/wood/bark.mahogany"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_maple_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.maple",
+                "1": "forestry:blocks/wood/planks.maple",
+                "log": "forestry:blocks/wood/bark.maple",
+                "planks": "forestry:blocks/wood/planks.maple",
+                "particle": "forestry:blocks/wood/bark.maple"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_maple_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.maple",
+                "1": "forestry:blocks/wood/planks.maple",
+                "log": "forestry:blocks/wood/bark.maple",
+                "planks": "forestry:blocks/wood/planks.maple",
+                "particle": "forestry:blocks/wood/bark.maple"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_maple_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.maple",
+                "1": "forestry:blocks/wood/planks.maple",
+                "log": "forestry:blocks/wood/bark.maple",
+                "planks": "forestry:blocks/wood/planks.maple",
+                "particle": "forestry:blocks/wood/bark.maple"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_padauk_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.padauk",
+                "1": "forestry:blocks/wood/planks.padauk",
+                "log": "forestry:blocks/wood/bark.padauk",
+                "planks": "forestry:blocks/wood/planks.padauk",
+                "particle": "forestry:blocks/wood/bark.padauk"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_padauk_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.padauk",
+                "1": "forestry:blocks/wood/planks.padauk",
+                "log": "forestry:blocks/wood/bark.padauk",
+                "planks": "forestry:blocks/wood/planks.padauk",
+                "particle": "forestry:blocks/wood/bark.padauk"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_padauk_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.padauk",
+                "1": "forestry:blocks/wood/planks.padauk",
+                "log": "forestry:blocks/wood/bark.padauk",
+                "planks": "forestry:blocks/wood/planks.padauk",
+                "particle": "forestry:blocks/wood/bark.padauk"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_palm_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.palm",
+                "1": "forestry:blocks/wood/planks.palm",
+                "log": "forestry:blocks/wood/bark.palm",
+                "planks": "forestry:blocks/wood/planks.palm",
+                "particle": "forestry:blocks/wood/bark.palm"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_palm_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.palm",
+                "1": "forestry:blocks/wood/planks.palm",
+                "log": "forestry:blocks/wood/bark.palm",
+                "planks": "forestry:blocks/wood/planks.palm",
+                "particle": "forestry:blocks/wood/bark.palm"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_palm_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.palm",
+                "1": "forestry:blocks/wood/planks.palm",
+                "log": "forestry:blocks/wood/bark.palm",
+                "planks": "forestry:blocks/wood/planks.palm",
+                "particle": "forestry:blocks/wood/bark.palm"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_papaya_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.papaya",
+                "1": "forestry:blocks/wood/planks.papaya",
+                "log": "forestry:blocks/wood/bark.papaya",
+                "planks": "forestry:blocks/wood/planks.papaya",
+                "particle": "forestry:blocks/wood/bark.papaya"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_papaya_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.papaya",
+                "1": "forestry:blocks/wood/planks.papaya",
+                "log": "forestry:blocks/wood/bark.papaya",
+                "planks": "forestry:blocks/wood/planks.papaya",
+                "particle": "forestry:blocks/wood/bark.papaya"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_papaya_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.papaya",
+                "1": "forestry:blocks/wood/planks.papaya",
+                "log": "forestry:blocks/wood/bark.papaya",
+                "planks": "forestry:blocks/wood/planks.papaya",
+                "particle": "forestry:blocks/wood/bark.papaya"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_pine_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.pine",
+                "1": "forestry:blocks/wood/planks.pine",
+                "log": "forestry:blocks/wood/bark.pine",
+                "planks": "forestry:blocks/wood/planks.pine",
+                "particle": "forestry:blocks/wood/bark.pine"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_pine_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.pine",
+                "1": "forestry:blocks/wood/planks.pine",
+                "log": "forestry:blocks/wood/bark.pine",
+                "planks": "forestry:blocks/wood/planks.pine",
+                "particle": "forestry:blocks/wood/bark.pine"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_pine_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.pine",
+                "1": "forestry:blocks/wood/planks.pine",
+                "log": "forestry:blocks/wood/bark.pine",
+                "planks": "forestry:blocks/wood/planks.pine",
+                "particle": "forestry:blocks/wood/bark.pine"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_plum_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.plum",
+                "1": "forestry:blocks/wood/planks.plum",
+                "log": "forestry:blocks/wood/bark.plum",
+                "planks": "forestry:blocks/wood/planks.plum",
+                "particle": "forestry:blocks/wood/bark.plum"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_plum_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.plum",
+                "1": "forestry:blocks/wood/planks.plum",
+                "log": "forestry:blocks/wood/bark.plum",
+                "planks": "forestry:blocks/wood/planks.plum",
+                "particle": "forestry:blocks/wood/bark.plum"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_plum_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.plum",
+                "1": "forestry:blocks/wood/planks.plum",
+                "log": "forestry:blocks/wood/bark.plum",
+                "planks": "forestry:blocks/wood/planks.plum",
+                "particle": "forestry:blocks/wood/bark.plum"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_poplar_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.poplar",
+                "1": "forestry:blocks/wood/planks.poplar",
+                "log": "forestry:blocks/wood/bark.poplar",
+                "planks": "forestry:blocks/wood/planks.poplar",
+                "particle": "forestry:blocks/wood/bark.poplar"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_poplar_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.poplar",
+                "1": "forestry:blocks/wood/planks.poplar",
+                "log": "forestry:blocks/wood/bark.poplar",
+                "planks": "forestry:blocks/wood/planks.poplar",
+                "particle": "forestry:blocks/wood/bark.poplar"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_poplar_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.poplar",
+                "1": "forestry:blocks/wood/planks.poplar",
+                "log": "forestry:blocks/wood/bark.poplar",
+                "planks": "forestry:blocks/wood/planks.poplar",
+                "particle": "forestry:blocks/wood/bark.poplar"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_sequoia_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.sequoia",
+                "1": "forestry:blocks/wood/planks.sequoia",
+                "log": "forestry:blocks/wood/bark.sequoia",
+                "planks": "forestry:blocks/wood/planks.sequoia",
+                "particle": "forestry:blocks/wood/bark.sequoia"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_sequoia_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.sequoia",
+                "1": "forestry:blocks/wood/planks.sequoia",
+                "log": "forestry:blocks/wood/bark.sequoia",
+                "planks": "forestry:blocks/wood/planks.sequoia",
+                "particle": "forestry:blocks/wood/bark.sequoia"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_sequoia_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.sequoia",
+                "1": "forestry:blocks/wood/planks.sequoia",
+                "log": "forestry:blocks/wood/bark.sequoia",
+                "planks": "forestry:blocks/wood/planks.sequoia",
+                "particle": "forestry:blocks/wood/bark.sequoia"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_teak_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.teak",
+                "1": "forestry:blocks/wood/planks.teak",
+                "log": "forestry:blocks/wood/bark.teak",
+                "planks": "forestry:blocks/wood/planks.teak",
+                "particle": "forestry:blocks/wood/bark.teak"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_teak_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.teak",
+                "1": "forestry:blocks/wood/planks.teak",
+                "log": "forestry:blocks/wood/bark.teak",
+                "planks": "forestry:blocks/wood/planks.teak",
+                "particle": "forestry:blocks/wood/bark.teak"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_teak_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.teak",
+                "1": "forestry:blocks/wood/planks.teak",
+                "log": "forestry:blocks/wood/bark.teak",
+                "planks": "forestry:blocks/wood/planks.teak",
+                "particle": "forestry:blocks/wood/bark.teak"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_walnut_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.walnut",
+                "1": "forestry:blocks/wood/planks.walnut",
+                "log": "forestry:blocks/wood/bark.walnut",
+                "planks": "forestry:blocks/wood/planks.walnut",
+                "particle": "forestry:blocks/wood/bark.walnut"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_walnut_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.walnut",
+                "1": "forestry:blocks/wood/planks.walnut",
+                "log": "forestry:blocks/wood/bark.walnut",
+                "planks": "forestry:blocks/wood/planks.walnut",
+                "particle": "forestry:blocks/wood/bark.walnut"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_walnut_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.walnut",
+                "1": "forestry:blocks/wood/planks.walnut",
+                "log": "forestry:blocks/wood/bark.walnut",
+                "planks": "forestry:blocks/wood/planks.walnut",
+                "particle": "forestry:blocks/wood/bark.walnut"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_wenge_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.wenge",
+                "1": "forestry:blocks/wood/planks.wenge",
+                "log": "forestry:blocks/wood/bark.wenge",
+                "planks": "forestry:blocks/wood/planks.wenge",
+                "particle": "forestry:blocks/wood/bark.wenge"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_wenge_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.wenge",
+                "1": "forestry:blocks/wood/planks.wenge",
+                "log": "forestry:blocks/wood/bark.wenge",
+                "planks": "forestry:blocks/wood/planks.wenge",
+                "particle": "forestry:blocks/wood/bark.wenge"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_wenge_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.wenge",
+                "1": "forestry:blocks/wood/planks.wenge",
+                "log": "forestry:blocks/wood/bark.wenge",
+                "planks": "forestry:blocks/wood/planks.wenge",
+                "particle": "forestry:blocks/wood/bark.wenge"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_willow_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.willow",
+                "1": "forestry:blocks/wood/planks.willow",
+                "log": "forestry:blocks/wood/bark.willow",
+                "planks": "forestry:blocks/wood/planks.willow",
+                "particle": "forestry:blocks/wood/bark.willow"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_willow_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.willow",
+                "1": "forestry:blocks/wood/planks.willow",
+                "log": "forestry:blocks/wood/bark.willow",
+                "planks": "forestry:blocks/wood/planks.willow",
+                "particle": "forestry:blocks/wood/bark.willow"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_willow_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.willow",
+                "1": "forestry:blocks/wood/planks.willow",
+                "log": "forestry:blocks/wood/bark.willow",
+                "planks": "forestry:blocks/wood/planks.willow",
+                "particle": "forestry:blocks/wood/bark.willow"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_zebrawood_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.zebrawood",
+                "1": "forestry:blocks/wood/planks.zebrawood",
+                "log": "forestry:blocks/wood/bark.zebrawood",
+                "planks": "forestry:blocks/wood/planks.zebrawood",
+                "particle": "forestry:blocks/wood/bark.zebrawood"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_zebrawood_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.zebrawood",
+                "1": "forestry:blocks/wood/planks.zebrawood",
+                "log": "forestry:blocks/wood/bark.zebrawood",
+                "planks": "forestry:blocks/wood/planks.zebrawood",
+                "particle": "forestry:blocks/wood/bark.zebrawood"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_forestry_zebrawood_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "forestry:blocks/wood/bark.zebrawood",
+                "1": "forestry:blocks/wood/planks.zebrawood",
+                "log": "forestry:blocks/wood/bark.zebrawood",
+                "planks": "forestry:blocks/wood/planks.zebrawood",
+                "particle": "forestry:blocks/wood/bark.zebrawood"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_immersiveengineering_treatedWood_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "immersiveengineering:blocks/treatedWood_packaged",
+                "1": "immersiveengineering:blocks/treatedWood_vertical",
+                "log": "immersiveengineering:blocks/treatedWood_packaged",
+                "planks": "immersiveengineering:blocks/treatedWood_vertical",
+                "particle": "immersiveengineering:blocks/treatedWood_packaged"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_immersiveengineering_treatedWood_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "immersiveengineering:blocks/treatedWood_packaged",
+                "1": "immersiveengineering:blocks/treatedWood_vertical",
+                "log": "immersiveengineering:blocks/treatedWood_packaged",
+                "planks": "immersiveengineering:blocks/treatedWood_vertical",
+                "particle": "immersiveengineering:blocks/treatedWood_packaged"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_immersiveengineering_treatedWood_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "immersiveengineering:blocks/treatedWood_packaged",
+                "1": "immersiveengineering:blocks/treatedWood_vertical",
+                "log": "immersiveengineering:blocks/treatedWood_packaged",
+                "planks": "immersiveengineering:blocks/treatedWood_vertical",
+                "particle": "immersiveengineering:blocks/treatedWood_packaged"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_jungle_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "minecraft:blocks/log_jungle",
+                "1": "minecraft:blocks/planks_jungle",
+                "log": "minecraft:blocks/log_jungle",
+                "planks": "minecraft:blocks/planks_jungle",
+                "particle": "minecraft:blocks/log_jungle"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_jungle_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "minecraft:blocks/log_jungle",
+                "1": "minecraft:blocks/planks_jungle",
+                "log": "minecraft:blocks/log_jungle",
+                "planks": "minecraft:blocks/planks_jungle",
+                "particle": "minecraft:blocks/log_jungle"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_jungle_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "minecraft:blocks/log_jungle",
+                "1": "minecraft:blocks/planks_jungle",
+                "log": "minecraft:blocks/log_jungle",
+                "planks": "minecraft:blocks/planks_jungle",
+                "particle": "minecraft:blocks/log_jungle"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_amaranth_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/amaranth_log",
+                "1": "natura:blocks/planks/overworld/amaranth_planks",
+                "log": "natura:blocks/logs/overworld/amaranth_log",
+                "planks": "natura:blocks/planks/overworld/amaranth_planks",
+                "particle": "natura:blocks/logs/overworld/amaranth_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_amaranth_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/amaranth_log",
+                "1": "natura:blocks/planks/overworld/amaranth_planks",
+                "log": "natura:blocks/logs/overworld/amaranth_log",
+                "planks": "natura:blocks/planks/overworld/amaranth_planks",
+                "particle": "natura:blocks/logs/overworld/amaranth_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_amaranth_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/amaranth_log",
+                "1": "natura:blocks/planks/overworld/amaranth_planks",
+                "log": "natura:blocks/logs/overworld/amaranth_log",
+                "planks": "natura:blocks/planks/overworld/amaranth_planks",
+                "particle": "natura:blocks/logs/overworld/amaranth_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_bloodwood_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/nether/bloodwood_bark",
+                "1": "natura:blocks/planks/nether/bloodwood_planks",
+                "log": "natura:blocks/logs/nether/bloodwood_bark",
+                "planks": "natura:blocks/planks/nether/bloodwood_planks",
+                "particle": "natura:blocks/logs/nether/bloodwood_bark"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_bloodwood_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/nether/bloodwood_bark",
+                "1": "natura:blocks/planks/nether/bloodwood_planks",
+                "log": "natura:blocks/logs/nether/bloodwood_bark",
+                "planks": "natura:blocks/planks/nether/bloodwood_planks",
+                "particle": "natura:blocks/logs/nether/bloodwood_bark"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_bloodwood_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/nether/bloodwood_bark",
+                "1": "natura:blocks/planks/nether/bloodwood_planks",
+                "log": "natura:blocks/logs/nether/bloodwood_bark",
+                "planks": "natura:blocks/planks/nether/bloodwood_planks",
+                "particle": "natura:blocks/logs/nether/bloodwood_bark"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_darkwood_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/nether/darkwood_log",
+                "1": "natura:blocks/planks/nether/darkwood_planks",
+                "log": "natura:blocks/logs/nether/darkwood_log",
+                "planks": "natura:blocks/planks/nether/darkwood_planks",
+                "particle": "natura:blocks/logs/nether/darkwood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_darkwood_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/nether/darkwood_log",
+                "1": "natura:blocks/planks/nether/darkwood_planks",
+                "log": "natura:blocks/logs/nether/darkwood_log",
+                "planks": "natura:blocks/planks/nether/darkwood_planks",
+                "particle": "natura:blocks/logs/nether/darkwood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_darkwood_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/nether/darkwood_log",
+                "1": "natura:blocks/planks/nether/darkwood_planks",
+                "log": "natura:blocks/logs/nether/darkwood_log",
+                "planks": "natura:blocks/planks/nether/darkwood_planks",
+                "particle": "natura:blocks/logs/nether/darkwood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_eucalyptus_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/eucalyptus_log",
+                "1": "natura:blocks/planks/overworld/eucalyptus_planks",
+                "log": "natura:blocks/logs/overworld/eucalyptus_log",
+                "planks": "natura:blocks/planks/overworld/eucalyptus_planks",
+                "particle": "natura:blocks/logs/overworld/eucalyptus_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_eucalyptus_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/eucalyptus_log",
+                "1": "natura:blocks/planks/overworld/eucalyptus_planks",
+                "log": "natura:blocks/logs/overworld/eucalyptus_log",
+                "planks": "natura:blocks/planks/overworld/eucalyptus_planks",
+                "particle": "natura:blocks/logs/overworld/eucalyptus_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_eucalyptus_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/eucalyptus_log",
+                "1": "natura:blocks/planks/overworld/eucalyptus_planks",
+                "log": "natura:blocks/logs/overworld/eucalyptus_log",
+                "planks": "natura:blocks/planks/overworld/eucalyptus_planks",
+                "particle": "natura:blocks/logs/overworld/eucalyptus_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_fusewood_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/nether/fusewood_log",
+                "1": "natura:blocks/planks/nether/fusewood_planks",
+                "log": "natura:blocks/logs/nether/fusewood_log",
+                "planks": "natura:blocks/planks/nether/fusewood_planks",
+                "particle": "natura:blocks/logs/nether/fusewood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_fusewood_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/nether/fusewood_log",
+                "1": "natura:blocks/planks/nether/fusewood_planks",
+                "log": "natura:blocks/logs/nether/fusewood_log",
+                "planks": "natura:blocks/planks/nether/fusewood_planks",
+                "particle": "natura:blocks/logs/nether/fusewood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_fusewood_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/nether/fusewood_log",
+                "1": "natura:blocks/planks/nether/fusewood_planks",
+                "log": "natura:blocks/logs/nether/fusewood_log",
+                "planks": "natura:blocks/planks/nether/fusewood_planks",
+                "particle": "natura:blocks/logs/nether/fusewood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_ghostwood_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/nether/ghostwood_log",
+                "1": "natura:blocks/planks/nether/ghostwood_planks",
+                "log": "natura:blocks/logs/nether/ghostwood_log",
+                "planks": "natura:blocks/planks/nether/ghostwood_planks",
+                "particle": "natura:blocks/logs/nether/ghostwood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_ghostwood_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/nether/ghostwood_log",
+                "1": "natura:blocks/planks/nether/ghostwood_planks",
+                "log": "natura:blocks/logs/nether/ghostwood_log",
+                "planks": "natura:blocks/planks/nether/ghostwood_planks",
+                "particle": "natura:blocks/logs/nether/ghostwood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_ghostwood_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/nether/ghostwood_log",
+                "1": "natura:blocks/planks/nether/ghostwood_planks",
+                "log": "natura:blocks/logs/nether/ghostwood_log",
+                "planks": "natura:blocks/planks/nether/ghostwood_planks",
+                "particle": "natura:blocks/logs/nether/ghostwood_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_hopseed_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/hopseed_log",
+                "1": "natura:blocks/planks/overworld/hopseed_planks",
+                "log": "natura:blocks/logs/overworld/hopseed_log",
+                "planks": "natura:blocks/planks/overworld/hopseed_planks",
+                "particle": "natura:blocks/logs/overworld/hopseed_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_hopseed_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/hopseed_log",
+                "1": "natura:blocks/planks/overworld/hopseed_planks",
+                "log": "natura:blocks/logs/overworld/hopseed_log",
+                "planks": "natura:blocks/planks/overworld/hopseed_planks",
+                "particle": "natura:blocks/logs/overworld/hopseed_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_hopseed_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/hopseed_log",
+                "1": "natura:blocks/planks/overworld/hopseed_planks",
+                "log": "natura:blocks/logs/overworld/hopseed_log",
+                "planks": "natura:blocks/planks/overworld/hopseed_planks",
+                "particle": "natura:blocks/logs/overworld/hopseed_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_maple_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/maple_log",
+                "1": "natura:blocks/planks/overworld/maple_planks",
+                "log": "natura:blocks/logs/overworld/maple_log",
+                "planks": "natura:blocks/planks/overworld/maple_planks",
+                "particle": "natura:blocks/logs/overworld/maple_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_maple_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/maple_log",
+                "1": "natura:blocks/planks/overworld/maple_planks",
+                "log": "natura:blocks/logs/overworld/maple_log",
+                "planks": "natura:blocks/planks/overworld/maple_planks",
+                "particle": "natura:blocks/logs/overworld/maple_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_maple_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/maple_log",
+                "1": "natura:blocks/planks/overworld/maple_planks",
+                "log": "natura:blocks/logs/overworld/maple_log",
+                "planks": "natura:blocks/planks/overworld/maple_planks",
+                "particle": "natura:blocks/logs/overworld/maple_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_redwood_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/redwood_bark",
+                "1": "natura:blocks/planks/overworld/redwood_planks",
+                "log": "natura:blocks/logs/overworld/redwood_bark",
+                "planks": "natura:blocks/planks/overworld/redwood_planks",
+                "particle": "natura:blocks/logs/overworld/redwood_bark"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_redwood_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/redwood_bark",
+                "1": "natura:blocks/planks/overworld/redwood_planks",
+                "log": "natura:blocks/logs/overworld/redwood_bark",
+                "planks": "natura:blocks/planks/overworld/redwood_planks",
+                "particle": "natura:blocks/logs/overworld/redwood_bark"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_redwood_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/redwood_bark",
+                "1": "natura:blocks/planks/overworld/redwood_planks",
+                "log": "natura:blocks/logs/overworld/redwood_bark",
+                "planks": "natura:blocks/planks/overworld/redwood_planks",
+                "particle": "natura:blocks/logs/overworld/redwood_bark"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_sakura_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/sakura_log",
+                "1": "natura:blocks/planks/overworld/sakura_planks",
+                "log": "natura:blocks/logs/overworld/sakura_log",
+                "planks": "natura:blocks/planks/overworld/sakura_planks",
+                "particle": "natura:blocks/logs/overworld/sakura_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_sakura_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/sakura_log",
+                "1": "natura:blocks/planks/overworld/sakura_planks",
+                "log": "natura:blocks/logs/overworld/sakura_log",
+                "planks": "natura:blocks/planks/overworld/sakura_planks",
+                "particle": "natura:blocks/logs/overworld/sakura_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_sakura_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/sakura_log",
+                "1": "natura:blocks/planks/overworld/sakura_planks",
+                "log": "natura:blocks/logs/overworld/sakura_log",
+                "planks": "natura:blocks/planks/overworld/sakura_planks",
+                "particle": "natura:blocks/logs/overworld/sakura_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_silverbell_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/silverbell_log",
+                "1": "natura:blocks/planks/overworld/silverbell_planks",
+                "log": "natura:blocks/logs/overworld/silverbell_log",
+                "planks": "natura:blocks/planks/overworld/silverbell_planks",
+                "particle": "natura:blocks/logs/overworld/silverbell_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_silverbell_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/silverbell_log",
+                "1": "natura:blocks/planks/overworld/silverbell_planks",
+                "log": "natura:blocks/logs/overworld/silverbell_log",
+                "planks": "natura:blocks/planks/overworld/silverbell_planks",
+                "particle": "natura:blocks/logs/overworld/silverbell_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_silverbell_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/silverbell_log",
+                "1": "natura:blocks/planks/overworld/silverbell_planks",
+                "log": "natura:blocks/logs/overworld/silverbell_log",
+                "planks": "natura:blocks/planks/overworld/silverbell_planks",
+                "particle": "natura:blocks/logs/overworld/silverbell_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_tiger_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/tiger_log",
+                "1": "natura:blocks/planks/overworld/tiger_planks",
+                "log": "natura:blocks/logs/overworld/tiger_log",
+                "planks": "natura:blocks/planks/overworld/tiger_planks",
+                "particle": "natura:blocks/logs/overworld/tiger_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_tiger_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/tiger_log",
+                "1": "natura:blocks/planks/overworld/tiger_planks",
+                "log": "natura:blocks/logs/overworld/tiger_log",
+                "planks": "natura:blocks/planks/overworld/tiger_planks",
+                "particle": "natura:blocks/logs/overworld/tiger_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_tiger_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/tiger_log",
+                "1": "natura:blocks/planks/overworld/tiger_planks",
+                "log": "natura:blocks/logs/overworld/tiger_log",
+                "planks": "natura:blocks/planks/overworld/tiger_planks",
+                "particle": "natura:blocks/logs/overworld/tiger_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_willow_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/willow_log",
+                "1": "natura:blocks/planks/overworld/willow_planks",
+                "log": "natura:blocks/logs/overworld/willow_log",
+                "planks": "natura:blocks/planks/overworld/willow_planks",
+                "particle": "natura:blocks/logs/overworld/willow_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_willow_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/willow_log",
+                "1": "natura:blocks/planks/overworld/willow_planks",
+                "log": "natura:blocks/logs/overworld/willow_log",
+                "planks": "natura:blocks/planks/overworld/willow_planks",
+                "particle": "natura:blocks/logs/overworld/willow_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_natura_willow_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "natura:blocks/logs/overworld/willow_log",
+                "1": "natura:blocks/planks/overworld/willow_planks",
+                "log": "natura:blocks/logs/overworld/willow_log",
+                "planks": "natura:blocks/planks/overworld/willow_planks",
+                "particle": "natura:blocks/logs/overworld/willow_log"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_oak_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "minecraft:blocks/log_oak",
+                "1": "minecraft:blocks/planks_oak",
+                "log": "minecraft:blocks/log_oak",
+                "planks": "minecraft:blocks/planks_oak",
+                "particle": "minecraft:blocks/log_oak"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_oak_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "minecraft:blocks/log_oak",
+                "1": "minecraft:blocks/planks_oak",
+                "log": "minecraft:blocks/log_oak",
+                "planks": "minecraft:blocks/planks_oak",
+                "particle": "minecraft:blocks/log_oak"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_oak_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "minecraft:blocks/log_oak",
+                "1": "minecraft:blocks/planks_oak",
+                "log": "minecraft:blocks/log_oak",
+                "planks": "minecraft:blocks/planks_oak",
+                "particle": "minecraft:blocks/log_oak"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_spruce_inventory.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_inventory",
+            "textures": {
+                "0": "minecraft:blocks/log_spruce",
+                "1": "minecraft:blocks/planks_spruce",
+                "log": "minecraft:blocks/log_spruce",
+                "planks": "minecraft:blocks/planks_spruce",
+                "particle": "minecraft:blocks/log_spruce"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_spruce_tucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining_in",
+            "textures": {
+                "0": "minecraft:blocks/log_spruce",
+                "1": "minecraft:blocks/planks_spruce",
+                "log": "minecraft:blocks/log_spruce",
+                "planks": "minecraft:blocks/planks_spruce",
+                "particle": "minecraft:blocks/log_spruce"
+            }
+        },
+        "models/block/chair_wood_ironage_dining_spruce_untucked.json": {
+            "credit": "By FoxNekitsune",
+            "parent": "ironagefurniture:block/template_chair_wood_ironage_dining",
+            "textures": {
+                "0": "minecraft:blocks/log_spruce",
+                "1": "minecraft:blocks/planks_spruce",
+                "log": "minecraft:blocks/log_spruce",
+                "planks": "minecraft:blocks/planks_spruce",
+                "particle": "minecraft:blocks/log_spruce"
+            }
+        },
         "models/block/half_cabinet_wood_ironage_acacia_left.json": {
             "credit": "By FoxNekitsune",
             "parent": "ironagefurniture:block/template_half_cabinet_wood_ironage_left",
