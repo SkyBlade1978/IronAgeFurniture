@@ -159,8 +159,8 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 
 	public boolean isUsableByPlayer(EntityPlayer player) {
 		return this.world.getTileEntity(this.pos) != this ? false
-			: player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D,
-				(double)this.pos.getZ() + 0.5D) <= 64.0D;
+			: player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D,
+				this.pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 	public static boolean isAllowedFluid(@Nullable FluidStack fluid) {

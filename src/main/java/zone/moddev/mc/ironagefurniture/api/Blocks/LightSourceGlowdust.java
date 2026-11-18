@@ -47,7 +47,7 @@ public class LightSourceGlowdust extends BlockFalling {
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return ((EnumFacing) state.getValue(BlockHBase.FACING)).getHorizontalIndex();
+        return state.getValue(BlockHBase.FACING).getHorizontalIndex();
     }
 
     @Override

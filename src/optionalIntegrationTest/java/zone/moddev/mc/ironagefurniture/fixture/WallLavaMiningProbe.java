@@ -36,7 +36,7 @@ import zone.moddev.mc.ironagefurniture.api.entity.EntityReleasedLavaLamp;
 
 /** Mines a suspended wall holder and follows its vial to a dry or water landing. */
 public final class WallLavaMiningProbe {
-    private final List<EntityReleasedLavaLamp> released = new ArrayList<EntityReleasedLavaLamp>();
+    private final List<EntityReleasedLavaLamp> released = new ArrayList<>();
     private BlockPos cancelledBreak;
     private boolean cancelSpawn;
 
@@ -118,10 +118,14 @@ public final class WallLavaMiningProbe {
                         require(listener.released.size() == before + (falls || mode == 9 ? 1 : 0),
                                 "Mining did not release exactly one lamp: " + context);
                         if (falls) {
-                            EntityReleasedLavaLamp lamp = listener.released.get(before);
-                            require(!((Entity)lamp).isDead && ((Entity)lamp).posY > landing.getY() + 2, "Lamp did not start in flight");
-                            for (int tick = 0; tick < 100 && !((Entity)lamp).isDead; tick++) ((Entity)lamp).onUpdate();
-                            require(((Entity)lamp).isDead && !((Entity)lamp).noClip, "Lamp failed to fall and land: " + context);
+                            Entity lamp = listener.released.get(before);
+                            require(!lamp.isDead && lamp.posY > landing.getY() + 2, "Lamp did not start in flight");
+
+                            for (int tick = 0; tick < 100 && !lamp.isDead; tick++) {
+                                lamp.onUpdate();
+                            }
+
+                            require(lamp.isDead && !lamp.noClip, "Lamp failed to fall and land: " + context);
                             require(world.getBlockState(landing).getBlock() == (water ? BlockObjectHolder.obsidian_chunk : Blocks.FIRE),
                                     "Lamp vanished instead of shattering at its landing: " + context);
                         } else {
@@ -165,10 +169,13 @@ public final class WallLavaMiningProbe {
 
     /** Existing harvest probes use a floor immediately below the wall sconce. */
     static void settleReleased(WorldServer world, BlockPos source) {
-        for (EntityReleasedLavaLamp lamp : world.getEntitiesWithinAABB(EntityReleasedLavaLamp.class,
+        for (Entity lamp : world.getEntitiesWithinAABB(EntityReleasedLavaLamp.class,
                 new AxisAlignedBB(source).expandXyz(2), entity -> !((Entity)entity).isDead)) {
-            for (int tick = 0; tick < 100 && !((Entity)lamp).isDead; tick++) ((Entity)lamp).onUpdate();
-            require(((Entity)lamp).isDead, "Mined wall lamp failed to land");
+            for (int tick = 0; tick < 100 && !lamp.isDead; tick++) {
+                lamp.onUpdate();
+            }
+
+            require(lamp.isDead, "Mined wall lamp failed to land");
         }
     }
     private static List<EntityItem> drops(WorldServer world, BlockPos source) {

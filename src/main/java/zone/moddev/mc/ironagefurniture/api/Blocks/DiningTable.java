@@ -85,7 +85,7 @@ public class DiningTable extends Block {
 	private static final AxisAlignedBB LEG_NORTH_EAST = new AxisAlignedBB(0.75D, 0.0D, 0.125D, 0.875D, 0.8125D, 0.25D);
 	private static final AxisAlignedBB LEG_SOUTH_WEST = new AxisAlignedBB(0.125D, 0.0D, 0.75D, 0.25D, 0.8125D, 0.875D);
 	private static final AxisAlignedBB LEG_SOUTH_EAST = new AxisAlignedBB(0.75D, 0.0D, 0.75D, 0.875D, 0.8125D, 0.875D);
-	private static final Map<UUID, EnumFacing> PENDING_SNEAK_PLACEMENT_SIDES = new HashMap<UUID, EnumFacing>();
+	private static final Map<UUID, EnumFacing> PENDING_SNEAK_PLACEMENT_SIDES = new HashMap<>();
 
 	public DiningTable(Material materialIn, float resistance, float hardness) {
 		super(materialIn);

@@ -207,7 +207,7 @@ tasks.register('verifyFurnitureCatalog') {
         if (!modSource.contains('ClientRenderInitialiser.registerEntityRenderers();')
                 || !clientRenderSource.contains('@SideOnly(Side.CLIENT)')
                 || !clientRenderSource.contains('EntityThrownLavaLamp.class')
-                || !clientRenderSource.contains('new RenderSnowball<EntityThrownLavaLamp>')
+                || !(clientRenderSource =~ /new RenderSnowball<\s*(?:EntityThrownLavaLamp\s*)?>\(/)
                 || !clientRenderSource.contains(
                         'BlockObjectHolder.light_metal_ironage_block_floor_lava_clear')) {
             throw new GradleException('Thrown lava lamps must use the client-only lava-lamp item renderer')

@@ -26,7 +26,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import org.apache.logging.log4j.LogManager;
 
 /** Exercises baked item models and selection/ray tracing inside a disposable client world. */
 @Mod.EventBusSubscriber(Side.CLIENT)

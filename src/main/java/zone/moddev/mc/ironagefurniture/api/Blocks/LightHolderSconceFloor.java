@@ -84,7 +84,7 @@ public class LightHolderSconceFloor extends BlockHBase {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
+		return state.getValue(FACING).getHorizontalIndex();
 	}
 
 	@Override
@@ -153,18 +153,11 @@ public class LightHolderSconceFloor extends BlockHBase {
 			BlockObjectHolder.light_metal_ironage_sconce_floor_empty_iron, world, pos);
 	}
 
-	private boolean canPlaceOn(World worldIn, BlockPos pos)
-    {
-        IBlockState state = worldIn.getBlockState(pos);
-        if (state.isSideSolid(worldIn, pos, EnumFacing.UP))
-        {
-            return true;
-        }
-        else
-        {
-            return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
-        }
-    }
+	private boolean canPlaceOn(World worldIn, BlockPos pos) {
+		IBlockState state = worldIn.getBlockState(pos);
+		return state.isSideSolid(worldIn, pos, EnumFacing.UP)
+				|| state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
+	}
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {

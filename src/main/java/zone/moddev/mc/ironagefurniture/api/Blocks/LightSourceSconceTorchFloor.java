@@ -35,12 +35,6 @@ public class LightSourceSconceTorchFloor extends LightHolderSconceFloor {
         10.0 / 16.0, 13.0 / 16.0, 10.0 / 16.0
     );
 
-    private boolean shouldBeOff(World worldIn, BlockPos pos, IBlockState state) {
-        EnumFacing facing = state.getValue(FACING);
-        BlockPos backPos = pos.offset(facing.getOpposite());
-        return worldIn.isSidePowered(backPos, facing.getOpposite());
-    }
-
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return AABB;

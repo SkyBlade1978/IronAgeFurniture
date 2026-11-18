@@ -63,10 +63,10 @@ public class PaddedBenchColourTest {
 	@Test
 	public void creativeInventoryContainsEveryColourExactlyOnce() {
 		PaddedBenchColour[] creativeOrder = PaddedBenchColour.creativeOrder();
-		Set<PaddedBenchColour> colours = new HashSet<PaddedBenchColour>(Arrays.asList(creativeOrder));
+		Set<PaddedBenchColour> colours = new HashSet<>(Arrays.asList(creativeOrder));
 		assertEquals(16, creativeOrder.length);
 		assertEquals(16, colours.size());
-		assertEquals(new HashSet<PaddedBenchColour>(Arrays.asList(PaddedBenchColour.values())), colours);
+		assertEquals(new HashSet<>(Arrays.asList(PaddedBenchColour.values())), colours);
 	}
 
 	@Test

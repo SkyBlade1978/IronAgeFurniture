@@ -6,7 +6,6 @@ import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingInteraction;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingInteraction.Result;
-import zone.moddev.mc.ironagefurniture.client.render.SurfaceDisplayRenderHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

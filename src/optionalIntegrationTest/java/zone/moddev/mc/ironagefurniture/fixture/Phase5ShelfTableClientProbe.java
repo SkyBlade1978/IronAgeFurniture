@@ -33,7 +33,7 @@ final class Phase5ShelfTableClientProbe {
 		Ironagefurniture.ItemRegistry.forEach((id, item) -> require(item.getCreativeTab()
 			== zone.moddev.mc.ironagefurniture.init.FurnitureCreativeTabs.forName(id), "Wrong creative category: " + id));
 		net.minecraft.item.Item vaseItem = Ironagefurniture.ItemRegistry.get("ornament_glass_vase");
-		java.util.List<ItemStack> vases = new java.util.ArrayList<ItemStack>();
+		java.util.List<ItemStack> vases = new java.util.ArrayList<>();
 		vaseItem.getSubItems(vaseItem, zone.moddev.mc.ironagefurniture.init.FurnitureCreativeTabs.DECORATIONS, vases);
 		require(vases.size() == 16, "Decorations tab must provide sixteen vase colours");
 		for (ItemStack vase : vases) {

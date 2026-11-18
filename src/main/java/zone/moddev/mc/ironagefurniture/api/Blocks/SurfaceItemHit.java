@@ -1,6 +1,5 @@
 package zone.moddev.mc.ironagefurniture.api.Blocks;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.client.render.SurfaceDisplayRenderHelper;

@@ -32,7 +32,7 @@ public final class VanillaFoodRenderer implements SurfaceRenderRegistry.Renderer
 
 	public static void register() {
 		VanillaFoodRenderer renderer = new VanillaFoodRenderer();
-		Set<Item> registered = new HashSet<Item>();
+		Set<Item> registered = new HashSet<>();
 		for (Food food : VanillaSurfaceFoods.all()) {
 			if (registered.add(food.item)) SurfaceRenderRegistry.register(food.item, renderer);
 		}

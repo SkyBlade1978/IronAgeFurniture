@@ -12,14 +12,14 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 /** Defers display repair until loaded chunks are available through the world. */
 public final class SurfaceReservationRepair {
-	private static final Map<World, Set<BlockPos>> PENDING = new WeakHashMap<World, Set<BlockPos>>();
+	private static final Map<World, Set<BlockPos>> PENDING = new WeakHashMap<>();
 
 	public static void enqueue(World world, BlockPos pos) {
 		if (world == null || world.isRemote) return;
 		synchronized (PENDING) {
 			Set<BlockPos> positions = PENDING.get(world);
 			if (positions == null) {
-				positions = new HashSet<BlockPos>();
+				positions = new HashSet<>();
 				PENDING.put(world, positions);
 			}
 			positions.add(pos.toImmutable());

@@ -86,7 +86,7 @@ public enum UpholsteryModelLoader implements ICustomModelLoader {
 
 	private static Collection<ResourceLocation> textures(IModel delegate, boolean all,
 			UpholsteryColour chosen) {
-		LinkedHashSet<ResourceLocation> textures = new LinkedHashSet<ResourceLocation>(delegate.getTextures());
+		LinkedHashSet<ResourceLocation> textures = new LinkedHashSet<>(delegate.getTextures());
 		for (UpholsteryColour colour : UpholsteryColour.values()) {
 			if (all || colour == chosen) textures.add(woolTexture(colour));
 		}
@@ -100,7 +100,7 @@ public enum UpholsteryModelLoader implements ICustomModelLoader {
 		@Override public Collection<ResourceLocation> getTextures() { return textures(delegate, true, null); }
 		@Override public IBakedModel bake(IModelState state, VertexFormat format,
 				Function<ResourceLocation, TextureAtlasSprite> textureGetter) {
-			Map<UpholsteryColour, IBakedModel> variants = new EnumMap<UpholsteryColour, IBakedModel>(UpholsteryColour.class);
+			Map<UpholsteryColour, IBakedModel> variants = new EnumMap<>(UpholsteryColour.class);
 			for (UpholsteryColour colour : UpholsteryColour.values())
 				variants.put(colour, bakeColour(delegate, colour, state, format, textureGetter));
 			return new UpholsteryBakedModel(variants);

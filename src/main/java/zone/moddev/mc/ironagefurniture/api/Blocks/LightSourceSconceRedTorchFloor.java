@@ -15,7 +15,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -27,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraft.init.SoundEvents;
 
 public class LightSourceSconceRedTorchFloor extends LightSourceSconceTorchFloor {
-    protected static final Map<World, List<Toggle>> RECENT_TOGGLES = new WeakHashMap<World, List<Toggle>>();
+    protected static final Map<World, List<Toggle>> RECENT_TOGGLES = new WeakHashMap<>();
     protected static final int RECENT_TOGGLE_TIMER = 60;
     protected static final int MAX_RECENT_TOGGLES = 8;
     protected static final int RESTART_DELAY = 160;

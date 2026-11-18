@@ -152,9 +152,9 @@ public class LightSourceSconceLavaWall extends LightSourceSconceGlowWall {
             if (rand.nextInt(25) == 0) {
                 EnumFacing facing = state.getValue(FACING);
                 EnumFacing opposite = facing.getOpposite();
-                double x = (double)pos.getX() + 0.5D + 0.27D * opposite.getFrontOffsetX();
-                double y = (double)pos.getY() + 0.72D;
-                double z = (double)pos.getZ() + 0.5D + 0.27D * opposite.getFrontOffsetZ();
+                double x = pos.getX() + 0.5D + 0.27D * opposite.getFrontOffsetX();
+                double y = pos.getY() + 0.72D;
+                double z = pos.getZ() + 0.5D + 0.27D * opposite.getFrontOffsetZ();
 
                 world.spawnParticle(EnumParticleTypes.LAVA, x, y, z, 0.0D, 0.0D, 0.0D, new int[0]);
                 world.playSound(x, y, z, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS,
@@ -162,7 +162,7 @@ public class LightSourceSconceLavaWall extends LightSourceSconceGlowWall {
             }
 
             if (rand.nextInt(200) == 0) {
-                world.playSound((double)pos.getX(), (double)pos.getY(), (double)pos.getZ(),
+                world.playSound(pos.getX(), pos.getY(), pos.getZ(),
                     SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS,
                     0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
             }

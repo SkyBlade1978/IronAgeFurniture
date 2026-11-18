@@ -15,7 +15,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
@@ -616,7 +615,7 @@ public class Cabinet extends Block {
 	@Override
 	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
 		ILockableContainer container = this.getLockableContainer(worldIn, pos);
-		return container instanceof IInventory ? Container.calcRedstoneFromInventory((IInventory)container) : 0;
+		return container != null ? Container.calcRedstoneFromInventory(container) : 0;
 	}
 
 	@Override

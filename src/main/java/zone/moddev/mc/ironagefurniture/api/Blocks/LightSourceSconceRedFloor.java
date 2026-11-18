@@ -19,7 +19,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class LightSourceSconceRedFloor extends LightSourceSconceGlowFloor {
-    protected static final Map<World, List<Toggle>> RECENT_TOGGLES = new WeakHashMap<World, List<Toggle>>();
+    protected static final Map<World, List<Toggle>> RECENT_TOGGLES = new WeakHashMap<>();
     protected static final int RECENT_TOGGLE_TIMER = 60;
     protected static final int MAX_RECENT_TOGGLES = 8;
     protected static final int RESTART_DELAY = 160;

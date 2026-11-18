@@ -64,7 +64,7 @@ public final class VanillaSurfaceFoods {
 	}
 
 	private static List<Food> load() {
-		List<Food> foods = new ArrayList<Food>();
+		List<Food> foods = new ArrayList<>();
 		try (InputStreamReader reader = new InputStreamReader(
 				VanillaSurfaceFoods.class.getResourceAsStream("/assets/ironagefurniture/surface_foods.json"),
 				StandardCharsets.UTF_8)) {
@@ -78,11 +78,11 @@ public final class VanillaSurfaceFoods {
 	}
 
 	private static Map<Item, List<Food>> index() {
-		Map<Item, List<Food>> byItem = new IdentityHashMap<Item, List<Food>>();
+		Map<Item, List<Food>> byItem = new IdentityHashMap<>();
 		for (Food food : FOODS) {
 			List<Food> variants = byItem.get(food.item);
 			if (variants == null) {
-				variants = new ArrayList<Food>();
+				variants = new ArrayList<>();
 				byItem.put(food.item, variants);
 			}
 			variants.add(food);

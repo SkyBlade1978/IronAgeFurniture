@@ -67,7 +67,7 @@ public class GlassVaseBlock extends BlockHBase {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
+		return state.getValue(COLOR).getMetadata();
 	}
 
 	@Override
@@ -173,7 +173,7 @@ public class GlassVaseBlock extends BlockHBase {
 
 	@Override
 	public int damageDropped(IBlockState state) {
-		return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
+		return state.getValue(COLOR).getMetadata();
 	}
 
 	@Override
@@ -200,7 +200,7 @@ public class GlassVaseBlock extends BlockHBase {
 	}
 
 	public int getDamageValue(World worldIn, BlockPos pos) {
-		return ((EnumDyeColor)worldIn.getBlockState(pos).getValue(COLOR)).getMetadata();
+		return worldIn.getBlockState(pos).getValue(COLOR).getMetadata();
 	}
 
 	@Override

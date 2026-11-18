@@ -4,7 +4,6 @@ import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 
 public class ContainerBarrel extends Container {
 	public TileEntityBarrel getBarrel() { return this.barrel; }
@@ -54,7 +53,7 @@ public class ContainerBarrel extends Container {
 		}
 
 		for (int i = 0; i < this.listeners.size(); i++) {
-			((IContainerListener)this.listeners.get(i)).sendProgressBarUpdate(this, field, value);
+			this.listeners.get(i).sendProgressBarUpdate(this, field, value);
 		}
 	}
 

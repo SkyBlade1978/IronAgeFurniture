@@ -46,7 +46,7 @@ public abstract class MultiBlockChair extends Chair {
 		RIGHT_ARM_COLLISION_BB,
 		LOWER_BACK_COLLISION_BB
 	};
-	private static final Set<BlockPos> REMOVING_PARTS = new HashSet<BlockPos>();
+	private static final Set<BlockPos> REMOVING_PARTS = new HashSet<>();
 
 	public MultiBlockChair(Material materialIn, String name, float resistance, float hardness) {
 		super(materialIn, name, resistance, hardness);
@@ -195,8 +195,8 @@ public abstract class MultiBlockChair extends Chair {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		int meta = ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
-		meta += ((ChairPart)state.getValue(PART)).ordinal() * 4;
+		int meta = state.getValue(FACING).getHorizontalIndex();
+		meta += state.getValue(PART).ordinal() * 4;
 		return meta;
 	}
 
@@ -284,7 +284,7 @@ public abstract class MultiBlockChair extends Chair {
 
 	private void removeOtherParts(World worldIn, BlockPos pos, IBlockState state) {
 		BlockPos lowerPos = this.getLowerPos(pos, state);
-		Set<BlockPos> structurePositions = new HashSet<BlockPos>();
+		Set<BlockPos> structurePositions = new HashSet<>();
 
 		for (int i = 0; i < this.getChairHeight(); i++) {
 			structurePositions.add(lowerPos.up(i));

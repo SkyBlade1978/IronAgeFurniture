@@ -57,7 +57,7 @@ public class MultiBlockWoodBed extends BlockHBase {
 
 	private static final AxisAlignedBB FOOT_BB = new AxisAlignedBB(0.0D, 0.3125D, 0.0D, 1.0D, 0.625D, 0.9375D);
 	private static final AxisAlignedBB HEAD_BB = new AxisAlignedBB(0.0D, 0.3125D, 0.0625D, 1.0D, 0.625D, 1.0D);
-	private static final Set<BlockPos> REMOVING_PARTS = new HashSet<BlockPos>();
+	private static final Set<BlockPos> REMOVING_PARTS = new HashSet<>();
 	private static final WoodBedPart[] PARTS = new WoodBedPart[] { WoodBedPart.FOOT, WoodBedPart.HEAD };
 	private static final WoodBedSide[] SINGLE_SIDES = new WoodBedSide[] { WoodBedSide.LEFT };
 	private static final WoodBedSide[] DOUBLE_SIDES = new WoodBedSide[] { WoodBedSide.LEFT, WoodBedSide.RIGHT };
@@ -257,7 +257,7 @@ public class MultiBlockWoodBed extends BlockHBase {
 
 	@Override
 	public EnumFacing getBedDirection(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return ((EnumFacing)state.getValue(FACING)).getOpposite();
+		return state.getValue(FACING).getOpposite();
 	}
 
 	@Override
@@ -307,11 +307,11 @@ public class MultiBlockWoodBed extends BlockHBase {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		int meta = ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
-		meta += ((WoodBedPart)state.getValue(PART)).ordinal() * 4;
+		int meta = state.getValue(FACING).getHorizontalIndex();
+		meta += state.getValue(PART).ordinal() * 4;
 
 		if (this.doubleBed) {
-			meta += ((WoodBedSide)state.getValue(SIDE)).ordinal() * 8;
+			meta += state.getValue(SIDE).ordinal() * 8;
 		}
 
 		return meta;
@@ -402,8 +402,8 @@ public class MultiBlockWoodBed extends BlockHBase {
 
 	private void explodeBed(World worldIn, BlockPos sleepPos, IBlockState sleepState) {
 		this.removeStructure(worldIn, sleepPos, sleepState);
-		worldIn.newExplosion((Entity)null, (double)sleepPos.getX() + 0.5D, (double)sleepPos.getY() + 0.5D,
-			(double)sleepPos.getZ() + 0.5D, 5.0F, true, true);
+		worldIn.newExplosion((Entity)null, sleepPos.getX() + 0.5D, sleepPos.getY() + 0.5D,
+			sleepPos.getZ() + 0.5D, 5.0F, true, true);
 	}
 
 	private BlockPos getSafeExitLocation(World worldIn, BlockPos sleepPos, IBlockState sleepState, int tries) {
@@ -487,7 +487,7 @@ public class MultiBlockWoodBed extends BlockHBase {
 	}
 
 	private Set<BlockPos> getStructurePositions(BlockPos basePos, EnumFacing facing) {
-		Set<BlockPos> positions = new HashSet<BlockPos>();
+		Set<BlockPos> positions = new HashSet<>();
 
 		for (WoodBedSide bedSide : this.getStructureSides()) {
 			for (WoodBedPart part : PARTS) {

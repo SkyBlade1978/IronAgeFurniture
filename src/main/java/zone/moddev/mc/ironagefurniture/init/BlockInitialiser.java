@@ -372,7 +372,7 @@ public class BlockInitialiser {
 				BlockObjectHolder.chair_wood_ironage_stool_short_natura_eucalyptus		= SeatingFactory.CreateWoodShortStool("chair_wood_ironage_stool_short_natura_eucalyptus");
 				BlockObjectHolder.chair_wood_ironage_stool_short_natura_hopseed			= SeatingFactory.CreateWoodShortStool("chair_wood_ironage_stool_short_natura_hopseed");
 				BlockObjectHolder.chair_wood_ironage_stool_short_natura_maple			= SeatingFactory.CreateWoodShortStool("chair_wood_ironage_stool_short_natura_maple");
-				BlockObjectHolder.chair_wood_ironage_stool_short_natura_sakura			= SeatingFactory.CreateWoodShortStool("chair_wood_ironage_stool_short_natura_sakura");;
+				BlockObjectHolder.chair_wood_ironage_stool_short_natura_sakura			= SeatingFactory.CreateWoodShortStool("chair_wood_ironage_stool_short_natura_sakura");
 				BlockObjectHolder.chair_wood_ironage_stool_short_natura_silverbell		= SeatingFactory.CreateWoodShortStool("chair_wood_ironage_stool_short_natura_silverbell");
 				BlockObjectHolder.chair_wood_ironage_stool_short_natura_tiger			= SeatingFactory.CreateWoodShortStool("chair_wood_ironage_stool_short_natura_tiger");
 				BlockObjectHolder.chair_wood_ironage_stool_short_natura_willow			= SeatingFactory.CreateWoodShortStool("chair_wood_ironage_stool_short_natura_willow");

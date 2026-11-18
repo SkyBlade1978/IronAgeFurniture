@@ -12,7 +12,7 @@ public final class SurfaceRenderRegistry {
 		void render(ItemStack stack, SurfaceRenderContext context);
 	}
 
-	private static final Map<Item, Renderer> RENDERERS = new IdentityHashMap<Item, Renderer>();
+	private static final Map<Item, Renderer> RENDERERS = new IdentityHashMap<>();
 	private static boolean frozen;
 
 	private SurfaceRenderRegistry() { }

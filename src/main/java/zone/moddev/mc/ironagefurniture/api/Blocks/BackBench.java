@@ -219,13 +219,8 @@ public class BackBench extends Chair {
 	}
 
 	private boolean isBenchPiece(BenchType benchType) {
-		if (benchType == BenchType.SINGLE ||
-				benchType == BenchType.MIDDLE ||
-						benchType == BenchType.LEFT ||
-							benchType == BenchType.RIGHT)
-			return true;
-		else
-			return false;
+		return benchType == BenchType.SINGLE || benchType == BenchType.MIDDLE
+				|| benchType == BenchType.LEFT || benchType == BenchType.RIGHT;
 	}
 
 	private boolean isBenchPieceOnAxis(BenchType benchType, EnumFacing benchAxis, EnumFacing blockAxis, String blockName, String currentBlockName) {
@@ -350,7 +345,7 @@ public class BackBench extends Chair {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		int i = ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+		int i = state.getValue(FACING).getHorizontalIndex();
 
         if (state.getValue(TYPE) == BenchType.MIDDLE)
             i += 4;

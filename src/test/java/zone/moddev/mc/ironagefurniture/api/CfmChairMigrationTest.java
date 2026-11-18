@@ -57,7 +57,7 @@ public class CfmChairMigrationTest {
         Chair source = new Chair(Material.WOOD, "source", 1.0f, 1.0f);
         Chair target = new Chair(Material.WOOD, "target", 1.0f, 1.0f);
         ExtendedBlockStorage section = new ExtendedBlockStorage(0, true);
-        Map<Block, Block> replacements = new IdentityHashMap<Block, Block>();
+        Map<Block, Block> replacements = new IdentityHashMap<>();
         replacements.put(source, target);
         for (int facing = 0; facing < 4; ++facing) {
             section.set(facing, 0, 0, source.getStateFromMeta(facing));
@@ -95,7 +95,7 @@ public class CfmChairMigrationTest {
         sections.appendTag(section);
         level.setTag("Sections", sections);
         raw.setTag("Level", level);
-        Map<Integer, Block> targets = new HashMap<Integer, Block>();
+        Map<Integer, Block> targets = new HashMap<>();
         targets.put(300, target);
 
         assertEquals(4, CfmChairMigration.migrateMissingChairBlocks(chunk, raw, targets));
@@ -109,7 +109,7 @@ public class CfmChairMigrationTest {
     @Test
     public void oldNumericIdsSurviveUntilUnopenedChunksAreMigrated() {
         CfmChairMigrationData original = new CfmChairMigrationData(CfmChairMigrationData.NAME);
-        Map<Integer, String> ids = new HashMap<Integer, String>();
+        Map<Integer, String> ids = new HashMap<>();
         ids.put(233, "chair_wood_ironage_classic_oak");
         ids.put(301, "chair_wood_ironage_classic_big_oak");
         original.setBlockIds(ids);
@@ -131,7 +131,7 @@ public class CfmChairMigrationTest {
         chair.setTag("tag", custom);
         items.appendTag(chair);
         root.setTag("Items", items);
-        Map<String, String> ids = new java.util.HashMap<String, String>();
+        Map<String, String> ids = new java.util.HashMap<>();
         ids.put("cfm:chair_dark_oak", "ironagefurniture:chair_wood_ironage_classic_big_oak");
 
         assertEquals(1, CfmChairMigration.rewriteItemStacks(root, ids));
@@ -163,7 +163,7 @@ public class CfmChairMigrationTest {
         looseTag.setString("Owner", "keep me");
         looseChair.setTagCompound(looseTag);
         inventory.setInventorySlotContents(1, looseChair);
-        Map<String, String> ids = new HashMap<String, String>();
+        Map<String, String> ids = new HashMap<>();
         ids.put("cfm:chair_oak", "minecraft:stone");
         ids.put("minecraft:dirt", "minecraft:stone");
 

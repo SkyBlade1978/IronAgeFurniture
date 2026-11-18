@@ -1,12 +1,9 @@
 package zone.moddev.mc.ironagefurniture.fixture;
 
-import zone.moddev.mc.ironagefurniture.Ironagefurniture;
-import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf;
 import zone.moddev.mc.ironagefurniture.api.VasePlantHelper;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityGlassVase;
-import zone.moddev.mc.ironagefurniture.init.FurnitureCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -38,7 +35,8 @@ final class Phase5VaseProbe {
 		require(vase != null && vase != Blocks.AIR, "Glass vases were not registered");
 		TileEntityGlassVase prototype = new TileEntityGlassVase();
 		prototype.setPlant(new ItemStack(Blocks.RED_FLOWER, 1, 2).setStackDisplayName("Legacy vase plant"));
-		NBTTagCompound legacy = ((TileEntity)prototype).writeToNBT(new NBTTagCompound());
+		TileEntity vaseTile = prototype;
+		NBTTagCompound legacy = vaseTile.writeToNBT(new NBTTagCompound());
 		require("ironagefurniture:ornament_glass_vase".equals(legacy.getString("id")), "Donor vase save identity changed");
 		legacy.setString("id", "ironagefurniture:glass_vase");
 		TileEntity recovered = TileEntity.create(world, legacy);

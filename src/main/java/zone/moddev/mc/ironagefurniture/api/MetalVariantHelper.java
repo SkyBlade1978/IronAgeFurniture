@@ -40,7 +40,7 @@ public final class MetalVariantHelper {
 	}
 
 	public static List<MetalVariant> getAvailableVariants() {
-		List<MetalVariant> variants = new ArrayList<MetalVariant>();
+		List<MetalVariant> variants = new ArrayList<>();
 
 		for (MetalVariant variant : MetalVariant.values()) {
 			if (variant.isAvailable()) {
@@ -258,11 +258,11 @@ public final class MetalVariantHelper {
 		}
 
 		public float scaleHardness(float ironHardness) {
-			return Math.max(0.1F, ironHardness * this.hardnessWeight / (float)IRON_HARDNESS_BASELINE);
+			return Math.max(0.1F, ironHardness * this.hardnessWeight / IRON_HARDNESS_BASELINE);
 		}
 
 		public float scaleResistance(float ironResistance) {
-			return Math.max(1.0F, ironResistance * this.strengthWeight / (float)IRON_HARDNESS_BASELINE);
+			return Math.max(1.0F, ironResistance * this.strengthWeight / IRON_HARDNESS_BASELINE);
 		}
 
 		public int getChainPowerLoss() {

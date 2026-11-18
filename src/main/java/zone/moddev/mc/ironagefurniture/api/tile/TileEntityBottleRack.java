@@ -81,7 +81,7 @@ public class TileEntityBottleRack extends TileEntity {
 	}
 
 	public List<ItemStack> removeAllBottles() {
-		List<ItemStack> drops = new ArrayList<ItemStack>();
+		List<ItemStack> drops = new ArrayList<>();
 
 		for (int i = 0; i < this.bottles.length; i++) {
 			ItemStack itemStack = this.bottles[i];

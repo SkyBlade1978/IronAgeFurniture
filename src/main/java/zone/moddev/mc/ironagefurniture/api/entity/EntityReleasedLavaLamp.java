@@ -11,7 +11,7 @@ public class EntityReleasedLavaLamp extends EntityFallingMetalBlock {
     private static final float VIAL_WIDTH = 4.0F / 16.0F;
     private static final float VIAL_HEIGHT = 6.0F / 16.0F;
     private static final double HOLDER_BOTTOM_Y = 9.0D / 16.0D;
-    private static final ThreadLocal<EntityReleasedLavaLamp> CURRENT_FALL = new ThreadLocal<EntityReleasedLavaLamp>();
+    private static final ThreadLocal<EntityReleasedLavaLamp> CURRENT_FALL = new ThreadLocal<>();
 
     private int sourceY;
     private boolean preserveOnLanding;

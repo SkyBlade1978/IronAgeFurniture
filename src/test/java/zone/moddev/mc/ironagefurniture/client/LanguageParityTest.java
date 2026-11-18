@@ -78,7 +78,7 @@ public class LanguageParityTest {
         String resource = "/assets/ironagefurniture/lang/" + locale + ".lang";
         InputStream input = getClass().getResourceAsStream(resource);
         assertNotNull("Missing locale " + resource, input);
-        Map<String, String> values = new LinkedHashMap<String, String>();
+        Map<String, String> values = new LinkedHashMap<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
             String line;
             int number = 0;
@@ -96,7 +96,7 @@ public class LanguageParityTest {
     }
 
     private static List<String> formats(String value) {
-        List<String> formats = new ArrayList<String>();
+        List<String> formats = new ArrayList<>();
         Matcher matcher = FORMAT.matcher(value);
         while (matcher.find()) formats.add(matcher.group());
         return formats;

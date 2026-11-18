@@ -6,7 +6,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class UprightBarrelRecipe implements IRecipe {
@@ -35,7 +34,7 @@ public class UprightBarrelRecipe implements IRecipe {
 
 		ItemStack result = new ItemStack(this.barrel, 1);
 		if (sideBarrelStack.hasTagCompound()) {
-			result.setTagCompound((NBTTagCompound)sideBarrelStack.getTagCompound().copy());
+			result.setTagCompound(sideBarrelStack.getTagCompound().copy());
 		}
 		return result;
 	}

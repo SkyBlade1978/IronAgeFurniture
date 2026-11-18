@@ -62,7 +62,7 @@ public class MultiBlockBed extends BlockHBase {
 	private static final AxisAlignedBB FOOT_LOWER_BB = new AxisAlignedBB(0.0D, 0.3125D, 0.0D, 1.0D, 0.625D, 0.9375D);
 	private static final AxisAlignedBB HEAD_LOWER_BB = new AxisAlignedBB(0.0D, 0.3125D, 0.0625D, 1.0D, 0.625D, 1.0D);
 	private static final AxisAlignedBB CANOPY_BB = new AxisAlignedBB(0.0D, 0.8125D, 0.0D, 1.0D, 1.0D, 1.0D);
-	private static final Set<BlockPos> REMOVING_PARTS = new HashSet<BlockPos>();
+	private static final Set<BlockPos> REMOVING_PARTS = new HashSet<>();
 	private static final CanopyBedPart[] PARTS = new CanopyBedPart[] {
 		CanopyBedPart.FOOT_LOWER,
 		CanopyBedPart.FOOT_UPPER,
@@ -285,7 +285,7 @@ public class MultiBlockBed extends BlockHBase {
 
 	@Override
 	public EnumFacing getBedDirection(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return ((EnumFacing)state.getValue(FACING)).getOpposite();
+		return state.getValue(FACING).getOpposite();
 	}
 
 	@Override
@@ -330,8 +330,8 @@ public class MultiBlockBed extends BlockHBase {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		int meta = ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
-		meta += ((CanopyBedPart)state.getValue(PART)).ordinal() * 4;
+		int meta = state.getValue(FACING).getHorizontalIndex();
+		meta += state.getValue(PART).ordinal() * 4;
 		return meta;
 	}
 
@@ -459,8 +459,8 @@ public class MultiBlockBed extends BlockHBase {
 
 	private void explodeBed(World worldIn, BlockPos sleepPos, IBlockState sleepState) {
 		this.removeStructure(worldIn, sleepPos, sleepState);
-		worldIn.newExplosion((Entity)null, (double)sleepPos.getX() + 0.5D, (double)sleepPos.getY() + 0.5D,
-			(double)sleepPos.getZ() + 0.5D, 5.0F, true, true);
+		worldIn.newExplosion((Entity)null, sleepPos.getX() + 0.5D, sleepPos.getY() + 0.5D,
+			sleepPos.getZ() + 0.5D, 5.0F, true, true);
 	}
 
 	private BlockPos getSafeExitLocation(World worldIn, BlockPos sleepPos, IBlockState sleepState, int tries) {
@@ -544,7 +544,7 @@ public class MultiBlockBed extends BlockHBase {
 	}
 
 	private Set<BlockPos> getStructurePositions(BlockPos basePos, EnumFacing facing) {
-		Set<BlockPos> positions = new HashSet<BlockPos>();
+		Set<BlockPos> positions = new HashSet<>();
 
 		for (int side : this.getStructureSides()) {
 			for (CanopyBedPart part : PARTS) {

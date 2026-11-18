@@ -38,7 +38,7 @@ public final class PaddedBenchBakedModel implements IPerspectiveAwareModel {
 
 	public PaddedBenchBakedModel(Map<PaddedBenchColour, IBakedModel> variants) {
 		this.variants = Collections.unmodifiableMap(
-				new EnumMap<PaddedBenchColour, IBakedModel>(variants));
+				new EnumMap<>(variants));
 		this.fallback = this.variants.get(PaddedBenchColour.RED);
 		this.itemOverrides = new ItemOverrideList(Collections.<ItemOverride>emptyList()) {
 			@Override

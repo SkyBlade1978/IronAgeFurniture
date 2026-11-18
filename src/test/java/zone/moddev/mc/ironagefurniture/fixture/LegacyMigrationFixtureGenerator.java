@@ -124,24 +124,27 @@ public final class LegacyMigrationFixtureGenerator {
 
 	private static NBTTagList createTileEntities(boolean multicolour) {
 		NBTTagList result = new NBTTagList();
+
 		if (!multicolour) {
 			return result;
 		}
+
+		int benchCount = BOP_WOODS.length * FORMS.length;
 		int index = 0;
-		for (String wood : BOP_WOODS) {
-			for (String form : FORMS) {
-				for (PaddedBenchColour colour : PaddedBenchColour.values()) {
-					NBTTagCompound tile = new NBTTagCompound();
-					tile.setString("id", "ironagefurniture:padded_bench_colour");
-					tile.setInteger("x", index);
-					tile.setInteger("y", 64);
-					tile.setInteger("z", index / 16);
-					tile.setString("Color", colour.getSerializedName());
-					result.appendTag(tile);
-					index++;
-				}
+
+		for (int bench = 0; bench < benchCount; bench++) {
+			for (PaddedBenchColour colour : PaddedBenchColour.values()) {
+				NBTTagCompound tile = new NBTTagCompound();
+				tile.setString("id", "ironagefurniture:padded_bench_colour");
+				tile.setInteger("x", index);
+				tile.setInteger("y", 64);
+				tile.setInteger("z", index / 16);
+				tile.setString("Color", colour.getSerializedName());
+				result.appendTag(tile);
+				index++;
 			}
 		}
+
 		return result;
 	}
 

@@ -110,7 +110,7 @@ public final class OptionalIntegrationRecipeProbe {
         BedFireProbe.verify(server);
         String requested = System.getProperty("iaf.probe.mods", "all");
         boolean absenceProbe = "absent".equals(requested);
-        List<String> selected = absenceProbe ? new ArrayList<String>()
+        List<String> selected = absenceProbe ? new ArrayList<>()
                 : "all".equals(requested) ? PROFILES : Arrays.asList(requested);
         require(absenceProbe || "all".equals(requested) || PROFILES.contains(requested),
                 "Unknown optional-integration profile " + requested);

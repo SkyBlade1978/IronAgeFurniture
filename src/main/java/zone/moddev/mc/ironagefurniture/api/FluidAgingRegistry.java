@@ -17,7 +17,7 @@ public final class FluidAgingRegistry {
 		boolean canAgeFurther(FluidStack stack);
 	}
 
-	private static final Map<Fluid, Policy> POLICIES = new IdentityHashMap<Fluid, Policy>();
+	private static final Map<Fluid, Policy> POLICIES = new IdentityHashMap<>();
 	private static boolean frozen;
 
 	private FluidAgingRegistry() { }

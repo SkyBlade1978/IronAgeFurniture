@@ -6,7 +6,6 @@ import zone.moddev.mc.ironagefurniture.api.BarrelGuiHandler;
 import zone.moddev.mc.ironagefurniture.api.Blocks.*;
 import zone.moddev.mc.ironagefurniture.api.container.ContainerBarrel;
 import zone.moddev.mc.ironagefurniture.api.network.StorageNetwork;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -15,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,7 +33,7 @@ import org.apache.logging.log4j.LogManager;
 
 final class Phase5StorageProbe {
 	static void verify(WorldServer world, Set<String> mods) {
-		List<String> woods = new ArrayList<String>();
+		List<String> woods = new ArrayList<>();
 		for (String id : Ironagefurniture.BlockRegistry.keySet()) {
 			require(!id.startsWith("foudre_") && !id.startsWith("pot_still_"), "IAF duplicated Brewing content");
 			if (id.startsWith("chair_wood_ironage_classic_")) woods.add(id.substring("chair_wood_ironage_classic_".length()));
@@ -88,7 +88,7 @@ final class Phase5StorageProbe {
 		upright = upright.copy(); upright.stackSize = 1;
 		NBTTagCompound data = new NBTTagCompound();
 		FluidStack fluid = proofFluid(4321); data.setTag("Tank", fluid.writeToNBT(new NBTTagCompound())); data.setBoolean("Sealed", true);
-		upright.setTagCompound((NBTTagCompound)data.copy());
+		upright.setTagCompound(data.copy());
 		grid.clear(); grid.setInventorySlotContents(4, upright);
 		grid.setInventorySlotContents(0, new ItemStack(Items.STICK)); grid.setInventorySlotContents(8, new ItemStack(Items.STICK));
 		ItemStack side = craft(world, grid); output(side, "side_barrel_wood_ironage_" + wood, 1);
@@ -105,18 +105,22 @@ final class Phase5StorageProbe {
 		Block cabinet = block("half_cabinet_wood_ironage_oak");
 		world.setBlockState(pos, cabinet.getDefaultState().withProperty(Cabinet.FACING, facing));
 		TileEntityHalfCabinet tile = (TileEntityHalfCabinet)world.getTileEntity(pos);
-		require(((net.minecraft.inventory.IInventory)tile).getSizeInventory() == 18, "Half cabinet must have 18 slots");
+		// Use Minecraft types for inherited calls so Renamer can map them in the standalone probe.
+		IInventory inventory = tile;
+		TileEntity tileData = tile;
+		require(inventory.getSizeInventory() == 18, "Half cabinet must have 18 slots");
 		AxisAlignedBB box = cabinet.getBoundingBox(world.getBlockState(pos), world, pos);
 		require(Math.abs((box.maxX-box.minX)*(box.maxZ-box.minZ)-0.5D) < .00001, "Half cabinet collision has full depth");
 		require(Math.abs(tile.getSurfaceOffsetX()+facing.getFrontOffsetX()*.25D)<.00001
 			&& Math.abs(tile.getSurfaceOffsetZ()+facing.getFrontOffsetZ()*.25D)<.00001, "Half cabinet surface is not centred on physical top");
 		ItemStack stored = new ItemStack(Items.DIAMOND, 7).setStackDisplayName("Half cabinet contents " + facing);
-		((net.minecraft.inventory.IInventory)tile).setInventorySlotContents(17, stored.copy());
+		inventory.setInventorySlotContents(17, stored.copy());
 		ItemStack meal = new ItemStack(Items.BREAD).setStackDisplayName("Half cabinet display " + facing);
 		click(world, player, pos, meal.copy(), EnumFacing.UP, (float)(.5+tile.getSurfaceOffsetX()),1,(float)(.5+tile.getSurfaceOffsetZ()));
 		require(ItemStack.areItemStacksEqual(tile.getSurfaceSetting().getCompatibilityItem(),meal), "Half cabinet display failed");
-		NBTTagCompound nbt = ((TileEntity)tile).writeToNBT(new NBTTagCompound()); ((TileEntity)tile).readFromNBT(nbt);
-		require(nbt.equals(((TileEntity)tile).writeToNBT(new NBTTagCompound())), "Half cabinet save changed contents");
+		NBTTagCompound nbt = tileData.writeToNBT(new NBTTagCompound());
+		tileData.readFromNBT(nbt);
+		require(nbt.equals(tileData.writeToNBT(new NBTTagCompound())), "Half cabinet save changed contents");
 		BlockPos pair = pos.offset(facing.rotateY());
 		world.setBlockState(pair, cabinet.getDefaultState().withProperty(Cabinet.FACING,facing));
 		cabinet.onBlockPlacedBy(world,pair,world.getBlockState(pair),player,new ItemStack(cabinet));
@@ -141,8 +145,10 @@ final class Phase5StorageProbe {
 		}
 		TileEntityBottleRack tile=(TileEntityBottleRack)world.getTileEntity(pos);
 		for(int slot=0;slot<9;slot++) require(ItemStack.areItemStacksEqual(tile.getBottle(slot),bottles[slot]),"Rack grid stored the wrong bottle in a slot");
-		NBTTagCompound data=((TileEntity)tile).writeToNBT(new NBTTagCompound()); ((TileEntity)tile).readFromNBT(data);
-		require(data.equals(((TileEntity)tile).writeToNBT(new NBTTagCompound())),"Rack changed bottle NBT/orientations on load");
+		TileEntity tileData = tile;
+		NBTTagCompound data = tileData.writeToNBT(new NBTTagCompound());
+		tileData.readFromNBT(data);
+		require(data.equals(tileData.writeToNBT(new NBTTagCompound())), "Rack changed bottle NBT/orientations on load");
 		require(!BottleRack.isValidBottleItem(new ItemStack(Items.APPLE)),"Rack accepted arbitrary food");
 		if(mods.contains("ironagebrewing")) require(BottleRack.isValidBottleItem(new ItemStack(Item.getByNameOrId("ironagebrewing:fluid_bottle"))),"Rack did not accept addon bottle provider");
 		world.setBlockToAir(standing?pos.down():pos.offset(facing.getOpposite()));
@@ -185,8 +191,9 @@ final class Phase5StorageProbe {
 	}
 	private static void persist(WorldServer world,BlockPos pos) {
 		Block half=block("half_cabinet_wood_ironage_oak"); world.setBlockState(pos,half.getDefaultState());
-		TileEntityHalfCabinet cabinet=(TileEntityHalfCabinet)world.getTileEntity(pos);
-		((net.minecraft.inventory.IInventory)cabinet).setInventorySlotContents(17,new ItemStack(Items.EMERALD,11).setStackDisplayName("Saved half cabinet"));
+		TileEntityHalfCabinet cabinet = (TileEntityHalfCabinet)world.getTileEntity(pos);
+		IInventory inventory = cabinet;
+		inventory.setInventorySlotContents(17, new ItemStack(Items.EMERALD, 11).setStackDisplayName("Saved half cabinet"));
 		cabinet.getSurfaceSetting().setSingleItem(new ItemStack(Items.BREAD),EnumFacing.SOUTH);
 		pos=pos.east(4); world.setBlockState(pos,block("barrel_wood_ironage_oak").getDefaultState());
 		TileEntityBarrel barrel=(TileEntityBarrel)world.getTileEntity(pos); barrel.getFluidHandler().fill(proofFluid(12345),true); barrel.setSealed(true);

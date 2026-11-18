@@ -33,7 +33,7 @@ public final class UpholsteryBakedModel implements IPerspectiveAwareModel {
 	private final ItemOverrideList overrides;
 
 	public UpholsteryBakedModel(Map<UpholsteryColour, IBakedModel> variants) {
-		this.variants = Collections.unmodifiableMap(new EnumMap<UpholsteryColour, IBakedModel>(variants));
+		this.variants = Collections.unmodifiableMap(new EnumMap<>(variants));
 		fallback = this.variants.get(UpholsteryColour.RED);
 		overrides = new ItemOverrideList(Collections.<ItemOverride>emptyList()) {
 			@Override public IBakedModel handleItemState(IBakedModel original, ItemStack stack,

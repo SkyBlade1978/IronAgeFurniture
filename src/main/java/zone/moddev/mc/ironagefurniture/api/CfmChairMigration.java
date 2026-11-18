@@ -52,7 +52,7 @@ public final class CfmChairMigration {
     private static volatile Map<Integer, String> missingChairBlockIds = Collections.emptyMap();
 
     static {
-        Map<String, String> chairs = new LinkedHashMap<String, String>();
+        Map<String, String> chairs = new LinkedHashMap<>();
         chairs.put("cfm:chair_oak", "chair_wood_ironage_classic_oak");
         chairs.put("cfm:chair_spruce", "chair_wood_ironage_classic_spruce");
         chairs.put("cfm:chair_birch", "chair_wood_ironage_classic_birch");
@@ -73,7 +73,7 @@ public final class CfmChairMigration {
         // same world snapshot: it registers the target twice and falls back to
         // level.dat_old, mixing up unrelated block IDs. The old numeric IDs
         // are retained for raw chunk migration rather than remapped here.
-        Map<Integer, String> blockIds = new HashMap<Integer, String>();
+        Map<Integer, String> blockIds = new HashMap<>();
         for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
             String targetPath = CHAIRS.get(mapping.resourceLocation.toString());
             if (targetPath == null) {
@@ -175,7 +175,7 @@ public final class CfmChairMigration {
     }
 
     private static Map<Integer, Block> missingBlockTargets(World world) {
-        Map<Integer, Block> targets = new HashMap<Integer, Block>();
+        Map<Integer, Block> targets = new HashMap<>();
         for (Map.Entry<Integer, String> entry : migrationData(world).getBlockIds().entrySet()) {
             Block target = registeredTarget(entry.getValue());
             if (target != null) targets.put(entry.getKey(), target);
@@ -353,7 +353,7 @@ public final class CfmChairMigration {
     }
 
     private Map<Block, Block> registeredBlockReplacements() {
-        Map<Block, Block> replacements = new IdentityHashMap<Block, Block>();
+        Map<Block, Block> replacements = new IdentityHashMap<>();
         for (Map.Entry<String, String> entry : CHAIRS.entrySet()) {
             Block target = registeredTarget(entry.getValue());
             if (target == null) {
@@ -368,7 +368,7 @@ public final class CfmChairMigration {
     }
 
     private static Map<String, String> registeredItemIds() {
-        Map<String, String> ids = new LinkedHashMap<String, String>();
+        Map<String, String> ids = new LinkedHashMap<>();
         for (Map.Entry<String, String> entry : CHAIRS.entrySet()) {
             Block target = registeredTarget(entry.getValue());
             Item item = target == null ? null : Item.getItemFromBlock(target);
@@ -470,7 +470,7 @@ public final class CfmChairMigration {
                     ++converted;
                 }
             }
-            for (String key : new ArrayList<String>(compound.getKeySet())) {
+            for (String key : new ArrayList<>(compound.getKeySet())) {
                 NBTBase child = compound.getTag(key);
                 if (child != null) {
                     converted += rewriteItemStacks(child, ids);

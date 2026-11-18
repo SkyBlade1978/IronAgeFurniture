@@ -20,7 +20,7 @@ public final class SurfaceInteractionRegistry {
 		}
 	}
 
-	private static final Map<Item, Handler> HANDLERS = new IdentityHashMap<Item, Handler>();
+	private static final Map<Item, Handler> HANDLERS = new IdentityHashMap<>();
 	private static boolean frozen;
 
 	private SurfaceInteractionRegistry() { }

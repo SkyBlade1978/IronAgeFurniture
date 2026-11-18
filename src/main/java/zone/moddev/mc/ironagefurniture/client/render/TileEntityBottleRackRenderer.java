@@ -1,7 +1,5 @@
 package zone.moddev.mc.ironagefurniture.client.render;
 
-import java.util.Locale;
-
 import org.lwjgl.opengl.GL11;
 
 import net.minecraftforge.fluids.FluidUtil;
@@ -249,20 +247,10 @@ public class TileEntityBottleRackRenderer extends TileEntitySpecialRenderer<Tile
 	}
 
 	private float[] colorFromInt(int color) {
-		float r = (float)(color >> 16 & 255) / 255.0F;
-		float g = (float)(color >> 8 & 255) / 255.0F;
-		float b = (float)(color & 255) / 255.0F;
+		float r = (color >> 16 & 255) / 255.0F;
+		float g = (color >> 8 & 255) / 255.0F;
+		float b = (color & 255) / 255.0F;
 		return new float[] { Math.max(r, 0.08F), Math.max(g, 0.08F), Math.max(b, 0.08F) };
-	}
-
-	private boolean containsAny(String value, String... matches) {
-		for (String match : matches) {
-			if (value.contains(match)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private float[] darken(float[] color, float factor) {

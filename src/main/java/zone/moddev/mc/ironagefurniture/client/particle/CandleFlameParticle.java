@@ -19,9 +19,9 @@ public class CandleFlameParticle extends Particle {
         this.motionX *= 0.01D;
         this.motionY *= 0.01D;
         this.motionZ *= 0.01D;
-        this.posX += (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.02F);
-        this.posY += (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.02F);
-        this.posZ += (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.02F);
+        this.posX += ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.02F);
+        this.posY += ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.02F);
+        this.posZ += ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.02F);
         this.flameScale = this.particleScale * scale;
         this.particleScale = this.flameScale;
         this.particleRed = 1.0F;
@@ -44,14 +44,14 @@ public class CandleFlameParticle extends Particle {
     @Override
     public void renderParticle(VertexBuffer buffer, Entity entityIn, float partialTicks, float rotationX,
             float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-        float ageRatio = ((float)this.particleAge + partialTicks) / (float)this.particleMaxAge;
+        float ageRatio = (this.particleAge + partialTicks) / this.particleMaxAge;
         this.particleScale = this.flameScale * (1.0F - ageRatio * ageRatio * 0.5F);
         super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
     }
 
     @Override
     public int getBrightnessForRender(float partialTick) {
-        float ageRatio = ((float)this.particleAge + partialTick) / (float)this.particleMaxAge;
+        float ageRatio = (this.particleAge + partialTick) / this.particleMaxAge;
         ageRatio = MathHelper.clamp(ageRatio, 0.0F, 1.0F);
         int brightness = super.getBrightnessForRender(partialTick);
         int low = brightness & 255;

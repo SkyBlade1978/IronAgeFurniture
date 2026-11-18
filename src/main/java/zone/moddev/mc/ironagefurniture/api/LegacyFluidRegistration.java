@@ -11,7 +11,7 @@ import java.util.List;
  * during construction, before any pre-initialisation event is dispatched.
  */
 public final class LegacyFluidRegistration {
-	private static final List<Runnable> callbacks = new ArrayList<Runnable>();
+	private static final List<Runnable> callbacks = new ArrayList<>();
 	private static boolean executed;
 
 	private LegacyFluidRegistration() { }

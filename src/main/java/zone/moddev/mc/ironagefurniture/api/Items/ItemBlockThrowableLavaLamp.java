@@ -38,6 +38,6 @@ public class ItemBlockThrowableLavaLamp extends ItemBlock {
         }
 
         playerIn.addStat(StatList.getObjectUseStats(this));
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
     }
 }

@@ -81,7 +81,7 @@ public final class ClientRenderInitialiser {
                 new IRenderFactory<EntityThrownLavaLamp>() {
                     @Override
                     public Render<? super EntityThrownLavaLamp> createRenderFor(RenderManager manager) {
-                        return new RenderSnowball<EntityThrownLavaLamp>(manager,
+                        return new RenderSnowball<>(manager,
                                 Item.getItemFromBlock(
                                         BlockObjectHolder.light_metal_ironage_block_floor_lava_clear),
                                 Minecraft.getMinecraft().getRenderItem());

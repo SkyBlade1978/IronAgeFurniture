@@ -70,7 +70,7 @@ public final class SurfaceContentRegistry {
 	}
 
 	private static final Descriptor DEFAULT = new Descriptor(Category.SINGLETON, 0.5D, 0.75D);
-	private static final Map<Item, Provider> PROVIDERS = new IdentityHashMap<Item, Provider>();
+	private static final Map<Item, Provider> PROVIDERS = new IdentityHashMap<>();
 	private static boolean frozen;
 
 	private SurfaceContentRegistry() { }

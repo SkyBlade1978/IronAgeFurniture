@@ -82,7 +82,7 @@ public enum PaddedBenchModelLoader implements ICustomModelLoader {
 		}
 
 		Map<PaddedBenchColour, IBakedModel> variants =
-				new EnumMap<PaddedBenchColour, IBakedModel>(PaddedBenchColour.class);
+				new EnumMap<>(PaddedBenchColour.class);
 		for (PaddedBenchColour colour : PaddedBenchColour.values()) {
 			IModel coloured = ((IRetexturableModel)delegate).retexture(ImmutableMap.of(
 					"upholstery", woolTexture(colour).toString()));
@@ -122,7 +122,7 @@ public enum PaddedBenchModelLoader implements ICustomModelLoader {
 		@Override
 		public Collection<ResourceLocation> getTextures() {
 			LinkedHashSet<ResourceLocation> textures =
-					new LinkedHashSet<ResourceLocation>(this.delegate.getTextures());
+					new LinkedHashSet<>(this.delegate.getTextures());
 			for (PaddedBenchColour colour : PaddedBenchColour.values()) {
 				textures.add(woolTexture(colour));
 			}
@@ -158,7 +158,7 @@ public enum PaddedBenchModelLoader implements ICustomModelLoader {
 		@Override
 		public Collection<ResourceLocation> getTextures() {
 			LinkedHashSet<ResourceLocation> textures =
-					new LinkedHashSet<ResourceLocation>(this.delegate.getTextures());
+					new LinkedHashSet<>(this.delegate.getTextures());
 			textures.add(woolTexture(this.colour));
 			return textures;
 		}

@@ -93,7 +93,7 @@ public class TileEntityWallShelf extends TileEntity implements zone.moddev.mc.ir
 	}
 
 	public List<ItemStack> getEmbeddedItems() {
-		List<ItemStack> items = new ArrayList<ItemStack>();
+		List<ItemStack> items = new ArrayList<>();
 
 		for (ItemStack itemStack : this.embeddedItems) {
 			if (itemStack != null && itemStack.stackSize > 0) {
@@ -164,7 +164,7 @@ public class TileEntityWallShelf extends TileEntity implements zone.moddev.mc.ir
 
 	public List<ItemStack> removeAllEmbeddedItems() {
 		int oldLight = this.getEmbeddedLightLevel();
-		List<ItemStack> drops = new ArrayList<ItemStack>();
+		List<ItemStack> drops = new ArrayList<>();
 
 		for (int i = 0; i < this.embeddedItems.length; i++) {
 			ItemStack itemStack = this.embeddedItems[i];
@@ -361,14 +361,5 @@ public class TileEntityWallShelf extends TileEntity implements zone.moddev.mc.ir
 		if (this.world != null && this.world.isRemote && this.pos != null) {
 			this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
 		}
-	}
-
-	private EnumFacing horizontalOrNorth(EnumFacing facing) {
-		if (facing == EnumFacing.NORTH || facing == EnumFacing.EAST
-				|| facing == EnumFacing.SOUTH || facing == EnumFacing.WEST) {
-			return facing;
-		}
-
-		return EnumFacing.NORTH;
 	}
 }

@@ -57,7 +57,7 @@ public class LightSourceCandleFloor extends BlockHBase {
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
+        return state.getValue(FACING).getHorizontalIndex();
     }
 
     @Override

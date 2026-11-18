@@ -75,7 +75,7 @@ public class ShieldChair extends Chair {
 	}
 
 	@Override public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		List<ItemStack> drops = new ArrayList<ItemStack>();
+		List<ItemStack> drops = new ArrayList<>();
 		drops.add(ShieldChairItemData.createChair(this, null));
 		TileEntityShieldChair tile = tile(world, pos);
 		// A pre-upgrade block has no saved tile entity and still carries its plain shield.

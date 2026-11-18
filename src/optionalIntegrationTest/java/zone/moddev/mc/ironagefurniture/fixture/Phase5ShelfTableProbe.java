@@ -6,12 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
-import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable;
-import zone.moddev.mc.ironagefurniture.api.Blocks.LowTable;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceItemHit;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
-import zone.moddev.mc.ironagefurniture.api.tile.TileEntityDiningTable;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
 
 import net.minecraft.block.Block;
@@ -51,7 +48,7 @@ final class Phase5ShelfTableProbe {
 	private Phase5ShelfTableProbe() { }
 
 	static void verify(WorldServer world, Set<String> mods) {
-		List<String> woods = new ArrayList<String>();
+		List<String> woods = new ArrayList<>();
 		for (String id : Ironagefurniture.BlockRegistry.keySet()) {
 			if (id.startsWith("chair_wood_ironage_classic_")) woods.add(id.substring("chair_wood_ironage_classic_".length()));
 		}
@@ -123,7 +120,7 @@ final class Phase5ShelfTableProbe {
 	}
 
 	private static void verifyLoose(WorldServer world, FakePlayer player, Block host, BlockPos pos, EnumFacing facing, Set<String> mods) {
-		List<ItemStack> items = new ArrayList<ItemStack>();
+		List<ItemStack> items = new ArrayList<>();
 		items.add(new ItemStack(Items.BREAD)); items.add(new ItemStack(Items.APPLE));
 		items.add(new ItemStack(Items.ARMOR_STAND)); items.add(new ItemStack(Blocks.STONE));
 		if (mods.contains("harvestcraft")) items.add(new ItemStack(Item.getByNameOrId("harvestcraft:applepieitem")));
@@ -173,7 +170,7 @@ final class Phase5ShelfTableProbe {
 		require(countDrops(world, pos, pot) == 1 && countDrops(world, pos, plant) == 1, "Potted plant break lost exact contents");
 		if (!(host instanceof WallShelf)) return;
 		pos = pos.east(4); prepare(world, pos, host, facing);
-		List<ItemStack> books = new ArrayList<ItemStack>();
+		List<ItemStack> books = new ArrayList<>();
 		for (int i = 0; i < 5; i++) {
 			ItemStack book = tagged(new ItemStack(Items.WRITTEN_BOOK), "Book " + i);
 			NBTTagList pages = new NBTTagList(); pages.appendTag(new net.minecraft.nbt.NBTTagString("{\"text\":\"Original page " + i + "\"}"));

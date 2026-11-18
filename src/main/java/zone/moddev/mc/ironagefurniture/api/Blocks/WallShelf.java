@@ -9,7 +9,6 @@ import zone.moddev.mc.ironagefurniture.api.MineralogyCompat;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingInteraction;
 import zone.moddev.mc.ironagefurniture.client.particle.CandleFlameParticle;
 
 import net.minecraft.block.Block;
@@ -426,20 +425,6 @@ public class WallShelf extends BlockHBase {
 
 		this.removeShelfEntityIfEmpty(worldIn, pos);
 	}
-
-	private void removeDisplayedItemFromShelf(World worldIn, BlockPos pos, TileEntityWallShelf shelf,
-			EntityPlayer playerIn) {
-		ItemStack displayedItem = shelf.removeDisplayedItem();
-		SurfaceDisplayBlocker.release(worldIn, pos);
-
-		if (displayedItem != null) {
-			this.returnShelfItem(worldIn, pos, playerIn, displayedItem);
-		}
-
-		this.removeShelfEntityIfEmpty(worldIn, pos);
-	}
-
-
 
 	private boolean canHandleFlowerPotClick(TileEntityWallShelf shelf, ItemStack heldItem) {
 		ItemStack lastItem = shelf.getLastEmbeddedItem();

@@ -11,7 +11,7 @@ import net.minecraft.world.WorldSavedData;
 /** Remembers legacy numeric IDs until even unopened chunks have been upgraded. */
 public final class CfmChairMigrationData extends WorldSavedData {
     public static final String NAME = "ironagefurniture_cfm_chair_migration";
-    private final Map<Integer, String> blockIds = new LinkedHashMap<Integer, String>();
+    private final Map<Integer, String> blockIds = new LinkedHashMap<>();
 
     public CfmChairMigrationData(String name) {
         super(name);

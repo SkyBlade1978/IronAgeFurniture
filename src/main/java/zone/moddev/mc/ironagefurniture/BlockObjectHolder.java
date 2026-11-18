@@ -5,13 +5,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class BlockObjectHolder {
-	public static final Map<String, Block> chair_wood_ironage_wingback = new LinkedHashMap<String, Block>();
-	public static final Map<String, Block> chair_wood_ironage_throne = new LinkedHashMap<String, Block>();
-	public static final Map<String, Block> bed_canopy_single = new LinkedHashMap<String, Block>();
-	public static final Map<String, Block> bed_canopy_double_left = new LinkedHashMap<String, Block>();
-	public static final Map<String, Block> bed_canopy_double_right = new LinkedHashMap<String, Block>();
-	public static final Map<String, Block> bed_wood_single = new LinkedHashMap<String, Block>();
-	public static final Map<String, Block> bed_wood_double = new LinkedHashMap<String, Block>();
+	public static final Map<String, Block> chair_wood_ironage_wingback = new LinkedHashMap<>();
+	public static final Map<String, Block> chair_wood_ironage_throne = new LinkedHashMap<>();
+	public static final Map<String, Block> bed_canopy_single = new LinkedHashMap<>();
+	public static final Map<String, Block> bed_canopy_double_left = new LinkedHashMap<>();
+	public static final Map<String, Block> bed_canopy_double_right = new LinkedHashMap<>();
+	public static final Map<String, Block> bed_wood_single = new LinkedHashMap<>();
+	public static final Map<String, Block> bed_wood_double = new LinkedHashMap<>();
 	public static Block chair_wood_ironage_classic_oak;
 	public static Block chair_wood_ironage_classic_acacia;
 	public static Block chair_wood_ironage_classic_big_oak;

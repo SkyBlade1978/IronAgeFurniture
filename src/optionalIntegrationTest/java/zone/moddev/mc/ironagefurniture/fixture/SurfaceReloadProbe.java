@@ -24,7 +24,7 @@ import org.apache.logging.log4j.LogManager;
 /** Verifies saved furniture after real chunk loading and deferred repairs. */
 @Mod.EventBusSubscriber
 public final class SurfaceReloadProbe {
-    private static final List<Snapshot> SNAPSHOTS = new ArrayList<Snapshot>();
+    private static final List<Snapshot> SNAPSHOTS = new ArrayList<>();
     private static MinecraftServer server;
     private static int chunks;
     private static int ticks;

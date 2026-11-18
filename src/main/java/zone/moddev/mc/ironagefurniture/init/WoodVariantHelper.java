@@ -44,7 +44,7 @@ final class WoodVariantHelper {
 	}
 
 	static List<String> getEnabledWoodSuffixes() {
-		List<String> suffixes = new ArrayList<String>();
+		List<String> suffixes = new ArrayList<>();
 		addSuffixes(suffixes, VANILLA_SUFFIXES);
 
 		if (IronAgeFurnitureConfiguration.INTEGRATION_BIOMESOPLENTY && Loader.isModLoaded("BiomesOPlenty")) {
@@ -106,7 +106,7 @@ final class WoodVariantHelper {
 	}
 
 	static List<String> getEnabledLogSuffixes() {
-		final List<String> suffixes = new ArrayList<String>();
+		final List<String> suffixes = new ArrayList<>();
 
 		forEachEnabledLogVariant(new ItemStackVariantConsumer() {
 			@Override

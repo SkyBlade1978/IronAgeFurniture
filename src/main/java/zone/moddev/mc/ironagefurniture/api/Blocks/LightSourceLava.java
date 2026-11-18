@@ -33,7 +33,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class LightSourceLava extends LightSourceGlowdust {
-    private static final Map<World, Set<BlockPos>> WATER_LANDINGS = new WeakHashMap<World, Set<BlockPos>>();
+    private static final Map<World, Set<BlockPos>> WATER_LANDINGS = new WeakHashMap<>();
 
     public LightSourceLava(Material materialIn, String name, float resistance, float hardness) {
         super(materialIn, name, resistance, hardness);
@@ -106,9 +106,9 @@ public class LightSourceLava extends LightSourceGlowdust {
 
         if (worldIn.isAirBlock(blockpos) && !worldIn.getBlockState(blockpos).isFullBlock()) {
             if (rand.nextInt(25) == 0) {
-                double x = (double)pos.getX() + 0.5D;
-                double y = (double)pos.getY() + 0.25D;
-                double z = (double)pos.getZ() + 0.5D;
+                double x = pos.getX() + 0.5D;
+                double y = pos.getY() + 0.25D;
+                double z = pos.getZ() + 0.5D;
 
                 worldIn.spawnParticle(EnumParticleTypes.LAVA, x, y, z, 0.0D, 0.0D, 0.0D, new int[0]);
                 worldIn.playSound(x, y, z, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS,
@@ -116,7 +116,7 @@ public class LightSourceLava extends LightSourceGlowdust {
             }
 
             if (rand.nextInt(200) == 0) {
-                worldIn.playSound((double)pos.getX(), (double)pos.getY(), (double)pos.getZ(),
+                worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(),
                     SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS,
                     0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
             }
@@ -205,7 +205,7 @@ public class LightSourceLava extends LightSourceGlowdust {
     private static void rememberWaterLanding(World world, BlockPos pos) {
         Set<BlockPos> landings = WATER_LANDINGS.get(world);
         if (landings == null) {
-            landings = new HashSet<BlockPos>();
+            landings = new HashSet<>();
             WATER_LANDINGS.put(world, landings);
         }
 

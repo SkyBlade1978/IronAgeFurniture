@@ -25,12 +25,8 @@ public class Stool extends Chair {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
-		if (tall)
-			return BBTALL;
-		else
-			return BBSHORT;
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return tall ? BBTALL : BBSHORT;
 	}
 
 	@Override

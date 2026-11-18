@@ -106,7 +106,7 @@ public final class BedFireProbe {
     }
 
     private static List<BlockPos> parts(WorldServer world, BlockPos base) {
-        List<BlockPos> result = new ArrayList<BlockPos>();
+        List<BlockPos> result = new ArrayList<>();
         for (int x = -2; x <= 2; x++) for (int y = 0; y <= 1; y++) for (int z = -2; z <= 2; z++) {
             BlockPos pos = base.add(x, y, z);
             if (isBed(world.getBlockState(pos).getBlock())) result.add(pos);
@@ -126,7 +126,7 @@ public final class BedFireProbe {
     private static final class BurnRandom extends Random {
         private static final long serialVersionUID = 1L;
         private final boolean replaceWithFire;
-        private final List<Integer> calls = new ArrayList<Integer>();
+        private final List<Integer> calls = new ArrayList<>();
         BurnRandom(boolean replaceWithFire) { this.replaceWithFire = replaceWithFire; }
         @Override public int nextInt(int bound) {
             calls.add(bound);

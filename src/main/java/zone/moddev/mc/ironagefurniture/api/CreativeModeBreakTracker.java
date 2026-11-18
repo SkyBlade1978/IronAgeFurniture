@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class CreativeModeBreakTracker {
     private static final long RECENT_BREAK_TICKS = 200L;
-    private static final Map<World, List<BreakRecord>> BREAKS = new WeakHashMap<World, List<BreakRecord>>();
+    private static final Map<World, List<BreakRecord>> BREAKS = new WeakHashMap<>();
 
     @SubscribeEvent
     public void onBlockBreak(BlockEvent.BreakEvent event) {
@@ -45,7 +45,7 @@ public class CreativeModeBreakTracker {
         List<BreakRecord> breaks = BREAKS.get(world);
 
         if (breaks == null) {
-            breaks = new ArrayList<BreakRecord>();
+            breaks = new ArrayList<>();
             BREAKS.put(world, breaks);
         }
 

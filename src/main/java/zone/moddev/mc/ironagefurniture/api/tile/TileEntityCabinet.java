@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import zone.moddev.mc.ironagefurniture.api.Blocks.Cabinet;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceReservationRepair;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
 
 import net.minecraft.block.state.IBlockState;
@@ -160,8 +159,8 @@ public class TileEntityCabinet extends TileEntityLockable
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer player) {
 		return this.world.getTileEntity(this.pos) != this ? false
-			: player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D,
-				(double)this.pos.getZ() + 0.5D) <= 64.0D;
+			: player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D,
+				this.pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -255,10 +254,9 @@ public class TileEntityCabinet extends TileEntityLockable
 	private void recalculatePlayersUsing() {
 		this.numPlayersUsing = 0;
 		float range = 5.0F;
-		AxisAlignedBB searchBox = new AxisAlignedBB((double)((float)this.pos.getX() - range),
-			(double)((float)this.pos.getY() - range), (double)((float)this.pos.getZ() - range),
-			(double)((float)(this.pos.getX() + 1) + range), (double)((float)(this.pos.getY() + 1) + range),
-			(double)((float)(this.pos.getZ() + 1) + range));
+		AxisAlignedBB searchBox = new AxisAlignedBB(
+			this.pos.getX() - range, this.pos.getY() - range, this.pos.getZ() - range,
+			this.pos.getX() + 1 + range, this.pos.getY() + 1 + range, this.pos.getZ() + 1 + range);
 
 		for (EntityPlayer player : this.world.getEntitiesWithinAABB(EntityPlayer.class, searchBox)) {
 			if (player.openContainer instanceof ContainerChest) {
@@ -274,14 +272,14 @@ public class TileEntityCabinet extends TileEntityLockable
 
 	private void playDoorSound(SoundEvent soundEvent) {
 		BlockPos joinedPos = this.getJoinedCabinetPos();
-		double x = (double)this.pos.getX() + 0.5D;
-		double y = (double)this.pos.getY() + 0.5D;
-		double z = (double)this.pos.getZ() + 0.5D;
+		double x = this.pos.getX() + 0.5D;
+		double y = this.pos.getY() + 0.5D;
+		double z = this.pos.getZ() + 0.5D;
 
 		if (joinedPos != null) {
-			x = (x + (double)joinedPos.getX() + 0.5D) / 2.0D;
-			y = (y + (double)joinedPos.getY() + 0.5D) / 2.0D;
-			z = (z + (double)joinedPos.getZ() + 0.5D) / 2.0D;
+			x = (x + joinedPos.getX() + 0.5D) / 2.0D;
+			y = (y + joinedPos.getY() + 0.5D) / 2.0D;
+			z = (z + joinedPos.getZ() + 0.5D) / 2.0D;
 		}
 
 		this.world.playSound(null, x, y, z, soundEvent, SoundCategory.BLOCKS, 0.5F,

@@ -34,7 +34,7 @@ public class BedAndChairRecipeTest {
 
 	@Test public void wingbackAndThroneCraftForEveryCarpetColour() {
 		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-		List<IRecipe> original = new ArrayList<IRecipe>(recipes);
+		List<IRecipe> original = new ArrayList<>(recipes);
 		Block previousClassic = Ironagefurniture.BlockRegistry.get("chair_wood_ironage_classic_oak");
 		Block previousWingback = BlockObjectHolder.chair_wood_ironage_wingback.get("oak");
 		Block previousThrone = BlockObjectHolder.chair_wood_ironage_throne.get("oak");
@@ -57,7 +57,7 @@ public class BedAndChairRecipeTest {
 			BlockObjectHolder.chair_wood_ironage_wingback.put("oak", Blocks.STONE);
 			BlockObjectHolder.chair_wood_ironage_throne.put("oak", Blocks.COBBLESTONE);
 			WoodVariantHelper.forEachEnabledPlankVariant(ChairUpgradeInitialiser::registerRecipes);
-			List<IRecipe> added = new ArrayList<IRecipe>(recipes);
+			List<IRecipe> added = new ArrayList<>(recipes);
 			added.removeAll(original);
 
 			for (UpholsteryColour colour : UpholsteryColour.values()) {
@@ -106,7 +106,7 @@ public class BedAndChairRecipeTest {
 
 	@Test public void woodenAndCanopyBedsCraftCombineAndRecolour() {
 		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-		List<IRecipe> original = new ArrayList<IRecipe>(recipes);
+		List<IRecipe> original = new ArrayList<>(recipes);
 		boolean previousClassicOption = IronAgeFurnitureConfiguration.GENERATE_CLASSIC_CHAIRS;
 		boolean previousBop = IronAgeFurnitureConfiguration.INTEGRATION_BIOMESOPLENTY;
 		boolean previousNatura = IronAgeFurnitureConfiguration.INTEGRATION_NATURA;
@@ -132,7 +132,7 @@ public class BedAndChairRecipeTest {
 				BedInitialiser.registerDoubleBedRecipes(suffix);
 			}
 
-			List<IRecipe> added = new ArrayList<IRecipe>(recipes);
+			List<IRecipe> added = new ArrayList<>(recipes);
 			added.removeAll(original);
 
 			ItemStack wood = craft(added, shapeless(new ItemStack(Items.BED),

@@ -6,7 +6,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -36,7 +35,7 @@ public class SideBarrelRecipe implements IRecipe {
 
 		ItemStack result = new ItemStack(this.sideBarrel, 1);
 		if (barrelStack.hasTagCompound()) {
-			result.setTagCompound((NBTTagCompound)barrelStack.getTagCompound().copy());
+			result.setTagCompound(barrelStack.getTagCompound().copy());
 		}
 		return result;
 	}

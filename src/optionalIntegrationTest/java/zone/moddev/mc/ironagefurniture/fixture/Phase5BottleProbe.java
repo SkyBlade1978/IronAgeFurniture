@@ -39,7 +39,7 @@ final class Phase5BottleProbe {
 	static final String[] HOSTS = {"table_dining_oak", "table_low_oak", "shelf_wall_oak",
 		"cabinet_wood_ironage_oak", "half_cabinet_wood_ironage_oak"};
 	static List<ItemStack> samples() {
-		List<ItemStack> items = new ArrayList<ItemStack>();
+		List<ItemStack> items = new ArrayList<>();
 		items.add(new ItemStack(Items.GLASS_BOTTLE));
 		items.add(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER));
 		items.add(PotionUtils.appendEffects(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HEALING),

@@ -99,7 +99,7 @@ public final class GeneratedModelResourcePack implements IResourcePack {
 	}
 
 	private static Map<ResourceLocation, byte[]> loadGeneratedResources() {
-		Map<ResourceLocation, byte[]> resources = new LinkedHashMap<ResourceLocation, byte[]>();
+		Map<ResourceLocation, byte[]> resources = new LinkedHashMap<>();
 		for (String path : MANIFEST_PATHS) loadManifest(resources, path);
 		return resources;
 	}

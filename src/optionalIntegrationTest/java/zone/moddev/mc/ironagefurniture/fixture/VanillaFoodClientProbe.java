@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaSurfaceFoods;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaFoodPlacement;
@@ -20,7 +19,6 @@ import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -45,7 +43,7 @@ public final class VanillaFoodClientProbe {
     static int verify(Minecraft client, BlockPos pos) {
         Block blocker = Block.getBlockFromName("ironagefurniture:surface_display_blocker");
         ModelManager models = client.getRenderItem().getItemModelMesher().getModelManager();
-        List<ItemStack> variants = new ArrayList<ItemStack>();
+        List<ItemStack> variants = new ArrayList<>();
         for (VanillaSurfaceFoods.Food food : VanillaSurfaceFoods.all()) {
             ItemStack item = new ItemStack(food.item, 1, Math.max(0, food.metadata));
             variants.add(item);

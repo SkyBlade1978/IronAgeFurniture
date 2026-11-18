@@ -131,7 +131,7 @@ public class Barrel extends Block {
 
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		List<ItemStack> drops = new ArrayList<ItemStack>();
+		List<ItemStack> drops = new ArrayList<>();
 		Item item = Item.getItemFromBlock(this);
 
 		if (item == null) {
@@ -192,6 +192,6 @@ public class Barrel extends Block {
 			return 0;
 		}
 
-		return MathHelper.floor((float)barrel.getFluidAmount() * 14.0F / (float)barrel.getCapacity()) + 1;
+		return MathHelper.floor(barrel.getFluidAmount() * 14.0F / barrel.getCapacity()) + 1;
 	}
 }
