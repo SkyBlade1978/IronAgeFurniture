@@ -3,6 +3,7 @@ package zone.moddev.mc.ironagefurniture.api;
 import zone.moddev.mc.ironagefurniture.api.Blocks.BottleRack;
 import zone.moddev.mc.ironagefurniture.api.Blocks.Cabinet;
 import zone.moddev.mc.ironagefurniture.api.Blocks.HalfCabinet;
+import zone.moddev.mc.ironagefurniture.api.Blocks.ShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SideBarrel;
 import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel;
 
@@ -31,5 +32,9 @@ public final class StorageFactory {
 
 	public static Block createBottleRack(String name) {
 		return FurnitureRegistration.registerBlock(new BottleRack(Material.WOOD, name, 10, 1), name, 16);
+	}
+
+	public static Block createShelvingUnit(String name) {
+		return FurnitureRegistration.registerBlock(new ShelvingUnit(Material.WOOD, 10, 1), name, 16);
 	}
 }

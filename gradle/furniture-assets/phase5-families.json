@@ -1,4 +1,16 @@
 {
+  "shelving_unit": {
+    "prefix": "shelving_unit_wood_ironage_",
+    "inventory": "standing_0",
+    "blockstateTemplate": "bottle_rack",
+    "itemDisplay": {
+      "gui": {
+        "rotation": [30, 225, 0],
+        "translation": [0, 0, 0],
+        "scale": [0.65, 0.65, 0.65]
+      }
+    }
+  },
   "dining_chair": {
     "prefix": "chair_wood_ironage_dining_",
     "inventory": "inventory",

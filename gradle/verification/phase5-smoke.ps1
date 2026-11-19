@@ -145,7 +145,8 @@ foreach ($name in $Profile) {
                 if (!$process.HasExited) { $process.Kill($true) }
             }
         }
-        if (!$process.WaitForExit(30000)) { throw "$Mode / $name did not exit. See $run." }
+        $exitTimeoutMs = if ($SurfaceBoundsProbe) { 55000 } else { 30000 }
+        if (!$process.WaitForExit($exitTimeoutMs)) { throw "$Mode / $name did not exit. See $run." }
         if ($SurfaceBoundsProbe -and $process.ExitCode -ne 0) { throw "Surface bounds client failed: $run" }
         if ($side -eq 'server' -and ($process.ExitCode -ne 0 -or
                 (Get-Content -LiteralPath $latest -Raw) -notmatch 'Stopping server')) {

@@ -2,6 +2,7 @@ package zone.moddev.mc.ironagefurniture.fixture;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.*;
 import zone.moddev.mc.ironagefurniture.api.tile.*;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -58,6 +59,50 @@ final class Phase5StorageClientScene {
 				client.world.setBlockState(pos,rack.getDefaultState().withProperty(BottleRack.STANDING,standing),2);
 			}
 		}
+		return origin;
+	}
+
+	static BlockPos shelvingUnits(Minecraft client, BlockPos origin) {
+		List<ItemStack> bottles = Phase5BottleProbe.samples();
+		for (int x = -1; x <= 5; x++) {
+			for (int z = 0; z <= 3; z++) {
+				client.world.setBlockState(origin.add(x, -1, z), Blocks.STONEBRICK.getDefaultState(), 2);
+			}
+		}
+
+		for (int x : new int[] { 0, 1, 3, 4 }) {
+			boolean standing = x >= 3;
+			String wood = standing ? "oak" : "birch";
+			Block unit = Block.getBlockFromName("ironagefurniture:shelving_unit_wood_ironage_" + wood);
+
+			for (int y = 0; y < 2; y++) {
+				BlockPos pos = origin.add(x, y, 2);
+
+				if (!standing) {
+					client.world.setBlockState(pos.south(), Blocks.STONEBRICK.getDefaultState(), 2);
+				}
+
+				client.world.setBlockState(pos, unit.getDefaultState()
+					.withProperty(RackBlock.STANDING, standing).withProperty(RackBlock.DATA, true), 2);
+				TileEntityShelvingUnit tile = (TileEntityShelvingUnit)client.world.getTileEntity(pos);
+				if (x == 0 || x == 3) {
+					for (int index = 0; index < 5; index++) {
+						tile.getLevel(false).addMedia(new ItemStack(Items.BOOK));
+					}
+					int discCount = y == 0 ? 4 : 10;
+					for (int index = 0; index < discCount; index++) {
+						tile.getLevel(true).addMedia(new ItemStack(Items.RECORD_CAT));
+					}
+				} else {
+					tile.getLevel(false).getSurfaceSetting().setSingleItem(new ItemStack(Items.APPLE), EnumFacing.NORTH);
+					int bottleCount = y == 0 ? 4 : 8;
+					for (int index = 0; index < bottleCount; index++) {
+						tile.getLevel(true).addMedia(bottles.get((index + y) % bottles.size()));
+					}
+				}
+			}
+		}
+
 		return origin;
 	}
 }

@@ -38,7 +38,7 @@ public final class FurnitureCreativeTabs {
 		}
 
 		if (name.startsWith("cabinet_") || name.startsWith("half_cabinet_") || name.startsWith("barrel_")
-				|| name.startsWith("side_barrel_") || name.startsWith("bottle_rack_")) {
+				|| name.startsWith("side_barrel_") || name.startsWith("bottle_rack_") || name.startsWith("shelving_unit_")) {
 			return STORAGE;
 		}
 

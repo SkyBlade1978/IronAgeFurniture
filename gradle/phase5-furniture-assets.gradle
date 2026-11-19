@@ -5,7 +5,131 @@ def phase5Root = file('src/main/resources/assets/ironagefurniture')
 def phase5Definitions = file('gradle/furniture-assets')
 def phase5Manifest = new File(phase5Root, 'generated/phase5_model_resources.json')
 def phase5Catalog = { new JsonSlurper().parse(file('gradle/furniture-catalog.json')) as Map }
-def phase5Families = { new JsonSlurper().parse(new File(phase5Definitions, 'phase5-families.json')) as Map }
+def shelvingUnitTemplates = {
+    Map<String, Map> templates = [:]
+    [false, true].each { boolean standing ->
+        (0..15).each { int connections ->
+            boolean joinedAbove = (connections & 1) != 0
+            boolean joinedRight = (connections & 2) != 0
+            boolean joinedBelow = (connections & 4) != 0
+            boolean joinedLeft = (connections & 8) != 0
+            def bottom = joinedBelow ? 0.5 : 1
+            def top = joinedAbove ? 15.5 : 15
+            def left = joinedLeft ? 0.5 : 1
+            def right = joinedRight ? 15.5 : 15
+            int front = standing ? 4 : 8
+            int back = front + 8
+            Closure board = { List from, List to, String texture, List<String> hidden ->
+                Map faces = [:]
+                [north: [0, 1], south: [0, 1], east: [2, 1], west: [2, 1], up: [0, 2], down: [0, 2]].each {
+                    String face, List<Integer> axes ->
+                        if (!hidden.contains(face)) {
+                            faces[face] = [uv: [from[axes[0]], from[axes[1]], to[axes[0]], to[axes[1]]],
+                                    texture: "#${texture}".toString()]
+                        }
+                }
+                [from: from, to: to, faces: faces]
+            }
+            List<String> seams = []
+            if (joinedLeft) seams.add('west')
+            if (joinedRight) seams.add('east')
+
+            // Shared shelves sit between continuous uprights, just like the centre shelf.
+            def postBottom = joinedBelow ? 0 : bottom
+            def postTop = joinedAbove ? 16 : top
+            Map bottomBoard = joinedBelow
+                ? board([left, 0, front], [right, bottom, back], 'planks', ['west', 'east', 'down'])
+                : board([0, 0, front], [16, bottom, back], 'log', seams)
+            Map topBoard = joinedAbove
+                ? board([left, top, front], [right, 16, back], 'planks', ['west', 'east', 'up'])
+                : board([0, top, front], [16, 16, back], 'log', seams)
+
+            String suffix = standing ? "standing_${connections}" : connections.toString()
+            templates[suffix] = [elements: [
+                bottomBoard,
+                topBoard,
+                board([0, postBottom, front], [left, postTop, back], 'log', joinedLeft ? ['west', 'up', 'down'] : ['up', 'down']),
+                board([right, postBottom, front], [16, postTop, back], 'log', joinedRight ? ['east', 'up', 'down'] : ['up', 'down']),
+                board([left, 7.5, front], [right, 8.5, back], 'planks', ['west', 'east'])
+            ]]
+        }
+    }
+    templates
+}
+def shelvingDiscRow = { List<Map> parts, int count ->
+    List<Map> tray = parts.findAll { it.name.startsWith('embedded record rack ') }
+    List<Map> disc = parts - tray
+
+    // Widen the tray to a full model block before the renderer scales it to fit between the uprights.
+    List<Map> row = tray.collect { Map part ->
+        boolean rail = part.name.endsWith('rail')
+        def left = rail ? 3.35 : part.from[0]
+        def right = rail ? 12.65 : part.to[0]
+        part + [
+            from: [(left - 2.8) * 16 / 10.4, part.from[1], part.from[2]],
+            to: [(right - 2.8) * 16 / 10.4, part.to[1], part.to[2]]
+        ]
+    }
+    // The models face north, so the positive X end is on the viewer's left.
+    (0..<count).each { int index ->
+        def centre = 14.75 - index * 1.5
+        String sleeveTexture = "#record_${index % 6}"
+        disc.each { Map part ->
+            def halfWidth = (part.to[0] - part.from[0]) / 2
+            row.add(part + [
+                name: part.name.replaceFirst(/\d+$/, (index + 1).toString()),
+                from: [centre - halfWidth, part.from[1], part.from[2]],
+                to: [centre + halfWidth, part.to[1], part.to[2]],
+                faces: part.faces.collectEntries { face, data ->
+                    [(face): data.texture == '#record_0' ? data + [texture: sleeveTexture] : data]
+                }
+            ])
+        }
+    }
+    row
+}
+def shelvingMediaModels = {
+    Map<String, Map> models = [:]
+    Map discSource = new JsonSlurper().parse(new File(phase5Root,
+        'models/block/template_shelf_wall_straight_records_1.json')) as Map
+    [books: 5, records: 10].each { String kind, int capacity ->
+        (1..capacity).each { int count ->
+            String name = "${kind}_${count}"
+            Map source = kind == 'records' ? discSource : new JsonSlurper().parse(new File(phase5Root,
+                "models/block/template_shelf_wall_straight_${name}.json")) as Map
+            Map textures = source.textures.findAll { key, value -> value }
+            textures.planks = 'minecraft:blocks/planks_oak'
+            textures.particle = textures.planks
+
+            List<Map> parts = source.elements.findAll { it.name?.startsWith('embedded ') }
+            if (kind == 'records') {
+                parts = shelvingDiscRow(parts, count)
+            }
+
+            // Centre the arrangement in depth and put its base at shelf height.
+            List elements = parts.collect { Map element ->
+                element + [
+                    from: [element.from[0], element.from[1] - 13, element.from[2] - 2.625],
+                    to: [element.to[0], element.to[1] - 13, element.to[2] - 2.625]
+                ]
+            }
+            models["models/block/shelving_media/${name}.json".toString()] = [textures: textures, elements: elements]
+        }
+    }
+    models
+}
+def phase5Families = {
+    Map families = new JsonSlurper().parse(new File(phase5Definitions, 'phase5-families.json')) as Map
+    families.shelving_unit.models = shelvingUnitTemplates().keySet().collectEntries { String suffix ->
+        [(suffix): [parent: "ironagefurniture:block/template_shelving_unit_${suffix}".toString(), textures: [:]]]
+    }
+    families
+}
+def phase5StateTemplate = { String family, Map definition, String id, Map families ->
+    String template = definition.blockstateTemplate ?: family
+    new File(phase5Definitions, "${template}.blockstate.json").getText('UTF-8')
+        .replace("${families[template].prefix}oak", id)
+}
 def phase5Woods = { (phase5Catalog().woods as Map).values().flatten() as List<String> }
 def phase5ItemModel = { Map definition, String id ->
     Map model = [parent: "ironagefurniture:block/${id}_${definition.inventory}"]
@@ -14,12 +138,17 @@ def phase5ItemModel = { Map definition, String id ->
 }
 def phase5Models = {
     Map<String, Object> models = new TreeMap<>()
+    Map families = phase5Families()
+    shelvingUnitTemplates().each { suffix, model ->
+        models["models/block/template_shelving_unit_${suffix}.json".toString()] = model
+    }
+    models.putAll(shelvingMediaModels())
     phase5Woods().each { String wood ->
         Map chair = new JsonSlurper().parse(new File(phase5Root,
                 "models/block/chair_wood_ironage_classic_${wood}.json")) as Map
         Map woodTextures = chair.textures as Map
         if (!woodTextures['0'] || !woodTextures['1']) throw new GradleException("Missing chair wood textures: ${wood}")
-        phase5Families().each { family, definition ->
+        families.each { family, definition ->
             definition.models.each { suffix, source ->
                 Map model = new JsonSlurper().parseText(JsonOutput.toJson(source)) as Map
                 model.textures.log = woodTextures['0']
@@ -42,18 +171,18 @@ def phase5WoodName = { String value ->
     bracket.find() ? bracket.group(1) : value.replaceFirst(/ Classic Chair$/, '')
 }
 def phase5Titles = [
-    de_AU: ['Niedriger Tisch (%s)', 'Wandregal (%s)', 'Esszimmerstuhl (%s)'],
-    de_DE: ['Niedriger Tisch (%s)', 'Wandregal (%s)', 'Esszimmerstuhl (%s)'],
-    es_ES: ['Mesa baja (%s)', 'Estante de pared (%s)', 'Silla de comedor (%s)'],
-    es_MX: ['Mesa baja (%s)', 'Estante de pared (%s)', 'Silla de comedor (%s)'],
-    fr_CA: ['Table basse (%s)', 'Étagère murale (%s)', 'Chaise de salle à manger (%s)'],
-    fr_FR: ['Table basse (%s)', 'Étagère murale (%s)', 'Chaise de salle à manger (%s)'],
-    ja_JP: ['ローテーブル (%s)', '壁棚 (%s)', 'ダイニングチェア (%s)'],
-    ko_KR: ['낮은 탁자 (%s)', '벽 선반 (%s)', '식탁 의자 (%s)'],
-    pt_BR: ['Mesa baixa (%s)', 'Prateleira de parede (%s)', 'Cadeira de jantar (%s)'],
-    pt_PT: ['Mesa baixa (%s)', 'Prateleira de parede (%s)', 'Cadeira de jantar (%s)'],
-    ru_RU: ['Низкий стол (%s)', 'Настенная полка (%s)', 'Обеденный стул (%s)'],
-    zh_CN: ['矮桌 (%s)', '壁架 (%s)', '%s餐椅']
+    de_AU: ['Niedriger Tisch (%s)', 'Wandregal (%s)', 'Esszimmerstuhl (%s)', 'Regal (%s)'],
+    de_DE: ['Niedriger Tisch (%s)', 'Wandregal (%s)', 'Esszimmerstuhl (%s)', 'Regal (%s)'],
+    es_ES: ['Mesa baja (%s)', 'Estante de pared (%s)', 'Silla de comedor (%s)', 'Estantería (%s)'],
+    es_MX: ['Mesa baja (%s)', 'Estante de pared (%s)', 'Silla de comedor (%s)', 'Estantería (%s)'],
+    fr_CA: ['Table basse (%s)', 'Étagère murale (%s)', 'Chaise de salle à manger (%s)', 'Meuble à étagères (%s)'],
+    fr_FR: ['Table basse (%s)', 'Étagère murale (%s)', 'Chaise de salle à manger (%s)', 'Meuble à étagères (%s)'],
+    ja_JP: ['ローテーブル (%s)', '壁棚 (%s)', 'ダイニングチェア (%s)', '収納棚 (%s)'],
+    ko_KR: ['낮은 탁자 (%s)', '벽 선반 (%s)', '식탁 의자 (%s)', '수납 선반 (%s)'],
+    pt_BR: ['Mesa baixa (%s)', 'Prateleira de parede (%s)', 'Cadeira de jantar (%s)', 'Estante (%s)'],
+    pt_PT: ['Mesa baixa (%s)', 'Prateleira de parede (%s)', 'Cadeira de jantar (%s)', 'Estante (%s)'],
+    ru_RU: ['Низкий стол (%s)', 'Настенная полка (%s)', 'Обеденный стул (%s)', 'Стеллаж (%s)'],
+    zh_CN: ['矮桌 (%s)', '壁架 (%s)', '%s餐椅', '%s置物架']
 ]
 
 tasks.register('updatePhaseFiveFurnitureAssets') {
@@ -65,9 +194,8 @@ tasks.register('updatePhaseFiveFurnitureAssets') {
         phase5Woods().each { String wood ->
             families.each { family, definition ->
                 String id = "${definition.prefix}${wood}"
-                String template = new File(phase5Definitions, "${family}.blockstate.json").getText('UTF-8')
                 new File(phase5Root, "blockstates/${id}.json").setText(
-                        template.replace("${definition.prefix}oak", id), 'UTF-8')
+                        phase5StateTemplate(family, definition, id, families), 'UTF-8')
                 phase5Write(new File(phase5Root, "models/item/${id}.json"),
                         phase5ItemModel(definition as Map, id))
             }
@@ -87,7 +215,8 @@ tasks.register('updatePhaseFiveFurnitureAssets') {
                 [(family): title]
             }
             if (!dining.contains(oak) || !cabinet.contains(oak)) throw new GradleException("Missing wood title in ${locale.name}")
-            List<String> titles = phase5Titles[locale.name - '.lang'] ?: ['%s Low Table', '%s Wall Shelf', '%s Dining Chair']
+            List<String> titles = phase5Titles[locale.name - '.lang'] ?:
+                    ['%s Low Table', '%s Wall Shelf', '%s Dining Chair', '%s Shelving Unit']
             List<String> retained = text.readLines().findAll { String line ->
                 !families.values().any { line.startsWith("tile.ironagefurniture.${it.prefix}") }
             }
@@ -97,7 +226,7 @@ tasks.register('updatePhaseFiveFurnitureAssets') {
                 String woodName = phase5WoodName(names["tile.ironagefurniture.chair_wood_ironage_classic_${wood}.name"])
                 Map familyNames = [dining: dining.replace(oak, woodName), cabinet: cabinet.replace(oak, woodName),
                         low: titles[0].replace('%s', woodName), shelf: titles[1].replace('%s', woodName),
-                        dining_chair: titles[2].replace('%s', woodName)]
+                        dining_chair: titles[2].replace('%s', woodName), shelving_unit: titles[3].replace('%s', woodName)]
                 extraTitles.each { family, title -> familyNames[family] = title.replace(oak, woodName) }
                 families.each { family, definition ->
                     retained.add("tile.ironagefurniture.${definition.prefix}${wood}.name=${familyNames[family]}")
@@ -118,16 +247,16 @@ tasks.register('verifyPhaseFiveFurnitureAssets') {
         if (!phase5Manifest.isFile() || new JsonSlurper().parse(phase5Manifest) != phase5Models()) {
             throw new GradleException('Phase 5 wood models are stale; run updatePhaseFiveFurnitureAssets')
         }
-        Set prefixes = phase5Families().values().collect { it.prefix } as Set
+        Map families = phase5Families()
+        Set prefixes = families.values().collect { it.prefix } as Set
         if (prefixes != phase5Catalog().phaseFive.woodPrefixes as Set) {
             throw new GradleException('Phase 5 asset families and wood catalog differ')
         }
         phase5Woods().each { String wood ->
-            phase5Families().each { family, definition ->
+            families.each { family, definition ->
                 String id = "${definition.prefix}${wood}"
                 Map actual = new JsonSlurper().parse(new File(phase5Root, "blockstates/${id}.json")) as Map
-                String source = new File(phase5Definitions, "${family}.blockstate.json").getText('UTF-8')
-                Map expected = new JsonSlurper().parseText(source.replace("${definition.prefix}oak", id)) as Map
+                Map expected = new JsonSlurper().parseText(phase5StateTemplate(family, definition, id, families)) as Map
                 if (actual != expected) throw new GradleException("Stale Phase 5 blockstate: ${id}")
                 Map itemModel = new JsonSlurper().parse(new File(phase5Root, "models/item/${id}.json")) as Map
                 if (itemModel != phase5ItemModel(definition as Map, id))

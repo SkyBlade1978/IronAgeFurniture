@@ -1,0 +1,22 @@
+{
+    "parent": "ironagefurniture:block/shelving_unit_wood_ironage_natura_sakura_standing_0",
+    "display": {
+        "gui": {
+            "rotation": [
+                30,
+                225,
+                0
+            ],
+            "translation": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                0.65,
+                0.65,
+                0.65
+            ]
+        }
+    }
+}

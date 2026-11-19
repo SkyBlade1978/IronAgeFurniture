@@ -18,6 +18,18 @@ side barrels and bottle racks in those same woods. Half cabinets hold 18
 stacks and pair into 36 slots. Barrels hold 16,000 mB and preserve their
 contents and seal when mined or converted between orientations. Bottle racks
 hold nine exact bottles and can stand on the floor or mount on a wall.
+Shelving units have two open display levels and are half a block deep.
+Click a wall face to mount one, or the top of a solid block to centre it
+on the floor. Matching units join side by side and stack vertically.
+Right-click a level to place an item, and right-click the item with an
+empty hand to retrieve it.
+Each level can display up to five upright books, ten music discs, or eight
+bottles in two rows of four. The disc tray and each bottle row fill from left
+to right.
+Right-click an empty level or a matching arrangement to add one at a time.
+An empty-hand right-click opens a list of the books, discs or bottles on that level.
+Click an item's name or icon to move it to the next free inventory slot.
+The picker stays open so you can take several items. Click Close when done.
 Foudres, pot stills and brewing recipes belong to the separate Brewing addon.
 
 - One full cabinet crafts into two matching half cabinets.
@@ -27,6 +39,8 @@ Foudres, pot stills and brewing recipes belong to the separate Brewing addon.
   recover the upright barrel and both sticks; fluid data stays intact.
 - Four matching slabs in the crafting-grid corners and a central stick
   craft two bottle racks.
+- Three matching slabs across the middle row and four sticks in the
+  corners craft one shelving unit.
 
 Barrels accept buckets and Forge fluid containers. With Brewing installed,
 its bottles and drinkware use the same barrel without duplicating Brewing

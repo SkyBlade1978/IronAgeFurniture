@@ -1,7 +1,7 @@
 package zone.moddev.mc.ironagefurniture.init;
 
 import zone.moddev.mc.ironagefurniture.BlockObjectHolder;
-import zone.moddev.mc.ironagefurniture.api.BarrelGuiHandler;
+import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
 import zone.moddev.mc.ironagefurniture.api.entity.EntityThrownLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.entity.EntityReleasedLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShieldChair;
@@ -13,9 +13,11 @@ import zone.moddev.mc.ironagefurniture.api.tile.TileEntityGlassVase;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityHalfCabinet;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
 import zone.moddev.mc.ironagefurniture.client.gui.GuiBarrel;
+import zone.moddev.mc.ironagefurniture.client.gui.GuiShelfMedia;
 import zone.moddev.mc.ironagefurniture.client.render.GlassVaseRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.SurfaceFurnitureRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityBottleRackRenderer;
+import zone.moddev.mc.ironagefurniture.client.render.TileEntityShelvingUnitRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityGlassVaseRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.VanillaFoodRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityShieldChairRenderer;
@@ -46,10 +48,11 @@ public final class ClientRenderInitialiser {
 	}
 
 	public static void registerSurfaceFurnitureRenderers() {
-		BarrelGuiHandler.setClientFactory(GuiBarrel::new);
+		StorageGuiHandler.setClientFactories(GuiBarrel::new, GuiShelfMedia::new);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityHalfCabinet.class,
 			new SurfaceFurnitureRenderer<TileEntityHalfCabinet>());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBottleRack.class, new TileEntityBottleRackRenderer());
+		TileEntityShelvingUnitRenderer.register();
 
 		VanillaFoodRenderer.register();
 		GlassVaseRenderer.register();

@@ -23,6 +23,7 @@ final class StorageInitialiser {
 	private static final Map<String, Block> BARRELS = new LinkedHashMap<>();
 	private static final Map<String, Block> SIDE_BARRELS = new LinkedHashMap<>();
 	private static final Map<String, Block> BOTTLE_RACKS = new LinkedHashMap<>();
+	private static final Map<String, Block> SHELVING_UNITS = new LinkedHashMap<>();
 
 	private StorageInitialiser() {
 	}
@@ -54,6 +55,25 @@ final class StorageInitialiser {
 			RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 		RecipeSorter.register("ironagefurniture:upright_barrel", UprightBarrelRecipe.class,
 			RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+	}
+
+	static void registerShelvingUnits() {
+		if (!IronAgeFurnitureConfiguration.GENERATE_SHELVING_UNITS) {
+			return;
+		}
+
+		for (String wood : WoodVariantHelper.getEnabledWoodSuffixes()) {
+			SHELVING_UNITS.put(wood, StorageFactory.createShelvingUnit("shelving_unit_wood_ironage_" + wood));
+		}
+	}
+
+	static void registerShelvingUnitRecipe(String wood, ItemStack slab) {
+		Block unit = SHELVING_UNITS.get(wood);
+
+		if (unit != null) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(unit), "t t", "sss", "t t",
+				's', slab, 't', "stickWood"));
+		}
 	}
 
 	static void registerBottleRackRecipe(String suffix, ItemStack slab) {

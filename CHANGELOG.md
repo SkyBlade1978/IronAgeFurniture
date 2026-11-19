@@ -1,5 +1,8 @@
 # IronAgeFurniture 0.5.0.110021 (unreleased)
 
+- Add half-depth shelving units in all 65 supported woods. Mount them on
+  a wall or centre them on the floor, then join matching units horizontally
+  and vertically. Both shelf levels hold items using the shared surface renderer.
 - Port the v1 dining chairs in all 65 supported woods. Sneak-right-click an
   empty chair facing a dining table to tuck it underneath or pull it out.
   Craft one with four matching wooden slabs and two sticks.

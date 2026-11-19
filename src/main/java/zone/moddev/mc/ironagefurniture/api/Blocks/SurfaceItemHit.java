@@ -49,15 +49,23 @@ public final class SurfaceItemHit {
 		return nearest;
 	}
 
+	static RayTraceResult traceFromPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
+		Vec3d eye = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+		double yaw = Math.toRadians(player.rotationYaw);
+		double pitch = Math.toRadians(player.rotationPitch);
+		double horizontalReach = Math.cos(pitch) * 6.0D;
+		Vec3d end = eye.addVector(-Math.sin(yaw) * horizontalReach,
+			-Math.sin(pitch) * 6.0D, Math.cos(yaw) * horizontalReach);
+
+		return state.collisionRayTrace(world, pos, eye, end);
+	}
+
 	public static boolean removeIfHit(World world, BlockPos pos, EntityPlayer player) {
 		TileEntity tile = world.getTileEntity(pos);
 		if (!(tile instanceof SurfaceSettingHost) || ((SurfaceSettingHost)tile).getSurfaceHeight() >= 1.0D) return false;
-		Vec3d eye = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-		double yaw = Math.toRadians(player.rotationYaw), pitch = Math.toRadians(player.rotationPitch);
-		Vec3d end = eye.addVector(-Math.sin(yaw) * Math.cos(pitch) * 6.0D,
-			-Math.sin(pitch) * 6.0D, Math.cos(yaw) * Math.cos(pitch) * 6.0D);
+
 		IBlockState state = world.getBlockState(pos);
-		RayTraceResult hit = state.collisionRayTrace(world, pos, eye, end);
+		RayTraceResult hit = traceFromPlayer(state, world, pos, player);
 		if (hit == null || hit.subHit < ITEM_HIT) return false;
 		SurfaceSettingHost host = (SurfaceSettingHost)tile;
 		ItemStack removed = host.getSurfaceSetting().remove(Slot.byIndex(hit.subHit - ITEM_HIT));

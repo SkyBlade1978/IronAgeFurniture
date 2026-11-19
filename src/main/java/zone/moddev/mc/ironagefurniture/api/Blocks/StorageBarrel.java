@@ -1,6 +1,7 @@
 package zone.moddev.mc.ironagefurniture.api.Blocks;
 
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
+import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
 import zone.moddev.mc.ironagefurniture.api.FluidVesselInteractions;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 
@@ -22,7 +23,7 @@ public class StorageBarrel extends Barrel {
 	@Override
 	protected boolean openVesselGui(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
 		if (!world.isRemote) {
-			player.openGui(Ironagefurniture.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(Ironagefurniture.instance, StorageGuiHandler.BARREL, world, pos.getX(), pos.getY(), pos.getZ());
 		}
 
 		return true;

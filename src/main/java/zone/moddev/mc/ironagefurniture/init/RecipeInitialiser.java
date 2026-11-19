@@ -32,6 +32,7 @@ public class RecipeInitialiser {
 		generateSurfaceFurnitureRecipes();
 		SconceAndCandleRecipes.register();
 		WoodVariantHelper.forEachEnabledSlabVariant(DiningChairInitialiser::registerRecipe);
+		WoodVariantHelper.forEachEnabledSlabVariant(StorageInitialiser::registerShelvingUnitRecipe);
 	}
 
 	private static void generateBedAndChairUpgradeRecipes() {

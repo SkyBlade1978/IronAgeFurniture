@@ -13,6 +13,7 @@ import zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelManager;
@@ -254,18 +255,26 @@ public final class VanillaFoodClientProbe {
             screenshot(client, "phase5-surface-bottles.png");
             positionCamera(client, 1.5D, 1.2D - client.player.getEyeHeight(), -0.8D, 1.5D, 0.75D, 0.5D);
         }
+        boolean brewing = Phase5BottleProbe.samples().size() > 6;
         if (galleryTicks == 365) {
             screenshot(client, "phase5-potion-closeup.png");
-            if (Phase5BottleProbe.samples().size() > 6) {
+            if (brewing) {
                 positionCamera(client, 8.0D, 1.2D - client.player.getEyeHeight(), -1.2D, 8.0D, 0.85D, 0.5D);
-            } else {
-                gallery = null;
-                client.shutdown();
             }
         }
-        if (galleryTicks == 395) {
+        if (brewing && galleryTicks == 395) {
             screenshot(client, "phase5-brewing-bottle-levels.png");
+        }
+        if (galleryTicks == (brewing ? 395 : 365)) {
+            gallery = Phase5StorageClientScene.shelvingUnits(client, gallery.east(16));
+            positionCamera(client, 2.5D, 2.8D - client.player.getEyeHeight(), -2.2D, 2.5D, 1.1D, 2.2D);
+        }
+        if (galleryTicks == (brewing ? 425 : 395)) {
+            screenshot(client, "phase5-shelving-units.png");
             gallery = null;
+            client.world.sendQuittingDisconnectingPacket();
+            client.loadWorld(null);
+            client.displayGuiScreen(new GuiMainMenu());
             client.shutdown();
         }
     }
@@ -285,7 +294,7 @@ public final class VanillaFoodClientProbe {
         client.player.prevRotationPitch = pitch;
     }
 
-    private static void screenshot(Minecraft client, String name) {
+    static void screenshot(Minecraft client, String name) {
         ScreenShotHelper.saveScreenshot(new File("."), name, client.displayWidth, client.displayHeight, client.getFramebuffer());
         require(new File("screenshots", name).isFile(), "Food screenshot was not saved");
     }

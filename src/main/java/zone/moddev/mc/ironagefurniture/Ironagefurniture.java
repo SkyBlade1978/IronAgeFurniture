@@ -5,7 +5,7 @@ import java.util.Map;
 
 import zone.moddev.mc.ironagefurniture.api.entity.Seat;
 import zone.moddev.mc.ironagefurniture.api.CreativeModeBreakTracker;
-import zone.moddev.mc.ironagefurniture.api.BarrelGuiHandler;
+import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
 import zone.moddev.mc.ironagefurniture.api.FluidVesselInteractions;
 import zone.moddev.mc.ironagefurniture.api.network.StorageNetwork;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceReservationRepair;
@@ -100,7 +100,7 @@ public class Ironagefurniture {
 
 		BlockInitialiser.init();
 		StorageNetwork.init();
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new BarrelGuiHandler());
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new StorageGuiHandler());
 
 		if (event.getSide().isClient()) {
 			GeneratedModelResourcePack.install();

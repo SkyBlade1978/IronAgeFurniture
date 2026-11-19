@@ -2,7 +2,7 @@ package zone.moddev.mc.ironagefurniture.fixture;
 
 import java.util.*;
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
-import zone.moddev.mc.ironagefurniture.api.BarrelGuiHandler;
+import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
 import zone.moddev.mc.ironagefurniture.api.Blocks.*;
 import zone.moddev.mc.ironagefurniture.api.container.ContainerBarrel;
 import zone.moddev.mc.ironagefurniture.api.network.StorageNetwork;
@@ -56,6 +56,7 @@ final class Phase5StorageProbe {
 				rack(world, player, origin.south(24).east(i * 12), facing, true, mods);
 				barrel(world, player, origin.south(40).east(i * 12), facing, mods);
 			}
+			ShelvingUnitProbe.verify(world, player, origin.east(90));
 			persist(world, origin.south(65));
 		} finally {
 			player.inventory.clear(); player.interactionManager.setGameType(oldMode); player.connection = oldConnection;
@@ -81,6 +82,16 @@ final class Phase5StorageProbe {
 		for (int slot : new int[]{0,2,6,8}) grid.setInventorySlotContents(slot, slab.copy());
 		grid.setInventorySlotContents(4, new ItemStack(Items.STICK));
 		output(craft(world, grid), "bottle_rack_wood_ironage_" + wood, 2);
+
+		grid.clear();
+		for (int slot : new int[] { 0, 2, 6, 8 }) {
+			grid.setInventorySlotContents(slot, new ItemStack(Items.STICK));
+		}
+		for (int slot : new int[] { 3, 4, 5 }) {
+			grid.setInventorySlotContents(slot, slab.copy());
+		}
+		output(craft(world, grid), "shelving_unit_wood_ironage_" + wood, 1);
+
 		grid.clear();
 		for (int slot : new int[]{0,1,2,6,7,8}) grid.setInventorySlotContents(slot, plank.copy());
 		grid.setInventorySlotContents(4, new ItemStack(Items.IRON_INGOT));
@@ -165,7 +176,8 @@ final class Phase5StorageProbe {
 		require(tile.getFluidHandler().fill(original,true)==4321,"Barrel rejected fluid");
 		player.setPosition(pos.getX()+.5,pos.getY(),pos.getZ()+.5);
 		// Forge skips openGui for FakePlayer; the client probe checks real FML GUI packets.
-		player.openContainer=(Container)new BarrelGuiHandler().getServerGuiElement(0,player,world,pos.getX(),pos.getY(),pos.getZ());
+		player.openContainer = (Container)new StorageGuiHandler().getServerGuiElement(StorageGuiHandler.BARREL,
+			player, world, pos.getX(), pos.getY(), pos.getZ());
 		require(player.openContainer instanceof ContainerBarrel && StorageNetwork.apply(player,pos,true),"Barrel seal GUI failed");
 		require(tile.getFluidHandler().drain(1000,true)==null && tile.getFluidHandler().fill(proofFluid(1000),true)==0,"Sealed barrel accepted a transfer");
 		player.setPosition(pos.getX()+20,pos.getY(),pos.getZ());

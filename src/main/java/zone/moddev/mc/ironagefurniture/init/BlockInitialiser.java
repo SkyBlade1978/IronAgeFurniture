@@ -14,6 +14,7 @@ import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBottleRack;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityDiningTable;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityHalfCabinet;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityVanillaFoodDisplay;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
 
@@ -39,6 +40,8 @@ public class BlockInitialiser {
 		generateBedsAndChairUpgrades();
 		generateSurfaceFurniture();
 		DiningChairInitialiser.registerBlocks();
+		GameRegistry.registerTileEntity(TileEntityShelvingUnit.class, Ironagefurniture.MODID + ":shelving_unit_wood_ironage");
+		StorageInitialiser.registerShelvingUnits();
 	}
 
 	private static void generateBedsAndChairUpgrades() {

@@ -9,6 +9,7 @@ import zone.moddev.mc.ironagefurniture.api.Blocks.LightSourceLava;
 import zone.moddev.mc.ironagefurniture.api.Blocks.MultiBlockBed;
 import zone.moddev.mc.ironagefurniture.api.Blocks.MultiBlockChair;
 import zone.moddev.mc.ironagefurniture.api.Blocks.MultiBlockWoodBed;
+import zone.moddev.mc.ironagefurniture.api.Blocks.ShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockBarrel;
@@ -16,6 +17,7 @@ import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockBottleRack;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockGlassVase;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockMetalVariant;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockPaddedBench;
+import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockRack;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockThrowableLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockUpholsteredFurniture;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockWallShelf;
@@ -46,7 +48,7 @@ final class FurnitureRegistration {
 		Ironagefurniture.BlockRegistry.put(name, block);
 
 		if (block instanceof DiningTable || block instanceof Cabinet || block instanceof WallShelf
-				|| block instanceof StorageBarrel || block instanceof BottleRack) {
+				|| block instanceof StorageBarrel || block instanceof BottleRack || block instanceof ShelvingUnit) {
 			Blocks.FIRE.setFireInfo(block, 5, 20);
 		}
 
@@ -60,6 +62,10 @@ final class FurnitureRegistration {
 
 		if (block instanceof BottleRack) {
 			return new ItemBlockBottleRack(block);
+		}
+
+		if (block instanceof ShelvingUnit) {
+			return new ItemBlockRack(block);
 		}
 
 		if (block instanceof GlassVaseBlock) {

@@ -5,6 +5,10 @@ hosts for the same enabled woods as the chairs.
 Half-depth cabinets share that surface API with a facing-relative quarter-block
 offset and an 18-slot inventory. Full and half cabinets pair only with their
 own family and wood; their inventories remain separate from the display.
+Half-depth shelving units use the same surface API independently on each
+level. They fit display items inside the frame and keep each level's exact
+stacks and facings in separate save tags. Matching units join above, below,
+and to either side while retaining their own contents.
 The published `0.4.0.110021` identities remain the baseline, and `update.json`
 still advertises that release.
 

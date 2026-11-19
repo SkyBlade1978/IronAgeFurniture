@@ -120,6 +120,20 @@ public class WallShelf extends BlockHBase {
 			return this.lightLevel;
 		}
 
+		public static ShelfContentKind forMedia(ItemStack stack) {
+			if (stack == null || stack.stackSize <= 0) {
+				return NONE;
+			}
+
+			Item item = stack.getItem();
+			if (item == Items.BOOK || item == Items.WRITABLE_BOOK || item == Items.WRITTEN_BOOK
+					|| item == Items.ENCHANTED_BOOK) {
+				return BOOKS;
+			}
+
+			return item instanceof ItemRecord ? RECORDS : NONE;
+		}
+
 		public static ShelfContentKind byName(String name) {
 			for (ShelfContentKind kind : values()) {
 				if (kind.name.equals(name)) {
@@ -536,18 +550,7 @@ public class WallShelf extends BlockHBase {
 			return ShelfContentKind.FLOWER_POT;
 		}
 
-		Item item = heldItem.getItem();
-
-		if (item == Items.BOOK || item == Items.WRITABLE_BOOK || item == Items.WRITTEN_BOOK
-				|| item == Items.ENCHANTED_BOOK) {
-			return ShelfContentKind.BOOKS;
-		}
-
-		if (item instanceof ItemRecord) {
-			return ShelfContentKind.RECORDS;
-		}
-
-		return ShelfContentKind.NONE;
+		return ShelfContentKind.forMedia(heldItem);
 	}
 
 	private boolean isVesselClusterKind(ShelfContentKind kind) {
