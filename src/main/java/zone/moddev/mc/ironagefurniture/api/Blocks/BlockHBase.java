@@ -4,6 +4,7 @@ import zone.moddev.mc.ironagefurniture.api.Enumerations.Rotation;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 
 /**
@@ -15,6 +16,19 @@ public class BlockHBase extends BlockHorizontal {
 
 	public BlockHBase(Material materialIn) {
 		super(materialIn);
+	}
+
+	protected static AxisAlignedBB rotateNorthBounds(AxisAlignedBB box, EnumFacing facing) {
+		switch (facing) {
+		case EAST:
+			return new AxisAlignedBB(1 - box.maxZ, box.minY, box.minX, 1 - box.minZ, box.maxY, box.maxX);
+		case SOUTH:
+			return new AxisAlignedBB(1 - box.maxX, box.minY, 1 - box.maxZ, 1 - box.minX, box.maxY, 1 - box.minZ);
+		case WEST:
+			return new AxisAlignedBB(box.minZ, box.minY, 1 - box.maxX, box.maxZ, box.maxY, 1 - box.minX);
+		default:
+			return box;
+		}
 	}
 
 	public static AxisAlignedBB RotateBB(Rotation rotation, AxisAlignedBB bbIn)

@@ -1,0 +1,100 @@
+{
+    "variants": {
+        "facing=south,padded=false,type=single": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain",
+            "y": 0
+        },
+        "facing=south,padded=true,type=single": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded",
+            "y": 0
+        },
+        "facing=south,padded=false,type=left": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain_left",
+            "y": 0
+        },
+        "facing=south,padded=true,type=left": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded_left",
+            "y": 0
+        },
+        "facing=south,padded=false,type=right": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain_right",
+            "y": 0
+        },
+        "facing=south,padded=true,type=right": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded_right",
+            "y": 0
+        },
+        "facing=west,padded=false,type=single": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain",
+            "y": 90
+        },
+        "facing=west,padded=true,type=single": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded",
+            "y": 90
+        },
+        "facing=west,padded=false,type=left": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain_left",
+            "y": 90
+        },
+        "facing=west,padded=true,type=left": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded_left",
+            "y": 90
+        },
+        "facing=west,padded=false,type=right": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain_right",
+            "y": 90
+        },
+        "facing=west,padded=true,type=right": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded_right",
+            "y": 90
+        },
+        "facing=north,padded=false,type=single": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain",
+            "y": 180
+        },
+        "facing=north,padded=true,type=single": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded",
+            "y": 180
+        },
+        "facing=north,padded=false,type=left": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain_left",
+            "y": 180
+        },
+        "facing=north,padded=true,type=left": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded_left",
+            "y": 180
+        },
+        "facing=north,padded=false,type=right": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain_right",
+            "y": 180
+        },
+        "facing=north,padded=true,type=right": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded_right",
+            "y": 180
+        },
+        "facing=east,padded=false,type=single": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain",
+            "y": 270
+        },
+        "facing=east,padded=true,type=single": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded",
+            "y": 270
+        },
+        "facing=east,padded=false,type=left": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain_left",
+            "y": 270
+        },
+        "facing=east,padded=true,type=left": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded_left",
+            "y": 270
+        },
+        "facing=east,padded=false,type=right": {
+            "model": "ironagefurniture:storage_bench_wood_ironage_natura_eucalyptus_plain_right",
+            "y": 270
+        },
+        "facing=east,padded=true,type=right": {
+            "model": "ironagefurniture:padded/storage_bench_wood_ironage_natura_eucalyptus_padded_right",
+            "y": 270
+        }
+    }
+}

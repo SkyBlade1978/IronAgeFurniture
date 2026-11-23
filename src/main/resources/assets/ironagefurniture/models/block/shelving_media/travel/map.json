@@ -1,0 +1,40 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/sandstone_top",
+    "paper": "minecraft:blocks/sandstone_top",
+    "curl": "minecraft:blocks/quartz_block_side",
+    "tie": "minecraft:blocks/planks_spruce"
+  },
+  "elements": [
+    {
+      "from": [6.34, 0, 3.6],
+      "to": [9.66, 2.48, 12.4],
+      "faces": { "down": { "texture": "#paper" }, "up": { "texture": "#paper" }, "north": { "texture": "#paper" }, "south": { "texture": "#paper" }, "west": { "texture": "#paper" }, "east": { "texture": "#paper" } }
+    },
+    {
+      "from": [5.9, 0.53, 3.76],
+      "to": [6.34, 2.13, 12.2],
+      "faces": { "down": { "texture": "#paper" }, "up": { "texture": "#paper" }, "north": { "texture": "#paper" }, "south": { "texture": "#paper" }, "west": { "texture": "#paper" }, "east": { "texture": "#paper" } }
+    },
+    {
+      "from": [9.66, 0.47, 3.73],
+      "to": [10.1, 2.12, 12.24],
+      "faces": { "down": { "texture": "#paper" }, "up": { "texture": "#paper" }, "north": { "texture": "#paper" }, "south": { "texture": "#paper" }, "west": { "texture": "#paper" }, "east": { "texture": "#paper" } }
+    },
+    {
+      "from": [6.62, 0.25, 3.6],
+      "to": [9.38, 2.22, 3.82],
+      "faces": { "down": { "texture": "#curl" }, "up": { "texture": "#curl" }, "north": { "texture": "#curl" }, "south": { "texture": "#curl" }, "west": { "texture": "#curl" }, "east": { "texture": "#curl" } }
+    },
+    {
+      "from": [6.76, 2.46, 3.85],
+      "to": [9.24, 2.78, 11.88],
+      "faces": { "down": { "texture": "#paper" }, "up": { "texture": "#paper" }, "north": { "texture": "#paper" }, "south": { "texture": "#paper" }, "west": { "texture": "#paper" }, "east": { "texture": "#paper" } }
+    },
+    {
+      "from": [6.1, 0.02, 7.64],
+      "to": [9.9, 3, 8.31],
+      "faces": { "down": { "texture": "#tie" }, "up": { "texture": "#tie" }, "north": { "texture": "#tie" }, "south": { "texture": "#tie" }, "west": { "texture": "#tie" }, "east": { "texture": "#tie" } }
+    }
+  ]
+}

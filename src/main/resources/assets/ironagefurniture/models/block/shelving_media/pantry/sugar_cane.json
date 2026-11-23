@@ -1,0 +1,45 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/wool_colored_lime",
+    "cane": "minecraft:blocks/wool_colored_lime",
+    "node": "minecraft:blocks/wool_colored_green",
+    "tie": "minecraft:blocks/planks_spruce"
+  },
+  "elements": [
+    {
+      "from": [5.1, 0, 3.6],
+      "to": [6.75, 1.6, 12.4],
+      "faces": { "down": { "texture": "#cane" }, "up": { "texture": "#cane" }, "north": { "texture": "#cane" }, "south": { "texture": "#cane" }, "west": { "texture": "#cane" }, "east": { "texture": "#cane" } }
+    },
+    {
+      "from": [7.13, 0, 3.4],
+      "to": [8.87, 1.6, 12.6],
+      "faces": { "down": { "texture": "#cane" }, "up": { "texture": "#cane" }, "north": { "texture": "#cane" }, "south": { "texture": "#cane" }, "west": { "texture": "#cane" }, "east": { "texture": "#cane" } }
+    },
+    {
+      "from": [9.25, 0, 3.57],
+      "to": [10.9, 1.6, 12.15],
+      "faces": { "down": { "texture": "#cane" }, "up": { "texture": "#cane" }, "north": { "texture": "#cane" }, "south": { "texture": "#cane" }, "west": { "texture": "#cane" }, "east": { "texture": "#cane" } }
+    },
+    {
+      "from": [5.1, 1.58, 5.12],
+      "to": [6.75, 1.83, 5.58],
+      "faces": { "down": { "texture": "#node" }, "up": { "texture": "#node" }, "north": { "texture": "#node" }, "south": { "texture": "#node" }, "west": { "texture": "#node" }, "east": { "texture": "#node" } }
+    },
+    {
+      "from": [7.13, 1.58, 10.37],
+      "to": [8.87, 1.83, 10.77],
+      "faces": { "down": { "texture": "#node" }, "up": { "texture": "#node" }, "north": { "texture": "#node" }, "south": { "texture": "#node" }, "west": { "texture": "#node" }, "east": { "texture": "#node" } }
+    },
+    {
+      "from": [9.25, 1.58, 5.4],
+      "to": [10.9, 1.83, 5.85],
+      "faces": { "down": { "texture": "#node" }, "up": { "texture": "#node" }, "north": { "texture": "#node" }, "south": { "texture": "#node" }, "west": { "texture": "#node" }, "east": { "texture": "#node" } }
+    },
+    {
+      "from": [5.1, 0, 7.55],
+      "to": [10.9, 2.5, 8.16],
+      "faces": { "down": { "texture": "#tie" }, "up": { "texture": "#tie" }, "north": { "texture": "#tie" }, "south": { "texture": "#tie" }, "west": { "texture": "#tie" }, "east": { "texture": "#tie" } }
+    }
+  ]
+}

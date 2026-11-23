@@ -1,17 +1,24 @@
 package zone.moddev.mc.ironagefurniture.api.Blocks;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf.ShelfContentKind;
+import zone.moddev.mc.ironagefurniture.api.surface.FurnitureSurfaceDisplay;
 import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
+import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout;
+import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingInteraction;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingInteraction.Result;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit;
+import zone.moddev.mc.ironagefurniture.api.tile.FurnitureLabel;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit.ShelfLevel;
+import zone.moddev.mc.ironagefurniture.client.particle.SurfaceDisplayEffects;
 import zone.moddev.mc.ironagefurniture.client.render.SurfaceDisplayRenderHelper;
 
 import net.minecraft.block.Block;
@@ -20,6 +27,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -41,6 +50,25 @@ public final class ShelvingUnit extends RackBlock {
 	private static final int ITEM_HIT = 100;
 	private static final int MEDIA_HIT = ITEM_HIT + 2 * Slot.values().length;
 	private static final int BOTTLE_HIT = MEDIA_HIT + 2;
+	private static final int ARRANGEMENT_HIT = BOTTLE_HIT + 2 * BOTTLE_CAPACITY;
+	private static final int TRAY_SLOT = Arrays.stream(ShelfLayout.values()).mapToInt(ShelfLayout::getCapacity).max().getAsInt();
+	private static final int ARRANGEMENT_HIT_STRIDE = TRAY_SLOT + 1;
+	private static final int LABEL_HIT = ARRANGEMENT_HIT + 2 * ARRANGEMENT_HIT_STRIDE;
+	public static final AxisAlignedBB LABEL_BOARD = FurnitureLabel.BOARD;
+	// Match the floor and four rims of the produce tray model.
+	private static final AxisAlignedBB[] TRAY_PARTS = {
+		new AxisAlignedBB(-0.40D, 0, -0.215D, 0.40D, 0.5D / 16, 0.215D),
+		new AxisAlignedBB(-0.40D, 0.5D / 16, -0.215D, 0.40D, 0.075D, -0.19D),
+		new AxisAlignedBB(-0.40D, 0.5D / 16, 0.19D, 0.40D, 0.075D, 0.215D),
+		new AxisAlignedBB(-0.40D, 0.5D / 16, -0.19D, -0.375D, 0.075D, 0.19D),
+		new AxisAlignedBB(0.375D, 0.5D / 16, -0.19D, 0.40D, 0.075D, 0.19D)
+	};
+	// Low, middle and high sections of the sloped gemstone platter leave the stones selectable.
+	private static final AxisAlignedBB[] GEM_PLATTER_PARTS = {
+		new AxisAlignedBB(-6.6D / 16, 0, -3.45D / 16, 6.6D / 16, 1.65D / 16, -1.1D / 16),
+		new AxisAlignedBB(-6.6D / 16, 1.0D / 16, -1.1D / 16, 6.6D / 16, 2.55D / 16, 1.1D / 16),
+		new AxisAlignedBB(-6.6D / 16, 1.85D / 16, 1.1D / 16, 6.6D / 16, 3.55D / 16, 3.45D / 16)
+	};
 	private static final double[] BOOK_ROW_WIDTHS = { 3.7D, 6.45D, 8.79D, 10.75D, 15.05D };
 
 	public ShelvingUnit(Material material, float resistance, float hardness) {
@@ -75,16 +103,14 @@ public final class ShelvingUnit extends RackBlock {
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return state.getValue(DATA) ? new TileEntityShelvingUnit() : null;
+		return new TileEntityShelvingUnit();
 	}
 
-	@Override
-	public void removeEmptyRackTile(World world, BlockPos pos) {
-		TileEntity tile = world.getTileEntity(pos);
-
-		if (!world.isRemote && tile instanceof TileEntityShelvingUnit && ((TileEntityShelvingUnit)tile).isEmpty()) {
-			this.clearRackTile(world, pos);
-		}
+	public static boolean canFeedDisplay(ItemStack stack) {
+		return stack != null && stack.getItem() != Items.SIGN
+			&& (!(stack.getItem() instanceof ItemBlock) || !(((ItemBlock)stack.getItem()).getBlock() instanceof RackBlock))
+			&& (!SurfaceDisplayBlocker.placesAsBlock(stack) || stack.getItem() == Items.FLOWER_POT
+				|| FurnitureSurfaceDisplay.find(stack) != null);
 	}
 
 	@Override
@@ -94,24 +120,43 @@ public final class ShelvingUnit extends RackBlock {
 			return this.tryPlaceRackFromRackClick(world, pos, state, player, hand, held, side, hitX, hitY, hitZ);
 		}
 
+		boolean upper = hitY >= UPPER_HEIGHT - BOARD_THICKNESS;
+		if (held != null && held.getItem() == Items.SIGN) {
+			this.openLabel(world, pos, player, hand, upper);
+			return true;
+		}
+
 		if (player.isSneaking()) {
 			return false;
 		}
 
 		boolean hasItem = held != null && held.stackSize > 0;
-		TileEntityShelvingUnit tile = this.getRackTile(world, pos, hasItem, TileEntityShelvingUnit.class);
+		TileEntityShelvingUnit tile = this.getRackTile(world, pos, TileEntityShelvingUnit.class);
 
 		if (tile == null) {
 			return world.isRemote && hasItem;
 		}
 
-		boolean upper = hitY >= UPPER_HEIGHT - BOARD_THICKNESS;
 		ShelfLevel level = tile.getLevel(upper);
+		if (!hasItem && level.getLabelSign() != null && this.getLabelBounds(state, upper)
+				.expand(0.001D, 0.001D, 0.001D).isVecInside(new Vec3d(hitX, hitY, hitZ))) {
+			this.openLabel(world, pos, player, hand, upper);
+			return true;
+		}
+
 		ShelfContentKind mediaKind = level.getMediaKind();
 		if (!hasItem && mediaKind != ShelfContentKind.NONE) {
 			if (!world.isRemote) {
 				player.openGui(Ironagefurniture.instance, StorageGuiHandler.shelvingMediaId(mediaKind, upper), world,
 					pos.getX(), pos.getY(), pos.getZ());
+			}
+			return true;
+		}
+
+		ShelfLayout layout = level.getShelfLayout();
+		if (!hasItem && layout != ShelfLayout.NONE) {
+			if (!world.isRemote) {
+				this.takeArrangementItem(world, pos, state, tile, level, player);
 			}
 			return true;
 		}
@@ -122,7 +167,9 @@ public final class ShelvingUnit extends RackBlock {
 			return false;
 		}
 
-		if (mediaKind != ShelfContentKind.NONE || (heldKind != ShelfContentKind.NONE && !hasSurfaceItems)) {
+		boolean structuredItem = heldKind != ShelfContentKind.NONE
+			|| SurfaceContentRegistry.describe(held).getShelfLayout() != ShelfLayout.NONE;
+		if (level.getMediaCount() > 0 || (structuredItem && !hasSurfaceItems)) {
 			if (!world.isRemote && level.addMedia(held)) {
 				if (!player.capabilities.isCreativeMode && --held.stackSize <= 0) {
 					player.setHeldItem(hand, null);
@@ -136,8 +183,56 @@ public final class ShelvingUnit extends RackBlock {
 		float x = (float)(0.5D + (hitX - 0.5D - level.getSurfaceOffsetX()) / scale);
 		float z = (float)(0.5D + (hitZ - 0.5D - level.getSurfaceOffsetZ()) / scale);
 		Result result = SurfaceSettingInteraction.handle(level, player, hand, held, x, z, level.getSurfaceAxis(), true);
-		this.removeEmptyRackTile(world, pos);
 		return result != Result.NOT_HANDLED;
+	}
+
+	private boolean takeArrangementItem(World world, BlockPos pos, IBlockState state, TileEntityShelvingUnit tile,
+			ShelfLevel level, EntityPlayer player) {
+		if (level.getShelfLayout() == ShelfLayout.GEM_PLATTER) {
+			// Legacy right-click packets round hit coordinates to a sixteenth of a block.
+			RayTraceResult hit = SurfaceItemHit.traceFromPlayer(state, world, pos, player);
+			if (hit != null && hit.subHit >= ARRANGEMENT_HIT && hit.subHit < LABEL_HIT
+					&& getHitLevel(tile, hit.subHit) == level) {
+				int index = getHitArrangementSlot(hit.subHit);
+				if (index != TRAY_SLOT) {
+					return level.takeShelfItem(player, index);
+				}
+			}
+		}
+
+		return level.takeShelfItem(player);
+	}
+
+	private void openLabel(World world, BlockPos pos, EntityPlayer player, EnumHand hand, boolean upper) {
+		if (!world.isRemote) {
+			player.openGui(Ironagefurniture.instance, StorageGuiHandler.shelvingLabelId(upper, hand), world,
+				pos.getX(), pos.getY(), pos.getZ());
+		}
+	}
+
+	public boolean writeLabel(World world, BlockPos pos, boolean upper, ItemStack sign, String text) {
+		if (world.isRemote || sign == null || sign.getItem() != Items.SIGN || sign.stackSize < 1) {
+			return false;
+		}
+
+		TileEntityShelvingUnit tile = this.getRackTile(world, pos, TileEntityShelvingUnit.class);
+		if (tile == null) {
+			return false;
+		}
+
+		ShelfLevel level = tile.getLevel(upper);
+		level.setLabel(sign, text);
+		level.markSurfaceSettingChanged();
+		return true;
+	}
+
+	public static double getLabelHeight(boolean upper) {
+		return upper ? UPPER_HEIGHT - BOARD_THICKNESS : 0;
+	}
+
+	public AxisAlignedBB getLabelBounds(IBlockState state, boolean upper) {
+		double front = state.getValue(STANDING) ? 0.25D : 0.5D;
+		return this.rotateToFacing(LABEL_BOARD.offset(0.5D, getLabelHeight(upper), front), state.getValue(FACING));
 	}
 
 	@Override
@@ -149,6 +244,7 @@ public final class ShelvingUnit extends RackBlock {
 			for (int index = 0; index < 2; index++) {
 				ShelfLevel level = shelves.getLevel(index == 1);
 				SurfaceDisplayBlocker.dropItems(world, pos, level);
+				SurfaceInteractionRegistry.drop(world, pos, level.getLabelSign());
 				for (ItemStack stack = level.removeLastMedia(); stack != null; stack = level.removeLastMedia()) {
 					SurfaceInteractionRegistry.drop(world, pos, stack);
 				}
@@ -163,6 +259,15 @@ public final class ShelvingUnit extends RackBlock {
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 		TileEntity tile = world.getTileEntity(pos);
 		return tile instanceof TileEntityShelvingUnit ? ((TileEntityShelvingUnit)tile).getDisplayLight() : 0;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileEntityShelvingUnit) {
+			SurfaceDisplayEffects.tickShelf((TileEntityShelvingUnit)tile, random);
+		}
 	}
 
 	public double getBottomShelfHeight(IBlockState state, IBlockAccess world, BlockPos pos) {
@@ -219,10 +324,33 @@ public final class ShelvingUnit extends RackBlock {
 
 			for (int index = 0; index < 2; index++) {
 				ShelfLevel level = shelves.getLevel(index == 1);
+				if (level.getLabelSign() != null) {
+					nearest = nearerHit(nearest, this.getLabelBounds(state, index == 1), pos,
+						origin, localStart, localEnd, LABEL_HIT + index);
+				}
+
 				if (level.getMediaKind() == ShelfContentKind.BOTTLES) {
 					for (int bottle = 0; bottle < level.getMediaCount(); bottle++) {
 						int hit = BOTTLE_HIT + index * BOTTLE_CAPACITY + bottle;
 						nearest = nearerHit(nearest, level.getBottleBounds(bottle), pos, origin, localStart, localEnd, hit);
+					}
+					continue;
+				}
+
+				ShelfLayout layout = level.getShelfLayout();
+				if (layout != ShelfLayout.NONE) {
+					int firstHit = ARRANGEMENT_HIT + index * ARRANGEMENT_HIT_STRIDE;
+					int visibleItems = level.getVisibleArrangementCount();
+					for (int item = 0; item < visibleItems; item++) {
+						nearest = nearerHit(nearest, this.getArrangementBounds(state, level, item), pos,
+							origin, localStart, localEnd, firstHit + item);
+					}
+					if (layout.hasTray()) {
+						AxisAlignedBB[] parts = layout == ShelfLayout.GEM_PLATTER ? GEM_PLATTER_PARTS : TRAY_PARTS;
+						for (AxisAlignedBB part : parts) {
+							nearest = nearerHit(nearest, this.positionArrangementBounds(state, level, part), pos,
+								origin, localStart, localEnd, firstHit + TRAY_SLOT);
+						}
 					}
 					continue;
 				}
@@ -250,7 +378,11 @@ public final class ShelvingUnit extends RackBlock {
 				&& tile instanceof TileEntityShelvingUnit) {
 			ShelfLevel level = getHitLevel((TileEntityShelvingUnit)tile, hit.subHit);
 			AxisAlignedBB bounds;
-			if (hit.subHit >= BOTTLE_HIT) {
+			if (hit.subHit >= LABEL_HIT) {
+				bounds = this.getLabelBounds(state, hit.subHit == LABEL_HIT + 1);
+			} else if (hit.subHit >= ARRANGEMENT_HIT) {
+				bounds = this.getArrangementBounds(state, level, getHitArrangementSlot(hit.subHit));
+			} else if (hit.subHit >= BOTTLE_HIT) {
 				bounds = level.getBottleBounds(getHitBottle(hit.subHit));
 			} else {
 				bounds = hit.subHit >= MEDIA_HIT ? this.getMediaBounds(state, level)
@@ -277,7 +409,12 @@ public final class ShelvingUnit extends RackBlock {
 
 		ShelfLevel level = getHitLevel((TileEntityShelvingUnit)tile, hit.subHit);
 		ItemStack removed;
-		if (hit.subHit >= BOTTLE_HIT) {
+		if (hit.subHit >= LABEL_HIT) {
+			removed = level.removeLabel();
+		} else if (hit.subHit >= ARRANGEMENT_HIT) {
+			int displaySlot = getHitArrangementSlot(hit.subHit);
+			removed = displaySlot == TRAY_SLOT ? level.removeLastMedia() : level.removeMedia(displaySlot);
+		} else if (hit.subHit >= BOTTLE_HIT) {
 			removed = level.removeMedia(getHitBottle(hit.subHit));
 		} else {
 			removed = hit.subHit >= MEDIA_HIT ? level.removeLastMedia()
@@ -289,8 +426,25 @@ public final class ShelvingUnit extends RackBlock {
 			SurfaceInteractionRegistry.drop(world, pos, removed);
 		}
 
-		this.removeEmptyRackTile(world, pos);
 		return true;
+	}
+
+	public AxisAlignedBB getArrangementBounds(IBlockState state, ShelfLevel level, int index) {
+		ShelfLayout.Placement placement = index == TRAY_SLOT ? null : level.getShelfPlacement(index);
+		AxisAlignedBB bounds = null;
+		ShelfLayout layout = level.getShelfLayout();
+		if (index == TRAY_SLOT && layout.hasTray()) {
+			bounds = layout == ShelfLayout.GEM_PLATTER ? ShelfLayout.getGemPlatterBounds() : ShelfLayout.getTrayBounds();
+		} else if (placement != null) {
+			bounds = placement.bounds;
+		}
+
+		return bounds == null ? null : this.positionArrangementBounds(state, level, bounds);
+	}
+
+	private AxisAlignedBB positionArrangementBounds(IBlockState state, ShelfLevel level, AxisAlignedBB bounds) {
+		double depthCentre = state.getValue(STANDING) ? 0.5D : 0.75D;
+		return this.rotateToFacing(bounds.offset(0.5D, level.getSurfaceHeight(), depthCentre), state.getValue(FACING));
 	}
 
 	@Override
@@ -359,10 +513,20 @@ public final class ShelvingUnit extends RackBlock {
 	}
 
 	private static ShelfLevel getHitLevel(TileEntityShelvingUnit tile, int hit) {
+		if (hit >= LABEL_HIT) {
+			return tile.getLevel(hit == LABEL_HIT + 1);
+		}
+		if (hit >= ARRANGEMENT_HIT) {
+			return tile.getLevel(hit - ARRANGEMENT_HIT >= ARRANGEMENT_HIT_STRIDE);
+		}
 		if (hit >= BOTTLE_HIT) {
 			return tile.getLevel(hit - BOTTLE_HIT >= BOTTLE_CAPACITY);
 		}
 		return tile.getLevel(hit >= MEDIA_HIT ? hit == MEDIA_HIT + 1 : hit - ITEM_HIT >= Slot.values().length);
+	}
+
+	private static int getHitArrangementSlot(int hit) {
+		return (hit - ARRANGEMENT_HIT) % ARRANGEMENT_HIT_STRIDE;
 	}
 
 	private static int getHitBottle(int hit) {

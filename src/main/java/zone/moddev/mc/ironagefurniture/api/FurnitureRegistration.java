@@ -1,9 +1,11 @@
 package zone.moddev.mc.ironagefurniture.api;
 
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
+import zone.moddev.mc.ironagefurniture.api.Blocks.BedsideCabinet;
 import zone.moddev.mc.ironagefurniture.api.Blocks.BottleRack;
 import zone.moddev.mc.ironagefurniture.api.Blocks.Cabinet;
 import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable;
+import zone.moddev.mc.ironagefurniture.api.Blocks.DrawerUnit;
 import zone.moddev.mc.ironagefurniture.api.Blocks.GlassVaseBlock;
 import zone.moddev.mc.ironagefurniture.api.Blocks.LightSourceLava;
 import zone.moddev.mc.ironagefurniture.api.Blocks.MultiBlockBed;
@@ -11,13 +13,20 @@ import zone.moddev.mc.ironagefurniture.api.Blocks.MultiBlockChair;
 import zone.moddev.mc.ironagefurniture.api.Blocks.MultiBlockWoodBed;
 import zone.moddev.mc.ironagefurniture.api.Blocks.ShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel;
+import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBench;
+import zone.moddev.mc.ironagefurniture.api.Blocks.StorageCrate;
+import zone.moddev.mc.ironagefurniture.api.Blocks.ToolRack;
+import zone.moddev.mc.ironagefurniture.api.Blocks.ProduceFurniture;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockBarrel;
+import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockCrate;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockBottleRack;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockGlassVase;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockMetalVariant;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockPaddedBench;
+import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockProduceFurniture;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockRack;
+import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockStorageBench;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockThrowableLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockUpholsteredFurniture;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockWallShelf;
@@ -47,8 +56,10 @@ final class FurnitureRegistration {
 
 		Ironagefurniture.BlockRegistry.put(name, block);
 
-		if (block instanceof DiningTable || block instanceof Cabinet || block instanceof WallShelf
-				|| block instanceof StorageBarrel || block instanceof BottleRack || block instanceof ShelvingUnit) {
+		if (block instanceof DiningTable || block instanceof Cabinet || block instanceof BedsideCabinet || block instanceof WallShelf
+				|| block instanceof StorageBarrel || block instanceof StorageCrate || block instanceof BottleRack
+				|| block instanceof ShelvingUnit || block instanceof DrawerUnit || block instanceof StorageBench
+				|| block instanceof ToolRack || block instanceof ProduceFurniture) {
 			Blocks.FIRE.setFireInfo(block, 5, 20);
 		}
 
@@ -56,8 +67,20 @@ final class FurnitureRegistration {
 	}
 
 	private static ItemBlock createItemBlock(Block block) {
+		if (block instanceof ProduceFurniture) {
+			return new ItemBlockProduceFurniture((ProduceFurniture)block);
+		}
+
+		if (block instanceof StorageBench) {
+			return new ItemBlockStorageBench(block);
+		}
+
 		if (block instanceof StorageBarrel) {
 			return new ItemBlockBarrel(block);
+		}
+
+		if (block instanceof StorageCrate) {
+			return new ItemBlockCrate(block);
 		}
 
 		if (block instanceof BottleRack) {

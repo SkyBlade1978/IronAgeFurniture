@@ -45,8 +45,11 @@ development JARs so classes and processed resources always match.
 | `furniture-brewing` | Iron Age Brewing |
 | `furniture-harvestcraft` | HarvestCraft and the HarvestCraft addon |
 | `furniture-brewing-harvestcraft` | Brewing, HarvestCraft and its addon |
-| `full-modern-advantage` | The previous stack plus basePower, baseSteam, baseElectric, Base Metals and OreSpawn; JEI on the client |
-| `brewing-legacy-advantage` | Brewing, original Power Advantage, Base Metals and OreSpawn |
+| `furniture-modern-metals` | Modern Metals 2.5.2.110021, Base Metals 2.6.0.110021 and OreSpawn 4.1.6.110021 |
+| `furniture-base-gems` | Base Gems 2.5.0.110021, Base Metals 2.6.0.110021 and OreSpawn 4.1.6.110021 |
+| `furniture-base-minerals` | Base Minerals 2.5.1.110021, Base Metals 2.6.0.110021 and OreSpawn 4.1.6.110021 |
+| `full-modern-advantage` | Brewing, HarvestCraft and its addon, basePower, baseSteam, baseElectric, Base Metals and OreSpawn. JEI on the client. |
+| `brewing-legacy-advantage` | Brewing, original Power Advantage, Steam Advantage, Electric Advantage, Base Metals and OreSpawn |
 | `optional-woods` | Biomes O' Plenty, Natura, Mantle, Forestry and Immersive Engineering |
 
 Default sibling projects are `../../IAB110/IronAgeBrewing` and

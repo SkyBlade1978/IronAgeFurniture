@@ -1,0 +1,7 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/pantry/ingredient_bowl",
+  "textures": {
+    "fill": "minecraft:blocks/wool_colored_white",
+    "grain": "minecraft:blocks/quartz_block_side"
+  }
+}

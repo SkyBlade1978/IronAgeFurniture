@@ -1,0 +1,46 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/wool_colored_lime",
+    "lime": "minecraft:blocks/wool_colored_lime",
+    "soft": "minecraft:blocks/hardened_clay_stained_lime",
+    "green": "minecraft:blocks/hardened_clay_stained_green",
+    "gleam": "minecraft:blocks/wool_colored_white"
+  },
+  "elements": [
+    {
+      "from": [6.12, 0, 6.22],
+      "to": [9.88, 0.38, 9.78],
+      "faces": { "down": { "texture": "#green" }, "up": { "texture": "#green" }, "north": { "texture": "#green" }, "south": { "texture": "#green" }, "west": { "texture": "#green" }, "east": { "texture": "#green" } }
+    },
+    {
+      "from": [5.52, 0.38, 5.71],
+      "to": [10.48, 1.16, 10.29],
+      "faces": { "down": { "texture": "#soft" }, "up": { "texture": "#soft" }, "north": { "texture": "#lime" }, "south": { "texture": "#soft" }, "west": { "texture": "#green" }, "east": { "texture": "#soft" } }
+    },
+    {
+      "from": [5.73, 1.16, 5.87],
+      "to": [10.27, 3.05, 10.13],
+      "faces": { "down": { "texture": "#lime" }, "up": { "texture": "#lime" }, "north": { "texture": "#lime" }, "south": { "texture": "#soft" }, "west": { "texture": "#lime" }, "east": { "texture": "#soft" } }
+    },
+    {
+      "from": [6.23, 3.05, 6.4],
+      "to": [9.77, 3.83, 9.6],
+      "faces": { "down": { "texture": "#lime" }, "up": { "texture": "#lime" }, "north": { "texture": "#lime" }, "south": { "texture": "#lime" }, "west": { "texture": "#soft" }, "east": { "texture": "#lime" } }
+    },
+    {
+      "from": [6.72, 3.83, 6.85],
+      "to": [9.28, 4.15, 9.14],
+      "faces": { "down": { "texture": "#lime" }, "up": { "texture": "#lime" }, "north": { "texture": "#lime" }, "south": { "texture": "#lime" }, "west": { "texture": "#lime" }, "east": { "texture": "#lime" } }
+    },
+    {
+      "from": [6.83, 3.11, 6.37],
+      "to": [7.74, 3.78, 6.4],
+      "faces": { "down": { "texture": "#gleam" }, "up": { "texture": "#gleam" }, "north": { "texture": "#gleam" }, "south": { "texture": "#gleam" }, "west": { "texture": "#gleam" }, "east": { "texture": "#gleam" } }
+    },
+    {
+      "from": [6.81, 3.83, 6.48],
+      "to": [7.82, 3.9, 7.05],
+      "faces": { "down": { "texture": "#gleam" }, "up": { "texture": "#gleam" }, "north": { "texture": "#gleam" }, "south": { "texture": "#gleam" }, "west": { "texture": "#gleam" }, "east": { "texture": "#gleam" } }
+    }
+  ]
+}

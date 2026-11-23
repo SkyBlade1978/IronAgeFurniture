@@ -1,6 +1,7 @@
 package zone.moddev.mc.ironagefurniture.fixture;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelManager;
@@ -39,6 +39,7 @@ import org.apache.logging.log4j.LogManager;
 public final class VanillaFoodClientProbe {
     private static BlockPos gallery;
     private static int galleryTicks;
+    private static long galleryTime = 6000L;
     private VanillaFoodClientProbe() { }
 
     static int verify(Minecraft client, BlockPos pos) {
@@ -179,10 +180,10 @@ public final class VanillaFoodClientProbe {
     }
 
     @SubscribeEvent
-    public static void capture(TickEvent.ClientTickEvent event) {
+    public static void capture(TickEvent.ClientTickEvent event) throws IOException {
         if (gallery == null || event.phase != TickEvent.Phase.END) return;
         Minecraft client = Minecraft.getMinecraft();
-        client.world.setWorldTime(6000L);
+        client.world.setWorldTime(galleryTime);
         client.player.motionX = client.player.motionY = client.player.motionZ = 0.0D;
         galleryTicks++;
         if (galleryTicks == 35) {
@@ -269,12 +270,341 @@ public final class VanillaFoodClientProbe {
             gallery = Phase5StorageClientScene.shelvingUnits(client, gallery.east(16));
             positionCamera(client, 2.5D, 2.8D - client.player.getEyeHeight(), -2.2D, 2.5D, 1.1D, 2.2D);
         }
-        if (galleryTicks == (brewing ? 425 : 395)) {
+        int pantryStart = brewing ? 425 : 395;
+        if (galleryTicks == pantryStart) {
             screenshot(client, "phase5-shelving-units.png");
+            gallery = Phase5StorageClientScene.pantryShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= pantryStart && galleryTicks < pantryStart + 30) {
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int kitchenStart = pantryStart + 30;
+        if (galleryTicks == kitchenStart) {
+            screenshot(client, "phase5-shelf-pantry.png");
+            require(ShelvingPantryClientExtension.renderCalls > 0, "Shelf layout did not invoke the add-on renderer");
+            org.apache.logging.log4j.LogManager.getLogger().info("IAF SHELVING PANTRY CLIENT PASSED: add-on renderer and native display capture");
+            gallery = Phase5StorageClientScene.kitchenShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= kitchenStart && galleryTicks < kitchenStart + 30) {
+            positionCamera(client, 2.0D, 1.8D - client.player.getEyeHeight(), -1.15D, 2.0D, 0.5D, 2.55D);
+        }
+        int butcherStart = kitchenStart + 30;
+        if (galleryTicks == butcherStart) {
+            screenshot(client, "phase5-shelf-kitchen.png");
+            gallery = Phase5StorageClientScene.butcherShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= butcherStart && galleryTicks < butcherStart + 30) {
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int fishmongerStart = butcherStart + 30;
+        if (galleryTicks == fishmongerStart) {
+            screenshot(client, "phase5-shelf-butcher.png");
+            gallery = Phase5StorageClientScene.fishmongerShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= fishmongerStart && galleryTicks < fishmongerStart + 30) {
+            positionCamera(client, 2.0D, 1.8D - client.player.getEyeHeight(), -1.15D, 2.0D, 0.5D, 2.55D);
+        }
+        int workshopStart = fishmongerStart + 30;
+        if (galleryTicks == workshopStart) {
+            screenshot(client, "phase5-shelf-fishmonger.png");
+            gallery = Phase5StorageClientScene.workshopShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= workshopStart && galleryTicks < workshopStart + 30) {
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int strikerStart = workshopStart + 30;
+        if (galleryTicks == strikerStart) {
+            screenshot(client, "phase5-shelf-workshop.png");
+        }
+        if (galleryTicks >= strikerStart && galleryTicks < strikerStart + 30) {
+            positionCamera(client, 3.52D, 1.32D - client.player.getEyeHeight(), 1.06D, 3.50D, 0.58D, 2.55D);
+        }
+        int archeryStart = strikerStart + 30;
+        if (galleryTicks == archeryStart) {
+            screenshot(client, "phase5-shelf-flint-and-steel.png");
+            gallery = Phase5StorageClientScene.archeryShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= archeryStart && galleryTicks < archeryStart + 30) {
+            positionCamera(client, 1.0D, 1.62D - client.player.getEyeHeight(), 0.30D, 1.0D, 0.5D, 2.55D);
+        }
+        int ingredientStart = archeryStart + 30;
+        if (galleryTicks == ingredientStart) {
+            screenshot(client, "phase5-shelf-archery.png");
+            gallery = Phase5StorageClientScene.cookingIngredientShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= ingredientStart && galleryTicks < ingredientStart + 30) {
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int remainingFoodStart = ingredientStart + 30;
+        if (galleryTicks == remainingFoodStart) {
+            screenshot(client, "phase5-shelf-cooking-ingredients.png");
+            gallery = Phase5StorageClientScene.remainingFoodShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= remainingFoodStart && galleryTicks < remainingFoodStart + 30) {
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int brewingPowderStart = remainingFoodStart + 30;
+        if (galleryTicks == brewingPowderStart) {
+            screenshot(client, "phase5-shelf-seeds-and-forage.png");
+            gallery = Phase5StorageClientScene.brewingPowderShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= brewingPowderStart && galleryTicks < brewingPowderStart + 30) {
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int brewingIngredientStart = brewingPowderStart + 30;
+        if (galleryTicks == brewingIngredientStart) {
+            screenshot(client, "phase5-shelf-potion-powders-and-specimens.png");
+            gallery = Phase5StorageClientScene.brewingIngredientShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= brewingIngredientStart && galleryTicks < brewingIngredientStart + 30) {
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int smithingStart = brewingIngredientStart + 30;
+        if (galleryTicks == smithingStart) {
+            screenshot(client, "phase5-shelf-potion-ingredients.png");
+            gallery = Phase5StorageClientScene.smithingShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= smithingStart && galleryTicks < smithingStart + 30) {
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int containerStart = smithingStart + 30;
+        if (galleryTicks == containerStart) {
+            screenshot(client, "phase5-shelf-mining-and-smithing.png");
+            gallery = Phase5StorageClientScene.containerShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= containerStart && galleryTicks < containerStart + 30) {
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int travelStart = containerStart + 30;
+        if (galleryTicks == travelStart) {
+            screenshot(client, "phase5-shelf-containers.png");
+            gallery = Phase5StorageClientScene.travelShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= travelStart && galleryTicks < travelStart + 60) {
+            positionCamera(client, 2.05D, 1.52D - client.player.getEyeHeight(), -1.45D, 2.05D, 0.5D, 2.6D);
+        }
+        if (galleryTicks == travelStart + 30) {
+            require(client.world.getWorldTime() == 6000 && client.world.getCelestialAngle(0) < 0.01F,
+                "Travel gallery expected noon, found time " + client.world.getWorldTime()
+                    + " at angle " + client.world.getCelestialAngle(0));
+            screenshot(client, "phase5-shelf-travel-gear.png");
+            galleryTime = 18000L;
+        }
+        int armourStart = travelStart + 60;
+        if (galleryTicks == armourStart) {
+            require(client.world.getWorldTime() == 18000 && Math.abs(client.world.getCelestialAngle(0) - 0.5F) < 0.01F,
+                "Travel gallery expected midnight, found time " + client.world.getWorldTime()
+                    + " at angle " + client.world.getCelestialAngle(0));
+            screenshot(client, "phase5-shelf-travel-gear-night.png");
+            galleryTime = 6000L;
+            gallery = Phase5StorageClientScene.armourShelves(client, gallery.east(16));
+        }
+        if (galleryTicks == armourStart + 24) {
+            screenshot(client, "phase5-shelf-armour.png");
+            gallery = Phase5StorageClientScene.trophyShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= armourStart && galleryTicks < armourStart + 48) {
+            positionCamera(client, 2.5D, 1.65D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int craftingSupplyStart = armourStart + 48;
+        if (galleryTicks == craftingSupplyStart) {
+            screenshot(client, "phase5-shelf-trophies.png");
+            gallery = Phase5StorageClientScene.craftingSupplyShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= craftingSupplyStart && galleryTicks < craftingSupplyStart + 30) {
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int dyeStart = craftingSupplyStart + 30;
+        if (galleryTicks == dyeStart) {
+            screenshot(client, "phase5-shelf-crafting-supplies.png");
+            gallery = Phase5StorageClientScene.dyeShelves(client, gallery.east(16), 0);
+        }
+        if (galleryTicks == dyeStart + 24) {
+            screenshot(client, "phase5-shelf-dyes-0-to-7.png");
+            gallery = Phase5StorageClientScene.dyeShelves(client, gallery.east(16), 8);
+        }
+        if (galleryTicks >= dyeStart && galleryTicks < dyeStart + 48) {
+            positionCamera(client, 2.5D, 1.94D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int mountedGearStart = dyeStart + 48;
+        if (galleryTicks == mountedGearStart) {
+            screenshot(client, "phase5-shelf-dyes-8-to-15.png");
+            gallery = Phase5StorageClientScene.mountedGearShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= mountedGearStart && galleryTicks < mountedGearStart + 24) {
+            positionCamera(client, 2.5D, 1.66D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int materialDropStart = mountedGearStart + 24;
+        if (galleryTicks == materialDropStart) {
+            screenshot(client, "phase5-shelf-mounted-gear.png");
+            gallery = Phase5StorageClientScene.materialDropShelves(client, gallery.east(16));
+        }
+        if (galleryTicks == materialDropStart + 20) {
+            screenshot(client, "phase5-shelf-materials-and-drops.png");
+            gallery = Phase5StorageClientScene.prismarineAndChorusShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= materialDropStart && galleryTicks < materialDropStart + 40) {
+            positionCamera(client, 2.5D, 1.82D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        int magicStart = materialDropStart + 40;
+        if (galleryTicks == magicStart) {
+            screenshot(client, "phase5-shelf-prismarine-and-chorus.png");
+            gallery = Phase5StorageClientScene.magicShelves(client, gallery.east(16));
+        }
+        if (galleryTicks == magicStart + 20) {
+            screenshot(client, "phase5-shelf-magic.png");
+            gallery = Phase5StorageClientScene.fireworkAndEggShelves(client, gallery.east(16));
+        }
+        if (galleryTicks >= magicStart && galleryTicks < magicStart + 40) {
+            positionCamera(client, 2.5D, 1.80D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        if (galleryTicks == magicStart + 40) {
+            screenshot(client, "phase5-shelf-fireworks-and-spawn-eggs.png");
+            gallery = Phase5StorageClientScene.boatShelves(client, gallery.east(16));
+            positionCamera(client, 2.5D, 1.90D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        if (galleryTicks == magicStart + 60) {
+            screenshot(client, "phase5-shelf-boats.png");
+            gallery = Phase5StorageClientScene.cartAndDecorShelves(client, gallery.east(16));
+            positionCamera(client, 2.5D, 1.75D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        if (galleryTicks == magicStart + 80) {
+            screenshot(client, "phase5-shelf-minecarts-and-decor.png");
+            gallery = Phase5StorageClientScene.potShelves(client, gallery.east(16));
+            positionCamera(client, 2.0D, 1.48D - client.player.getEyeHeight(), 0.25D, 2.0D, 0.5D, 2.5D);
+        }
+        if (galleryTicks == magicStart + 100) {
+            screenshot(client, "phase5-shelf-pots-and-labels.png");
+            gallery = Phase5StorageClientScene.utilityShelves(client, gallery.east(16));
+            positionCamera(client, 1.0D, 1.23D - client.player.getEyeHeight(), -0.12D, 1.0D, 0.5D, 2.5D);
+        }
+        if (galleryTicks == magicStart + 120) {
+            screenshot(client, "phase5-shelf-brewing-and-redstone.png");
+            gallery = Phase5StorageClientScene.doorAndBedShelves(client, gallery.east(16));
+            positionCamera(client, 2.5D, 1.36D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        if (galleryTicks == magicStart + 140) {
+            screenshot(client, "phase5-shelf-doors-and-bed.png");
+            gallery = Phase5StorageClientScene.lightingShelves(client, gallery.east(16));
+            positionCamera(client, 2.5D, 1.45D - client.player.getEyeHeight(), -1.55D, 2.5D, 0.5D, 2.5D);
+        }
+        if (galleryTicks == magicStart + 160) {
+            screenshot(client, "phase5-shelf-mod-items.png");
+            galleryTime = 18000L;
+        }
+        if (galleryTicks == magicStart + 183) {
+            ShelfLightingClientProbe.verify(client, gallery);
+        }
+        boolean baseMetals = net.minecraftforge.fml.common.Loader.isModLoaded("basemetals");
+        boolean modernMetals = net.minecraftforge.fml.common.Loader.isModLoaded("modernmetals");
+        boolean baseGems = net.minecraftforge.fml.common.Loader.isModLoaded("basegems");
+        boolean baseMinerals = net.minecraftforge.fml.common.Loader.isModLoaded("baseminerals");
+        if (galleryTicks == magicStart + 185) {
+            screenshot(client, "phase5-shelf-lighting.png");
+            if (baseMetals) {
+                galleryTime = 6000L;
+                gallery = Phase5StorageClientScene.baseMetalMaterials(client, gallery.east(16));
+                positionCamera(client, 2.5D, 1.72D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+            }
+        }
+        if (baseMetals && galleryTicks == magicStart + 209) {
+            screenshot(client, "phase5-shelf-base-metals-materials.png");
+            gallery = Phase5StorageClientScene.baseMetalGear(client, gallery.east(16));
+            positionCamera(client, 2.5D, 1.35D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        if (baseMetals && galleryTicks == magicStart + 233) {
+            screenshot(client, "phase5-shelf-base-metals-gear.png");
+            gallery = Phase5StorageClientScene.baseMetalHardware(client, gallery.east(16));
+            positionCamera(client, 2.0D, 1.55D - client.player.getEyeHeight(), -0.95D, 2.0D, 0.5D, 2.5D);
+        }
+        if (baseMetals && galleryTicks == magicStart + 257) {
+            screenshot(client, "phase5-shelf-base-metals-hardware.png");
+            if (modernMetals) {
+                gallery = Phase5StorageClientScene.modernMetalMaterials(client, gallery.east(16));
+                positionCamera(client, 2.5D, 1.72D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+            }
+        }
+        if (modernMetals && galleryTicks == magicStart + 281) {
+            screenshot(client, "phase5-shelf-modern-metals-materials.png");
+            gallery = Phase5StorageClientScene.modernMetalGear(client, gallery.east(16));
+            positionCamera(client, 2.5D, 1.55D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+        }
+        if (modernMetals && galleryTicks == magicStart + 305) {
+            screenshot(client, "phase5-shelf-modern-metals-gear.png");
+        }
+        int galleryEnd = modernMetals ? 305 : (baseMetals ? 257 : 185);
+        if (baseGems) {
+            if (galleryTicks == magicStart + galleryEnd) {
+                gallery = Phase5StorageClientScene.baseGemPlatters(client, gallery.east(16));
+                positionCamera(client, 2.0D, 1.5D - client.player.getEyeHeight(), -0.25D, 2.0D, 0.52D, 2.5D);
+            }
+            if (galleryTicks == magicStart + galleryEnd + 24) {
+                screenshot(client, "phase5-shelf-base-gems.png");
+                positionCamera(client, 3.05D, 1.47D - client.player.getEyeHeight(), 0.25D, 3.4D, 0.52D, 2.5D);
+            }
+            galleryEnd += 48;
+            if (galleryTicks == magicStart + galleryEnd) {
+                screenshot(client, "phase5-shelf-base-gems-close-up.png");
+            }
+        }
+        if (baseMinerals) {
+            if (galleryTicks == magicStart + galleryEnd) {
+                gallery = Phase5StorageClientScene.baseMineralSamples(client, gallery.east(16));
+                positionCamera(client, 2.5D, 1.55D - client.player.getEyeHeight(), -1.65D, 2.5D, 0.5D, 2.5D);
+            }
+            galleryEnd += 24;
+            if (galleryTicks == magicStart + galleryEnd) {
+                screenshot(client, "phase5-shelf-base-minerals.png");
+            }
+        }
+        if (galleryTicks == magicStart + galleryEnd) {
+            galleryTime = 6000L;
+            gallery = Phase5StorageClientScene.bulkBarrels(client, gallery.east(16));
+            positionCamera(client, 2.5D, 4.65D - client.player.getEyeHeight(), -0.2D, 2.5D, 0.48D, 2.5D);
+        }
+        galleryEnd += 26;
+        if (galleryTicks == magicStart + galleryEnd) {
+            screenshot(client, "phase5-bulk-barrels.png");
+            positionCamera(client, 2.5D, 1.45D - client.player.getEyeHeight(), -1.9D, 2.5D, 0.55D, 2.5D);
+        }
+        galleryEnd += 24;
+        if (galleryTicks == magicStart + galleryEnd) {
+            screenshot(client, "phase5-barrel-labels.png");
+            gallery = Phase5StorageClientScene.bedsideCabinets(client, gallery.east(12));
+            positionCamera(client, 2.35D, 1.6D - client.player.getEyeHeight(), -1.5D, 2.0D, 0.65D, 2.5D);
+        }
+        galleryEnd += 24;
+        if (galleryTicks == magicStart + galleryEnd) {
+            screenshot(client, "phase5-bedside-cabinets.png");
+            gallery = Phase5StorageClientScene.shippingCrates(client, gallery.east(12));
+            positionCamera(client, 2.05D, 1.48D - client.player.getEyeHeight(), -2.4D, 1.5D, 0.92D, 2.5D);
+        }
+        galleryEnd += 24;
+        if (galleryTicks == magicStart + galleryEnd) {
+            screenshot(client, "phase5-shipping-crates.png");
+            gallery = Phase5StorageClientScene.storageBenches(client, gallery.east(12));
+            positionCamera(client, 2.35D, 1.72D - client.player.getEyeHeight(), -0.85D, 2.0D, 0.45D, 2.45D);
+        }
+        galleryEnd += 24;
+        if (galleryTicks == magicStart + galleryEnd) {
+            screenshot(client, "phase5-storage-benches.png");
+            gallery = Phase5StorageClientScene.produceFurniture(client, gallery.east(12));
+            ShelvingPantryClientExtension.renderCalls = 0;
+            positionCamera(client, 2.45D, 2.15D - client.player.getEyeHeight(), -1.25D, 2.45D, 0.95D, 2.5D);
+        }
+        galleryEnd += 24;
+        if (galleryTicks == magicStart + galleryEnd) {
+            require(ShelvingPantryClientExtension.renderCalls > 0, "Produce tray did not use the add-on renderer");
+            screenshot(client, "phase5-produce-furniture.png");
+            Phase5StorageClientScene.showFurnitureInventory(client);
+        }
+        galleryEnd += 10;
+        if (galleryTicks == magicStart + galleryEnd) {
+            screenshot(client, "phase5-furniture-inventory.png");
+            LogManager.getLogger().info("IAF PRODUCE CLIENT PASSED: inventory models, slope display, joins and add-on renderer");
+            VanillaFoodNetworkClientProbe.writePassReceipt();
             gallery = null;
-            client.world.sendQuittingDisconnectingPacket();
-            client.loadWorld(null);
-            client.displayGuiScreen(new GuiMainMenu());
+            // Let Minecraft stop its integrated server before closing the client connection.
             client.shutdown();
         }
     }

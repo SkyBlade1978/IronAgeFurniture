@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import zone.moddev.mc.ironagefurniture.IronAgeFurnitureConfiguration;
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
+import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -44,12 +45,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-/** The six CFM 4.1.2 wooden chairs have like-for-like classic-chair replacements. */
+/** Migrates the supported CFM 4.1.2 wooden furniture and saved items. */
 public final class CfmChairMigration {
     private static final String CFM = "cfm";
     private static final String CHUNK_MIGRATED = "IAFCfmChairMigrated";
+    private static final String FURNITURE_MIGRATED = "IAFCfmFurnitureMigrated";
+    private static final String CRATES_MIGRATED = "IAFCfmCratesMigrated";
     private static final Map<String, String> CHAIRS;
-    private static volatile Map<Integer, String> missingChairBlockIds = Collections.emptyMap();
+    private static final Map<String, String> FURNITURE;
+    private static volatile Map<Integer, String> missingFurnitureBlockIds = Collections.emptyMap();
 
     static {
         Map<String, String> chairs = new LinkedHashMap<>();
@@ -60,9 +64,18 @@ public final class CfmChairMigration {
         chairs.put("cfm:chair_acacia", "chair_wood_ironage_classic_acacia");
         chairs.put("cfm:chair_dark_oak", "chair_wood_ironage_classic_big_oak");
         CHAIRS = Collections.unmodifiableMap(chairs);
-    }
 
-    private boolean warnedMissingTarget;
+        Map<String, String> furniture = new LinkedHashMap<>(chairs);
+        for (String wood : new String[] { "oak", "spruce", "birch", "jungle", "acacia", "dark_oak" }) {
+            String targetWood = "dark_oak".equals(wood) ? "big_oak" : wood;
+            furniture.put("cfm:cabinet_" + wood, "cabinet_wood_ironage_" + targetWood);
+            furniture.put("cfm:bedside_cabinet_" + wood, "bedside_cabinet_wood_ironage_" + targetWood);
+            furniture.put("cfm:table_" + wood, "table_dining_" + targetWood);
+            furniture.put("cfm:coffee_table_" + wood, "table_low_" + targetWood);
+        }
+        furniture.put(CfmStorageMigration.CRATE_ITEM, CfmStorageMigration.CRATE_TARGET);
+        FURNITURE = Collections.unmodifiableMap(furniture);
+    }
 
     public static Map<String, String> chairMappings() {
         return CHAIRS;
@@ -75,14 +88,14 @@ public final class CfmChairMigration {
         // are retained for raw chunk migration rather than remapped here.
         Map<Integer, String> blockIds = new HashMap<>();
         for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
-            String targetPath = CHAIRS.get(mapping.resourceLocation.toString());
+            String targetPath = FURNITURE.get(mapping.resourceLocation.toString());
             if (targetPath == null) {
                 continue;
             }
 
             Block target = registeredTarget(targetPath);
             if (target == null) {
-                FMLLog.warning("[%s] Cannot remap missing %s: classic chairs are not registered",
+                FMLLog.warning("[%s] Cannot migrate missing %s: its equivalent is not registered",
                     Ironagefurniture.MODID, mapping.resourceLocation);
                 continue;
             }
@@ -90,18 +103,18 @@ public final class CfmChairMigration {
             if (mapping.type == GameRegistry.Type.BLOCK) {
                 mapping.ignore();
                 blockIds.put(mapping.id, targetPath);
-                FMLLog.info("[%s] Will migrate missing CFM chair block %s from numeric ID %d to %s",
+                FMLLog.info("[%s] Will migrate missing CFM furniture block %s from numeric ID %d to %s",
                     Ironagefurniture.MODID, mapping.resourceLocation, mapping.id, target.getRegistryName());
             } else if (mapping.type == GameRegistry.Type.ITEM) {
                 Item item = Item.getItemFromBlock(target);
                 if (item != null) {
                     mapping.ignore();
-                    FMLLog.info("[%s] Will migrate missing CFM chair item %s to %s from saved NBT",
+                    FMLLog.info("[%s] Will migrate missing CFM furniture item %s to %s from saved NBT",
                         Ironagefurniture.MODID, mapping.resourceLocation, item.getRegistryName());
                 }
             }
         }
-        missingChairBlockIds = Collections.unmodifiableMap(blockIds);
+        missingFurnitureBlockIds = Collections.unmodifiableMap(blockIds);
     }
 
     @SubscribeEvent
@@ -112,50 +125,55 @@ public final class CfmChairMigration {
         }
 
         Chunk chunk = event.getChunk();
+        CfmStorageMigration.saveRestoredInventories(chunk);
+        NBTTagCompound raw = event.getData();
         if (!Loader.isModLoaded(CFM)) {
-            Map<Integer, Block> targets = missingBlockTargets(world);
-            int blocks = event.getData().getCompoundTag("Level").getBoolean(CHUNK_MIGRATED)
-                    ? 0 : migrateMissingChairBlocks(chunk, event.getData(), targets);
-            int items = restoreMissingChunkItems(chunk, event.getData(), registeredItemIds());
-            if (blocks + items > 0) {
-                chunk.setModified(true);
-                FMLLog.info("[%s] Migrated %d missing CFM chair blocks and %d chair stacks in chunk %d,%d",
-                    Ironagefurniture.MODID, blocks, items, chunk.xPosition, chunk.zPosition);
-            }
-        }
-        if (!shouldForceConversion(Loader.isModLoaded(CFM),
-                IronAgeFurnitureConfiguration.FORCE_CFM_CHAIR_CONVERSION)) {
+            NBTTagCompound level = raw.getCompoundTag("Level");
+            Map<String, String> items = registeredItemIds(FURNITURE);
+            int blocks = migrateMissingBlocks(chunk, raw, missingBlockTargets(world, level), items);
+            int stacks = restoreMissingChunkItems(chunk, raw, items);
+            report(chunk, blocks, stacks);
             return;
         }
 
-        Map<Block, Block> replacements = registeredBlockReplacements();
-        if (replacements == null) {
-            warnMissingTarget();
+        Map<String, String> forced = forcedMappings();
+        if (forced.isEmpty()) {
             return;
         }
 
-        int blocks = migrateChunkBlocks(chunk, replacements);
-        Map<String, String> itemIds = registeredItemIds();
-        int items = migrateChunkInventories(chunk, itemIds);
+        Map<String, String> items = registeredItemIds(forced);
+        int blocks = migrateLoadedBlocks(chunk, raw, registeredBlockReplacements(forced), items);
+        int stacks = migrateChunkInventories(chunk, items);
+        report(chunk, blocks, stacks);
+    }
+
+    private static void report(Chunk chunk, int blocks, int items) {
         if (blocks + items > 0) {
             chunk.setModified(true);
-            FMLLog.info("[%s] Converted %d CFM chairs and %d chair stacks in chunk %d,%d",
+            FMLLog.info("[%s] Converted %d CFM furniture blocks and %d saved stacks in chunk %d,%d",
                 Ironagefurniture.MODID, blocks, items, chunk.xPosition, chunk.zPosition);
         }
     }
 
     @SubscribeEvent
     public void saveChunk(ChunkDataEvent.Save event) {
-        if (!event.getWorld().isRemote && !Loader.isModLoaded(CFM)
-                && !migrationData(event.getWorld()).getBlockIds().isEmpty()) {
-            event.getData().getCompoundTag("Level").setBoolean(CHUNK_MIGRATED, true);
+        if (!event.getWorld().isRemote && !Loader.isModLoaded(CFM)) {
+            Map<Integer, String> ids = migrationData(event.getWorld()).getBlockIds();
+            if (!ids.isEmpty()) {
+                NBTTagCompound level = event.getData().getCompoundTag("Level");
+                level.setBoolean(CHUNK_MIGRATED, true);
+                level.setBoolean(FURNITURE_MIGRATED, true);
+                if (ids.containsValue(CfmStorageMigration.CRATE_TARGET)) {
+                    level.setBoolean(CRATES_MIGRATED, true);
+                }
+            }
         }
     }
 
     @SubscribeEvent
     public void unloadWorld(WorldEvent.Unload event) {
         if (!event.getWorld().isRemote && event.getWorld().provider.getDimension() == 0) {
-            missingChairBlockIds = Collections.emptyMap();
+            missingFurnitureBlockIds = Collections.emptyMap();
         }
     }
 
@@ -166,25 +184,39 @@ public final class CfmChairMigration {
             data = new CfmChairMigrationData(CfmChairMigrationData.NAME);
             world.getMapStorage().setData(CfmChairMigrationData.NAME, data);
         }
-        if (data.getBlockIds().isEmpty() && !missingChairBlockIds.isEmpty()) {
-            data.setBlockIds(missingChairBlockIds);
+        if (!data.getBlockIds().entrySet().containsAll(missingFurnitureBlockIds.entrySet())) {
+            Map<Integer, String> observed = new HashMap<>(data.getBlockIds());
+            observed.putAll(missingFurnitureBlockIds);
+            data.setBlockIds(observed);
             // Persist the numeric mapping before any converted chunk can be saved.
             world.getMapStorage().saveAllData();
         }
         return data;
     }
 
-    private static Map<Integer, Block> missingBlockTargets(World world) {
+    private static Map<Integer, Block> missingBlockTargets(World world, NBTTagCompound level) {
         Map<Integer, Block> targets = new HashMap<>();
         for (Map.Entry<Integer, String> entry : migrationData(world).getBlockIds().entrySet()) {
-            Block target = registeredTarget(entry.getValue());
+            String path = entry.getValue();
+            String marker = CfmStorageMigration.CRATE_TARGET.equals(path) ? CRATES_MIGRATED
+                : CHAIRS.containsValue(path) ? CHUNK_MIGRATED : FURNITURE_MIGRATED;
+            if (level.getBoolean(marker)) {
+                continue;
+            }
+            Block target = registeredTarget(path);
             if (target != null) targets.put(entry.getKey(), target);
         }
         return targets;
     }
 
     static int migrateMissingChairBlocks(Chunk chunk, NBTTagCompound rawChunk, Map<Integer, Block> targets) {
+        return migrateMissingBlocks(chunk, rawChunk, targets, Collections.emptyMap());
+    }
+
+    private static int migrateMissingBlocks(Chunk chunk, NBTTagCompound rawChunk,
+            Map<Integer, Block> targets, Map<String, String> items) {
         if (targets.isEmpty()) return 0;
+        Map<BlockPos, NBTTagCompound> sourceTiles = CfmStorageMigration.sourceTiles(rawChunk);
         NBTTagList sections = rawChunk.getCompoundTag("Level").getTagList("Sections", 10);
         ExtendedBlockStorage[] storage = chunk.getBlockStorageArray();
         int converted = 0;
@@ -203,12 +235,53 @@ public final class CfmChairMigration {
                 Block target = targets.get(id);
                 if (target == null) continue;
                 int meta = nibble(metadata, index);
-                section.set(index & 15, index >> 8 & 15, index >> 4 & 15,
-                        target.getStateFromMeta(meta));
+                replaceBlock(chunk, section, sectionY, index, replacementState(target, meta), sourceTiles, items);
                 ++converted;
             }
         }
         return converted;
+    }
+
+    private static int migrateLoadedBlocks(Chunk chunk, NBTTagCompound raw, Map<Block, Block> replacements,
+            Map<String, String> items) {
+        if (replacements.isEmpty()) return 0;
+        Map<BlockPos, NBTTagCompound> sourceTiles = CfmStorageMigration.sourceTiles(raw);
+        ExtendedBlockStorage[] storage = chunk.getBlockStorageArray();
+        int converted = 0;
+        for (int sectionY = 0; sectionY < storage.length; sectionY++) {
+            ExtendedBlockStorage section = storage[sectionY];
+            if (section == null || section.isEmpty()) continue;
+            for (int index = 0; index < 4096; index++) {
+                IBlockState source = section.get(index & 15, index >> 8, index >> 4 & 15);
+                Block oldBlock = source.getBlock();
+                Block target = replacements.get(oldBlock);
+                if (target != null) {
+                    IBlockState state = replacementState(target, oldBlock.getMetaFromState(source));
+                    replaceBlock(chunk, section, sectionY, index, state, sourceTiles, items);
+                    converted++;
+                }
+            }
+        }
+        return converted;
+    }
+
+    private static IBlockState replacementState(Block target, int sourceMeta) {
+        // CFM tables store facing. IAF tables connect to their neighbours and reserve metadata for their tile.
+        return target instanceof DiningTable ? target.getDefaultState() : target.getStateFromMeta(sourceMeta & 3);
+    }
+
+    private static void replaceBlock(Chunk chunk, ExtendedBlockStorage section, int sectionY, int index,
+            IBlockState target, Map<BlockPos, NBTTagCompound> sourceTiles, Map<String, String> items) {
+        int x = index & 15;
+        int y = index >> 8;
+        int z = index >> 4 & 15;
+        BlockPos pos = new BlockPos(chunk.xPosition * 16 + x, sectionY * 16 + y, chunk.zPosition * 16 + z);
+        TileEntity tile = CfmStorageMigration.prepareTile(chunk, pos, target, sourceTiles.get(pos), items);
+        section.set(x, y, z, target);
+        if (tile != null) {
+            // Updating the raw section and tile avoids CFM's breakBlock dropping the original inventory.
+            chunk.addTileEntity(pos, tile);
+        }
     }
 
     private static int nibble(byte[] values, int index) {
@@ -222,6 +295,7 @@ public final class CfmChairMigration {
         NBTTagList tiles = level.getTagList("TileEntities", 10);
         for (int i = 0; i < tiles.tagCount(); ++i) {
             NBTTagCompound data = tiles.getCompoundTagAt(i).copy();
+            if (CfmStorageMigration.isStorageTile(data)) continue;
             int count = rewriteItemStacks(data, ids);
             if (count == 0) continue;
             TileEntity tile = chunk.getTileEntityMap().get(new BlockPos(
@@ -265,15 +339,15 @@ public final class CfmChairMigration {
         if (!file.isFile()) return;
         try (FileInputStream input = new FileInputStream(file)) {
             NBTTagCompound data = CompressedStreamTools.readCompressed(input);
-            Map<String, String> ids = registeredItemIds();
+            Map<String, String> ids = registeredItemIds(FURNITURE);
             int main = recoverPlayerInventory(data.getTagList("Inventory", 10), event.getEntityPlayer(), ids);
             int ender = recoverEnderInventory(data.getTagList("EnderItems", 10), event.getEntityPlayer(), ids);
             if (main + ender > 0) {
-                FMLLog.info("[%s] Recovered %d missing CFM chair stacks for player %s",
+                FMLLog.info("[%s] Recovered %d missing CFM furniture stacks for player %s",
                     Ironagefurniture.MODID, main + ender, event.getPlayerUUID());
             }
         } catch (IOException exception) {
-            FMLLog.warning("[%s] Could not inspect CFM chair items for player %s: %s",
+            FMLLog.warning("[%s] Could not inspect CFM furniture items for player %s: %s",
                 Ironagefurniture.MODID, event.getPlayerUUID(), exception.getMessage());
         }
     }
@@ -317,8 +391,7 @@ public final class CfmChairMigration {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void convertPlacedChair(BlockEvent.PlaceEvent event) {
         World world = event.getWorld();
-        if (world.isRemote || event.isCanceled() || !shouldForceConversion(Loader.isModLoaded(CFM),
-                IronAgeFurnitureConfiguration.FORCE_CFM_CHAIR_CONVERSION)) {
+        if (world.isRemote || event.isCanceled() || !Loader.isModLoaded(CFM) || forcedMappings().isEmpty()) {
             return;
         }
         IBlockState oldState = event.getPlacedBlock();
@@ -334,11 +407,10 @@ public final class CfmChairMigration {
     @SubscribeEvent
     public void playerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         EntityPlayer player = event.player;
-        if (player.world.isRemote || !shouldForceConversion(Loader.isModLoaded(CFM),
-                IronAgeFurnitureConfiguration.FORCE_CFM_CHAIR_CONVERSION)) {
+        if (player.world.isRemote || !Loader.isModLoaded(CFM) || forcedMappings().isEmpty()) {
             return;
         }
-        Map<String, String> itemIds = registeredItemIds();
+        Map<String, String> itemIds = registeredItemIds(forcedMappings());
         migrateInventory(player.inventory, itemIds);
         migrateInventory(player.getInventoryEnderChest(), itemIds);
     }
@@ -347,17 +419,24 @@ public final class CfmChairMigration {
         return cfmLoaded && optionEnabled;
     }
 
+    private static Map<String, String> forcedMappings() {
+        if (IronAgeFurnitureConfiguration.FORCE_CFM_FURNITURE_CONVERSION) {
+            return FURNITURE;
+        }
+        return IronAgeFurnitureConfiguration.FORCE_CFM_CHAIR_CONVERSION ? CHAIRS : Collections.emptyMap();
+    }
+
     private static Block registeredTarget(String path) {
         ResourceLocation id = new ResourceLocation(Ironagefurniture.MODID, path);
         return Block.REGISTRY.containsKey(id) ? Block.REGISTRY.getObject(id) : null;
     }
 
-    private Map<Block, Block> registeredBlockReplacements() {
+    private static Map<Block, Block> registeredBlockReplacements(Map<String, String> mappings) {
         Map<Block, Block> replacements = new IdentityHashMap<>();
-        for (Map.Entry<String, String> entry : CHAIRS.entrySet()) {
+        for (Map.Entry<String, String> entry : mappings.entrySet()) {
             Block target = registeredTarget(entry.getValue());
             if (target == null) {
-                return null;
+                continue;
             }
             ResourceLocation sourceId = new ResourceLocation(entry.getKey());
             if (Block.REGISTRY.containsKey(sourceId)) {
@@ -367,9 +446,9 @@ public final class CfmChairMigration {
         return replacements;
     }
 
-    private static Map<String, String> registeredItemIds() {
+    private static Map<String, String> registeredItemIds(Map<String, String> mappings) {
         Map<String, String> ids = new LinkedHashMap<>();
-        for (Map.Entry<String, String> entry : CHAIRS.entrySet()) {
+        for (Map.Entry<String, String> entry : mappings.entrySet()) {
             Block target = registeredTarget(entry.getValue());
             Item item = target == null ? null : Item.getItemFromBlock(target);
             if (item != null && item.getRegistryName() != null) {
@@ -463,8 +542,12 @@ public final class CfmChairMigration {
         if (tag instanceof NBTTagCompound) {
             NBTTagCompound compound = (NBTTagCompound)tag;
             if (compound.hasKey("id", 8) && compound.hasKey("Count", 99)) {
-                String replacement = ids.get(compound.getString("id"));
+                String source = compound.getString("id");
+                String replacement = ids.get(source);
                 if (replacement != null) {
+                    if (CfmStorageMigration.CRATE_ITEM.equals(source)) {
+                        CfmStorageMigration.migrateCrateItemTag(compound);
+                    }
                     compound.setString("id", replacement);
                     compound.setShort("Damage", (short)0);
                     ++converted;
@@ -485,11 +568,4 @@ public final class CfmChairMigration {
         return converted;
     }
 
-    private void warnMissingTarget() {
-        if (!warnedMissingTarget) {
-            warnedMissingTarget = true;
-            FMLLog.warning("[%s] CFM chair conversion is enabled, but classic chairs are disabled; no chunks will be rewritten",
-                Ironagefurniture.MODID);
-        }
-    }
 }

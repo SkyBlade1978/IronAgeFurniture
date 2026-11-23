@@ -5,6 +5,306 @@ def phase5Root = file('src/main/resources/assets/ironagefurniture')
 def phase5Definitions = file('gradle/furniture-assets')
 def phase5Manifest = new File(phase5Root, 'generated/phase5_model_resources.json')
 def phase5Catalog = { new JsonSlurper().parse(file('gradle/furniture-catalog.json')) as Map }
+def woodBoard = { List from, List to, String texture, List<String> hidden = [] ->
+    Map faces = [:]
+    [north: [0, 1], south: [0, 1], east: [2, 1], west: [2, 1], up: [0, 2], down: [0, 2]].each {
+        String face, List<Integer> axes ->
+            if (!hidden.contains(face)) {
+                faces[face] = [uv: [from[axes[0]], from[axes[1]], to[axes[0]], to[axes[1]]],
+                        texture: "#${texture}".toString()]
+            }
+    }
+    [from: from, to: to, faces: faces]
+}
+
+def bedsideCabinetTemplates = {
+    List frame = [
+        woodBoard([1,10.5,1], [15,12,15], 'planks'),
+        woodBoard([2,2,2], [14,3,14], 'planks'),
+        woodBoard([2,3,2], [3,10.5,14], 'planks', ['up','down']),
+        woodBoard([13,3,2], [14,10.5,14], 'planks', ['up','down']),
+        woodBoard([3,3,2], [13,10.5,3], 'planks', ['west','east','up','down']),
+        woodBoard([3,6.25,3], [13,6.75,14], 'planks', ['west','east','north'])
+    ]
+    [2,12].each { x ->
+        [2,12].each { z -> frame.add(woodBoard([x,0,z], [x + 2,2,z + 2], 'log', ['up'])) }
+    }
+    Closure drawer = { BigDecimal bottom, boolean open ->
+        def back = open ? 8.5 : 7
+        def front = back + 7
+        def top = bottom + 3
+        [
+            woodBoard([3.125,bottom,back], [12.875,bottom + 0.5,front - 0.75], 'planks', ['south']),
+            woodBoard([3.125,bottom + 0.5,back], [3.625,top,front - 0.75], 'planks', ['down','south']),
+            woodBoard([12.375,bottom + 0.5,back], [12.875,top,front - 0.75], 'planks', ['down','south']),
+            woodBoard([3.625,bottom + 0.5,back], [12.375,top,back + 0.5], 'planks', ['west','east','down']),
+            woodBoard([3.125,bottom,front - 0.75], [12.875,top,front], 'planks'),
+            woodBoard([6.5,bottom + 1,front], [9.5,bottom + 2,front + 0.5], 'log', ['north'])
+        ]
+    }
+    [
+        closed: [elements: frame + drawer(3.125, false) + drawer(6.875, false)],
+        lower_open: [elements: frame + drawer(3.125, true) + drawer(6.875, false)],
+        upper_open: [elements: frame + drawer(3.125, false) + drawer(6.875, true)],
+        both_open: [elements: frame + drawer(3.125, true) + drawer(6.875, true)]
+    ]
+}
+
+def drawerTemplates = { int depth ->
+    Map<String, List> parts = [
+        body: [
+            woodBoard([0,0,0], [16,16,1], 'planks')
+        ],
+        left_side: [woodBoard([0,0,1], [1,16,depth], 'planks', ['north'])],
+        right_side: [woodBoard([15,0,1], [16,16,depth], 'planks', ['north'])]
+    ]
+
+    ['single', 'left', 'right'].each { String pair ->
+        // The models face south, so positive X is the viewer's right.
+        int left = pair == 'right' ? 0 : 1
+        int right = pair == 'left' ? 16 : 15
+        List<String> seams = ['north', 'east', 'west']
+        parts["${pair}_top".toString()] = [woodBoard([left,15,1], [right,16,depth], 'planks', seams)]
+        parts["${pair}_bottom".toString()] = [woodBoard([left,0,1], [right,1,depth], 'planks', seams)]
+        // Recess the dividers between drawer fronts by the same amount in single and stacked units.
+        def dividerFront = depth - 2
+        parts["${pair}_joined_top".toString()] = [woodBoard([left,15.5,1], [right,16,dividerFront], 'planks', seams + 'up')]
+        parts["${pair}_joined_bottom".toString()] = [woodBoard([left,0,1], [right,0.5,dividerFront], 'planks', seams + 'down')]
+        parts["${pair}_middle".toString()] = [woodBoard([left,7.5,1], [right,8.5,dividerFront], 'planks', seams)]
+
+        List lower = [1.125,6.875]
+        Map levels = [lower: lower, upper: lower.collect { it + 8 }]
+        levels.each { String level, List height ->
+            def handleBottom = (height[0] + height[1] - 1) / 2
+            [false, true].each { boolean open ->
+                def start = open ? depth - 2.5 : depth - 4.5
+                def front = depth - 0.5 + (open ? 2 : 0)
+                def x0 = pair == 'right' ? 0 : 1.125
+                def x1 = pair == 'left' ? 16 : 14.875
+                def handleStart = pair == 'right' ? 0 : pair == 'left' ? 14 : 6
+                def handleEnd = pair == 'right' ? 2 : pair == 'left' ? 16 : 10
+                List<String> internal = pair == 'left' ? ['east'] : pair == 'right' ? ['west'] : []
+                List boards = [
+                    woodBoard([x0,height[0],start], [x1,height[0] + 0.5,front - 0.5], 'planks', internal + 'south'),
+                    woodBoard([x0,height[0] + 0.5,start], [x1,height[1],start + 0.5], 'planks', internal + 'down'),
+                    woodBoard([x0,height[0],front - 0.5], [x1,height[1],front], 'planks', internal),
+                    woodBoard([handleStart,handleBottom,front], [handleEnd,handleBottom + 1,front + 0.5], 'log',
+                        internal + 'north')
+                ]
+                if (pair != 'right') {
+                    boards.add(woodBoard([x0,height[0] + 0.5,start + 0.5], [x0 + 0.5,height[1],front - 0.5],
+                        'planks', ['north','south','down']))
+                }
+                if (pair != 'left') {
+                    boards.add(woodBoard([x1 - 0.5,height[0] + 0.5,start + 0.5], [x1,height[1],front - 0.5],
+                        'planks', ['north','south','down']))
+                }
+                parts["${pair}_${level}_${open ? 'open' : 'closed'}".toString()] = boards
+            }
+        }
+    }
+    List inventory = ['body','left_side','right_side','single_top','single_bottom','single_middle','single_lower_closed','single_upper_closed']
+    parts.inventory = inventory.collectMany { parts[it] }
+    parts.collectEntries { name, elements -> [(name.toString()): [elements: elements]] }
+}
+
+def drawerBlockstate = { String id ->
+    List<Map> selectors = []
+    [south: 0, west: 90, north: 180, east: 270].each { String facing, int rotation ->
+        Closure add = { Map condition, String part ->
+            Map apply = [model: "ironagefurniture:${id}_${part}"]
+            if (rotation) apply.y = rotation
+            selectors.add([when: [facing: facing] + condition, apply: apply])
+        }
+        add([:], 'body')
+        add([pair: 'single|left'], 'left_side')
+        add([pair: 'single|right'], 'right_side')
+
+        ['single', 'left', 'right'].each { String pair ->
+            add([pair: pair], "${pair}_middle")
+            [false, true].each { boolean set ->
+                add([pair: pair, above: set.toString()], "${pair}_${set ? 'joined_' : ''}top")
+                add([pair: pair, below: set.toString()], "${pair}_${set ? 'joined_' : ''}bottom")
+                add([pair: pair, lower_open: set.toString()], "${pair}_lower_${set ? 'open' : 'closed'}")
+                add([pair: pair, upper_open: set.toString()], "${pair}_upper_${set ? 'open' : 'closed'}")
+            }
+        }
+    }
+    JsonOutput.toJson([multipart: selectors]) + '\n'
+}
+
+def storageBenchTemplates = { Map display ->
+    Map models = [:]
+    ['single', 'left', 'right'].each { String type ->
+        // The front faces south. Each half spans to the seam and keeps the feet at its exposed end.
+        boolean joinsWest = type == 'right'
+        boolean joinsEast = type == 'left'
+        int bodyLeft = joinsWest ? 0 : 2
+        int bodyRight = joinsEast ? 16 : 14
+        List<String> seam = joinsWest ? ['west'] : joinsEast ? ['east'] : []
+        List frame = [
+            woodBoard([bodyLeft,1.5,2], [bodyRight,2,14], 'log', seam),
+            woodBoard([bodyLeft,2,2], [bodyRight,7,14.25], 'planks', seam + ['up','down']),
+            woodBoard([3,2.25,14.25], [13,6.75,14.625], 'planks', ['north']),
+            woodBoard([6.375,4,14.625], [9.625,5,15], 'log', ['north']),
+            woodBoard([joinsWest ? 0 : 1,7,1], [joinsEast ? 16 : 15,8,15], 'planks', seam)
+        ]
+
+        List<Integer> feet = joinsWest ? [12] : joinsEast ? [2] : [2,12]
+        feet.each { x ->
+            [2,12].each { z -> frame.add(woodBoard([x,0,z], [x + 2,1.5,z + 2], 'log', ['up'])) }
+        }
+
+        String suffix = type == 'single' ? '' : "_${type}"
+        models["plain${suffix}".toString()] = [credit: 'By FoxNekitsune', elements: frame]
+        Map padded = [credit: 'By FoxNekitsune', elements: frame +
+            woodBoard([joinsWest ? 0 : 1.5,8,1.5], [joinsEast ? 16 : 14.5,9,14.5], 'upholstery', seam + 'down')]
+        if (type == 'single') padded.display = display
+        models["padded${suffix}".toString()] = padded
+    }
+    models
+}
+
+def storageBenchBlockstate = { String id ->
+    Map variants = [:]
+    [south: 0, west: 90, north: 180, east: 270].each { String facing, int rotation ->
+        ['single', 'left', 'right'].each { String type ->
+            String suffix = type == 'single' ? '' : "_${type}"
+            variants["facing=${facing},padded=false,type=${type}"] = [model: "ironagefurniture:${id}_plain${suffix}", y: rotation]
+            variants["facing=${facing},padded=true,type=${type}"] = [model: "ironagefurniture:padded/${id}_padded${suffix}", y: rotation]
+        }
+    }
+    JsonOutput.prettyPrint(JsonOutput.toJson([variants: variants])) + '\n'
+}
+
+def toolRackTemplates = {
+    (0..3).collectEntries { int connections ->
+        int left = (connections & 1) == 0 ? 1 : 0
+        int right = (connections & 2) == 0 ? 15 : 16
+        List<String> seams = []
+        if (left == 0) seams.add('west')
+        if (right == 16) seams.add('east')
+
+        List elements = [
+            woodBoard([left,11,14.5], [right,13,16], 'planks', seams),
+            woodBoard([left,11,14.25], [right,11.375,14.5], 'log', seams + 'south'),
+            woodBoard([left,12.625,14.25], [right,13,14.5], 'log', seams + 'south')
+        ]
+        if (left != 0) {
+            elements.add(woodBoard([left,11.375,14.125], [left + 0.75,12.625,14.5], 'log', ['south']))
+        }
+        if (right != 16) {
+            elements.add(woodBoard([right - 0.75,11.375,14.125], [right,12.625,14.5], 'log', ['south']))
+        }
+
+        [4.5,11.5].each { x ->
+            elements.add(woodBoard([x - 0.4375,11.75,12.5], [x + 0.4375,12.375,14.5], 'log', ['south']))
+            elements.add(woodBoard([x - 0.4375,12.375,12.5], [x + 0.4375,12.875,13.125], 'log', ['down']))
+        }
+        [(connections.toString()): [credit: 'By FoxNekitsune', elements: elements]]
+    }
+}
+
+def toolRackBlockstate = { String id ->
+    Map variants = [:]
+    [north: 0, east: 90, south: 180, west: 270].each { String facing, int rotation ->
+        (0..3).each { int connections ->
+            variants["connections=${connections},facing=${facing}"] = [model: "ironagefurniture:${id}_${connections}", y: rotation]
+        }
+    }
+    JsonOutput.prettyPrint(JsonOutput.toJson([variants: variants])) + '\n'
+}
+
+def produceTrayModel = {
+    List elements = []
+    (0..3).each { int i ->
+        double x = 1.75 + 3.15 * i
+        elements.add(woodBoard([x,0,1.75], [x + 3.025,1,14.25], 'planks'))
+    }
+    [1,14.25].each { x ->
+        [1,14.25].each { z ->
+            elements.add(woodBoard([x,0,z], [x + 0.75,8,z + 0.75], 'log'))
+        }
+        elements.add(woodBoard([x,0,1.75], [x + 0.75,2.5,14.25], 'planks'))
+        elements.add(woodBoard([x,4.5,1.75], [x + 0.75,6,14.25], 'planks'))
+    }
+    elements.add(woodBoard([1.75,0,1], [14.25,2.5,1.75], 'planks'))
+    elements.add(woodBoard([1.75,3.375,1], [14.25,4.625,1.75], 'planks'))
+    elements.add(woodBoard([1.75,0,14.25], [14.25,2.5,15], 'planks'))
+    elements.add(woodBoard([1.75,4.5,14.25], [14.25,6.75,15], 'planks'))
+    [elements: elements]
+}
+
+def produceRackModel = { int joins ->
+    List elements = []
+    Closure board = { List from, List to, String texture, List hidden = [] ->
+        // Keep each tall section on its own 16-pixel UV range.
+        (0..1).each { int part ->
+            int base = 16 * part
+            def bottom = from[1] > base ? from[1] : base
+            def top = to[1] < base + 16 ? to[1] : base + 16
+            if (top <= bottom) return
+            List seams = hidden + (bottom > from[1] ? ['down'] : []) + (top < to[1] ? ['up'] : [])
+            Map element = woodBoard([from[0],bottom - base,from[2]], [to[0],top - base,to[2]], texture, seams)
+            element.from[1] += base
+            element.to[1] += base
+            elements.add(element)
+        }
+    }
+    def left = (joins & 1) != 0 ? 0 : 0.25
+    def right = (joins & 2) != 0 ? 16 : 15.75
+    List seam = (left == 0 ? ['west'] : []) + (right == 16 ? ['east'] : [])
+    // Leave the tray's full width between the posts, even when pitched.
+    [0.125,15.125].each { x ->
+        board([x,0,14.75], [x + 0.75,31,15.75], 'log')
+        board([x,0,0.25], [x + 0.75,23,1.0], 'log')
+    }
+    [1.25,11.75,23.4375].each { y ->
+        board([left,y - 1,1], [right,y,2.5], 'planks', seam)
+    }
+    [3.5,14,23.4375].each { y ->
+        board([left,y - 1,14.0], [right,y,14.75], 'planks', seam)
+    }
+    board([left,29.5,15.125], [right,30.75,15.625], 'planks', seam)
+    [elements: elements]
+}
+
+def crateTemplates = {
+    List frame = [
+        woodBoard([1,0,1], [15,1.25,15], 'planks'),
+        woodBoard([3,1.25,2], [13,14.25,14], 'planks'),
+        woodBoard([1.75,1.25,3], [3,14.25,13], 'planks', ['east']),
+        woodBoard([13,1.25,3], [14.25,14.25,13], 'planks', ['west']),
+        woodBoard([1.5,14.25,1.5], [14.5,15,14.5], 'planks')
+    ]
+    [1,13].each { x ->
+        [1,13].each { z -> frame.add(woodBoard([x,1.25,z], [x + 2,16,z + 2], 'log', ['down'])) }
+    }
+    [1.25,4.65,8.05,11.45].each { y ->
+        def top = y + 3.15
+        frame.add(woodBoard([3,y,1.25], [13,top,2], 'planks', ['south']))
+        frame.add(woodBoard([3,y,14], [13,top,14.75], 'planks', ['north']))
+        frame.add(woodBoard([1.25,y,3], [1.75,top,13], 'planks', ['east']))
+        frame.add(woodBoard([14.25,y,3], [14.75,top,13], 'planks', ['west']))
+    }
+
+    List handle = [
+        woodBoard([5,4,1.05], [11,5,1.25], 'log', ['south']),
+        woodBoard([1.05,4,5], [1.25,5,11], 'log', ['east']),
+        woodBoard([14.75,4,5], [14.95,5,11], 'log', ['west'])
+    ]
+    List hardware = [
+        woodBoard([6.5,11.25,14.75], [9.5,14.75,15], 'log', ['north']),
+        woodBoard([7.55,12.55,15.5], [8.45,13.45,15.8], 'planks', ['north'])
+    ]
+    [
+        unlatched: [elements: frame + handle + hardware +
+            woodBoard([5.5,12.25,15], [10.5,13.75,15.5], 'log', ['north'])],
+        latched: [elements: frame + handle + hardware +
+            woodBoard([7.25,10.5,15], [8.75,15.5,15.5], 'log', ['north'])]
+    ]
+}
+
 def shelvingUnitTemplates = {
     Map<String, Map> templates = [:]
     [false, true].each { boolean standing ->
@@ -19,17 +319,6 @@ def shelvingUnitTemplates = {
             def right = joinedRight ? 15.5 : 15
             int front = standing ? 4 : 8
             int back = front + 8
-            Closure board = { List from, List to, String texture, List<String> hidden ->
-                Map faces = [:]
-                [north: [0, 1], south: [0, 1], east: [2, 1], west: [2, 1], up: [0, 2], down: [0, 2]].each {
-                    String face, List<Integer> axes ->
-                        if (!hidden.contains(face)) {
-                            faces[face] = [uv: [from[axes[0]], from[axes[1]], to[axes[0]], to[axes[1]]],
-                                    texture: "#${texture}".toString()]
-                        }
-                }
-                [from: from, to: to, faces: faces]
-            }
             List<String> seams = []
             if (joinedLeft) seams.add('west')
             if (joinedRight) seams.add('east')
@@ -38,19 +327,19 @@ def shelvingUnitTemplates = {
             def postBottom = joinedBelow ? 0 : bottom
             def postTop = joinedAbove ? 16 : top
             Map bottomBoard = joinedBelow
-                ? board([left, 0, front], [right, bottom, back], 'planks', ['west', 'east', 'down'])
-                : board([0, 0, front], [16, bottom, back], 'log', seams)
+                ? woodBoard([left, 0, front], [right, bottom, back], 'planks', ['west', 'east', 'down'])
+                : woodBoard([0, 0, front], [16, bottom, back], 'log', seams)
             Map topBoard = joinedAbove
-                ? board([left, top, front], [right, 16, back], 'planks', ['west', 'east', 'up'])
-                : board([0, top, front], [16, 16, back], 'log', seams)
+                ? woodBoard([left, top, front], [right, 16, back], 'planks', ['west', 'east', 'up'])
+                : woodBoard([0, top, front], [16, 16, back], 'log', seams)
 
             String suffix = standing ? "standing_${connections}" : connections.toString()
             templates[suffix] = [elements: [
                 bottomBoard,
                 topBoard,
-                board([0, postBottom, front], [left, postTop, back], 'log', joinedLeft ? ['west', 'up', 'down'] : ['up', 'down']),
-                board([right, postBottom, front], [16, postTop, back], 'log', joinedRight ? ['east', 'up', 'down'] : ['up', 'down']),
-                board([left, 7.5, front], [right, 8.5, back], 'planks', ['west', 'east'])
+                woodBoard([0, postBottom, front], [left, postTop, back], 'log', joinedLeft ? ['west', 'up', 'down'] : ['up', 'down']),
+                woodBoard([right, postBottom, front], [16, postTop, back], 'log', joinedRight ? ['east', 'up', 'down'] : ['up', 'down']),
+                woodBoard([left, 7.5, front], [right, 8.5, back], 'planks', ['west', 'east'])
             ]]
         }
     }
@@ -123,9 +412,32 @@ def phase5Families = {
     families.shelving_unit.models = shelvingUnitTemplates().keySet().collectEntries { String suffix ->
         [(suffix): [parent: "ironagefurniture:block/template_shelving_unit_${suffix}".toString(), textures: [:]]]
     }
+    families.bedside_cabinet.models = bedsideCabinetTemplates().keySet().collectEntries { String suffix ->
+        [(suffix): [parent: "ironagefurniture:block/template_bedside_cabinet_wood_ironage_${suffix}".toString(), textures: [:]]]
+    }
+    families.storage_bench.itemDisplay = families.drawer_unit.itemDisplay
+    families.storage_bench.models = storageBenchTemplates(families.storage_bench.itemDisplay).keySet().collectEntries { String model ->
+        Map textures = model.startsWith('padded') ? [upholstery: 'minecraft:blocks/wool_colored_red'] : [:]
+        [(model): [parent: "ironagefurniture:block/template_storage_bench_${model}".toString(), textures: textures]]
+    }
+    families.tool_rack.models = toolRackTemplates().keySet().collectEntries { String part ->
+        [(part): [parent: "ironagefurniture:block/template_tool_rack_${part}".toString(), textures: [:]]]
+    }
+    families.half_drawer_unit.itemDisplay = families.drawer_unit.itemDisplay
+    [drawer_unit: 16, half_drawer_unit: 8].each { String family, int depth ->
+        families[family].models = drawerTemplates(depth).keySet().collectEntries { String suffix ->
+            [(suffix): [parent: "ironagefurniture:block/template_${family}_${suffix}".toString(), textures: [:]]]
+        }
+    }
+    families.crate.models = crateTemplates().keySet().collectEntries { String suffix ->
+        [(suffix): [parent: "ironagefurniture:block/template_crate_wood_ironage_${suffix}".toString(), textures: [:]]]
+    }
     families
 }
 def phase5StateTemplate = { String family, Map definition, String id, Map families ->
+    if (family == 'drawer_unit' || family == 'half_drawer_unit') return drawerBlockstate(id)
+    if (family == 'storage_bench') return storageBenchBlockstate(id)
+    if (family == 'tool_rack') return toolRackBlockstate(id)
     String template = definition.blockstateTemplate ?: family
     new File(phase5Definitions, "${template}.blockstate.json").getText('UTF-8')
         .replace("${families[template].prefix}oak", id)
@@ -139,15 +451,56 @@ def phase5ItemModel = { Map definition, String id ->
 def phase5Models = {
     Map<String, Object> models = new TreeMap<>()
     Map families = phase5Families()
+    Map barrel = new JsonSlurper().parse(new File(phase5Root, 'models/block/template_barrel_wood_ironage.json')) as Map
+    barrel.elements = barrel.elements.findAll { !it.name.startsWith('lid_') }
+    models['models/block/template_barrel_wood_ironage_open.json'] = barrel
     shelvingUnitTemplates().each { suffix, model ->
         models["models/block/template_shelving_unit_${suffix}.json".toString()] = model
     }
+    bedsideCabinetTemplates().each { suffix, model ->
+        models["models/block/template_bedside_cabinet_wood_ironage_${suffix}.json".toString()] = model
+    }
+    crateTemplates().each { suffix, model ->
+        models["models/block/template_crate_wood_ironage_${suffix}.json".toString()] = model
+    }
+    [drawer_unit: 16, half_drawer_unit: 8].each { String family, int depth ->
+        drawerTemplates(depth).each { suffix, model ->
+            models["models/block/template_${family}_${suffix}.json".toString()] = model
+        }
+    }
+    storageBenchTemplates(families.storage_bench.itemDisplay).each { suffix, model ->
+        models["models/block/template_storage_bench_${suffix}.json".toString()] = model
+    }
+    toolRackTemplates().each { part, model ->
+        models["models/block/template_tool_rack_${part}.json".toString()] = model
+    }
     models.putAll(shelvingMediaModels())
+    models['models/block/template_produce_tray.json'] = produceTrayModel()
+    (0..3).each { joins ->
+        models["models/block/template_produce_rack_${joins}.json".toString()] = produceRackModel(joins as int)
+    }
     phase5Woods().each { String wood ->
         Map chair = new JsonSlurper().parse(new File(phase5Root,
                 "models/block/chair_wood_ironage_classic_${wood}.json")) as Map
         Map woodTextures = chair.textures as Map
         if (!woodTextures['0'] || !woodTextures['1']) throw new GradleException("Missing chair wood textures: ${wood}")
+        Map produceTextures = [log: woodTextures['0'], planks: woodTextures['1'], particle: woodTextures['1']]
+        models["models/block/produce_tray_${wood}.json".toString()] =
+            [parent: 'ironagefurniture:block/template_produce_tray', textures: produceTextures]
+        (0..3).each { joins ->
+            models["models/block/produce_rack_${wood}_${joins}.json".toString()] =
+                [parent: "ironagefurniture:block/template_produce_rack_${joins}".toString(), textures: produceTextures]
+        }
+        [produce_tray: ["produce_tray_${wood}", 0.67, 1.25], produce_rack: ["produce_rack_${wood}_0", 0.38, -3]].each {
+            String id, List settings ->
+                def size = settings[1]
+                models["models/item/${id}_${wood}.json".toString()] = [
+                    parent: "ironagefurniture:block/${settings[0]}".toString(),
+                    display: [gui: [rotation: [30,225,0], translation: [0,settings[2],0], scale: [size,size,size]],
+                              ground: [translation: [0,2,0], scale: [0.35,0.35,0.35]],
+                              firstperson_righthand: [rotation: [0,45,0], scale: [0.35,0.35,0.35]],
+                              thirdperson_righthand: [translation: [0,2,0], scale: [0.3,0.3,0.3]]]]
+        }
         families.each { family, definition ->
             definition.models.each { suffix, source ->
                 Map model = new JsonSlurper().parseText(JsonOutput.toJson(source)) as Map
@@ -185,6 +538,99 @@ def phase5Titles = [
     zh_CN: ['矮桌 (%s)', '壁架 (%s)', '%s餐椅', '%s置物架']
 ]
 
+def bedsideTitles = [
+    de_AU: ['Nachtschrank (%s)', 'Obere Schublade', 'Untere Schublade'],
+    de_DE: ['Nachtschrank (%s)', 'Obere Schublade', 'Untere Schublade'],
+    es_ES: ['Mesita de noche (%s)', 'Cajón superior', 'Cajón inferior'],
+    es_MX: ['Mesita de noche (%s)', 'Cajón superior', 'Cajón inferior'],
+    fr_CA: ['Table de chevet (%s)', 'Tiroir du haut', 'Tiroir du bas'],
+    fr_FR: ['Table de chevet (%s)', 'Tiroir du haut', 'Tiroir du bas'],
+    ja_JP: ['ベッドサイドキャビネット (%s)', '上の引き出し', '下の引き出し'],
+    ko_KR: ['침대 옆 수납장 (%s)', '위 서랍', '아래 서랍'],
+    pt_BR: ['Mesa de cabeceira (%s)', 'Gaveta superior', 'Gaveta inferior'],
+    pt_PT: ['Mesa de cabeceira (%s)', 'Gaveta superior', 'Gaveta inferior'],
+    ru_RU: ['Прикроватная тумбочка (%s)', 'Верхний ящик', 'Нижний ящик'],
+    zh_CN: ['%s床头柜', '上层抽屉', '下层抽屉']
+]
+
+def crateTitles = [
+    de_AU: ['Transportkiste (%s)', 'Transportkiste', 'Versiegelt'],
+    de_DE: ['Transportkiste (%s)', 'Transportkiste', 'Versiegelt'],
+    es_ES: ['Caja de transporte (%s)', 'Caja de transporte', 'Embalada'],
+    es_MX: ['Caja de transporte (%s)', 'Caja de transporte', 'Embalada'],
+    fr_CA: ['Caisse de transport (%s)', 'Caisse de transport', 'Fermée'],
+    fr_FR: ['Caisse de transport (%s)', 'Caisse de transport', 'Fermée'],
+    ja_JP: ['輸送箱 (%s)', '輸送箱', '梱包済み'],
+    ko_KR: ['운송 상자 (%s)', '운송 상자', '포장됨'],
+    pt_BR: ['Caixote de transporte (%s)', 'Caixote de transporte', 'Fechado'],
+    pt_PT: ['Caixote de transporte (%s)', 'Caixote de transporte', 'Fechado'],
+    ru_RU: ['Транспортный ящик (%s)', 'Транспортный ящик', 'Запечатан'],
+    zh_CN: ['%s运输箱', '运输箱', '已打包']
+]
+
+def drawerTitles = [
+    de_AU: ['Schubladenelement (%s)', 'Halbtiefes Schubladenelement (%s)'],
+    de_DE: ['Schubladenelement (%s)', 'Halbtiefes Schubladenelement (%s)'],
+    es_ES: ['Módulo de cajones (%s)', 'Módulo de cajones poco profundo (%s)'],
+    es_MX: ['Módulo de cajones (%s)', 'Módulo de cajones poco profundo (%s)'],
+    fr_CA: ['Module à tiroirs (%s)', 'Module à tiroirs peu profond (%s)'],
+    fr_FR: ['Module à tiroirs (%s)', 'Module à tiroirs peu profond (%s)'],
+    ja_JP: ['引き出しユニット (%s)', '浅型引き出しユニット (%s)'],
+    ko_KR: ['서랍장 (%s)', '얕은 서랍장 (%s)'],
+    pt_BR: ['Módulo de gavetas (%s)', 'Módulo de gavetas de meia profundidade (%s)'],
+    pt_PT: ['Módulo de gavetas (%s)', 'Módulo de gavetas de meia profundidade (%s)'],
+    ru_RU: ['Модуль с ящиками (%s)', 'Неглубокий модуль с ящиками (%s)'],
+    zh_CN: ['%s抽屉柜', '%s半深抽屉柜']
+]
+
+def storageBenchTitles = [
+    de_AU: ['Truhenbank (%s)', '%1$s, gepolstert (%2$s)', 'Rot', 'Truhenbank'],
+    de_DE: ['Truhenbank (%s)', '%1$s, gepolstert (%2$s)', 'Rot', 'Truhenbank'],
+    es_ES: ['Banco con arcón (%s)', '%1$s acolchado (%2$s)', 'Rojo', 'Banco con arcón'],
+    es_MX: ['Banco con arcón (%s)', '%1$s acolchado (%2$s)', 'Rojo', 'Banco con arcón'],
+    fr_CA: ['Banc-coffre (%s)', '%1$s rembourré (%2$s)', 'Rouge', 'Banc-coffre'],
+    fr_FR: ['Banc-coffre (%s)', '%1$s rembourré (%2$s)', 'Rouge', 'Banc-coffre'],
+    ja_JP: ['収納ベンチ (%s)', 'クッション付き%1$s (%2$s)', '赤色', '収納ベンチ'],
+    ko_KR: ['수납 벤치 (%s)', '쿠션이 있는 %1$s (%2$s)', '빨강', '수납 벤치'],
+    pt_BR: ['Banco-baú (%s)', '%1$s estofado (%2$s)', 'Vermelho', 'Banco-baú'],
+    pt_PT: ['Banco-baú (%s)', '%1$s estofado (%2$s)', 'Vermelho', 'Banco-baú'],
+    ru_RU: ['Скамья-сундук (%s)', '%1$s с обивкой (%2$s)', 'Красный', 'Скамья-сундук'],
+    zh_CN: ['%s储物长凳', '%1$s（%2$s软垫）', '红色', '储物长凳']
+]
+
+def doubleStorageBenchTitles = [
+    de_AU: 'Doppelte Truhenbank', de_DE: 'Doppelte Truhenbank',
+    es_ES: 'Banco doble con arcón', es_MX: 'Banco doble con arcón',
+    fr_CA: 'Banc-coffre double', fr_FR: 'Banc-coffre double',
+    ja_JP: 'ダブル収納ベンチ', ko_KR: '이중 수납 벤치',
+    pt_BR: 'Banco-baú duplo', pt_PT: 'Banco-baú duplo',
+    ru_RU: 'Двойная скамья-сундук', zh_CN: '双人储物长凳'
+]
+
+def toolRackTitles = [
+    de_AU: 'Werkzeugleiste (%s)', de_DE: 'Werkzeugleiste (%s)',
+    es_ES: 'Soporte de herramientas (%s)', es_MX: 'Soporte de herramientas (%s)',
+    fr_CA: 'Râtelier à outils (%s)', fr_FR: 'Râtelier à outils (%s)',
+    ja_JP: '道具掛け (%s)', ko_KR: '도구 걸이 (%s)',
+    pt_BR: 'Suporte de ferramentas (%s)', pt_PT: 'Suporte de ferramentas (%s)',
+    ru_RU: 'Держатель для инструментов (%s)', zh_CN: '%s工具架'
+]
+
+def produceTitles = [
+    de_AU: ['Obstkiste', 'Marktregal', 'Inhalt nicht verfügbar'],
+    de_DE: ['Obstkiste', 'Marktregal', 'Inhalt nicht verfügbar'],
+    es_ES: ['Bandeja de fruta y verdura', 'Expositor de mercado', 'Contenido no disponible'],
+    es_MX: ['Bandeja de fruta y verdura', 'Expositor de mercado', 'Contenido no disponible'],
+    fr_CA: ['Plateau de fruits et légumes', 'Présentoir de marché', 'Contenu indisponible'],
+    fr_FR: ['Plateau de fruits et légumes', 'Présentoir de marché', 'Contenu indisponible'],
+    ja_JP: ['青果トレイ', '青果陳列棚', '中身は利用できません'],
+    ko_KR: ['농산물 쟁반', '시장 진열대', '내용물을 사용할 수 없음'],
+    pt_BR: ['Bandeja de hortifruti', 'Expositor de feira', 'Conteúdo indisponível'],
+    pt_PT: ['Bandeja de hortifruti', 'Expositor de feira', 'Conteúdo indisponível'],
+    ru_RU: ['Лоток для продуктов', 'Рыночный стеллаж', 'Содержимое недоступно'],
+    zh_CN: ['果蔬托盘', '果蔬陈列架', '内容物不可用']
+]
+
 tasks.register('updatePhaseFiveFurnitureAssets') {
     group = 'generation'
     description = 'Regenerates Phase 5 models, states and names from the same wood catalog and textures as chairs.'
@@ -217,20 +663,49 @@ tasks.register('updatePhaseFiveFurnitureAssets') {
             if (!dining.contains(oak) || !cabinet.contains(oak)) throw new GradleException("Missing wood title in ${locale.name}")
             List<String> titles = phase5Titles[locale.name - '.lang'] ?:
                     ['%s Low Table', '%s Wall Shelf', '%s Dining Chair', '%s Shelving Unit']
+            List<String> bedside = bedsideTitles[locale.name - '.lang'] ?:
+                    ['%s Bedside Cabinet', 'Upper Drawer', 'Lower Drawer']
+            List<String> crate = crateTitles[locale.name - '.lang'] ?: ['%s Shipping Crate', 'Shipping Crate', 'Packed']
+            List<String> drawer = drawerTitles[locale.name - '.lang'] ?: ['%s Drawer Unit', '%s Half-depth Drawer Unit']
+            List<String> bench = storageBenchTitles[locale.name - '.lang'] ?:
+                    ['%s Storage Bench', '%1$s with %2$s Cushion', 'Red', 'Storage Bench']
+            Map storageNames = ['container.ironagefurniture.upper_drawer': bedside[1],
+                    'item.ironagefurniture.padded_storage_bench': bench[1],
+                    'item.ironagefurniture.upholstery.red': bench[2],
+                    'container.ironagefurniture.storage_bench': bench[3],
+                    'container.ironagefurniture.double_storage_bench': doubleStorageBenchTitles[locale.name - '.lang'] ?: 'Double Storage Bench',
+                    'container.ironagefurniture.lower_drawer': bedside[2],
+                    'container.ironagefurniture.crate': crate[1],
+                    'item.ironagefurniture.crate.packed': crate[2]]
+            List<String> market = produceTitles[locale.name - '.lang'] ?: ['Produce Tray', 'Market Rack', 'Contents unavailable']
+            storageNames['item.ironagefurniture.produce_tray.unavailable'] = market[2]
+            storageNames['tile.ironagefurniture.produce_tray.name'] = market[0]
+            storageNames['tile.ironagefurniture.produce_rack.name'] = market[1]
             List<String> retained = text.readLines().findAll { String line ->
-                !families.values().any { line.startsWith("tile.ironagefurniture.${it.prefix}") }
+                !families.values().any { line.startsWith("tile.ironagefurniture.${it.prefix}") } &&
+                        !line.startsWith('tile.ironagefurniture.produce_tray.') &&
+                        !line.startsWith('tile.ironagefurniture.produce_rack.') &&
+                        !storageNames.keySet().any { line.startsWith(it + '=') }
             }
             while (retained && retained.last().isEmpty()) retained.remove(retained.size() - 1)
+            retained.add('')
+            storageNames.each { key, name -> retained.add("${key}=${name}".toString()) }
             retained.add('')
             phase5Woods().sort().each { String wood ->
                 String woodName = phase5WoodName(names["tile.ironagefurniture.chair_wood_ironage_classic_${wood}.name"])
                 Map familyNames = [dining: dining.replace(oak, woodName), cabinet: cabinet.replace(oak, woodName),
                         low: titles[0].replace('%s', woodName), shelf: titles[1].replace('%s', woodName),
-                        dining_chair: titles[2].replace('%s', woodName), shelving_unit: titles[3].replace('%s', woodName)]
+                        dining_chair: titles[2].replace('%s', woodName), shelving_unit: titles[3].replace('%s', woodName),
+                        bedside_cabinet: bedside[0].replace('%s', woodName), crate: crate[0].replace('%s', woodName),
+                        drawer_unit: drawer[0].replace('%s', woodName), half_drawer_unit: drawer[1].replace('%s', woodName),
+                        storage_bench: bench[0].replace('%s', woodName),
+                        tool_rack: (toolRackTitles[locale.name - '.lang'] ?: '%s Tool Rack').replace('%s', woodName)]
                 extraTitles.each { family, title -> familyNames[family] = title.replace(oak, woodName) }
                 families.each { family, definition ->
                     retained.add("tile.ironagefurniture.${definition.prefix}${wood}.name=${familyNames[family]}")
                 }
+                retained.add("tile.ironagefurniture.produce_tray.${wood}.name=${market[0]} (${woodName})".toString())
+                retained.add("tile.ironagefurniture.produce_rack.${wood}.name=${market[1]} (${woodName})".toString())
             }
             locale.setText(retained.join('\n') + '\n', 'UTF-8')
         }
@@ -243,9 +718,30 @@ tasks.register('verifyPhaseFiveFurnitureAssets') {
     inputs.file phase5Manifest
     inputs.file 'gradle/furniture-catalog.json'
     inputs.dir phase5Definitions
+    inputs.file new File(phase5Root, 'models/block/template_barrel_wood_ironage.json')
     doLast {
-        if (!phase5Manifest.isFile() || new JsonSlurper().parse(phase5Manifest) != phase5Models()) {
+        Map expectedModels = phase5Models()
+        if (!phase5Manifest.isFile() || new JsonSlurper().parse(phase5Manifest) != expectedModels) {
             throw new GradleException('Phase 5 wood models are stale; run updatePhaseFiveFurnitureAssets')
+        }
+        List trayParts = expectedModels.generatedModels['models/block/template_produce_tray.json'].elements
+        (0..3).each { int joins ->
+            List frame = expectedModels.generatedModels["models/block/template_produce_rack_${joins}.json".toString()].elements
+            frame.each { rackPart ->
+                boolean upright = rackPart.faces.north.texture == '#log'
+                trayParts.each { trayPart ->
+                    if (upright && rackPart.to[0] >= trayPart.from[0] && trayPart.to[0] >= rackPart.from[0]) {
+                        throw new GradleException("Market rack posts must clear the tray width (join mask ${joins})")
+                    }
+                    // The flat top tray is seated at 23.5 model pixels above the base.
+                    if ((0..2).every { int axis ->
+                        def lift = axis == 1 ? 23.5 : 0
+                        rackPart.to[axis] >= trayPart.from[axis] + lift && trayPart.to[axis] + lift >= rackPart.from[axis]
+                    }) {
+                        throw new GradleException("Market rack frame overlaps the flat top tray (join mask ${joins})")
+                    }
+                }
+            }
         }
         Map families = phase5Families()
         Set prefixes = families.values().collect { it.prefix } as Set
@@ -278,6 +774,12 @@ tasks.register('verifyPhaseFiveFurnitureAssets') {
         }
         fileTree(new File(phase5Root, 'lang')).matching { include '*.lang' }.files.each { File locale ->
             String text = locale.getText('UTF-8')
+            phase5Woods().each { String wood ->
+                ['produce_tray', 'produce_rack'].each { String id ->
+                    if (!text.contains("tile.ironagefurniture.${id}.${wood}.name="))
+                        throw new GradleException("Missing ${id} name for ${wood} in ${locale.name}")
+                }
+            }
             ['chairs','benches','beds','lights','tables','storage','decorations'].each { String tab ->
                 if (!text.contains("itemGroup.ironagefurniture.${tab}="))
                     throw new GradleException("Missing creative category ${tab} in ${locale.name}")

@@ -344,7 +344,7 @@ public class WallShelf extends BlockHBase {
 		}
 
 		ShelfContentKind heldContent = this.getEmbeddedContentKindForItem(heldItem);
-		TileEntityWallShelf shelf = this.getShelfEntity(worldIn, pos, false);
+		TileEntityWallShelf shelf = this.getShelfEntity(worldIn, pos);
 
 		if (shelf != null && shelf.getEmbeddedKind() == ShelfContentKind.FLOWER_POT) {
 			if (this.canHandleFlowerPotClick(shelf, heldItem)) {
@@ -378,19 +378,10 @@ public class WallShelf extends BlockHBase {
 				return true;
 			}
 
-			if (shelf == null || this.canAddEmbeddedContentAt(worldIn, pos, shelf, heldContent)) {
-				shelf = this.getShelfEntity(worldIn, pos, true);
-
-				if (shelf != null && this.canAddEmbeddedContentAt(worldIn, pos, shelf, heldContent)
-						&& shelf.addEmbeddedContent(heldContent, heldItem)) {
-
-					if (!playerIn.capabilities.isCreativeMode) {
-						heldItem.stackSize--;
-
-						if (heldItem.stackSize <= 0) {
-							playerIn.setHeldItem(hand, null);
-						}
-					}
+			if (shelf != null && this.canAddEmbeddedContentAt(worldIn, pos, shelf, heldContent)
+					&& shelf.addEmbeddedContent(heldContent, heldItem)) {
+				if (!playerIn.capabilities.isCreativeMode && --heldItem.stackSize <= 0) {
+					playerIn.setHeldItem(hand, null);
 				}
 			}
 
@@ -403,14 +394,9 @@ public class WallShelf extends BlockHBase {
 			}
 			return true;
 		}
-		if (this.isDisplayExcluded(heldItem)) return false;
-		if (shelf == null) {
-			if (heldItem == null || heldItem.stackSize <= 0) return false;
-			if (!SurfaceDisplayBlocker.hasRoom(worldIn, pos) || worldIn.isRemote) return true;
-			shelf = this.getShelfEntity(worldIn, pos, true);
-		}
+		if (shelf == null || this.isDisplayExcluded(heldItem)) return false;
 		boolean handled = SurfaceDisplayBlocker.interact(worldIn, pos, shelf, playerIn, hand, heldItem, hitX, hitZ);
-		this.removeShelfEntityIfEmpty(worldIn, pos);
+		this.releaseEmptyDisplay(worldIn, pos);
 		return handled;
 	}
 
@@ -428,7 +414,7 @@ public class WallShelf extends BlockHBase {
 			this.returnShelfItem(worldIn, pos, playerIn, embeddedItem);
 		}
 
-		this.removeShelfEntityIfEmpty(worldIn, pos);
+		this.releaseEmptyDisplay(worldIn, pos);
 	}
 
 	private void removeAllEmbeddedItemsFromShelf(World worldIn, BlockPos pos, TileEntityWallShelf shelf,
@@ -437,7 +423,7 @@ public class WallShelf extends BlockHBase {
 			this.returnShelfItem(worldIn, pos, playerIn, embeddedItem);
 		}
 
-		this.removeShelfEntityIfEmpty(worldIn, pos);
+		this.releaseEmptyDisplay(worldIn, pos);
 	}
 
 	private boolean canHandleFlowerPotClick(TileEntityWallShelf shelf, ItemStack heldItem) {
@@ -486,6 +472,40 @@ public class WallShelf extends BlockHBase {
 
 	private boolean isDisplayExcluded(ItemStack heldItem) {
 		return SurfaceDisplayBlocker.placesAsBlock(heldItem);
+	}
+
+	public boolean feedDisplay(World world, BlockPos pos, TileEntityWallShelf shelf, ItemStack stack, boolean simulate) {
+		if (shelf.getEmbeddedKind() == ShelfContentKind.FLOWER_POT) {
+			return this.isFlowerPotPlantItem(stack) && shelf.canAddEmbeddedContent(ShelfContentKind.FLOWER_POT)
+				&& (simulate || shelf.addEmbeddedContent(ShelfContentKind.FLOWER_POT, stack));
+		}
+
+		ShelfContentKind kind = this.getEmbeddedContentKindForItem(stack);
+		if (kind != ShelfContentKind.NONE && !(shelf.hasDisplayedItem() && this.isVesselClusterKind(kind))) {
+			return this.canAddEmbeddedContentAt(world, pos, shelf, kind) && (simulate || shelf.addEmbeddedContent(kind, stack));
+		}
+
+		if (shelf.hasEmbeddedContent() || stack.getItem() == Items.SIGN || this.isDisplayExcluded(stack)
+				|| !SurfaceDisplayBlocker.hasRoom(world, pos)) {
+			return false;
+		}
+
+		SurfaceSetting setting = shelf.getSurfaceSetting();
+		EnumFacing facing = world.getBlockState(pos).getActualState(world, pos).getValue(FACING);
+		EnumFacing.Axis axis = shelf.getSurfaceAxis();
+		if (!setting.canInsert(stack, facing, 0.5F, 0.5F, axis)) {
+			return false;
+		}
+		if (simulate) {
+			return true;
+		}
+		if (!this.reserveDisplaySpace(world, pos, stack)) {
+			return false;
+		}
+
+		setting.insert(stack, facing, 0.5F, 0.5F, axis);
+		shelf.markSurfaceSettingChanged();
+		return true;
 	}
 
 	private boolean reserveDisplaySpace(World worldIn, BlockPos pos, ItemStack heldItem) {
@@ -724,7 +744,7 @@ public class WallShelf extends BlockHBase {
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		return state.getValue(DATA).booleanValue();
+		return true;
 	}
 
 	@Override
@@ -745,7 +765,7 @@ public class WallShelf extends BlockHBase {
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return state.getValue(DATA).booleanValue() ? new TileEntityWallShelf() : null;
+		return new TileEntityWallShelf();
 	}
 
 	@Override
@@ -1063,42 +1083,16 @@ public class WallShelf extends BlockHBase {
 		}
 	}
 
-	private TileEntityWallShelf getShelfEntity(World worldIn, BlockPos pos, boolean create) {
-		IBlockState state = worldIn.getBlockState(pos);
-
-		if (state.getBlock() != this) {
+	private TileEntityWallShelf getShelfEntity(World worldIn, BlockPos pos) {
+		if (worldIn.getBlockState(pos).getBlock() != this) {
 			return null;
-		}
-
-		if (!state.getValue(DATA).booleanValue()) {
-			if (!create || worldIn.isRemote
-					|| !worldIn.setBlockState(pos, state.withProperty(DATA, Boolean.valueOf(true)), 2)) {
-				return null;
-			}
-
-			state = worldIn.getBlockState(pos);
 		}
 
 		TileEntity tileEntity = worldIn.getTileEntity(pos);
-
-		if (tileEntity instanceof TileEntityWallShelf) {
-			return (TileEntityWallShelf)tileEntity;
-		}
-
-		if (!create || worldIn.isRemote) {
-			return null;
-		}
-
-		tileEntity = this.createTileEntity(worldIn, state);
-
-		if (tileEntity != null) {
-			worldIn.setTileEntity(pos, tileEntity);
-		}
-
 		return tileEntity instanceof TileEntityWallShelf ? (TileEntityWallShelf)tileEntity : null;
 	}
 
-	void removeShelfEntityIfEmpty(World worldIn, BlockPos pos) {
+	void releaseEmptyDisplay(World worldIn, BlockPos pos) {
 		if (worldIn.isRemote) {
 			return;
 		}
@@ -1116,14 +1110,6 @@ public class WallShelf extends BlockHBase {
 		}
 
 		SurfaceDisplayBlocker.release(worldIn, pos);
-
-		IBlockState state = worldIn.getBlockState(pos);
-
-		if (state.getBlock() == this && state.getValue(DATA).booleanValue()) {
-			worldIn.setBlockState(pos, state.withProperty(DATA, Boolean.valueOf(false)), 2);
-		} else {
-			worldIn.removeTileEntity(pos);
-		}
 	}
 
 	private void refreshDisplayBlocker(World worldIn, BlockPos pos) {
@@ -1131,7 +1117,7 @@ public class WallShelf extends BlockHBase {
 			return;
 		}
 
-		TileEntityWallShelf shelf = this.getShelfEntity(worldIn, pos, false);
+		TileEntityWallShelf shelf = this.getShelfEntity(worldIn, pos);
 
 		if (shelf != null && shelf.hasDisplayedItem()) {
 			this.reserveDisplaySpace(worldIn, pos, shelf.getDisplayedItem());

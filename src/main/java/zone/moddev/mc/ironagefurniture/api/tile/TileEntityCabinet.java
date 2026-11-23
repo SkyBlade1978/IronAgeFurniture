@@ -19,7 +19,6 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
@@ -41,6 +40,7 @@ public class TileEntityCabinet extends TileEntityLockable
 	private static final int INVENTORY_SIZE = 27;
 
 	private ItemStack[] inventory = new ItemStack[this.getInventorySize()];
+	private final StoredInventoryData inventoryData = new StoredInventoryData();
 	private int[] allSlots;
 	private String customName;
 	private final SurfaceSetting surfaceSetting = new SurfaceSetting();
@@ -483,16 +483,8 @@ public class TileEntityCabinet extends TileEntityLockable
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		this.inventory = new ItemStack[this.getSizeInventory()];
-		NBTTagList items = compound.getTagList("Items", 10);
-
-		for (int i = 0; i < items.tagCount(); i++) {
-			NBTTagCompound itemTag = items.getCompoundTagAt(i);
-			int slot = itemTag.getByte("Slot") & 255;
-
-			if (slot >= 0 && slot < this.inventory.length) {
-				this.inventory[slot] = ItemStack.loadItemStackFromNBT(itemTag);
-			}
-		}
+		this.inventoryData.read(compound, "Items", this.inventory.length, this::getStackInSlot,
+			(slot, stack) -> this.inventory[slot] = stack);
 
 		if (compound.hasKey("CustomName", 8)) {
 			this.customName = compound.getString("CustomName");
@@ -517,18 +509,7 @@ public class TileEntityCabinet extends TileEntityLockable
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		NBTTagList items = new NBTTagList();
-
-		for (int i = 0; i < this.inventory.length; i++) {
-			if (this.inventory[i] != null) {
-				NBTTagCompound itemTag = new NBTTagCompound();
-				itemTag.setByte("Slot", (byte)i);
-				this.inventory[i].writeToNBT(itemTag);
-				items.appendTag(itemTag);
-			}
-		}
-
-		compound.setTag("Items", items);
+		this.inventoryData.write(compound, "Items", this.inventory.length, this::getStackInSlot);
 
 		if (this.hasCustomName()) {
 			compound.setString("CustomName", this.customName);
@@ -569,7 +550,18 @@ public class TileEntityCabinet extends TileEntityLockable
 	public NBTTagCompound getUpdateTag() {
 		NBTTagCompound tag = this.writeToNBT(new NBTTagCompound());
 		tag.removeTag("Items");
+		tag.removeTag("ItemsUnresolved");
 		return tag;
+	}
+
+	public NBTTagCompound getUnresolvedItems() {
+		NBTTagCompound data = new NBTTagCompound();
+		this.inventoryData.writeUnresolved(data, "Items");
+		return data;
+	}
+
+	public boolean hasRestoredItems() {
+		return this.inventoryData.hasRestoredItems();
 	}
 
 	private void markForDisplayUpdate() {

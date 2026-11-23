@@ -1,0 +1,17 @@
+{
+  "textures": {"particle":"minecraft:blocks/waterlily","leaf":"minecraft:blocks/waterlily"},
+  "elements": [
+    {
+      "from": [3.2,0,4.8],
+      "to": [12.8,0.75,11.2],
+      "faces": {
+        "north": {"texture":"#leaf","uv":[4,7,13,8],"tintindex":0},
+        "south": {"texture":"#leaf","uv":[4,7,13,8],"tintindex":0},
+        "east": {"texture":"#leaf","uv":[4,7,13,8],"tintindex":0},
+        "west": {"texture":"#leaf","uv":[4,7,13,8],"tintindex":0},
+        "up": {"texture":"#leaf","uv":[0,0,16,16],"tintindex":0},
+        "down": {"texture":"#leaf","uv":[0,0,16,16],"tintindex":0}
+      }
+    }
+  ]
+}

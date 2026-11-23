@@ -44,9 +44,10 @@ public final class SurfaceDisplayBlocker extends Block {
 		if (stack.getItem() == Items.FLOWER_POT || MineralogyCompat.isRockSaltLampItem(stack)) return true;
 		if (!(stack.getItem() instanceof ItemBlock)) return false;
 		Block block = ((ItemBlock)stack.getItem()).getBlock();
-		return block == Blocks.HOPPER || block instanceof Cabinet || block instanceof DiningTable
+		return block == Blocks.HOPPER || block instanceof Cabinet || block instanceof BedsideCabinet
+			|| block instanceof StorageCrate || block instanceof DiningTable
 			|| block instanceof WallShelf
-			|| block instanceof BottleRack
+			|| block instanceof BottleRack || block instanceof ToolRack
 			|| block instanceof Barrel || block instanceof LightSourceCandleFloor
 			|| block instanceof LightSourceGlowdust || block instanceof LightSourceLava
 			|| block instanceof LightSourceRed;
@@ -115,7 +116,8 @@ public final class SurfaceDisplayBlocker extends Block {
 
 	private SurfaceSettingHost getHost(IBlockAccess world, BlockPos pos) {
 		Block owner = world.getBlockState(pos.down()).getBlock();
-		if (!(owner instanceof Cabinet) && !(owner instanceof DiningTable) && !(owner instanceof WallShelf)) return null;
+		if (!(owner instanceof Cabinet) && !(owner instanceof BedsideCabinet)
+				&& !(owner instanceof DiningTable) && !(owner instanceof WallShelf)) return null;
 		TileEntity tile = world.getTileEntity(pos.down());
 		return tile instanceof SurfaceSettingHost ? (SurfaceSettingHost)tile : null;
 	}

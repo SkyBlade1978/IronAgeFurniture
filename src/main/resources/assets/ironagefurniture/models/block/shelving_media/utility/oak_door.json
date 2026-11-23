@@ -1,0 +1,47 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "upper": "minecraft:blocks/door_wood_upper",
+    "lower": "minecraft:blocks/door_wood_lower",
+    "edge": "minecraft:blocks/planks_oak",
+    "stand": "minecraft:blocks/planks_spruce"
+  },
+  "elements": [
+    {
+      "from": [4.6, 0, 6.2],
+      "to": [11.4, 0.45, 9.8],
+      "faces": {
+        "north": { "texture": "#stand" },
+        "south": { "texture": "#stand" },
+        "east": { "texture": "#stand" },
+        "west": { "texture": "#stand" },
+        "up": { "texture": "#stand" },
+        "down": { "texture": "#stand" }
+      }
+    },
+    {
+      "from": [5.46, 0.45, 7.6],
+      "to": [10.54, 5.82, 8.4],
+      "faces": {
+        "north": { "texture": "#lower", "uv": [0, 0, 16, 16] },
+        "south": { "texture": "#lower", "uv": [16, 0, 0, 16] },
+        "east": { "texture": "#edge" },
+        "west": { "texture": "#edge" },
+        "up": { "texture": "#edge" },
+        "down": { "texture": "#edge" }
+      }
+    },
+    {
+      "from": [5.46, 5.82, 7.6],
+      "to": [10.54, 11.2, 8.4],
+      "faces": {
+        "north": { "texture": "#upper", "uv": [0, 0, 16, 16] },
+        "south": { "texture": "#upper", "uv": [16, 0, 0, 16] },
+        "east": { "texture": "#edge" },
+        "west": { "texture": "#edge" },
+        "up": { "texture": "#edge" },
+        "down": { "texture": "#edge" }
+      }
+    }
+  ]
+}

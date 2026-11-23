@@ -221,6 +221,10 @@ public class TileEntityBottleRackRenderer extends TileEntitySpecialRenderer<Tile
 			return new float[] { 0.34F, 0.86F, 0.30F };
 		}
 
+		if (item == Items.DRAGON_BREATH) {
+			return new float[] { 0.76F, 0.28F, 0.91F };
+		}
+
 		if (item == Items.POTIONITEM || item == Items.SPLASH_POTION || item == Items.LINGERING_POTION) {
 			return this.colorFromInt(PotionUtils.getPotionColorFromEffectList(PotionUtils.getEffectsFromStack(stack)));
 		}

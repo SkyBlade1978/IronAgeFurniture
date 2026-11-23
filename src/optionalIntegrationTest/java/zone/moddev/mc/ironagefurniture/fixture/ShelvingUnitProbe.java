@@ -88,8 +88,9 @@ final class ShelvingUnitProbe {
 		require(depth == 0.5D && centreX == 0.5D + offset * facing.getFrontOffsetX()
 			&& centreZ == 0.5D + offset * facing.getFrontOffsetZ(), "Incorrect shelving depth or centre");
 
-		ItemStack lower = new ItemStack(Items.BREAD).setStackDisplayName("Lower shelf bread");
-		ItemStack upper = new ItemStack(Items.APPLE).setStackDisplayName("Upper shelf apple");
+		// Exercise loose displays with items that use the generic layout.
+		ItemStack lower = new ItemStack(Blocks.COBBLESTONE).setStackDisplayName("Lower shelf stone");
+		ItemStack upper = new ItemStack(Items.NETHERBRICK).setStackDisplayName("Upper shelf brick");
 		require(click(world, player, pos, facing, lower.copy(), centreX, 0.20D, centreZ)
 				&& player.getHeldItemMainhand() == null, "Lower shelf did not consume one item");
 		require(click(world, player, pos, facing, upper.copy(), centreX, 0.65D, centreZ)

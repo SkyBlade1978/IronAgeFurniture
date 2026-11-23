@@ -1,0 +1,85 @@
+{
+  "ambientocclusion": false,
+  "textures": {"particle":"minecraft:blocks/iron_block","wood":"minecraft:blocks/planks_oak","metal":"minecraft:blocks/iron_block"},
+  "elements": [
+    {
+      "from": [2.65,0,5.05],
+      "to": [4.25,0.78,10.95],
+      "faces": {
+        "down": {"texture":"#wood"},
+        "up": {"texture":"#wood"},
+        "north": {"texture":"#wood"},
+        "south": {"texture":"#wood"},
+        "west": {"texture":"#wood"},
+        "east": {"texture":"#wood"}
+      }
+    },
+    {
+      "from": [5.65,0,5.05],
+      "to": [7.25,0.78,10.95],
+      "faces": {
+        "down": {"texture":"#wood"},
+        "up": {"texture":"#wood"},
+        "north": {"texture":"#wood"},
+        "south": {"texture":"#wood"},
+        "west": {"texture":"#wood"},
+        "east": {"texture":"#wood"}
+      }
+    },
+    {
+      "from": [8.65,0,5.05],
+      "to": [10.25,0.78,10.95],
+      "faces": {
+        "down": {"texture":"#wood"},
+        "up": {"texture":"#wood"},
+        "north": {"texture":"#wood"},
+        "south": {"texture":"#wood"},
+        "west": {"texture":"#wood"},
+        "east": {"texture":"#wood"}
+      }
+    },
+    {
+      "from": [11.65,0,5.05],
+      "to": [13.25,0.78,10.95],
+      "faces": {
+        "down": {"texture":"#wood"},
+        "up": {"texture":"#wood"},
+        "north": {"texture":"#wood"},
+        "south": {"texture":"#wood"},
+        "west": {"texture":"#wood"},
+        "east": {"texture":"#wood"}
+      }
+    },
+    {
+      "from": [2,0.78,5.6],
+      "to": [14,1.49,6.39],
+      "faces": {
+        "down": {"texture":"#metal"},
+        "up": {"texture":"#metal"},
+        "north": {"texture":"#metal"},
+        "south": {"texture":"#metal"},
+        "west": {"texture":"#metal"},
+        "east": {"texture":"#metal"}
+      }
+    },
+    {
+      "from": [2,0.78,9.61],
+      "to": [14,1.49,10.4],
+      "faces": {
+        "down": {"texture":"#metal"},
+        "up": {"texture":"#metal"},
+        "north": {"texture":"#metal"},
+        "south": {"texture":"#metal"},
+        "west": {"texture":"#metal"},
+        "east": {"texture":"#metal"}
+      }
+    },
+    {
+      "from": [2,1.5,4.8],
+      "to": [14,1.5,11.2],
+      "faces": {
+        "up": {"texture":"#track","uv":[0,0,16,16],"rotation":90}
+      }
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/hardened_clay_stained_magenta",
+    "rind": "minecraft:blocks/hardened_clay_stained_magenta",
+    "shade": "minecraft:blocks/hardened_clay_stained_purple",
+    "flesh": "minecraft:blocks/hardened_clay_stained_white",
+    "cream": "minecraft:blocks/wool_colored_white"
+  },
+  "elements": [
+    {
+      "from": [6.27, 0, 6.32],
+      "to": [9.73, 0.71, 9.68],
+      "faces": { "down": { "texture": "#shade" }, "up": { "texture": "#shade" }, "north": { "texture": "#shade" }, "south": { "texture": "#shade" }, "west": { "texture": "#shade" }, "east": { "texture": "#shade" } }
+    },
+    {
+      "from": [5.67, 0.71, 5.75],
+      "to": [10.33, 2.27, 10.25],
+      "faces": { "down": { "texture": "#rind" }, "up": { "texture": "#flesh" }, "north": { "texture": "#rind" }, "south": { "texture": "#rind" }, "west": { "texture": "#rind" }, "east": { "texture": "#rind" } }
+    },
+    {
+      "from": [6.15, 2.27, 6.31],
+      "to": [9.86, 3.34, 9.63],
+      "faces": { "down": { "texture": "#flesh" }, "up": { "texture": "#cream" }, "north": { "texture": "#flesh" }, "south": { "texture": "#flesh" }, "west": { "texture": "#flesh" }, "east": { "texture": "#flesh" } }
+    },
+    {
+      "from": [5.59, 2.05, 6.2],
+      "to": [6.65, 3.79, 8.72],
+      "rotation": {"origin": [6.38, 2.04, 7.75], "axis": "z", "angle": 22.5, "rescale": false},
+      "faces": { "down": { "texture": "#rind" }, "up": { "texture": "#flesh" }, "north": { "texture": "#rind" }, "south": { "texture": "#rind" }, "west": { "texture": "#rind" }, "east": { "texture": "#rind" } }
+    },
+    {
+      "from": [9.34, 2.07, 7.32],
+      "to": [10.4, 3.88, 9.86],
+      "rotation": {"origin": [9.58, 2.04, 8.84], "axis": "z", "angle": -22.5, "rescale": false},
+      "faces": { "down": { "texture": "#rind" }, "up": { "texture": "#flesh" }, "north": { "texture": "#rind" }, "south": { "texture": "#rind" }, "west": { "texture": "#rind" }, "east": { "texture": "#rind" } }
+    },
+    {
+      "from": [6.62, 2.1, 5.89],
+      "to": [8.97, 3.65, 6.86],
+      "rotation": {"origin": [8, 2.17, 6.57], "axis": "x", "angle": 22.5, "rescale": false},
+      "faces": { "down": { "texture": "#rind" }, "up": { "texture": "#flesh" }, "north": { "texture": "#rind" }, "south": { "texture": "#rind" }, "west": { "texture": "#rind" }, "east": { "texture": "#rind" } }
+    },
+    {
+      "from": [7.16, 2.14, 9.21],
+      "to": [9.29, 3.79, 10.15],
+      "rotation": {"origin": [8, 2.3, 9.43], "axis": "x", "angle": -22.5, "rescale": false},
+      "faces": { "down": { "texture": "#rind" }, "up": { "texture": "#cream" }, "north": { "texture": "#rind" }, "south": { "texture": "#rind" }, "west": { "texture": "#rind" }, "east": { "texture": "#rind" } }
+    }
+  ]
+}

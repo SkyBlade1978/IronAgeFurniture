@@ -71,7 +71,7 @@ public final class VanillaFoodRenderer implements SurfaceRenderRegistry.Renderer
 				context.z + context.itemZ);
 			GlStateManager.rotate(context.yaw, 0.0F, 1.0F, 0.0F);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
+			SurfaceDisplayRenderHelper.renderBakedItem(Minecraft.getMinecraft().getRenderItem(), stack, model);
 		} finally {
 			GlStateManager.popMatrix();
 		}

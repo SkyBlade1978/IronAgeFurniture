@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=south,lower_open=false,upper_open=false": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_closed"},
+    "facing=south,lower_open=true,upper_open=false": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_lower_open"},
+    "facing=south,lower_open=false,upper_open=true": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_upper_open"},
+    "facing=south,lower_open=true,upper_open=true": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_both_open"},
+    "facing=west,lower_open=false,upper_open=false": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_closed","y":90},
+    "facing=west,lower_open=true,upper_open=false": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_lower_open","y":90},
+    "facing=west,lower_open=false,upper_open=true": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_upper_open","y":90},
+    "facing=west,lower_open=true,upper_open=true": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_both_open","y":90},
+    "facing=north,lower_open=false,upper_open=false": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_closed","y":180},
+    "facing=north,lower_open=true,upper_open=false": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_lower_open","y":180},
+    "facing=north,lower_open=false,upper_open=true": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_upper_open","y":180},
+    "facing=north,lower_open=true,upper_open=true": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_both_open","y":180},
+    "facing=east,lower_open=false,upper_open=false": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_closed","y":270},
+    "facing=east,lower_open=true,upper_open=false": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_lower_open","y":270},
+    "facing=east,lower_open=false,upper_open=true": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_upper_open","y":270},
+    "facing=east,lower_open=true,upper_open=true": {"model":"ironagefurniture:bedside_cabinet_wood_ironage_biomesoplenty_jacaranda_both_open","y":270}
+  }
+}

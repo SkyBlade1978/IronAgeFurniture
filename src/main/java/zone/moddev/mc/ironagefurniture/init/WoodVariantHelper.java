@@ -11,7 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
-final class WoodVariantHelper {
+public final class WoodVariantHelper {
 	private static final String[] VANILLA_SUFFIXES = new String[] {
 		"oak", "spruce", "birch", "jungle", "acacia", "big_oak"
 	};
@@ -43,7 +43,7 @@ final class WoodVariantHelper {
 		void accept(String suffix, ItemStack itemStack);
 	}
 
-	static List<String> getEnabledWoodSuffixes() {
+	public static List<String> getEnabledWoodSuffixes() {
 		List<String> suffixes = new ArrayList<>();
 		addSuffixes(suffixes, VANILLA_SUFFIXES);
 

@@ -1,0 +1,99 @@
+{
+    "parent": "ironagefurniture:block/tool_rack_wood_ironage_forestry_maple_0",
+    "display": {
+        "gui": {
+            "rotation": [
+                30,
+                135,
+                0
+            ],
+            "translation": [
+                -1.25,
+                -3.5,
+                -2
+            ],
+            "scale": [
+                0.8,
+                0.8,
+                0.8
+            ]
+        },
+        "ground": {
+            "translation": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                0.45,
+                0.45,
+                0.45
+            ]
+        },
+        "firstperson_righthand": {
+            "rotation": [
+                0,
+                135,
+                0
+            ],
+            "scale": [
+                0.55,
+                0.55,
+                0.55
+            ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [
+                0,
+                315,
+                0
+            ],
+            "scale": [
+                0.55,
+                0.55,
+                0.55
+            ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                0.55,
+                0.55,
+                0.55
+            ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                0.55,
+                0.55,
+                0.55
+            ]
+        },
+        "fixed": {
+            "rotation": [
+                0,
+                180,
+                0
+            ],
+            "translation": [
+                0,
+                -2,
+                0
+            ],
+            "scale": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        }
+    }
+}

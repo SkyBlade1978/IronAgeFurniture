@@ -1,0 +1,44 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "wax": "ironagefurniture:blocks/candle_wax"
+  },
+  "elements": [
+    {
+      "from": [4.2, 0, 5.4],
+      "to": [11.8, 1, 10.6],
+      "faces": {
+        "north": { "texture": "#wax" },
+        "south": { "texture": "#wax" },
+        "east": { "texture": "#wax" },
+        "west": { "texture": "#wax" },
+        "up": { "texture": "#wax" },
+        "down": { "texture": "#wax" }
+      }
+    },
+    {
+      "from": [4.7, 1, 5.8],
+      "to": [11.3, 2.05, 10.2],
+      "faces": {
+        "north": { "texture": "#wax" },
+        "south": { "texture": "#wax" },
+        "east": { "texture": "#wax" },
+        "west": { "texture": "#wax" },
+        "up": { "texture": "#wax" },
+        "down": { "texture": "#wax" }
+      }
+    },
+    {
+      "from": [5.35, 2.05, 6.2],
+      "to": [10.6, 2.8, 9.8],
+      "faces": {
+        "north": { "texture": "#wax" },
+        "south": { "texture": "#wax" },
+        "east": { "texture": "#wax" },
+        "west": { "texture": "#wax" },
+        "up": { "texture": "#wax" },
+        "down": { "texture": "#wax" }
+      }
+    }
+  ]
+}

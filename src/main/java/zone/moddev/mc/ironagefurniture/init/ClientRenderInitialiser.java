@@ -6,21 +6,33 @@ import zone.moddev.mc.ironagefurniture.api.entity.EntityThrownLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.entity.EntityReleasedLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShieldChair;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBedsideCabinet;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCrate;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityDiningTable;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityVanillaFoodDisplay;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBottleRack;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityGlassVase;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityHalfCabinet;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityToolRack;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
 import zone.moddev.mc.ironagefurniture.client.gui.GuiBarrel;
+import zone.moddev.mc.ironagefurniture.client.gui.GuiBulkBarrel;
+import zone.moddev.mc.ironagefurniture.client.gui.GuiCrate;
+import zone.moddev.mc.ironagefurniture.client.gui.GuiFurnitureLabel;
 import zone.moddev.mc.ironagefurniture.client.gui.GuiShelfMedia;
+import zone.moddev.mc.ironagefurniture.client.render.FlowerPotSurfaceRenderer;
+import zone.moddev.mc.ironagefurniture.client.render.FurnitureLabelRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.GlassVaseRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.SurfaceFurnitureRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityBottleRackRenderer;
+import zone.moddev.mc.ironagefurniture.client.render.TileEntityBarrelRenderer;
+import zone.moddev.mc.ironagefurniture.client.render.TileEntityCrateRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityShelvingUnitRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityGlassVaseRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.VanillaFoodRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityShieldChairRenderer;
+import zone.moddev.mc.ironagefurniture.client.render.TileEntityToolRackRenderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
@@ -48,18 +60,27 @@ public final class ClientRenderInitialiser {
 	}
 
 	public static void registerSurfaceFurnitureRenderers() {
-		StorageGuiHandler.setClientFactories(GuiBarrel::new, GuiShelfMedia::new);
+		StorageGuiHandler.setClientFactories(GuiBarrel::new, GuiShelfMedia::new, GuiFurnitureLabel::new);
+		StorageGuiHandler.setBulkBarrelScreen(GuiBulkBarrel::new);
+		StorageGuiHandler.setCrateScreen(GuiCrate::new);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityHalfCabinet.class,
 			new SurfaceFurnitureRenderer<TileEntityHalfCabinet>());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBottleRack.class, new TileEntityBottleRackRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityToolRack.class, new TileEntityToolRackRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBarrel.class, new TileEntityBarrelRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrate.class, new TileEntityCrateRenderer());
+		FurnitureLabelRenderer.register();
 		TileEntityShelvingUnitRenderer.register();
 
 		VanillaFoodRenderer.register();
 		GlassVaseRenderer.register();
+		FlowerPotSurfaceRenderer.register();
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGlassVase.class, new TileEntityGlassVaseRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCabinet.class,
 			new SurfaceFurnitureRenderer<TileEntityCabinet>());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBedsideCabinet.class,
+			new SurfaceFurnitureRenderer<TileEntityBedsideCabinet>());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDiningTable.class,
 			new SurfaceFurnitureRenderer<TileEntityDiningTable>());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWallShelf.class,

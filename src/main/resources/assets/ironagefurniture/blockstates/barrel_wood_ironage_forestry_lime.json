@@ -1,7 +1,10 @@
 {
   "variants": {
-    "normal": {
+    "open=false": {
       "model": "ironagefurniture:barrel_wood_ironage_forestry_lime_single"
+    },
+    "open=true": {
+      "model": "ironagefurniture:barrel_wood_ironage_forestry_lime_open"
     }
   }
 }

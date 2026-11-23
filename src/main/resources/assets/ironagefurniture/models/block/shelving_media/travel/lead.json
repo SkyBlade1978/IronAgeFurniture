@@ -1,0 +1,69 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/hardened_clay_stained_brown",
+    "rope": "minecraft:blocks/hardened_clay_stained_brown",
+    "braid": "minecraft:blocks/planks_spruce"
+  },
+  "elements": [
+    {
+      "from": [4.75, 0, 5.3],
+      "to": [10.76, 0.78, 6.04],
+      "faces": { "down": { "texture": "#braid" }, "up": { "texture": "#braid" }, "north": { "texture": "#braid" }, "south": { "texture": "#braid" }, "west": { "texture": "#braid" }, "east": { "texture": "#braid" } }
+    },
+    {
+      "from": [4.35, 0, 6.04],
+      "to": [5.23, 0.78, 9.77],
+      "faces": { "down": { "texture": "#rope" }, "up": { "texture": "#rope" }, "north": { "texture": "#rope" }, "south": { "texture": "#rope" }, "west": { "texture": "#rope" }, "east": { "texture": "#rope" } }
+    },
+    {
+      "from": [10.61, 0, 6],
+      "to": [11.45, 0.78, 9.99],
+      "faces": { "down": { "texture": "#rope" }, "up": { "texture": "#rope" }, "north": { "texture": "#rope" }, "south": { "texture": "#rope" }, "west": { "texture": "#rope" }, "east": { "texture": "#rope" } }
+    },
+    {
+      "from": [4.84, 0, 9.76],
+      "to": [10.98, 0.78, 10.68],
+      "faces": { "down": { "texture": "#braid" }, "up": { "texture": "#braid" }, "north": { "texture": "#braid" }, "south": { "texture": "#braid" }, "west": { "texture": "#braid" }, "east": { "texture": "#braid" } }
+    },
+    {
+      "from": [5.43, 0.18, 6.56],
+      "to": [9.85, 0.96, 7.17],
+      "faces": { "down": { "texture": "#rope" }, "up": { "texture": "#rope" }, "north": { "texture": "#rope" }, "south": { "texture": "#rope" }, "west": { "texture": "#rope" }, "east": { "texture": "#rope" } }
+    },
+    {
+      "from": [9.47, 0.18, 7.17],
+      "to": [10.23, 0.96, 8.87],
+      "faces": { "down": { "texture": "#braid" }, "up": { "texture": "#braid" }, "north": { "texture": "#braid" }, "south": { "texture": "#braid" }, "west": { "texture": "#braid" }, "east": { "texture": "#braid" } }
+    },
+    {
+      "from": [5.58, 0.18, 8.84],
+      "to": [9.67, 0.96, 9.46],
+      "faces": { "down": { "texture": "#rope" }, "up": { "texture": "#rope" }, "north": { "texture": "#rope" }, "south": { "texture": "#rope" }, "west": { "texture": "#rope" }, "east": { "texture": "#rope" } }
+    },
+    {
+      "from": [5.4, 0.18, 7.1],
+      "to": [6.15, 0.96, 8.88],
+      "faces": { "down": { "texture": "#braid" }, "up": { "texture": "#braid" }, "north": { "texture": "#braid" }, "south": { "texture": "#braid" }, "west": { "texture": "#braid" }, "east": { "texture": "#braid" } }
+    },
+    {
+      "from": [6.21, 0.79, 5.42],
+      "to": [6.9, 1.51, 8.03],
+      "faces": { "down": { "texture": "#braid" }, "up": { "texture": "#braid" }, "north": { "texture": "#braid" }, "south": { "texture": "#braid" }, "west": { "texture": "#braid" }, "east": { "texture": "#braid" } }
+    },
+    {
+      "from": [6.26, 0.88, 7.21],
+      "to": [8.5, 1.8, 8.13],
+      "faces": { "down": { "texture": "#rope" }, "up": { "texture": "#rope" }, "north": { "texture": "#rope" }, "south": { "texture": "#rope" }, "west": { "texture": "#rope" }, "east": { "texture": "#rope" } }
+    },
+    {
+      "from": [10.85, 0.2, 10.21],
+      "to": [11.65, 0.83, 11.23],
+      "faces": { "down": { "texture": "#rope" }, "up": { "texture": "#rope" }, "north": { "texture": "#rope" }, "south": { "texture": "#rope" }, "west": { "texture": "#rope" }, "east": { "texture": "#rope" } }
+    },
+    {
+      "from": [9.66, 0.1, 10.78],
+      "to": [11.65, 0.72, 11.35],
+      "faces": { "down": { "texture": "#braid" }, "up": { "texture": "#braid" }, "north": { "texture": "#braid" }, "south": { "texture": "#braid" }, "west": { "texture": "#braid" }, "east": { "texture": "#braid" } }
+    }
+  ]
+}

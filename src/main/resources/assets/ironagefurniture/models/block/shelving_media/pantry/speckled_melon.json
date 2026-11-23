@@ -1,0 +1,10 @@
+{
+  "parent": "ironagefurniture:block/surface_food/melon",
+  "textures": {
+    "particle": "minecraft:blocks/gold_block",
+    "rind": "minecraft:blocks/hardened_clay_stained_orange",
+    "middle": "minecraft:blocks/wool_colored_yellow",
+    "flesh": "minecraft:blocks/gold_block",
+    "seed": "minecraft:blocks/glowstone"
+  }
+}

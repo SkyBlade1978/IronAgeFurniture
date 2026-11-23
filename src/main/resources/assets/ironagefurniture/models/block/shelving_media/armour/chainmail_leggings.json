@@ -1,0 +1,74 @@
+{
+  "textures": {
+    "particle": "ironagefurniture:blocks/shelf_chainmail",
+    "mail": "ironagefurniture:blocks/shelf_chainmail",
+    "trim": "minecraft:blocks/wool_colored_gray",
+    "metal": "minecraft:blocks/iron_block"
+  },
+  "elements": [
+    {
+      "from": [3.53, 0, 7.78],
+      "to": [7.41, 0.46, 8.32],
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#trim" }, "north": { "texture": "#trim" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [8.59, 0, 7.78],
+      "to": [12.47, 0.46, 8.32],
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#trim" }, "north": { "texture": "#trim" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [3.53, 0.85, 5.46],
+      "to": [7.41, 1.48, 8.35],
+      "rotation": {"origin":[8,0.75,6.65],"axis":"x","angle":22.5,"rescale":false},
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#trim" }, "north": { "texture": "#trim" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [8.59, 0.85, 5.46],
+      "to": [12.47, 1.48, 8.35],
+      "rotation": {"origin":[8,0.75,6.65],"axis":"x","angle":22.5,"rescale":false},
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#trim" }, "north": { "texture": "#trim" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [3.64, 1.43, 5.38],
+      "to": [7.42, 3.19, 8.39],
+      "rotation": {"origin":[8,0.75,6.65],"axis":"x","angle":22.5,"rescale":false},
+      "faces": { "down": { "texture": "#mail" }, "up": { "texture": "#mail" }, "north": { "texture": "#mail" }, "south": { "texture": "#mail" }, "west": { "texture": "#mail" }, "east": { "texture": "#mail" } }
+    },
+    {
+      "from": [8.58, 1.43, 5.38],
+      "to": [12.36, 3.19, 8.39],
+      "rotation": {"origin":[8,0.75,6.65],"axis":"x","angle":22.5,"rescale":false},
+      "faces": { "down": { "texture": "#mail" }, "up": { "texture": "#mail" }, "north": { "texture": "#mail" }, "south": { "texture": "#mail" }, "west": { "texture": "#mail" }, "east": { "texture": "#mail" } }
+    },
+    {
+      "from": [3.34, 3.14, 5.22],
+      "to": [7.59, 5.82, 8.62],
+      "rotation": {"origin":[8,0.75,6.65],"axis":"x","angle":22.5,"rescale":false},
+      "faces": { "down": { "texture": "#mail" }, "up": { "texture": "#mail" }, "north": { "texture": "#mail" }, "south": { "texture": "#mail" }, "west": { "texture": "#mail" }, "east": { "texture": "#mail" } }
+    },
+    {
+      "from": [8.41, 3.14, 5.22],
+      "to": [12.66, 5.82, 8.62],
+      "rotation": {"origin":[8,0.75,6.65],"axis":"x","angle":22.5,"rescale":false},
+      "faces": { "down": { "texture": "#mail" }, "up": { "texture": "#mail" }, "north": { "texture": "#mail" }, "south": { "texture": "#mail" }, "west": { "texture": "#mail" }, "east": { "texture": "#mail" } }
+    },
+    {
+      "from": [3.25, 5.68, 5.18],
+      "to": [12.75, 7.56, 8.65],
+      "rotation": {"origin":[8,0.75,6.65],"axis":"x","angle":22.5,"rescale":false},
+      "faces": { "down": { "texture": "#mail" }, "up": { "texture": "#mail" }, "north": { "texture": "#mail" }, "south": { "texture": "#mail" }, "west": { "texture": "#mail" }, "east": { "texture": "#mail" } }
+    },
+    {
+      "from": [3.12, 7.5, 5.05],
+      "to": [12.88, 8.24, 8.77],
+      "rotation": {"origin":[8,0.75,6.65],"axis":"x","angle":22.5,"rescale":false},
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#trim" }, "north": { "texture": "#trim" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [7.46, 7.47, 4.9],
+      "to": [8.54, 8.25, 5.17],
+      "rotation": {"origin":[8,0.75,6.65],"axis":"x","angle":22.5,"rescale":false},
+      "faces": { "down": { "texture": "#metal" }, "up": { "texture": "#metal" }, "north": { "texture": "#metal" }, "south": { "texture": "#metal" }, "west": { "texture": "#metal" }, "east": { "texture": "#metal" } }
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "textures": {"particle":"minecraft:blocks/planks_oak","rail":"minecraft:blocks/planks_oak","rung":"minecraft:blocks/planks_spruce"},
+  "elements": [
+    {
+      "from": [2.5,0,7.375],
+      "to": [3.75,9,8.625],
+      "faces": {
+        "down": {"texture":"#rail"},
+        "up": {"texture":"#rail"},
+        "north": {"texture":"#rail"},
+        "south": {"texture":"#rail"},
+        "west": {"texture":"#rail"},
+        "east": {"texture":"#rail"}
+      }
+    },
+    {
+      "from": [12.25,0,7.375],
+      "to": [13.5,9,8.625],
+      "faces": {
+        "down": {"texture":"#rail"},
+        "up": {"texture":"#rail"},
+        "north": {"texture":"#rail"},
+        "south": {"texture":"#rail"},
+        "west": {"texture":"#rail"},
+        "east": {"texture":"#rail"}
+      }
+    },
+    {
+      "from": [3.75,1.2,7.55],
+      "to": [12.25,1.92,8.45],
+      "faces": {
+        "down": {"texture":"#rung"},
+        "up": {"texture":"#rung"},
+        "north": {"texture":"#rung"},
+        "south": {"texture":"#rung"},
+        "west": {"texture":"#rung"},
+        "east": {"texture":"#rung"}
+      }
+    },
+    {
+      "from": [3.75,3.3,7.55],
+      "to": [12.25,4.02,8.45],
+      "faces": {
+        "down": {"texture":"#rung"},
+        "up": {"texture":"#rung"},
+        "north": {"texture":"#rung"},
+        "south": {"texture":"#rung"},
+        "west": {"texture":"#rung"},
+        "east": {"texture":"#rung"}
+      }
+    },
+    {
+      "from": [3.75,5.4,7.55],
+      "to": [12.25,6.12,8.45],
+      "faces": {
+        "down": {"texture":"#rung"},
+        "up": {"texture":"#rung"},
+        "north": {"texture":"#rung"},
+        "south": {"texture":"#rung"},
+        "west": {"texture":"#rung"},
+        "east": {"texture":"#rung"}
+      }
+    },
+    {
+      "from": [3.75,7.5,7.55],
+      "to": [12.25,8.22,8.45],
+      "faces": {
+        "down": {"texture":"#rung"},
+        "up": {"texture":"#rung"},
+        "north": {"texture":"#rung"},
+        "south": {"texture":"#rung"},
+        "west": {"texture":"#rung"},
+        "east": {"texture":"#rung"}
+      }
+    }
+  ]
+}

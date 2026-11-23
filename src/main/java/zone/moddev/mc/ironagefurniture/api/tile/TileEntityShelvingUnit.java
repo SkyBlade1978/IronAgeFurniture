@@ -6,30 +6,47 @@ import java.util.List;
 import zone.moddev.mc.ironagefurniture.api.Blocks.RackBlock;
 import zone.moddev.mc.ironagefurniture.api.Blocks.ShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf.ShelfContentKind;
+import zone.moddev.mc.ironagefurniture.api.network.ShelfMapSync;
+import zone.moddev.mc.ironagefurniture.api.surface.FurnitureSurfaceDisplay;
+import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.ironagefurniture.api.surface.VanillaShelfDisplay;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 
-public class TileEntityShelvingUnit extends TileEntity {
+public class TileEntityShelvingUnit extends TileEntityDisplayStorage {
+	public static final int LABEL_MAX_LENGTH = FurnitureLabel.MAX_LENGTH;
+
 	private final ShelfLevel lower = new ShelfLevel(false);
 	private final ShelfLevel upper = new ShelfLevel(true);
 
 	public ShelfLevel getLevel(boolean upper) {
 		return upper ? this.upper : this.lower;
+	}
+
+	@Override
+	protected boolean tryFeed(ItemStack stack, boolean simulate) {
+		IBlockState state = this.getShelvingState();
+		if (!(state.getBlock() instanceof ShelvingUnit) || !ShelvingUnit.canFeedDisplay(stack)) {
+			return false;
+		}
+
+		return this.upper.tryFeed(stack, simulate) || this.lower.tryFeed(stack, simulate);
 	}
 
 	public boolean isEmpty() {
@@ -38,6 +55,24 @@ public class TileEntityShelvingUnit extends TileEntity {
 
 	public int getDisplayLight() {
 		return Math.max(this.lower.getLight(), this.upper.getLight());
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		ShelfMapSync.INSTANCE.update(this);
+	}
+
+	@Override
+	public void invalidate() {
+		ShelfMapSync.INSTANCE.remove(this);
+		super.invalidate();
+	}
+
+	@Override
+	public void onChunkUnload() {
+		ShelfMapSync.INSTANCE.remove(this);
+		super.onChunkUnload();
 	}
 
 	@Override
@@ -95,6 +130,7 @@ public class TileEntityShelvingUnit extends TileEntity {
 		private final SurfaceSetting setting = new SurfaceSetting();
 		private final List<ItemStack> media = new ArrayList<>();
 		private int mediaRevision;
+		private final FurnitureLabel label = new FurnitureLabel();
 
 		private ShelfLevel(boolean upper) {
 			this.upper = upper;
@@ -106,7 +142,27 @@ public class TileEntityShelvingUnit extends TileEntity {
 		}
 
 		public boolean isEmpty() {
-			return this.media.isEmpty() && !this.setting.hasAnyItem();
+			return this.label.getSign() == null && this.media.isEmpty() && !this.setting.hasAnyItem();
+		}
+
+		public FurnitureLabel getLabel() {
+			return this.label;
+		}
+
+		public ItemStack getLabelSign() {
+			return this.label.getSign();
+		}
+
+		public String getLabelText() {
+			return this.label.getText();
+		}
+
+		public void setLabel(ItemStack sign, String text) {
+			this.label.set(sign, text);
+		}
+
+		public ItemStack removeLabel() {
+			return this.label.remove();
 		}
 
 		public int getMediaCount() {
@@ -115,6 +171,28 @@ public class TileEntityShelvingUnit extends TileEntity {
 
 		public ShelfContentKind getMediaKind() {
 			return ShelvingUnit.classifyMedia(this.getMediaItem(0));
+		}
+
+		public ShelfLayout getShelfLayout() {
+			return this.getMediaKind() == ShelfContentKind.NONE
+				? SurfaceContentRegistry.describe(this.getMediaItem(0)).getShelfLayout()
+				: ShelfLayout.NONE;
+		}
+
+		public ShelfLayout.Placement getShelfPlacement(int index) {
+			ShelfLayout layout = this.getShelfLayout();
+			ItemStack stack = this.getMediaItem(index);
+			if (stack == null || index >= layout.getCapacity()) {
+				return null;
+			}
+			VanillaShelfDisplay display = VanillaShelfDisplay.find(stack);
+			SurfaceContentRegistry.Descriptor descriptor = display == null
+				? SurfaceContentRegistry.describe(stack) : display.getShelfModel();
+			return layout.place(index, descriptor);
+		}
+
+		public int getVisibleArrangementCount() {
+			return Math.min(this.getMediaCount(), this.getShelfLayout().getCapacity());
 		}
 
 		public int getMediaRevision() {
@@ -132,10 +210,11 @@ public class TileEntityShelvingUnit extends TileEntity {
 		}
 
 		public boolean addMedia(ItemStack stack) {
-			ShelfContentKind incoming = ShelvingUnit.classifyMedia(stack);
-			if (incoming == ShelfContentKind.NONE || this.setting.hasAnyItem()
-					|| (!this.media.isEmpty() && this.getMediaKind() != incoming)
-					|| this.media.size() >= ShelvingUnit.getMediaCapacity(incoming)) {
+			return this.addMedia(stack, false);
+		}
+
+		private boolean addMedia(ItemStack stack, boolean loading) {
+			if (!this.canAddMedia(stack, loading)) {
 				return false;
 			}
 
@@ -143,6 +222,106 @@ public class TileEntityShelvingUnit extends TileEntity {
 			stored.stackSize = 1;
 			this.media.add(stored);
 			this.mediaRevision++;
+			return true;
+		}
+
+		private boolean canAddMedia(ItemStack stack, boolean loading) {
+			return !this.setting.hasAnyItem() && this.media.size() < shelfCapacity(stack, loading)
+				&& (this.media.isEmpty() || matchesDisplay(this.media.get(0), stack));
+		}
+
+		private boolean tryFeed(ItemStack stack, boolean simulate) {
+			ShelfContentKind kind = ShelvingUnit.classifyMedia(stack);
+			boolean hasSurfaceItems = this.setting.hasAnyItem();
+			if (hasSurfaceItems && (kind == ShelfContentKind.BOOKS || kind == ShelfContentKind.RECORDS)) {
+				return false;
+			}
+
+			boolean structured = kind != ShelfContentKind.NONE
+				|| SurfaceContentRegistry.describe(stack).getShelfLayout() != ShelfLayout.NONE;
+			if (!this.media.isEmpty() || structured && !hasSurfaceItems) {
+				if (simulate) {
+					return this.canAddMedia(stack, false);
+				}
+				if (!this.addMedia(stack)) {
+					return false;
+				}
+			} else {
+				EnumFacing facing = getFacing();
+				EnumFacing.Axis axis = this.getSurfaceAxis();
+				if (!this.setting.canInsert(stack, facing, 0.5F, 0.5F, axis)) {
+					return false;
+				}
+				if (simulate) {
+					return true;
+				}
+				this.setting.insert(stack, facing, 0.5F, 0.5F, axis);
+			}
+
+			this.markSurfaceSettingChanged();
+			return true;
+		}
+
+		private int shelfCapacity(ItemStack stack, boolean loading) {
+			ShelfContentKind kind = ShelvingUnit.classifyMedia(stack);
+			if (kind != ShelfContentKind.NONE) {
+				return ShelvingUnit.getMediaCapacity(kind);
+			}
+
+			ShelfLayout layout = SurfaceContentRegistry.describe(stack).getShelfLayout();
+			// Older carrot trays held 18. Keep the extras available for pickup and block drops.
+			return loading && layout == ShelfLayout.CARROT_TRAY ? 18 : layout.getCapacity();
+		}
+
+		private boolean matchesDisplay(ItemStack first, ItemStack incoming) {
+			ShelfContentKind kind = ShelvingUnit.classifyMedia(first);
+			if (kind != ShelfContentKind.NONE) {
+				return kind == ShelvingUnit.classifyMedia(incoming);
+			}
+
+			if (first.getItem() == Items.FLINT_AND_STEEL) {
+				return incoming != null && incoming.getItem() == Items.FLINT_AND_STEEL;
+			}
+
+			if (SurfaceContentRegistry.describe(first).getShelfLayout() == ShelfLayout.GEM_PLATTER) {
+				return SurfaceContentRegistry.describe(incoming).getShelfLayout() == ShelfLayout.GEM_PLATTER;
+			}
+
+			return ItemStack.areItemsEqual(first, incoming) && ItemStack.areItemStackTagsEqual(first, incoming);
+		}
+
+		public boolean takeShelfItem(EntityPlayer player) {
+			return this.takeShelfItem(player, this.media.size() - 1);
+		}
+
+		public boolean takeShelfItem(EntityPlayer player, int index) {
+			ItemStack stack = this.getMediaItem(index);
+			if (stack == null) {
+				return false;
+			}
+
+			InventoryPlayer inventory = player.inventory;
+			if (stack.isStackable()) {
+				for (ItemStack existing : inventory.mainInventory) {
+					if (existing != null && existing.isStackable() && ItemStack.areItemsEqual(existing, stack)
+							&& ItemStack.areItemStackTagsEqual(existing, stack)
+							&& existing.stackSize < Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit())) {
+						existing.stackSize++;
+						this.removeMedia(index);
+						inventory.markDirty();
+						this.markSurfaceSettingChanged();
+						return true;
+					}
+				}
+			}
+
+			int slot = inventory.getFirstEmptyStack();
+			if (slot < 0) {
+				return false;
+			}
+			inventory.setInventorySlotContents(slot, this.removeMedia(index));
+			inventory.markDirty();
+			this.markSurfaceSettingChanged();
 			return true;
 		}
 
@@ -161,19 +340,21 @@ public class TileEntityShelvingUnit extends TileEntity {
 
 		private void readItems(NBTTagCompound compound) {
 			this.setting.readFromNBT(compound);
+			this.label.readFromNBT(compound);
+
 			this.media.clear();
 			this.mediaRevision++;
 			NBTTagList items = compound.getTagList("MediaItems", 10);
 			for (int index = 0; index < items.tagCount(); index++) {
-				this.addMedia(ItemStack.loadItemStackFromNBT(items.getCompoundTagAt(index)));
+				this.addMedia(ItemStack.loadItemStackFromNBT(items.getCompoundTagAt(index)), true);
 			}
 
 			this.migrateSurfaceMedia();
 		}
 
 		private void migrateSurfaceMedia() {
-			ShelfContentKind kind = ShelvingUnit.classifyMedia(this.setting.getCompatibilityItem());
-			if (!this.media.isEmpty() || kind == ShelfContentKind.NONE) {
+			ItemStack first = this.setting.getCompatibilityItem();
+			if (!this.media.isEmpty() || first == null || this.setting.getItemCount() > shelfCapacity(first, false)) {
 				return;
 			}
 
@@ -182,7 +363,7 @@ public class TileEntityShelvingUnit extends TileEntity {
 			for (Slot slot : Slot.values()) {
 				ItemStack item = this.setting.getItem(slot);
 				if (item != null) {
-					if (ShelvingUnit.classifyMedia(item) != kind) {
+					if (!matchesDisplay(first, item)) {
 						return;
 					}
 					items.add(item);
@@ -198,6 +379,8 @@ public class TileEntityShelvingUnit extends TileEntity {
 		private NBTTagCompound writeItems() {
 			NBTTagCompound compound = new NBTTagCompound();
 			this.setting.writeToNBT(compound);
+			this.label.writeToNBT(compound);
+
 			if (!this.media.isEmpty()) {
 				NBTTagList items = new NBTTagList();
 				for (ItemStack stack : this.media) {
@@ -277,7 +460,9 @@ public class TileEntityShelvingUnit extends TileEntity {
 			boolean alongX = this.getSurfaceAxis() == EnumFacing.Axis.X;
 			double halfDepth = alongX ? acrossZ : acrossX;
 			double halfWidth = alongX ? acrossX : acrossZ;
-			return Math.min(0.65D, Math.min(0.375D / bounds.maxY,
+			boolean fittedModel = this.setting.getItemCount() == 1
+				&& FurnitureSurfaceDisplay.find(this.setting.getCompatibilityItem()) != null;
+			return Math.min(fittedModel ? 1.0D : 0.65D, Math.min(0.375D / bounds.maxY,
 				Math.min(0.24D / halfDepth, 0.425D / halfWidth)));
 		}
 
@@ -285,6 +470,7 @@ public class TileEntityShelvingUnit extends TileEntity {
 		public void markSurfaceSettingChanged() {
 			if (world != null && !world.isRemote) {
 				this.migrateSurfaceMedia();
+				ShelfMapSync.INSTANCE.update(TileEntityShelvingUnit.this);
 			}
 			markDirty();
 
@@ -299,12 +485,11 @@ public class TileEntityShelvingUnit extends TileEntity {
 			int light = 0;
 
 			for (SurfaceSetting.Slot slot : SurfaceSetting.Slot.values()) {
-				ItemStack stack = this.setting.getItem(slot);
+				light = Math.max(light, FurnitureSurfaceDisplay.getLight(this.setting.getItem(slot)));
+			}
 
-				if (stack != null && stack.getItem() instanceof ItemBlock) {
-					IBlockState state = ((ItemBlock)stack.getItem()).getBlock().getDefaultState();
-					light = Math.max(light, state.getLightValue());
-				}
+			for (ItemStack stack : this.media) {
+				light = Math.max(light, FurnitureSurfaceDisplay.getLight(stack));
 			}
 
 			return light;

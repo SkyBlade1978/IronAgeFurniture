@@ -1,0 +1,50 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/nether_wart_block",
+    "root": "minecraft:blocks/hardened_clay_stained_brown",
+    "wart": "minecraft:blocks/nether_wart_block",
+    "tip": "minecraft:blocks/wool_colored_red"
+  },
+  "elements": [
+    {
+      "from": [6, 0, 6.9],
+      "to": [10, 0.85, 9.1],
+      "faces": {"down": { "texture": "#root" }, "up": { "texture": "#root" }, "north": { "texture": "#root" }, "south": { "texture": "#root" }, "west": { "texture": "#root" }, "east": { "texture": "#root" } }
+    },
+    {
+      "from": [5.4, 0.55, 8.25],
+      "to": [7.65, 2.35, 10.3],
+      "faces": {"down": { "texture": "#wart" }, "up": { "texture": "#wart" }, "north": { "texture": "#wart" }, "south": { "texture": "#wart" }, "west": { "texture": "#wart" }, "east": { "texture": "#wart" } }
+    },
+    {
+      "from": [8.3, 0.55, 8.14],
+      "to": [10.55, 2.65, 10.4],
+      "faces": {"down": { "texture": "#wart" }, "up": { "texture": "#wart" }, "north": { "texture": "#wart" }, "south": { "texture": "#wart" }, "west": { "texture": "#wart" }, "east": { "texture": "#wart" } }
+    },
+    {
+      "from": [5.8, 0.5, 5.6],
+      "to": [8.2, 2.1, 7.8],
+      "faces": {"down": { "texture": "#wart" }, "up": { "texture": "#wart" }, "north": { "texture": "#wart" }, "south": { "texture": "#wart" }, "west": { "texture": "#wart" }, "east": { "texture": "#wart" } }
+    },
+    {
+      "from": [8.45, 0.65, 5.65],
+      "to": [10.6, 2.4, 7.85],
+      "faces": {"down": { "texture": "#wart" }, "up": { "texture": "#wart" }, "north": { "texture": "#wart" }, "south": { "texture": "#wart" }, "west": { "texture": "#wart" }, "east": { "texture": "#wart" } }
+    },
+    {
+      "from": [7.1, 1.45, 7.12],
+      "to": [9.25, 3.16, 9.38],
+      "faces": {"down": { "texture": "#wart" }, "up": { "texture": "#wart" }, "north": { "texture": "#wart" }, "south": { "texture": "#wart" }, "west": { "texture": "#wart" }, "east": { "texture": "#wart" } }
+    },
+    {
+      "from": [7.44, 3.15, 7.46],
+      "to": [8.84, 3.6, 8.95],
+      "faces": {"down": { "texture": "#tip" }, "up": { "texture": "#tip" }, "north": { "texture": "#tip" }, "south": { "texture": "#tip" }, "west": { "texture": "#tip" }, "east": { "texture": "#tip" } }
+    },
+    {
+      "from": [5.8, 2.34, 8.6],
+      "to": [7.14, 2.65, 9.9],
+      "faces": {"down": { "texture": "#tip" }, "up": { "texture": "#tip" }, "north": { "texture": "#tip" }, "south": { "texture": "#tip" }, "west": { "texture": "#tip" }, "east": { "texture": "#tip" } }
+    }
+  ]
+}

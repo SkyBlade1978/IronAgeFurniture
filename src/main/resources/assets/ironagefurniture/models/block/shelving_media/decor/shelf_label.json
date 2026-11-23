@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "board": "minecraft:blocks/planks_oak",
+    "edge": "minecraft:blocks/log_oak"
+  },
+  "elements": [
+    {
+      "from": [2.5, 0, 7.5],
+      "to": [13.5, 1.75, 8.25],
+      "faces": {
+        "north": { "texture": "#board", "uv": [0, 5, 11, 6.75] },
+        "south": { "texture": "#edge" },
+        "east": { "texture": "#edge" },
+        "west": { "texture": "#edge" },
+        "up": { "texture": "#edge" },
+        "down": { "texture": "#edge" }
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=south,sealed=false": {"model":"ironagefurniture:crate_wood_ironage_birch_unlatched"},
+    "facing=south,sealed=true": {"model":"ironagefurniture:crate_wood_ironage_birch_latched"},
+    "facing=west,sealed=false": {"model":"ironagefurniture:crate_wood_ironage_birch_unlatched","y":90},
+    "facing=west,sealed=true": {"model":"ironagefurniture:crate_wood_ironage_birch_latched","y":90},
+    "facing=north,sealed=false": {"model":"ironagefurniture:crate_wood_ironage_birch_unlatched","y":180},
+    "facing=north,sealed=true": {"model":"ironagefurniture:crate_wood_ironage_birch_latched","y":180},
+    "facing=east,sealed=false": {"model":"ironagefurniture:crate_wood_ironage_birch_unlatched","y":270},
+    "facing=east,sealed=true": {"model":"ironagefurniture:crate_wood_ironage_birch_latched","y":270}
+  }
+}

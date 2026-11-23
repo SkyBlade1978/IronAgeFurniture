@@ -78,9 +78,11 @@ def originalForge = providers.provider {
 def atFixtures = [
     Advantage: ['orespawn'],
     AdvantageClient: ['orespawn', 'jei'],
+    ModernMetals: ['orespawnModernMetals'],
     Woods: ['BiomesOPlenty', 'mantle', 'forestry', 'immersiveengineering']
 ]
 def accessGroup = { List<String> ids ->
+    if ('orespawnModernMetals' in ids) return 'ModernMetals'
     if ('orespawn' in ids) return 'jei' in ids ? 'AdvantageClient' : 'Advantage'
     'BiomesOPlenty' in ids ? 'Woods' : null
 }
@@ -181,9 +183,15 @@ def buildAddons = tasks.register('buildPhase5AddonJars') {
 }
 
 def validateStack = { List<String> ids ->
-    if (ids.toSet().size() != ids.size()) throw new GradleException("Duplicate mods: ${ids}")
-    if ('poweradvantage' in ids && ids.any { it in ['basepower', 'basesteam', 'baseelectric'] }) {
+    if (ids.collect { fixtures[it]?.modId ?: it }.toSet().size() != ids.size()) {
+        throw new GradleException("Duplicate mods: ${ids}")
+    }
+    if (ids.any { it in ['poweradvantage', 'steamadvantage', 'electricadvantage'] }
+            && ids.any { it in ['basepower', 'basesteam', 'baseelectric'] }) {
         throw new GradleException('Original and renamed Advantage mods must use separate profiles')
+    }
+    if (ids.any { it in ['steamadvantage', 'electricadvantage'] } && !ids.contains('poweradvantage')) {
+        throw new GradleException('Original Steam Advantage and Electric Advantage require Power Advantage')
     }
     if (ids.any { it in ['basepower', 'poweradvantage'] } && !ids.containsAll(['basemetals', 'orespawn'])) {
         throw new GradleException('Advantage profiles require Base Metals and OreSpawn')

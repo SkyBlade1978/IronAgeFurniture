@@ -48,7 +48,9 @@ public class RecipeInitialiser {
 
 	private static void generateSurfaceFurnitureRecipes() {
 		StorageInitialiser.registerRecipeTypes();
+		StorageInitialiser.registerStorageBenchRecipes();
 		GlassVaseInitialiser.registerRecipes();
+		ProduceInitialiser.registerRecipes();
 
 		WoodVariantHelper.forEachEnabledSlabVariant((suffix, slab) -> {
 			StorageInitialiser.registerBottleRackRecipe(suffix, slab);

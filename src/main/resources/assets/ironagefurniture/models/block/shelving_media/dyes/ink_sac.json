@@ -1,0 +1,40 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/wool_colored_black",
+    "skin": "minecraft:blocks/wool_colored_black",
+    "crease": "minecraft:blocks/hardened_clay_stained_black",
+    "neck": "minecraft:blocks/wool_colored_gray"
+  },
+  "elements": [
+    {
+      "from": [6.47, 0, 5.55],
+      "to": [9.53, 0.63, 9.39],
+      "faces": { "down": { "texture": "#skin" }, "up": { "texture": "#skin" }, "north": { "texture": "#skin" }, "south": { "texture": "#skin" }, "west": { "texture": "#skin" }, "east": { "texture": "#skin" } }
+    },
+    {
+      "from": [5.68, 0.63, 5.75],
+      "to": [10.32, 1.86, 9.91],
+      "faces": { "down": { "texture": "#skin" }, "up": { "texture": "#crease" }, "north": { "texture": "#skin" }, "south": { "texture": "#skin" }, "west": { "texture": "#skin" }, "east": { "texture": "#skin" } }
+    },
+    {
+      "from": [6.15, 1.86, 6.22],
+      "to": [9.85, 2.97, 9.81],
+      "faces": { "down": { "texture": "#skin" }, "up": { "texture": "#skin" }, "north": { "texture": "#skin" }, "south": { "texture": "#crease" }, "west": { "texture": "#skin" }, "east": { "texture": "#skin" } }
+    },
+    {
+      "from": [6.73, 2.97, 7.01],
+      "to": [9.2, 3.42, 9.4],
+      "faces": { "down": { "texture": "#crease" }, "up": { "texture": "#crease" }, "north": { "texture": "#skin" }, "south": { "texture": "#crease" }, "west": { "texture": "#crease" }, "east": { "texture": "#crease" } }
+    },
+    {
+      "from": [7.24, 3.42, 7.78],
+      "to": [8.74, 3.83, 8.99],
+      "faces": { "down": { "texture": "#skin" }, "up": { "texture": "#skin" }, "north": { "texture": "#skin" }, "south": { "texture": "#skin" }, "west": { "texture": "#skin" }, "east": { "texture": "#skin" } }
+    },
+    {
+      "from": [7.12, 3.83, 7.67],
+      "to": [8.88, 4.15, 9.08],
+      "faces": { "down": { "texture": "#crease" }, "up": { "texture": "#neck" }, "north": { "texture": "#crease" }, "south": { "texture": "#crease" }, "west": { "texture": "#crease" }, "east": { "texture": "#crease" } }
+    }
+  ]
+}

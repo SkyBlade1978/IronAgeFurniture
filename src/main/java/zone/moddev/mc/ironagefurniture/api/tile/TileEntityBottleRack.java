@@ -3,18 +3,19 @@ package zone.moddev.mc.ironagefurniture.api.tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import zone.moddev.mc.ironagefurniture.api.Blocks.BottleRack;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityBottleRack extends TileEntity {
+public class TileEntityBottleRack extends TileEntityDisplayStorage {
 	public static final int SLOT_COUNT = 9;
 
 	private final ItemStack[] bottles = new ItemStack[SLOT_COUNT];
@@ -45,6 +46,21 @@ public class TileEntityBottleRack extends TileEntity {
 
 	public boolean isSlotEmpty(int slot) {
 		return this.isValidSlot(slot) && !this.hasBottle(slot);
+	}
+
+	@Override
+	protected boolean tryFeed(ItemStack stack, boolean simulate) {
+		if (!BottleRack.isValidBottleItem(stack)) {
+			return false;
+		}
+
+		for (int slot = 0; slot < SLOT_COUNT; slot++) {
+			if (this.isSlotEmpty(slot)) {
+				return simulate || this.insertBottle(slot, stack);
+			}
+		}
+
+		return false;
 	}
 
 	public boolean insertBottle(int slot, ItemStack itemStack) {

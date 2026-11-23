@@ -3,7 +3,9 @@ package zone.moddev.mc.ironagefurniture.api.tile;
 import javax.annotation.Nullable;
 
 import zone.moddev.mc.ironagefurniture.api.FluidAgingRegistry;
+import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,6 +25,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileEntityBarrel extends TileEntity implements ITickable, net.minecraftforge.fluids.IFluidHandler {
 	public static final int CAPACITY = 16 * Fluid.BUCKET_VOLUME;
@@ -32,9 +35,13 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 	public static final String TANK_TAG = "Tank";
 
 	private static final String SEALED_TAG = "Sealed";
+	private static final String LABEL_TAG = "BarrelLabel";
 
 	private final FluidTank tank;
 	private final IFluidHandler sealedFluidHandler = new SealedBarrelFluidHandler();
+	private final BarrelBulkStorage bulkStorage = new BarrelBulkStorage(this);
+	private final FurnitureLabel label = new FurnitureLabel();
+	private EnumFacing labelFacing = EnumFacing.NORTH;
 	private boolean sealed;
 	private int clientAgeProgress;
 	private int clientAgeProgressTotal;
@@ -68,6 +75,47 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 		return this.sealedFluidHandler;
 	}
 
+	public BarrelBulkStorage getBulkStorage() {
+		return this.bulkStorage;
+	}
+
+	public FurnitureLabel getBarrelLabel() {
+		return this.label;
+	}
+
+	public EnumFacing getLabelFacing() {
+		return this.labelFacing;
+	}
+
+	public boolean writeLabel(EnumFacing facing, ItemStack sign, String text) {
+		if (!FurnitureLabel.isSign(sign) || !facing.getAxis().isHorizontal()) {
+			return false;
+		}
+
+		if (this.label.getSign() == null) {
+			this.labelFacing = facing;
+		}
+		this.label.set(sign, text);
+		this.markForContentsUpdate();
+		return true;
+	}
+
+	public ItemStack removeLabel() {
+		ItemStack sign = this.label.remove();
+		this.markForContentsUpdate();
+		return sign;
+	}
+
+	public boolean isBulkBarrel() {
+		if (this.isInvalid() || this.world == null || !this.world.isBlockLoaded(this.pos)
+				|| this.world.getTileEntity(this.pos) != this) {
+			return false;
+		}
+
+		Block block = this.world.getBlockState(this.pos).getBlock();
+		return block instanceof StorageBarrel && ((StorageBarrel)block).supportsBulkStorage();
+	}
+
 	@Nullable
 	public FluidStack getFluid() {
 		FluidStack fluid = this.tank.getFluid();
@@ -88,6 +136,10 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 	}
 
 	protected void setFluid(@Nullable FluidStack fluid) {
+		if (fluid != null && fluid.amount > 0 && this.bulkStorage.getCount() > 0) {
+			return;
+		}
+
 		this.tank.setFluid(fluid == null ? null : fluid.copy());
 		this.sanitizeFluid();
 		this.markForFluidUpdate();
@@ -202,6 +254,10 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 	}
 
 	public void readFromItemStack(ItemStack stack) {
+		if (this.bulkStorage.getCount() > 0) {
+			return;
+		}
+
 		NBTTagCompound tankTag = getTankTag(stack);
 
 		if (tankTag == null) {
@@ -217,6 +273,10 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 	}
 
 	public void markForFluidUpdate() {
+		this.markForContentsUpdate();
+	}
+
+	void markForContentsUpdate() {
 		this.markDirty();
 
 		if (this.world != null && !this.world.isRemote && this.pos != null) {
@@ -228,6 +288,10 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.isBulkBarrel()) {
+			return this.bulkStorage.getPort(facing) != null;
+		}
+
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
 			|| super.hasCapability(capability, facing);
 	}
@@ -235,6 +299,10 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.isBulkBarrel()) {
+			return (T)this.bulkStorage.getPort(facing);
+		}
+
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return (T)this.getFluidHandler();
 		}
@@ -255,6 +323,10 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 		this.sanitizeFluid();
 		this.sealed = compound.getBoolean(SEALED_TAG);
 		this.clearSealIfEmpty();
+		this.bulkStorage.readFromNBT(compound);
+		NBTTagCompound labelTag = compound.getCompoundTag(LABEL_TAG);
+		this.label.readFromNBT(labelTag);
+		this.labelFacing = labelTag.hasKey("Facing", 1) ? EnumFacing.getHorizontal(labelTag.getByte("Facing")) : EnumFacing.NORTH;
 	}
 
 	@Override
@@ -262,6 +334,15 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 		super.writeToNBT(compound);
 		compound.setTag(TANK_TAG, this.tank.writeToNBT(new NBTTagCompound()));
 		compound.setBoolean(SEALED_TAG, this.sealed && !this.isEmpty());
+		this.bulkStorage.writeToNBT(compound);
+		if (this.label.getSign() != null) {
+			NBTTagCompound labelTag = new NBTTagCompound();
+			this.label.writeToNBT(labelTag);
+			labelTag.setByte("Facing", (byte)this.labelFacing.getHorizontalIndex());
+			compound.setTag(LABEL_TAG, labelTag);
+		} else {
+			compound.removeTag(LABEL_TAG);
+		}
 		return compound;
 	}
 
@@ -410,14 +491,15 @@ public class TileEntityBarrel extends TileEntity implements ITickable, net.minec
 	private final class SealedBarrelFluidHandler implements IFluidHandler {
 		@Override
 		public IFluidTankProperties[] getTankProperties() {
-			return TileEntityBarrel.this.tank.getTankProperties();
+			return TileEntityBarrel.this.bulkStorage.getCount() > 0
+				? new IFluidTankProperties[0] : TileEntityBarrel.this.tank.getTankProperties();
 		}
 
 		@Override
 		public int fill(FluidStack resource, boolean doFill) {
 			boolean staleSeal = TileEntityBarrel.this.sealed && TileEntityBarrel.this.isEmpty();
 
-			if (TileEntityBarrel.this.sealed && !staleSeal) {
+			if (TileEntityBarrel.this.bulkStorage.getCount() > 0 || TileEntityBarrel.this.sealed && !staleSeal) {
 				return 0;
 			}
 

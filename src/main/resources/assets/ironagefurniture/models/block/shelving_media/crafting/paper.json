@@ -1,0 +1,30 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/sandstone_smooth",
+    "face": "minecraft:blocks/sandstone_smooth",
+    "edge": "minecraft:blocks/hardened_clay_stained_white",
+    "underside": "minecraft:blocks/hardened_clay_stained_silver"
+  },
+  "elements": [
+    {
+      "from": [3.35, 0, 3.95],
+      "to": [12.65, 0.2, 12.05],
+      "faces": { "down": { "texture": "#underside" }, "up": { "texture": "#underside" }, "north": { "texture": "#underside" }, "south": { "texture": "#underside" }, "west": { "texture": "#underside" }, "east": { "texture": "#underside" } }
+    },
+    {
+      "from": [3.35, 0.2, 3.95],
+      "to": [12.65, 0.61, 12.05],
+      "faces": { "down": { "texture": "#edge" }, "up": { "texture": "#face" }, "north": { "texture": "#edge" }, "south": { "texture": "#edge" }, "west": { "texture": "#edge" }, "east": { "texture": "#edge" } }
+    },
+    {
+      "from": [3.35, 0.2, 3.43],
+      "to": [10.65, 0.61, 3.95],
+      "faces": { "down": { "texture": "#edge" }, "up": { "texture": "#face" }, "north": { "texture": "#edge" }, "south": { "texture": "#edge" }, "west": { "texture": "#edge" }, "east": { "texture": "#edge" } }
+    },
+    {
+      "from": [4.1, 0.2, 12.05],
+      "to": [12.65, 0.61, 12.59],
+      "faces": { "down": { "texture": "#edge" }, "up": { "texture": "#face" }, "north": { "texture": "#edge" }, "south": { "texture": "#edge" }, "west": { "texture": "#edge" }, "east": { "texture": "#edge" } }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/objects/marker",
+  "textures": {"icon":"minecraft:items/structure_void"}
+}

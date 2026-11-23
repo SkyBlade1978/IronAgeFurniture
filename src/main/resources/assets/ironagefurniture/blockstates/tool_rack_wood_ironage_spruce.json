@@ -1,0 +1,68 @@
+{
+    "variants": {
+        "connections=0,facing=north": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_0",
+            "y": 0
+        },
+        "connections=1,facing=north": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_1",
+            "y": 0
+        },
+        "connections=2,facing=north": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_2",
+            "y": 0
+        },
+        "connections=3,facing=north": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_3",
+            "y": 0
+        },
+        "connections=0,facing=east": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_0",
+            "y": 90
+        },
+        "connections=1,facing=east": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_1",
+            "y": 90
+        },
+        "connections=2,facing=east": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_2",
+            "y": 90
+        },
+        "connections=3,facing=east": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_3",
+            "y": 90
+        },
+        "connections=0,facing=south": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_0",
+            "y": 180
+        },
+        "connections=1,facing=south": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_1",
+            "y": 180
+        },
+        "connections=2,facing=south": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_2",
+            "y": 180
+        },
+        "connections=3,facing=south": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_3",
+            "y": 180
+        },
+        "connections=0,facing=west": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_0",
+            "y": 270
+        },
+        "connections=1,facing=west": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_1",
+            "y": 270
+        },
+        "connections=2,facing=west": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_2",
+            "y": 270
+        },
+        "connections=3,facing=west": {
+            "model": "ironagefurniture:tool_rack_wood_ironage_spruce_3",
+            "y": 270
+        }
+    }
+}

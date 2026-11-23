@@ -1,0 +1,4 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/objects/brick_shape",
+  "textures": {"brick":"minecraft:blocks/nether_brick","particle":"minecraft:blocks/nether_brick"}
+}

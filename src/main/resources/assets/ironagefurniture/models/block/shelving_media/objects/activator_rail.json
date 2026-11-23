@@ -1,0 +1,4 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/objects/rail_shape",
+  "textures": {"track":"minecraft:blocks/rail_activator"}
+}

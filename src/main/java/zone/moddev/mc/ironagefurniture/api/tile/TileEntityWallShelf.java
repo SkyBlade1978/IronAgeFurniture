@@ -5,6 +5,7 @@ import java.util.List;
 
 import zone.moddev.mc.ironagefurniture.BlockObjectHolder;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceDisplayBlocker;
+import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf.ShelfContentKind;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf.ShelfContents;
 
@@ -14,12 +15,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityWallShelf extends TileEntity implements zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost {
+public class TileEntityWallShelf extends TileEntityDisplayStorage implements zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost {
 	private final zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting setting = new zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting();
 	@Override
 	public zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting getSurfaceSetting() { return this.setting; }
@@ -43,7 +43,15 @@ public class TileEntityWallShelf extends TileEntity implements zone.moddev.mc.ir
 	@Override
 	public void onLoad() {
 		super.onLoad();
-		zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceReservationRepair.enqueue(this.world, this.pos);
+		if (this.hasDisplayedItem()) {
+			zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceReservationRepair.enqueue(this.world, this.pos);
+		}
+	}
+
+	@Override
+	protected boolean tryFeed(ItemStack stack, boolean simulate) {
+		Block block = this.world.getBlockState(this.pos).getBlock();
+		return block instanceof WallShelf && ((WallShelf)block).feedDisplay(this.world, this.pos, this, stack, simulate);
 	}
 	private static final int MAX_EMBEDDED_SLOTS = 9;
 

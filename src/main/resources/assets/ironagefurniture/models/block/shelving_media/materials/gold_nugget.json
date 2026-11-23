@@ -1,0 +1,33 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/gold_block",
+    "gold": "minecraft:blocks/gold_block"
+  },
+  "elements": [
+    {
+      "from": [6.05, 0, 6.34],
+      "to": [9.95, 0.55, 9.58],
+      "faces": { "down": { "texture": "#gold", "uv": [2, 2, 14, 7] }, "up": { "texture": "#gold", "uv": [2, 2, 14, 7] }, "north": { "texture": "#gold", "uv": [2, 2, 14, 7] }, "south": { "texture": "#gold", "uv": [2, 2, 14, 7] }, "west": { "texture": "#gold", "uv": [2, 2, 14, 7] }, "east": { "texture": "#gold", "uv": [2, 2, 14, 7] } }
+    },
+    {
+      "from": [5.7, 0.52, 6.14],
+      "to": [10.3, 1.67, 9.62],
+      "faces": { "down": { "texture": "#gold", "uv": [1, 2, 14, 9] }, "up": { "texture": "#gold", "uv": [1, 2, 14, 9] }, "north": { "texture": "#gold", "uv": [1, 2, 14, 9] }, "south": { "texture": "#gold", "uv": [1, 2, 14, 9] }, "west": { "texture": "#gold", "uv": [1, 2, 14, 9] }, "east": { "texture": "#gold", "uv": [1, 2, 14, 9] } }
+    },
+    {
+      "from": [7.36, 0.81, 5.9],
+      "to": [9.78, 1.47, 10.1],
+      "faces": { "down": { "texture": "#gold", "uv": [2, 3, 14, 9] }, "up": { "texture": "#gold", "uv": [2, 3, 14, 9] }, "north": { "texture": "#gold", "uv": [2, 3, 14, 9] }, "south": { "texture": "#gold", "uv": [2, 3, 14, 9] }, "west": { "texture": "#gold", "uv": [2, 3, 14, 9] }, "east": { "texture": "#gold", "uv": [2, 3, 14, 9] } }
+    },
+    {
+      "from": [6.31, 1.59, 6.69],
+      "to": [9.15, 2.44, 9.45],
+      "faces": { "down": { "texture": "#gold", "uv": [3, 2, 13, 10] }, "up": { "texture": "#gold", "uv": [3, 2, 13, 10] }, "north": { "texture": "#gold", "uv": [3, 2, 13, 10] }, "south": { "texture": "#gold", "uv": [3, 2, 13, 10] }, "west": { "texture": "#gold", "uv": [3, 2, 13, 10] }, "east": { "texture": "#gold", "uv": [3, 2, 13, 10] } }
+    },
+    {
+      "from": [7.19, 2.37, 7.1],
+      "to": [8.66, 2.8, 8.62],
+      "faces": { "down": { "texture": "#gold", "uv": [2, 2, 12, 10] }, "up": { "texture": "#gold", "uv": [2, 2, 12, 10] }, "north": { "texture": "#gold", "uv": [2, 2, 12, 10] }, "south": { "texture": "#gold", "uv": [2, 2, 12, 10] }, "west": { "texture": "#gold", "uv": [2, 2, 12, 10] }, "east": { "texture": "#gold", "uv": [2, 2, 12, 10] } }
+    }
+  ]
+}

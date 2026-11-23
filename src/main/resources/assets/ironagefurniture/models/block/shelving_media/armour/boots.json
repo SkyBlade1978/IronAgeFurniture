@@ -1,0 +1,13 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/planks_spruce",
+    "wood": "minecraft:blocks/planks_spruce"
+  },
+  "elements": [
+    {
+      "from": [4.7, 0, 5.33],
+      "to": [11.3, 0.21, 10.67],
+      "faces": { "down": { "texture": "#wood" }, "up": { "texture": "#wood" }, "north": { "texture": "#wood" }, "south": { "texture": "#wood" }, "west": { "texture": "#wood" }, "east": { "texture": "#wood" } }
+    }
+  ]
+}

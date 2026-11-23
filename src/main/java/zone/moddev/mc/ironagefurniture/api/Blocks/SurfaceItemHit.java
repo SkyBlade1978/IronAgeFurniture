@@ -22,6 +22,10 @@ public final class SurfaceItemHit {
 	private static final int ITEM_HIT = 100;
 	private SurfaceItemHit() { }
 
+	static boolean isItemHit(RayTraceResult hit) {
+		return hit != null && hit.subHit >= ITEM_HIT;
+	}
+
 	public static AxisAlignedBB bounds(SurfaceSettingHost host, Slot slot, boolean client) {
 		AxisAlignedBB bounds = client ? SurfaceDisplayRenderHelper.getItemBounds(host.getSurfaceSetting(), slot)
 			: host.getSurfaceSetting().getItemBounds(slot);
@@ -66,7 +70,7 @@ public final class SurfaceItemHit {
 
 		IBlockState state = world.getBlockState(pos);
 		RayTraceResult hit = traceFromPlayer(state, world, pos, player);
-		if (hit == null || hit.subHit < ITEM_HIT) return false;
+		if (!isItemHit(hit)) return false;
 		SurfaceSettingHost host = (SurfaceSettingHost)tile;
 		ItemStack removed = host.getSurfaceSetting().remove(Slot.byIndex(hit.subHit - ITEM_HIT));
 		host.markSurfaceSettingChanged();
@@ -75,7 +79,7 @@ public final class SurfaceItemHit {
 		if (!host.getSurfaceSetting().hasAnyItem()) SurfaceDisplayBlocker.release(world, pos);
 		Block block = state.getBlock();
 		if (block instanceof DiningTable) ((DiningTable)block).removeTableEntityIfEmpty(world, pos);
-		if (block instanceof WallShelf) ((WallShelf)block).removeShelfEntityIfEmpty(world, pos);
+		if (block instanceof WallShelf) ((WallShelf)block).releaseEmptyDisplay(world, pos);
 		return true;
 	}
 

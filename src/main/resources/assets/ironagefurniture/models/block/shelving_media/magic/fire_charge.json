@@ -1,0 +1,46 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/hardened_clay_stained_black",
+    "coal": "minecraft:blocks/hardened_clay_stained_black",
+    "crust": "minecraft:blocks/obsidian",
+    "ember": "minecraft:blocks/hardened_clay_stained_orange",
+    "flame": "minecraft:blocks/glowstone"
+  },
+  "elements": [
+    {
+      "from": [6.36, 0, 6.45],
+      "to": [9.64, 0.54, 9.55],
+      "faces": { "down": { "texture": "#coal" }, "up": { "texture": "#coal" }, "north": { "texture": "#coal" }, "south": { "texture": "#coal" }, "west": { "texture": "#coal" }, "east": { "texture": "#coal" } }
+    },
+    {
+      "from": [5.72, 0.54, 5.82],
+      "to": [10.28, 1.64, 10.18],
+      "faces": { "down": { "texture": "#crust" }, "up": { "texture": "#crust" }, "north": { "texture": "#coal" }, "south": { "texture": "#crust" }, "west": { "texture": "#crust" }, "east": { "texture": "#crust" } }
+    },
+    {
+      "from": [5.83, 1.64, 5.7],
+      "to": [10.17, 3.24, 10.3],
+      "faces": { "down": { "texture": "#coal" }, "up": { "texture": "#ember" }, "north": { "texture": "#coal" }, "south": { "texture": "#ember" }, "west": { "texture": "#coal" }, "east": { "texture": "#coal" } }
+    },
+    {
+      "from": [6.54, 3.24, 6.26],
+      "to": [9.46, 4.27, 9.74],
+      "faces": { "down": { "texture": "#ember" }, "up": { "texture": "#flame" }, "north": { "texture": "#ember" }, "south": { "texture": "#ember" }, "west": { "texture": "#crust" }, "east": { "texture": "#ember" } }
+    },
+    {
+      "from": [6.2, 2.45, 5.67],
+      "to": [8.18, 3.04, 5.7],
+      "faces": { "down": { "texture": "#ember" }, "up": { "texture": "#ember" }, "north": { "texture": "#ember" }, "south": { "texture": "#ember" }, "west": { "texture": "#ember" }, "east": { "texture": "#ember" } }
+    },
+    {
+      "from": [7.56, 2.73, 5.61],
+      "to": [8.65, 3.36, 5.67],
+      "faces": { "down": { "texture": "#flame" }, "up": { "texture": "#flame" }, "north": { "texture": "#flame" }, "south": { "texture": "#flame" }, "west": { "texture": "#flame" }, "east": { "texture": "#flame" } }
+    },
+    {
+      "from": [9.92, 1.1, 8.34],
+      "to": [10.36, 2.8, 9.66],
+      "faces": { "down": { "texture": "#ember" }, "up": { "texture": "#ember" }, "north": { "texture": "#ember" }, "south": { "texture": "#ember" }, "west": { "texture": "#ember" }, "east": { "texture": "#ember" } }
+    }
+  ]
+}

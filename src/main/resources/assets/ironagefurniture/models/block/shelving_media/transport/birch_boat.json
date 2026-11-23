@@ -1,0 +1,6 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/transport/oak_boat",
+  "textures": {
+    "wood": "minecraft:blocks/planks_birch"
+  }
+}

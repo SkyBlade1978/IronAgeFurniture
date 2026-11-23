@@ -5,6 +5,7 @@ import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
 import zone.moddev.mc.ironagefurniture.api.Blocks.*;
 import zone.moddev.mc.ironagefurniture.api.container.ContainerBarrel;
+import zone.moddev.mc.ironagefurniture.api.Enumerations.PaddedBenchColour;
 import zone.moddev.mc.ironagefurniture.api.network.StorageNetwork;
 import zone.moddev.mc.ironagefurniture.api.tile.*;
 import net.minecraft.block.Block;
@@ -57,6 +58,16 @@ final class Phase5StorageProbe {
 				barrel(world, player, origin.south(40).east(i * 12), facing, mods);
 			}
 			ShelvingUnitProbe.verify(world, player, origin.east(90));
+			ShelvingPantryProbe.verify(world, player, origin.east(130));
+			BulkBarrelProbe.verify(world, player, origin.south(58));
+			BarrelLabelProbe.verify(world, player, origin.south(74));
+			BedsideCabinetProbe.verify(world, player, origin.south(90));
+			CrateProbe.verify(world, player, origin.south(106));
+			StorageHopperProbe.verify(world, origin.south(120));
+			DrawerUnitProbe.verify(world, player, origin.south(130).east(40));
+			StorageBenchProbe.verify(world, player, origin.south(130).east(96));
+			ToolRackProbe.verify(world, player, origin.south(190).east(96));
+			ProduceFurnitureProbe.verify(world, player, origin.south(208).east(100));
 			persist(world, origin.south(65));
 		} finally {
 			player.inventory.clear(); player.interactionManager.setGameType(oldMode); player.connection = oldConnection;
@@ -76,6 +87,21 @@ final class Phase5StorageProbe {
 		for (int i=0;i<3;i++) grid.setInventorySlotContents(i, plank.copy());
 		ItemStack slab = craft(world, grid).copy(); slab.stackSize = 1;
 		grid.clear();
+		for (int slot : new int[] { 0, 2 }) grid.setInventorySlotContents(slot, plank.copy());
+		for (int slot : new int[] { 3, 4, 5 }) grid.setInventorySlotContents(slot, slab.copy());
+		ItemStack tray = craft(world, grid);
+		output(tray, ProduceFurniture.TRAY_ID, 2);
+		require(zone.moddev.mc.ironagefurniture.api.Items.ItemBlockProduceFurniture.wood(tray).equals(wood),
+			"Tray recipe lost its wood for " + wood);
+		grid.clear();
+		for (int slot = 0; slot < 9; slot++) {
+			grid.setInventorySlotContents(slot, slot % 3 == 1 ? plank.copy() : new ItemStack(Items.STICK));
+		}
+		ItemStack marketRack = craft(world, grid);
+		output(marketRack, ProduceFurniture.RACK_ID, 1);
+		require(zone.moddev.mc.ironagefurniture.api.Items.ItemBlockProduceFurniture.wood(marketRack).equals(wood),
+			"Market rack recipe lost its wood for " + wood);
+		grid.clear();
 		grid.setInventorySlotContents(4, new ItemStack(block("cabinet_wood_ironage_" + wood)));
 		output(craft(world, grid), "half_cabinet_wood_ironage_" + wood, 2);
 		grid.clear();
@@ -91,6 +117,59 @@ final class Phase5StorageProbe {
 			grid.setInventorySlotContents(slot, slab.copy());
 		}
 		output(craft(world, grid), "shelving_unit_wood_ironage_" + wood, 1);
+
+		grid.clear();
+		for (int slot : new int[] { 0, 1, 2, 3, 5, 6, 8 }) {
+			grid.setInventorySlotContents(slot, plank.copy());
+		}
+		grid.setInventorySlotContents(4, new ItemStack(Items.STICK));
+		grid.setInventorySlotContents(7, new ItemStack(Items.STICK));
+		output(craft(world, grid), "bedside_cabinet_wood_ironage_" + wood, 1);
+
+		grid.clear();
+		for (int slot : new int[] { 0, 1, 2, 6, 7, 8 }) {
+			grid.setInventorySlotContents(slot, plank.copy());
+		}
+		grid.setInventorySlotContents(3, new ItemStack(Items.STICK));
+		grid.setInventorySlotContents(5, new ItemStack(Items.STICK));
+		output(craft(world, grid), "crate_wood_ironage_" + wood, 1);
+
+		grid.clear();
+		for (int slot : new int[] { 0, 1, 2 }) {
+			grid.setInventorySlotContents(slot, plank.copy());
+		}
+		grid.setInventorySlotContents(3, new ItemStack(Items.STICK));
+		grid.setInventorySlotContents(5, new ItemStack(Items.STICK));
+		output(craft(world, grid), "tool_rack_wood_ironage_" + wood, 2);
+
+		grid.clear();
+		for (int slot : new int[] { 0, 1, 2, 3, 5, 6, 7, 8 }) {
+			grid.setInventorySlotContents(slot, plank.copy());
+		}
+		grid.setInventorySlotContents(4, new ItemStack(Items.STICK));
+		output(craft(world, grid), "drawer_unit_wood_ironage_" + wood, 1);
+
+		grid.setInventorySlotContents(3, null);
+		grid.setInventorySlotContents(5, null);
+		output(craft(world, grid), "half_drawer_unit_wood_ironage_" + wood, 1);
+
+		grid.clear();
+		grid.setInventorySlotContents(3, new ItemStack(block("chair_wood_ironage_bench_single_" + wood)));
+		grid.setInventorySlotContents(4, new ItemStack(Blocks.CHEST));
+		ItemStack bench = craft(world, grid);
+		output(bench, "storage_bench_wood_ironage_" + wood, 1);
+		require(bench.getMetadata() == 0, "Bench and chest must craft the plain bench");
+		bench.setStackDisplayName("Named bench");
+		grid.clear();
+		grid.setInventorySlotContents(3, bench);
+		for (PaddedBenchColour colour : PaddedBenchColour.values()) {
+			grid.setInventorySlotContents(4, new ItemStack(Blocks.CARPET, 1, colour.getCarpetMetadata()));
+			ItemStack padded = craft(world, grid);
+			require(padded != null && padded.getItem() == bench.getItem()
+				&& padded.getMetadata() == colour.getItemMetadata() + 1 && ItemStack.areItemStackTagsEqual(padded, bench),
+				"Incorrect padding recipe for " + wood + " / " + colour);
+			grid.setInventorySlotContents(3, padded);
+		}
 
 		grid.clear();
 		for (int slot : new int[]{0,1,2,6,7,8}) grid.setInventorySlotContents(slot, plank.copy());
@@ -213,6 +292,11 @@ final class Phase5StorageProbe {
 		world.setBlockState(pos,block("bottle_rack_wood_ironage_oak").getDefaultState().withProperty(BottleRack.STANDING,true).withProperty(BottleRack.DATA,true));
 		TileEntityBottleRack rack=(TileEntityBottleRack)world.getTileEntity(pos);
 		for(int slot=0;slot<9;slot++) rack.insertBottle(slot,new ItemStack(Items.POTIONITEM).setStackDisplayName("Saved potion " + slot),EnumFacing.NORTH);
+		pos = pos.east(4);
+		world.setBlockState(pos, block("barrel_wood_ironage_oak").getDefaultState());
+		TileEntityBarrel bulk = (TileEntityBarrel)world.getTileEntity(pos);
+		require(bulk.getBulkStorage().deposit(new ItemStack(Items.WHEAT_SEEDS, 37).setStackDisplayName("Saved grain"), false)
+			== 37, "Could not prepare saved solid barrel fixture");
 	}
 	private static FluidStack proofFluid(int amount) { FluidStack stack=new FluidStack(FluidRegistry.WATER,amount); stack.tag=new NBTTagCompound(); stack.tag.setString("StorageProof","exact batch data"); return stack; }
 	private static void click(WorldServer world,FakePlayer player,BlockPos pos,ItemStack stack,EnumFacing side,float x,float y,float z) {

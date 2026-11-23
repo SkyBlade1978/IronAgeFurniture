@@ -1,0 +1,38 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/emerald_block",
+    "gem": "minecraft:blocks/emerald_block"
+  },
+  "elements": [
+    {
+      "from": [6.31, 0, 6.35],
+      "to": [9.69, 0.48, 9.65],
+      "faces": { "down": { "texture": "#gem", "uv": [1, 9, 14, 14] }, "up": { "texture": "#gem", "uv": [1, 9, 14, 14] }, "north": { "texture": "#gem", "uv": [1, 9, 14, 14] }, "south": { "texture": "#gem", "uv": [1, 9, 14, 14] }, "west": { "texture": "#gem", "uv": [1, 9, 14, 14] }, "east": { "texture": "#gem", "uv": [1, 9, 14, 14] } }
+    },
+    {
+      "from": [5.87, 0.48, 6.14],
+      "to": [10.13, 1.38, 9.86],
+      "faces": { "down": { "texture": "#gem", "uv": [0, 7, 15, 13] }, "up": { "texture": "#gem", "uv": [0, 7, 15, 13] }, "north": { "texture": "#gem", "uv": [0, 7, 15, 13] }, "south": { "texture": "#gem", "uv": [0, 7, 15, 13] }, "west": { "texture": "#gem", "uv": [0, 7, 15, 13] }, "east": { "texture": "#gem", "uv": [0, 7, 15, 13] } }
+    },
+    {
+      "from": [5.6, 1.38, 6],
+      "to": [10.4, 4.62, 10],
+      "faces": { "down": { "texture": "#gem", "uv": [2, 1, 14, 15] }, "up": { "texture": "#gem", "uv": [2, 1, 14, 15] }, "north": { "texture": "#gem", "uv": [2, 1, 14, 15] }, "south": { "texture": "#gem", "uv": [2, 1, 14, 15] }, "west": { "texture": "#gem", "uv": [2, 1, 14, 15] }, "east": { "texture": "#gem", "uv": [2, 1, 14, 15] } }
+    },
+    {
+      "from": [6.23, 1.42, 5.7],
+      "to": [9.77, 4.55, 10.3],
+      "faces": { "down": { "texture": "#gem", "uv": [1, 1, 15, 13] }, "up": { "texture": "#gem", "uv": [1, 1, 15, 13] }, "north": { "texture": "#gem", "uv": [1, 1, 15, 13] }, "south": { "texture": "#gem", "uv": [1, 1, 15, 13] }, "west": { "texture": "#gem", "uv": [1, 1, 15, 13] }, "east": { "texture": "#gem", "uv": [1, 1, 15, 13] } }
+    },
+    {
+      "from": [6.02, 4.62, 6.23],
+      "to": [9.98, 5.62, 9.77],
+      "faces": { "down": { "texture": "#gem", "uv": [2, 1, 14, 8] }, "up": { "texture": "#gem", "uv": [2, 1, 14, 8] }, "north": { "texture": "#gem", "uv": [2, 1, 14, 8] }, "south": { "texture": "#gem", "uv": [2, 1, 14, 8] }, "west": { "texture": "#gem", "uv": [2, 1, 14, 8] }, "east": { "texture": "#gem", "uv": [2, 1, 14, 8] } }
+    },
+    {
+      "from": [6.63, 5.62, 6.69],
+      "to": [9.37, 6.2, 9.31],
+      "faces": { "down": { "texture": "#gem", "uv": [2, 2, 13, 12] }, "up": { "texture": "#gem", "uv": [2, 2, 13, 12] }, "north": { "texture": "#gem", "uv": [2, 2, 13, 12] }, "south": { "texture": "#gem", "uv": [2, 2, 13, 12] }, "west": { "texture": "#gem", "uv": [2, 2, 13, 12] }, "east": { "texture": "#gem", "uv": [2, 2, 13, 12] } }
+    }
+  ]
+}

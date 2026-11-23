@@ -8,13 +8,21 @@ import zone.moddev.mc.ironagefurniture.api.MineralogyCompat;
 import zone.moddev.mc.ironagefurniture.api.SeatingFactory;
 import zone.moddev.mc.ironagefurniture.api.SurfaceDisplayFactory;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaSurfaceBottles;
+import zone.moddev.mc.ironagefurniture.api.surface.FlowerPotSurface;
+import zone.moddev.mc.ironagefurniture.api.surface.FurnitureSurfaceDisplay;
+import zone.moddev.mc.ironagefurniture.api.surface.VanillaShelfDisplay;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaSurfaceFoods;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBottleRack;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBedsideCabinet;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityDrawerUnit;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCrate;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityDiningTable;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityHalfCabinet;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityStorageBench;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityToolRack;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityVanillaFoodDisplay;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
 
@@ -42,6 +50,7 @@ public class BlockInitialiser {
 		DiningChairInitialiser.registerBlocks();
 		GameRegistry.registerTileEntity(TileEntityShelvingUnit.class, Ironagefurniture.MODID + ":shelving_unit_wood_ironage");
 		StorageInitialiser.registerShelvingUnits();
+		ProduceInitialiser.registerBlocks();
 	}
 
 	private static void generateBedsAndChairUpgrades() {
@@ -53,6 +62,10 @@ public class BlockInitialiser {
 
 	private static void generateSurfaceFurniture() {
 		VanillaSurfaceFoods.register();
+		VanillaShelfDisplay.register();
+		FlowerPotSurface.register();
+		FurnitureSurfaceDisplay.register();
+		VanillaShelfTools.register();
 		VanillaSurfaceBottles.register();
 
 		GameRegistry.registerTileEntity(TileEntityDiningTable.class, Ironagefurniture.MODID + ":table_dining");
@@ -60,6 +73,11 @@ public class BlockInitialiser {
 		GameRegistry.registerTileEntity(TileEntityVanillaFoodDisplay.class, Ironagefurniture.MODID + ":vanilla_food_display");
 		GameRegistry.registerTileEntity(TileEntityWallShelf.class, Ironagefurniture.MODID + ":shelf_wall");
 		GameRegistry.registerTileEntity(TileEntityHalfCabinet.class, Ironagefurniture.MODID + ":half_cabinet_wood_ironage");
+		GameRegistry.registerTileEntity(TileEntityBedsideCabinet.class, Ironagefurniture.MODID + ":bedside_cabinet_wood_ironage");
+		GameRegistry.registerTileEntity(TileEntityDrawerUnit.class, Ironagefurniture.MODID + ":drawer_unit_wood_ironage");
+		GameRegistry.registerTileEntity(TileEntityStorageBench.class, Ironagefurniture.MODID + ":storage_bench_wood_ironage");
+		GameRegistry.registerTileEntity(TileEntityToolRack.class, Ironagefurniture.MODID + ":tool_rack_wood_ironage");
+		GameRegistry.registerTileEntity(TileEntityCrate.class, Ironagefurniture.MODID + ":crate_wood_ironage");
 		GameRegistry.registerTileEntity(TileEntityBarrel.class, Ironagefurniture.MODID + ":barrel_wood_ironage");
 		GameRegistry.registerTileEntity(TileEntityBottleRack.class, Ironagefurniture.MODID + ":bottle_rack_wood_ironage");
 

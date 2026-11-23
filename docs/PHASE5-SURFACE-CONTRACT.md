@@ -20,6 +20,11 @@ still advertises that release.
   stored ItemStacks when broken. The hidden `surface_display_blocker`
   reserves the cell above an occupied display and routes item clicks to the
   host below. Cabinet storage has its own inventory and automation.
+- Wall shelves, bottle racks and modular shelving have non-ticking tile
+  entities even when empty, so hoppers and Forge item pipes can discover their
+  input. The legacy `data` metadata bit and item save tags stay compatible
+  with existing worlds. These inputs use the normal display rules, accept one
+  item per insertion and support simulation without changing world state.
 - Common-side `SurfaceContentRegistry` describes layout categories and
   footprints. `SurfaceInteractionRegistry` adds optional handling for an
   already displayed item. Duplicate item providers/handlers are errors.
@@ -40,6 +45,20 @@ still advertises that release.
 - Descriptors can supply rectangular bounds relative to the item centre,
   facing north. The host rotates these with the stored facing for selection
   and server interactions. The width/height constructor remains available.
+- A provider can return `descriptor.withShelfLayout(ShelfLayout.PRODUCE_TRAY)`
+  to fit a homogeneous row or tray into either level of a modular shelving
+  unit. The layout scales and positions each item from its north-facing
+  descriptor bounds. The add-on can supply its own surface renderer through
+  `SurfaceRenderRegistry`. Shelves keep exact displayed stacks in `MediaItems`
+  and use the layout for selection and rendering. Compatible loose displays
+  migrate on read when every item fits the same arrangement. Mixed displays
+  continue through the shared surface interaction.
+- A provider can opt an eligible food or ingredient into produce trays
+  with `descriptor.withProduceTray()` and a shelf layout. The tray uses
+  that layout's capacity and render locations within its own wooden frame.
+  A portable tray carries its wood and exact stack in item NBT. Floor
+  stacks and market-rack sockets each keep separate tray data, including
+  the raw saved stack if its supplying mod is unavailable.
 - Vanilla edible items and cake use the catalogue at
   `assets/ironagefurniture/surface_foods.json`. It selects 35 surface models,
   including fish metadata variants, and supplies their common bounds.

@@ -1,0 +1,6 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/materials/ingot",
+  "textures": {
+    "metal": "minecraft:blocks/gold_block"
+  }
+}

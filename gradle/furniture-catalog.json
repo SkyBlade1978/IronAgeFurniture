@@ -188,7 +188,9 @@
   },
   "phaseFive": {
     "decorations": [
-      "ornament_glass_vase"
+      "ornament_glass_vase",
+      "produce_tray",
+      "produce_rack"
     ],
     "woodPrefixes": [
       "table_dining_",
@@ -200,7 +202,13 @@
       "side_barrel_wood_ironage_",
       "bottle_rack_wood_ironage_",
       "chair_wood_ironage_dining_",
-      "shelving_unit_wood_ironage_"
+      "shelving_unit_wood_ironage_",
+      "bedside_cabinet_wood_ironage_",
+      "crate_wood_ironage_",
+      "drawer_unit_wood_ironage_",
+      "half_drawer_unit_wood_ironage_",
+      "storage_bench_wood_ironage_",
+      "tool_rack_wood_ironage_"
     ],
     "hidden": [
       "surface_display_blocker",

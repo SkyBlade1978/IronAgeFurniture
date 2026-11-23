@@ -72,7 +72,11 @@ foreach ($name in $Profile) {
         }
         $probe = Join-Path $project 'build/optional-integration-fixture/ironagefurniture-optional-integration-probe.jar'
         Copy-Item -LiteralPath $probe -Destination (Join-Path $run 'mods')
-        $arguments = @('-Xmx2G', "-Diaf.probe.phase5Mods=$($manifest.profiles[$name] -join ',')",
+        $modIds = $manifest.profiles[$name] | ForEach-Object {
+            $fixture = $manifest.fixtures[$_]
+            if ($fixture -and $fixture.modId) { $fixture.modId } else { $_ }
+        }
+        $arguments = @('-Xmx2G', "-Diaf.probe.phase5Mods=$($modIds -join ',')",
             '-jar', $forgeName, 'nogui')
         if ($WorldFixture) {
             $arguments = @('-Xmx2G', "-Diaf.probe.legacyAuditWorld=$worldDestination",

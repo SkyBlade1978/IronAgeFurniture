@@ -1,10 +1,14 @@
 package zone.moddev.mc.ironagefurniture.api.network;
 
+import java.nio.charset.StandardCharsets;
+
 import io.netty.buffer.ByteBuf;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel;
 import zone.moddev.mc.ironagefurniture.api.container.ContainerBarrel;
+import zone.moddev.mc.ironagefurniture.api.container.ContainerFurnitureLabel;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
+import zone.moddev.mc.ironagefurniture.api.tile.FurnitureLabel;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -25,6 +29,57 @@ public final class StorageNetwork {
 
 	public static void init() {
 		channel.registerMessage(Handler.class, Seal.class, 0, Side.SERVER);
+		channel.registerMessage(EditLabelHandler.class, EditLabel.class, 1, Side.SERVER);
+	}
+
+	public static final class EditLabel implements IMessage {
+		private int windowId;
+		private String text;
+
+		public EditLabel() {
+		}
+
+		public EditLabel(int windowId, String text) {
+			this.windowId = windowId;
+			this.text = text;
+		}
+
+		@Override
+		public void fromBytes(ByteBuf buffer) {
+			if (!buffer.isReadable()) {
+				return;
+			}
+
+			this.windowId = buffer.readUnsignedByte();
+			int length = buffer.readableBytes();
+
+			if (length <= FurnitureLabel.MAX_LENGTH * 3) {
+				this.text = buffer.toString(buffer.readerIndex(), length, StandardCharsets.UTF_8);
+			}
+			buffer.skipBytes(length);
+		}
+
+		@Override
+		public void toBytes(ByteBuf buffer) {
+			buffer.writeByte(this.windowId);
+			buffer.writeBytes(this.text.getBytes(StandardCharsets.UTF_8));
+		}
+	}
+
+	public static final class EditLabelHandler implements IMessageHandler<EditLabel, IMessage> {
+		@Override
+		public IMessage onMessage(EditLabel message, MessageContext context) {
+			EntityPlayerMP player = context.getServerHandler().playerEntity;
+			player.getServerWorld().addScheduledTask(() -> {
+				if (player.openContainer instanceof ContainerFurnitureLabel && player.openContainer.windowId == message.windowId) {
+					if (message.text != null) {
+						((ContainerFurnitureLabel)player.openContainer).save(player, message.text);
+					}
+					player.closeScreen();
+				}
+			});
+			return null;
+		}
 	}
 
 	public static final class Seal implements IMessage {

@@ -28,7 +28,6 @@ public final class ContainerShelfMedia extends Container {
 	private final ShelfLevel level;
 	private final ShelfContentKind kind;
 	private int mediaRevision;
-	private boolean emptiedLevel;
 
 	public ContainerShelfMedia(ShelfContentKind kind) {
 		this(null, null, null, false, kind);
@@ -61,8 +60,8 @@ public final class ContainerShelfMedia extends Container {
 		return this.level != null && player.getEntityWorld() == this.world && this.world.isBlockLoaded(this.pos)
 			&& this.world.getBlockState(this.pos).getBlock() instanceof ShelvingUnit
 			&& player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D
-			&& (this.emptiedLevel || (this.world.getTileEntity(this.pos) == this.tile
-				&& this.level.getMediaKind() == this.kind && this.level.getMediaRevision() == this.mediaRevision));
+			&& this.world.getTileEntity(this.pos) == this.tile && this.level.getMediaRevision() == this.mediaRevision
+			&& (this.level.getMediaCount() == 0 || this.level.getMediaKind() == this.kind);
 	}
 
 	@Override
@@ -100,10 +99,7 @@ public final class ContainerShelfMedia extends Container {
 
 		row.putStack(null);
 		this.mediaRevision = this.level.getMediaRevision();
-		this.emptiedLevel = this.level.getMediaCount() == 0;
 		this.level.markSurfaceSettingChanged();
-		ShelvingUnit block = (ShelvingUnit)this.world.getBlockState(this.pos).getBlock();
-		block.removeEmptyRackTile(this.world, this.pos);
 		return true;
 	}
 }

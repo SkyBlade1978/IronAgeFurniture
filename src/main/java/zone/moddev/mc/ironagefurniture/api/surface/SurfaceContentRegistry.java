@@ -21,6 +21,8 @@ public final class SurfaceContentRegistry {
 		private final double width;
 		private final double height;
 		private final AxisAlignedBB bounds;
+		private final ShelfLayout shelfLayout;
+		private final boolean produceTray;
 
 		public Descriptor(Category category, double width, double height) {
 			if (category == null || width <= 0.0D || width > 1.0D
@@ -30,12 +32,18 @@ public final class SurfaceContentRegistry {
 			this.category = category;
 			this.width = width;
 			this.height = height;
+			this.shelfLayout = ShelfLayout.NONE;
+			this.produceTray = false;
 			this.bounds = new AxisAlignedBB(-width / 2.0D, 0.0D, -width / 2.0D,
 				width / 2.0D, height, width / 2.0D);
 		}
 
 		/** Bounds are relative to the item centre on the surface, facing north. */
 		public Descriptor(Category category, AxisAlignedBB bounds) {
+			this(category, bounds, ShelfLayout.NONE, false);
+		}
+
+		private Descriptor(Category category, AxisAlignedBB bounds, ShelfLayout shelfLayout, boolean produceTray) {
 			if (category == null || bounds == null || bounds.minY < 0.0D || bounds.maxY > 1.0D
 					|| bounds.minX < -0.5D || bounds.maxX > 0.5D
 					|| bounds.minZ < -0.5D || bounds.maxZ > 0.5D
@@ -46,7 +54,25 @@ public final class SurfaceContentRegistry {
 			this.bounds = bounds;
 			this.width = Math.max(bounds.maxX - bounds.minX, bounds.maxZ - bounds.minZ);
 			this.height = bounds.maxY;
+			this.shelfLayout = java.util.Objects.requireNonNull(shelfLayout);
+			this.produceTray = produceTray;
 		}
+
+		/** Opts into a modular shelving layout while retaining the original surface category and bounds. */
+		public Descriptor withShelfLayout(ShelfLayout layout) {
+			return new Descriptor(this.category, this.bounds, layout, this.produceTray);
+		}
+
+		/** Allows this item and metadata variant to use its shelf layout in produce trays. */
+		public Descriptor withProduceTray() {
+			return new Descriptor(this.category, this.bounds, this.shelfLayout, true);
+		}
+
+		public boolean acceptsProduceTray() {
+			return this.produceTray && this.shelfLayout != ShelfLayout.NONE;
+		}
+
+		public ShelfLayout getShelfLayout() { return this.shelfLayout; }
 
 		public Category getCategory() { return this.category; }
 		public double getWidth() { return this.width; }
@@ -93,8 +119,12 @@ public final class SurfaceContentRegistry {
 		synchronized (SurfaceContentRegistry.class) {
 			provider = PROVIDERS.get(stack.getItem());
 		}
-		if (provider == null) return DEFAULT;
-		Descriptor result = provider.describe(stack);
-		return result == null ? DEFAULT : result;
+		Descriptor result = provider == null ? null : provider.describe(stack);
+		if (result != null) {
+			return result;
+		}
+
+		MaterialShelfDisplay display = MaterialShelfDisplay.find(stack);
+		return display == null ? DEFAULT : display.getDescriptor();
 	}
 }

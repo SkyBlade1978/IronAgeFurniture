@@ -1,4 +1,64 @@
 {
+  "crate": {
+    "prefix": "crate_wood_ironage_",
+    "inventory": "unlatched",
+    "itemDisplay": {
+      "gui": {"rotation":[30,225,0],"scale":[0.65,0.65,0.65]},
+      "ground": {"translation":[0,2,0],"scale":[0.35,0.35,0.35]},
+      "firstperson_righthand": {"rotation":[0,45,0],"scale":[0.4,0.4,0.4]},
+      "firstperson_lefthand": {"rotation":[0,225,0],"scale":[0.4,0.4,0.4]},
+      "thirdperson_righthand": {"translation":[0,2,0],"scale":[0.35,0.35,0.35]},
+      "thirdperson_lefthand": {"translation":[0,2,0],"scale":[0.35,0.35,0.35]},
+      "fixed": {"rotation":[0,180,0],"scale":[0.5,0.5,0.5]}
+    }
+  },
+  "bedside_cabinet": {
+    "prefix": "bedside_cabinet_wood_ironage_",
+    "inventory": "closed",
+    "itemDisplay": {
+      "gui": {"rotation":[30,225,0],"translation":[0,1,0],"scale":[0.72,0.72,0.72]},
+      "ground": {"translation":[0,2,0],"scale":[0.35,0.35,0.35]},
+      "firstperson_righthand": {"rotation":[0,45,0],"scale":[0.4,0.4,0.4]},
+      "firstperson_lefthand": {"rotation":[0,225,0],"scale":[0.4,0.4,0.4]},
+      "thirdperson_righthand": {"translation":[0,2,0],"scale":[0.35,0.35,0.35]},
+      "thirdperson_lefthand": {"translation":[0,2,0],"scale":[0.35,0.35,0.35]},
+      "fixed": {"rotation":[0,180,0],"scale":[0.55,0.55,0.55]}
+    }
+  },
+  "drawer_unit": {
+    "prefix": "drawer_unit_wood_ironage_",
+    "inventory": "inventory",
+    "itemDisplay": {
+      "gui": {"rotation":[30,225,0],"scale":[0.64,0.64,0.64]},
+      "ground": {"translation":[0,2,0],"scale":[0.35,0.35,0.35]},
+      "firstperson_righthand": {"rotation":[0,45,0],"scale":[0.4,0.4,0.4]},
+      "firstperson_lefthand": {"rotation":[0,225,0],"scale":[0.4,0.4,0.4]},
+      "thirdperson_righthand": {"translation":[0,2,0],"scale":[0.35,0.35,0.35]},
+      "thirdperson_lefthand": {"translation":[0,2,0],"scale":[0.35,0.35,0.35]},
+      "fixed": {"rotation":[0,180,0],"scale":[0.5,0.5,0.5]}
+    }
+  },
+  "half_drawer_unit": {
+    "prefix": "half_drawer_unit_wood_ironage_",
+    "inventory": "inventory"
+  },
+  "storage_bench": {
+    "prefix": "storage_bench_wood_ironage_",
+    "inventory": "plain"
+  },
+  "tool_rack": {
+    "prefix": "tool_rack_wood_ironage_",
+    "inventory": "0",
+    "itemDisplay": {
+      "gui": {"rotation":[30,135,0],"translation":[-1.25,-3.5,-2],"scale":[0.8,0.8,0.8]},
+      "ground": {"translation":[0,0,0],"scale":[0.45,0.45,0.45]},
+      "firstperson_righthand": {"rotation":[0,135,0],"scale":[0.55,0.55,0.55]},
+      "firstperson_lefthand": {"rotation":[0,315,0],"scale":[0.55,0.55,0.55]},
+      "thirdperson_righthand": {"rotation":[0,0,0],"scale":[0.55,0.55,0.55]},
+      "thirdperson_lefthand": {"rotation":[0,0,0],"scale":[0.55,0.55,0.55]},
+      "fixed": {"rotation":[0,180,0],"translation":[0,-2,0],"scale":[0.75,0.75,0.75]}
+    }
+  },
   "shelving_unit": {
     "prefix": "shelving_unit_wood_ironage_",
     "inventory": "standing_0",
@@ -1552,6 +1612,16 @@
       "single": {
         "credit": "By FoxNekitsune",
         "parent": "ironagefurniture:block/template_barrel_wood_ironage",
+        "textures": {
+          "0": "minecraft:blocks/log_oak",
+          "1": "minecraft:blocks/planks_oak",
+          "inside": "minecraft:blocks/coal_block",
+          "iron": "minecraft:blocks/iron_block",
+          "particle": "minecraft:blocks/log_oak"
+        }
+      },
+      "open": {
+        "parent": "ironagefurniture:block/template_barrel_wood_ironage_open",
         "textures": {
           "0": "minecraft:blocks/log_oak",
           "1": "minecraft:blocks/planks_oak",

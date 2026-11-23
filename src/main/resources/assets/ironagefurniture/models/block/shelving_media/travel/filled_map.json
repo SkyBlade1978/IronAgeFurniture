@@ -1,0 +1,30 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/planks_spruce",
+    "wood": "minecraft:blocks/planks_spruce",
+    "paper": "minecraft:blocks/sandstone_top"
+  },
+  "elements": [
+    {
+      "from": [3.55, 0, 4.35],
+      "to": [12.45, 0.6, 11.65],
+      "faces": { "down": { "texture": "#wood" }, "up": { "texture": "#wood" }, "north": { "texture": "#wood" }, "south": { "texture": "#wood" }, "west": { "texture": "#wood" }, "east": { "texture": "#wood" } }
+    },
+    {
+      "from": [4.2, 0.55, 10.35],
+      "to": [4.76, 6.05, 11.1],
+      "faces": { "down": { "texture": "#wood" }, "up": { "texture": "#wood" }, "north": { "texture": "#wood" }, "south": { "texture": "#wood" }, "west": { "texture": "#wood" }, "east": { "texture": "#wood" } }
+    },
+    {
+      "from": [11.23, 0.55, 10.35],
+      "to": [11.79, 6.05, 11.1],
+      "faces": { "down": { "texture": "#wood" }, "up": { "texture": "#wood" }, "north": { "texture": "#wood" }, "south": { "texture": "#wood" }, "west": { "texture": "#wood" }, "east": { "texture": "#wood" } }
+    },
+    {
+      "from": [3.4, 0.6, 4.7],
+      "to": [12.6, 1.12, 13.9],
+      "rotation": {"origin":[8,0.6,4.7],"axis":"x","angle":-45,"rescale":false},
+      "faces": { "down": { "texture": "#paper" }, "up": { "texture": "#paper" }, "north": { "texture": "#paper" }, "south": { "texture": "#paper" }, "west": { "texture": "#paper" }, "east": { "texture": "#paper" } }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/planks_spruce",
+    "wood": "minecraft:blocks/planks_oak",
+    "trim": "minecraft:blocks/planks_spruce"
+  },
+  "elements": [
+    {
+      "from": [4.4, 0, 5.7],
+      "to": [11.6, 0.48, 10.7],
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#wood" }, "north": { "texture": "#trim" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [6.65, 0.48, 7.44],
+      "to": [9.35, 1.25, 9.79],
+      "faces": { "down": { "texture": "#wood" }, "up": { "texture": "#wood" }, "north": { "texture": "#wood" }, "south": { "texture": "#wood" }, "west": { "texture": "#wood" }, "east": { "texture": "#wood" } }
+    },
+    {
+      "from": [7.56, 1.25, 8.42],
+      "to": [8.44, 8.76, 9.19],
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#trim" }, "north": { "texture": "#wood" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [5.5, 7.97, 7.62],
+      "to": [10.5, 8.71, 8.67],
+      "faces": { "down": { "texture": "#wood" }, "up": { "texture": "#wood" }, "north": { "texture": "#wood" }, "south": { "texture": "#wood" }, "west": { "texture": "#wood" }, "east": { "texture": "#wood" } }
+    }
+  ]
+}

@@ -1,7 +1,10 @@
 {
   "variants": {
-    "normal": {
+    "open=false": {
       "model": "ironagefurniture:barrel_wood_ironage_natura_ghostwood_single"
+    },
+    "open=true": {
+      "model": "ironagefurniture:barrel_wood_ironage_natura_ghostwood_open"
     }
   }
 }

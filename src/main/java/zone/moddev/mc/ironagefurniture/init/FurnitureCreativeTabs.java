@@ -25,6 +25,10 @@ public final class FurnitureCreativeTabs {
 			return BEDS;
 		}
 
+		if (name.startsWith("storage_bench_")) {
+			return STORAGE;
+		}
+
 		if (name.contains("_bench_")) {
 			return BENCHES;
 		}
@@ -37,8 +41,10 @@ public final class FurnitureCreativeTabs {
 			return TABLES;
 		}
 
-		if (name.startsWith("cabinet_") || name.startsWith("half_cabinet_") || name.startsWith("barrel_")
-				|| name.startsWith("side_barrel_") || name.startsWith("bottle_rack_") || name.startsWith("shelving_unit_")) {
+		if (name.startsWith("cabinet_") || name.startsWith("half_cabinet_") || name.startsWith("bedside_cabinet_") || name.startsWith("barrel_")
+				|| name.startsWith("side_barrel_") || name.startsWith("bottle_rack_")
+				|| name.startsWith("crate_") || name.startsWith("shelving_unit_") || name.startsWith("tool_rack_")
+				|| name.startsWith("drawer_unit_") || name.startsWith("half_drawer_unit_") || name.startsWith("produce_")) {
 			return STORAGE;
 		}
 

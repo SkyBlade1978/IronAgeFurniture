@@ -1,0 +1,83 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "frame": "minecraft:blocks/planks_big_oak",
+    "back": "minecraft:blocks/wool_colored_white",
+    "stand": "minecraft:blocks/planks_spruce",
+    "scene": "minecraft:painting/paintings_kristoffer_zetterstrand"
+  },
+  "elements": [
+    {
+      "from": [2.8, 0, 5.2],
+      "to": [13.2, 0.7, 10.8],
+      "faces": {
+        "north": { "texture": "#stand" },
+        "south": { "texture": "#stand" },
+        "east": { "texture": "#stand" },
+        "west": { "texture": "#stand" },
+        "up": { "texture": "#stand" },
+        "down": { "texture": "#stand" }
+      }
+    },
+    {
+      "from": [3.5, 0.7, 7],
+      "to": [12.5, 7.8999999999999995, 7.55],
+      "faces": {
+        "north": { "texture": "#scene", "uv": [0, 0, 1, 1] },
+        "south": { "texture": "#back" },
+        "east": { "texture": "#back" },
+        "west": { "texture": "#back" },
+        "up": { "texture": "#back" },
+        "down": { "texture": "#back" }
+      }
+    },
+    {
+      "from": [2.8, 0.7, 6.6],
+      "to": [3.5, 8.6, 8],
+      "faces": {
+        "north": { "texture": "#frame" },
+        "south": { "texture": "#frame" },
+        "east": { "texture": "#frame" },
+        "west": { "texture": "#frame" },
+        "up": { "texture": "#frame" },
+        "down": { "texture": "#frame" }
+      }
+    },
+    {
+      "from": [12.5, 0.7, 6.6],
+      "to": [13.2, 8.6, 8],
+      "faces": {
+        "north": { "texture": "#frame" },
+        "south": { "texture": "#frame" },
+        "east": { "texture": "#frame" },
+        "west": { "texture": "#frame" },
+        "up": { "texture": "#frame" },
+        "down": { "texture": "#frame" }
+      }
+    },
+    {
+      "from": [3.5, 0.7, 6.6],
+      "to": [12.5, 1.4, 8],
+      "faces": {
+        "north": { "texture": "#frame" },
+        "south": { "texture": "#frame" },
+        "east": { "texture": "#frame" },
+        "west": { "texture": "#frame" },
+        "up": { "texture": "#frame" },
+        "down": { "texture": "#frame" }
+      }
+    },
+    {
+      "from": [3.5, 7.8999999999999995, 6.6],
+      "to": [12.5, 8.6, 8],
+      "faces": {
+        "north": { "texture": "#frame" },
+        "south": { "texture": "#frame" },
+        "east": { "texture": "#frame" },
+        "west": { "texture": "#frame" },
+        "up": { "texture": "#frame" },
+        "down": { "texture": "#frame" }
+      }
+    }
+  ]
+}

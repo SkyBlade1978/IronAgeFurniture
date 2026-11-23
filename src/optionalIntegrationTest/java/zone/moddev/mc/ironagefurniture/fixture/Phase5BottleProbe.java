@@ -47,6 +47,7 @@ final class Phase5BottleProbe {
 		items.add(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.POISON));
 		items.add(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.SWIFTNESS));
 		items.add(new ItemStack(Items.EXPERIENCE_BOTTLE));
+		items.add(new ItemStack(Items.DRAGON_BREATH));
 		Item brewing = Item.getByNameOrId("ironagebrewing:fluid_bottle");
 		if (brewing != null) for (int amount : new int[]{0,125,250}) {
 			ItemStack bottle = new ItemStack(brewing);

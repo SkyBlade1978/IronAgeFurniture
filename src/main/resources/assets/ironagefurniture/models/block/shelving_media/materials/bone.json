@@ -1,0 +1,35 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/bone_block_side",
+    "ivory": "minecraft:blocks/bone_block_side",
+    "ends": "minecraft:blocks/bone_block_top",
+    "shade": "minecraft:blocks/quartz_block_side"
+  },
+  "elements": [
+    {
+      "from": [7.23, 0.25, 3.68],
+      "to": [8.77, 1.56, 12.32],
+      "faces": { "down": { "texture": "#shade" }, "up": { "texture": "#ivory" }, "north": { "texture": "#ivory" }, "south": { "texture": "#ivory" }, "west": { "texture": "#ivory" }, "east": { "texture": "#ivory" } }
+    },
+    {
+      "from": [6.22, 0, 1.8],
+      "to": [7.97, 1.98, 4.21],
+      "faces": { "down": { "texture": "#ivory" }, "up": { "texture": "#ends" }, "north": { "texture": "#ends" }, "south": { "texture": "#ivory" }, "west": { "texture": "#ivory" }, "east": { "texture": "#ivory" } }
+    },
+    {
+      "from": [8.03, 0, 2.12],
+      "to": [9.78, 1.83, 4.12],
+      "faces": { "down": { "texture": "#ivory" }, "up": { "texture": "#ends" }, "north": { "texture": "#ends" }, "south": { "texture": "#ivory" }, "west": { "texture": "#ivory" }, "east": { "texture": "#ivory" } }
+    },
+    {
+      "from": [6.27, 0, 11.87],
+      "to": [7.96, 1.88, 13.95],
+      "faces": { "down": { "texture": "#ivory" }, "up": { "texture": "#ends" }, "north": { "texture": "#ivory" }, "south": { "texture": "#ends" }, "west": { "texture": "#ivory" }, "east": { "texture": "#ivory" } }
+    },
+    {
+      "from": [8.04, 0, 11.8],
+      "to": [9.74, 1.91, 14.2],
+      "faces": { "down": { "texture": "#ivory" }, "up": { "texture": "#ends" }, "north": { "texture": "#ivory" }, "south": { "texture": "#ends" }, "west": { "texture": "#ivory" }, "east": { "texture": "#ivory" } }
+    }
+  ]
+}

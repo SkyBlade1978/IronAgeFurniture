@@ -29,6 +29,11 @@ public class SideBarrel extends StorageBarrel {
 	}
 
 	@Override
+	public boolean supportsBulkStorage() {
+		return false;
+	}
+
+	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
 			float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
 		EnumFacing barrelFacing = placer == null ? EnumFacing.SOUTH : placer.getHorizontalFacing();

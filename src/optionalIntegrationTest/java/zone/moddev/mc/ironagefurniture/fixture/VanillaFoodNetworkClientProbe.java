@@ -1,5 +1,6 @@
 package zone.moddev.mc.ironagefurniture.fixture;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,6 +27,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -48,6 +50,7 @@ public final class VanillaFoodNetworkClientProbe {
 	private static GuiButton shelfClose;
 	private static ItemStack pickedBottle;
 	private static ItemStack pickedSecondBottle;
+	private static ItemStack pantryItem;
 	private static Future<?> pending;
 	private static int step;
 	private static int ticks;
@@ -273,7 +276,9 @@ public final class VanillaFoodNetworkClientProbe {
 			} else if (step == 21) {
 				ItemStack plainBook = client.player.inventory.getStackInSlot(5);
 				ItemStack enchantedBook = client.player.inventory.getStackInSlot(6);
-				if (!(client.currentScreen instanceof GuiShelfMedia) || client.world.getTileEntity(discShelf) != null
+				TileEntity tile = client.world.getTileEntity(discShelf);
+				if (!(client.currentScreen instanceof GuiShelfMedia) || !(tile instanceof TileEntityShelvingUnit)
+						|| ((TileEntityShelvingUnit)tile).getLevel(false).getMediaCount() != 0
 						|| plainBook == null || enchantedBook == null || plainBook.getItem() != Items.BOOK
 						|| enchantedBook.getItem() != Items.ENCHANTED_BOOK) return;
 				require(!client.player.openContainer.getSlot(0).getHasStack()
@@ -290,11 +295,11 @@ public final class VanillaFoodNetworkClientProbe {
 					world.setBlockState(discShelf, world.getBlockState(discShelf).withProperty(RackBlock.DATA, true));
 					ShelfLevel level = ((TileEntityShelvingUnit)world.getTileEntity(discShelf)).getLevel(true);
 					java.util.List<ItemStack> bottles = Phase5BottleProbe.samples();
+					pickedSecondBottle = new ItemStack(Items.DRAGON_BREATH).setStackDisplayName("Breath from the front row");
+					pickedBottle = new ItemStack(Items.DRAGON_BREATH).setStackDisplayName("Breath from the back row");
 					for (int index = 0; index < 7; index++) {
-						level.addMedia(bottles.get(index % bottles.size()));
+						level.addMedia(index == 2 ? pickedSecondBottle : bottles.get(index));
 					}
-					pickedSecondBottle = bottles.get(2);
-					pickedBottle = bottles.get(bottles.size() > 8 ? 7 : 4).copy().setStackDisplayName("Bottle from the back row");
 					level.markSurfaceSettingChanged();
 					player.setHeldItem(EnumHand.MAIN_HAND, pickedBottle.copy());
 					player.sendContainerToPlayer(player.inventoryContainer);
@@ -330,9 +335,100 @@ public final class VanillaFoodNetworkClientProbe {
 						|| !ItemStack.areItemStacksEqual(client.player.inventory.getStackInSlot(1), pickedSecondBottle)) return;
 				ShelfMediaInputProbe.clickClose((GuiShelfMedia)client.currentScreen, shelfClose);
 				require(client.currentScreen == null, "Close did not dismiss the bottle picker");
-				LogManager.getLogger().info("IAF BOTTLE SELECTOR CLIENT PROBE PASSED: eight upright bottles and exact repeat pickups");
+				LogManager.getLogger().info("IAF BOTTLE SELECTOR CLIENT PROBE PASSED: eight mixed bottles and repeated exact dragon's breath pickup");
+				pending = client.getIntegratedServer().addScheduledTask(() -> {
+					EntityPlayerMP player = serverPlayer(client);
+					player.inventory.clear();
+					player.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(Items.BREAD, 2).setStackDisplayName(NAME));
+					player.sendContainerToPlayer(player.inventoryContainer);
+				});
 				step = 27;
+			} else if (step == 27) {
+				if (!isBread(client.player.getHeldItemMainhand(), 2)) return;
+				clickPantryShelf(client, EnumHand.MAIN_HAND);
+				step = 28;
+			} else if (step == 28) {
+				TileEntityShelvingUnit shelf = (TileEntityShelvingUnit)client.world.getTileEntity(discShelf);
+				if (!isBread(client.player.getHeldItemMainhand(), 1) || !isBread(shelf.getLevel(false).getMediaItem(0), 1)) return;
+				clickPantryShelf(client, EnumHand.OFF_HAND);
+				step = 29;
+			} else if (step == 29) {
+				TileEntityShelvingUnit shelf = (TileEntityShelvingUnit)client.world.getTileEntity(discShelf);
+				if (!isBread(client.player.getHeldItemMainhand(), 2) || !shelf.getLevel(false).isEmpty()) return;
+				require(shelf.getLevel(true).getMediaCount() == 6 && client.currentScreen == null,
+					"Direct pantry pickup changed the other shelf level or opened a GUI");
+				LogManager.getLogger().info("IAF SHELVING PANTRY NETWORK PASSED: exact one-item placement, pickup and stack merge");
+				preparePantryItem(client, new ItemStack(Items.CAKE));
+				step = 30;
+			} else if (step == 30) {
+				if (!ItemStack.areItemStacksEqual(client.player.getHeldItemMainhand(), pantryItem)) return;
+				clickPantryShelf(client, EnumHand.MAIN_HAND);
+				step = 31;
+			} else if (step == 31) {
+				TileEntityShelvingUnit shelf = (TileEntityShelvingUnit)client.world.getTileEntity(discShelf);
+				if (!ItemStack.areItemStacksEqual(shelf.getLevel(false).getMediaItem(0), pantryItem)
+						|| client.player.getHeldItemMainhand() != null) return;
+				require(client.world.isAirBlock(discShelf.up()) && client.world.isAirBlock(discShelf.north()),
+					"Shelf display also placed a cake block");
+				clickPantryShelf(client, EnumHand.MAIN_HAND);
+				step = 32;
+			} else if (step == 32) {
+				TileEntityShelvingUnit shelf = (TileEntityShelvingUnit)client.world.getTileEntity(discShelf);
+				if (!ItemStack.areItemStacksEqual(client.player.getHeldItemMainhand(), pantryItem)
+						|| !shelf.getLevel(false).isEmpty()) return;
+				client.playerController.processRightClickBlock(client.player, client.world, client.player.getHeldItemMainhand(),
+					support, EnumFacing.UP, new Vec3d(support).addVector(0.5D, 1.0D, 0.5D), EnumHand.MAIN_HAND);
+				step = 33;
+			} else if (step == 33) {
+				if (client.world.getBlockState(support.up()).getBlock() != Blocks.CAKE
+						|| client.player.getHeldItemMainhand() != null) return;
+				preparePantryItem(client, new ItemStack(Items.MUSHROOM_STEW));
+				step = 34;
+			} else if (step == 34) {
+				if (!ItemStack.areItemStacksEqual(client.player.getHeldItemMainhand(), pantryItem)) return;
+				clickPantryShelf(client, EnumHand.MAIN_HAND);
+				require(!client.player.isHandActive(), "Displaying stew also started eating it");
+				step = 35;
+			} else if (step == 35) {
+				TileEntityShelvingUnit shelf = (TileEntityShelvingUnit)client.world.getTileEntity(discShelf);
+				if (!ItemStack.areItemStacksEqual(shelf.getLevel(false).getMediaItem(0), pantryItem)
+						|| client.player.getHeldItemMainhand() != null) return;
+				require(shelf.getLevel(true).getMediaCount() == 6 && !client.player.isHandActive(),
+					"Displaying stew changed the other level or started eating it");
+				LogManager.getLogger().info("IAF KITCHEN SHELF NETWORK PASSED: exact cake pickup, vanilla cake placement and stew display");
+				clickPantryShelf(client, EnumHand.MAIN_HAND);
+				step = 36;
+			} else if (step == 36 || step == 39 || step == 42) {
+				TileEntityShelvingUnit shelf = (TileEntityShelvingUnit)client.world.getTileEntity(discShelf);
+				if (!ItemStack.areItemStacksEqual(client.player.getHeldItemMainhand(), pantryItem)
+						|| !shelf.getLevel(false).isEmpty()) return;
+				if (step == 42) {
+					preparePantryItem(client, new ItemStack(Items.FLINT_AND_STEEL));
+				} else {
+					preparePantryItem(client, new ItemStack(step == 36 ? Items.BOW : Items.FISHING_ROD));
+				}
+				step++;
+			} else if (step == 37 || step == 40 || step == 43) {
+				if (!ItemStack.areItemStacksEqual(client.player.getHeldItemMainhand(), pantryItem)) return;
+				clickPantryShelf(client, EnumHand.MAIN_HAND);
+				require(!client.player.isHandActive() && client.player.fishEntity == null, "Display click drew or cast the gear");
+				step++;
+			} else if (step == 38 || step == 41 || step == 44) {
+				TileEntityShelvingUnit shelf = (TileEntityShelvingUnit)client.world.getTileEntity(discShelf);
+				if (!ItemStack.areItemStacksEqual(shelf.getLevel(false).getMediaItem(0), pantryItem)
+						|| client.player.getHeldItemMainhand() != null) return;
+				require(!client.player.isHandActive() && client.player.fishEntity == null && shelf.getLevel(true).getMediaCount() == 6,
+					"Gear display also used the item or changed the other level");
+				pending = client.getIntegratedServer().addScheduledTask(() -> {
+					EntityPlayerMP player = serverPlayer(client);
+					require(!player.isHandActive() && player.fishEntity == null, "Gear display drew or cast on the server");
+					require(player.getServerWorld().getBlockState(discShelf.north()).getBlock() != Blocks.FIRE,
+						"Displaying flint and steel lit a fire");
+				});
+				if (step != 44) clickPantryShelf(client, EnumHand.MAIN_HAND);
+				step++;
 			} else {
+				LogManager.getLogger().info("IAF WORKSHOP SHELF NETWORK PASSED: bow, rod and flint and steel displayed without item use");
 				client.playerController.setGameType(GameType.CREATIVE);
 				support = null;
 				GlassVaseNetworkClientProbe.start(client);
@@ -344,13 +440,36 @@ public final class VanillaFoodNetworkClientProbe {
 		}
 	}
 
-	static void complete(Minecraft client) throws Exception {
+	private static void clickPantryShelf(Minecraft client, EnumHand hand) {
+		EnumActionResult result = client.playerController.processRightClickBlock(client.player, client.world,
+			client.player.getHeldItem(hand), discShelf, EnumFacing.NORTH,
+			new Vec3d(discShelf).addVector(0.5D, 0.20D, 0.25D), hand);
+		require(result == EnumActionResult.SUCCESS, "The shelf click fell through to normal item use");
+	}
+
+	private static void preparePantryItem(Minecraft client, ItemStack item) {
+		pantryItem = item.setStackDisplayName(NAME);
+		pending = client.getIntegratedServer().addScheduledTask(() -> {
+			EntityPlayerMP player = serverPlayer(client);
+			player.inventory.clear();
+			player.setHeldItem(EnumHand.MAIN_HAND, item.copy());
+			if (item.getItem() == Items.BOW) player.inventory.setInventorySlotContents(1, new ItemStack(Items.ARROW, 8));
+			player.getFoodStats().setFoodLevel(10);
+			player.sendContainerToPlayer(player.inventoryContainer);
+		});
+	}
+
+	static void complete(Minecraft client) {
 		LogManager.getLogger().info("IAF VANILLA FOOD NETWORK CLIENT PROBE PASSED");
 		LogManager.getLogger().info("IAF STORAGE NETWORK CLIENT PROBE PASSED: native GUI, seal and unseal packets, exact fluid sync");
-		Files.write(Paths.get("surface-bounds-pass.properties"),
-			("status=PASS\ncases=" + (cases + 2) + "\nnetworkFood=PASS\nnetworkStorage=PASS\nnetworkVase=PASS\n").getBytes(StandardCharsets.UTF_8));
 		LogManager.getLogger().info("IAF SURFACE BOUNDS CLIENT PROBE PASSED: {} cases", cases + 2);
-		VanillaFoodClientProbe.prepareGallery(client);
+		BulkBarrelClientProbe.start(client);
+	}
+
+	static void writePassReceipt() throws IOException {
+		Files.write(Paths.get("surface-bounds-pass.properties"),
+			("status=PASS\ncases=" + (cases + 2) + "\nnetworkFood=PASS\nnetworkStorage=PASS\nnetworkVase=PASS\nnetworkBulkBarrel=PASS\nnetworkBarrelLabel=PASS\nnetworkBedsideCabinet=PASS\nnetworkCrate=PASS\nnetworkHoppers=PASS\ngallery=PASS\n")
+				.getBytes(StandardCharsets.UTF_8));
 	}
 
 	private static EntityPlayerMP serverPlayer(Minecraft client) {

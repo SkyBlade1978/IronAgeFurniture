@@ -512,19 +512,17 @@ tasks.register('verifyFurnitureCatalog') {
                 throw new GradleException("Furniture blockstate is missing: ${id}")
             }
             Map state = new JsonSlurper().parse(stateFile) as Map
-            Map variants = state.variants as Map
-            if (variants == null || variants.isEmpty()) {
-                throw new GradleException("Furniture blockstate has no variants: ${id}")
+            Collection variants = state.variants ? state.variants.values() : (state.multipart ?: []).collect { it.apply }
+            if (variants.isEmpty()) {
+                throw new GradleException("Furniture blockstate has no models: ${id}")
             }
-            variants.values().collectMany { it instanceof List ? it : [it] }.each { value ->
+            variants.collectMany { it instanceof List ? it : [it] }.each { value ->
                 String modelName = (value as Map).model?.toString()
                 if (modelName == null || !modelName.startsWith('ironagefurniture:')) {
                     throw new GradleException("Furniture model reference is invalid: ${id}")
                 }
                 String path = modelName.substring('ironagefurniture:'.length())
-                if (path.startsWith('upholstered/')) {
-                    path = path.substring('upholstered/'.length())
-                }
+                path = path.replaceFirst('^(upholstered|padded)/', '')
                 if (!generatedModels.containsKey("models/block/${path}.json".toString())
                         && !new File(blockModelRoot, "${path}.json").isFile()) {
                     throw new GradleException("Furniture model is missing: ${id} -> ${path}")

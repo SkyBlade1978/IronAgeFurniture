@@ -1,0 +1,39 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/diamond_block",
+    "blue": "minecraft:blocks/diamond_block",
+    "light": "minecraft:blocks/sea_lantern",
+    "deep": "minecraft:blocks/wool_colored_light_blue"
+  },
+  "elements": [
+    {
+      "from": [6.2, 0, 6.3],
+      "to": [9.8, 1.05, 9.7],
+      "faces": { "down": { "texture": "#deep" }, "up": { "texture": "#blue" }, "north": { "texture": "#deep" }, "south": { "texture": "#deep" }, "west": { "texture": "#deep" }, "east": { "texture": "#deep" } }
+    },
+    {
+      "from": [6.53, 1.04, 6.77],
+      "to": [8.25, 5.1, 8.35],
+      "rotation": {"origin": [7.4, 1.45, 7.6], "axis": "z", "angle": 22.5, "rescale": false},
+      "faces": { "down": { "texture": "#blue" }, "up": { "texture": "#light" }, "north": { "texture": "#blue" }, "south": { "texture": "#blue" }, "west": { "texture": "#blue" }, "east": { "texture": "#light" } }
+    },
+    {
+      "from": [8.15, 0.92, 7.07],
+      "to": [9.9, 3.87, 8.73],
+      "rotation": {"origin": [9.55, 1.24, 7.8], "axis": "z", "angle": -22.5, "rescale": false},
+      "faces": { "down": { "texture": "#light" }, "up": { "texture": "#light" }, "north": { "texture": "#blue" }, "south": { "texture": "#light" }, "west": { "texture": "#blue" }, "east": { "texture": "#light" } }
+    },
+    {
+      "from": [6.73, 1.03, 8.39],
+      "to": [8.23, 3.53, 10.02],
+      "rotation": {"origin": [7.4, 1.38, 9.27], "axis": "x", "angle": 22.5, "rescale": false},
+      "faces": { "down": { "texture": "#light" }, "up": { "texture": "#blue" }, "north": { "texture": "#light" }, "south": { "texture": "#blue" }, "west": { "texture": "#light" }, "east": { "texture": "#light" } }
+    },
+    {
+      "from": [7.12, 4.91, 7.12],
+      "to": [7.7, 5.47, 8],
+      "rotation": {"origin": [7.4, 1.45, 7.6], "axis": "z", "angle": 22.5, "rescale": false},
+      "faces": { "down": { "texture": "#light" }, "up": { "texture": "#light" }, "north": { "texture": "#light" }, "south": { "texture": "#light" }, "west": { "texture": "#light" }, "east": { "texture": "#light" } }
+    }
+  ]
+}

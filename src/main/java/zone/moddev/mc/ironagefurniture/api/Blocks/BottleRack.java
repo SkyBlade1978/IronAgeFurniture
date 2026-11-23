@@ -53,7 +53,7 @@ public class BottleRack extends RackBlock {
 		}
 
 		int slot = this.getSlotForHit(state.getValue(FACING), hitX, hitY, hitZ);
-		TileEntityBottleRack rack = this.getRackEntity(worldIn, pos, false);
+		TileEntityBottleRack rack = this.getRackTile(worldIn, pos, TileEntityBottleRack.class);
 		boolean hasHeldItem = heldItem != null && heldItem.stackSize > 0;
 
 		if (hasHeldItem && !isValidBottleItem(heldItem)) {
@@ -70,13 +70,10 @@ public class BottleRack extends RackBlock {
 
 				if (this.isSameBottleStack(stored, heldItem)) {
 					this.returnRackItem(worldIn, pos, playerIn, rack.removeBottle(slot));
-					this.removeEmptyRackTile(worldIn, pos);
 				}
 
 				return true;
 			}
-
-			rack = this.getRackEntity(worldIn, pos, true);
 
 			if (rack != null && rack.insertBottle(slot, heldItem,
 					this.getBottleFacingForInsert(pos, state, playerIn))) {
@@ -94,7 +91,6 @@ public class BottleRack extends RackBlock {
 
 		if (rack != null && rack.hasBottle(slot)) {
 			this.returnRackItem(worldIn, pos, playerIn, rack.removeBottle(slot));
-			this.removeEmptyRackTile(worldIn, pos);
 		}
 
 		return true;
@@ -123,7 +119,7 @@ public class BottleRack extends RackBlock {
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return state.getValue(DATA).booleanValue() ? new TileEntityBottleRack() : null;
+		return new TileEntityBottleRack();
 	}
 
 	private int getSlotForHit(EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -136,29 +132,6 @@ public class BottleRack extends RackBlock {
 
 	private double clamp(double value, double min, double max) {
 		return Math.max(min, Math.min(max, value));
-	}
-
-	private TileEntityBottleRack getRackEntity(World worldIn, BlockPos pos, boolean create) {
-		return this.getRackTile(worldIn, pos, create, TileEntityBottleRack.class);
-	}
-
-	@Override
-	protected void removeEmptyRackTile(World worldIn, BlockPos pos) {
-		if (worldIn.isRemote) {
-			return;
-		}
-
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
-
-		if (!(tileEntity instanceof TileEntityBottleRack)) {
-			return;
-		}
-
-		if (((TileEntityBottleRack)tileEntity).hasStoredData()) {
-			return;
-		}
-
-		this.clearRackTile(worldIn, pos);
 	}
 
 	private boolean isSameBottleStack(ItemStack storedItem, ItemStack heldItem) {

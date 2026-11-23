@@ -1,0 +1,50 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/quartz_block_side",
+    "body": "minecraft:blocks/quartz_block_side",
+    "point": "minecraft:blocks/quartz_block_top",
+    "root": "minecraft:blocks/netherrack"
+  },
+  "elements": [
+    {
+      "from": [5.7, 0, 5.8],
+      "to": [10.2, 0.56, 10.41],
+      "faces": { "down": { "texture": "#root", "uv": [0, 0, 12, 12] }, "up": { "texture": "#root", "uv": [0, 0, 12, 12] }, "north": { "texture": "#root", "uv": [0, 0, 12, 12] }, "south": { "texture": "#root", "uv": [0, 0, 12, 12] }, "west": { "texture": "#root", "uv": [0, 0, 12, 12] }, "east": { "texture": "#root", "uv": [0, 0, 12, 12] } }
+    },
+    {
+      "from": [5.2, 0.48, 6.47],
+      "to": [7.22, 2.69, 10.6],
+      "faces": { "down": { "texture": "#body" }, "up": { "texture": "#body" }, "north": { "texture": "#body" }, "south": { "texture": "#body" }, "west": { "texture": "#body" }, "east": { "texture": "#body" } }
+    },
+    {
+      "from": [5.61, 2.55, 7.4],
+      "to": [6.8, 3.34, 9.46],
+      "faces": { "down": { "texture": "#point" }, "up": { "texture": "#point" }, "north": { "texture": "#point" }, "south": { "texture": "#point" }, "west": { "texture": "#point" }, "east": { "texture": "#point" } }
+    },
+    {
+      "from": [7.17, 0.49, 5.4],
+      "to": [10.8, 3.47, 8.62],
+      "faces": { "down": { "texture": "#body" }, "up": { "texture": "#body" }, "north": { "texture": "#body" }, "south": { "texture": "#body" }, "west": { "texture": "#body" }, "east": { "texture": "#body" } }
+    },
+    {
+      "from": [7.36, 3.41, 5.74],
+      "to": [10.03, 4.43, 8.1],
+      "faces": { "down": { "texture": "#body" }, "up": { "texture": "#body" }, "north": { "texture": "#body" }, "south": { "texture": "#body" }, "west": { "texture": "#body" }, "east": { "texture": "#body" } }
+    },
+    {
+      "from": [7.75, 4.41, 5.98],
+      "to": [9.52, 5.31, 7.74],
+      "faces": { "down": { "texture": "#point" }, "up": { "texture": "#point" }, "north": { "texture": "#point" }, "south": { "texture": "#point" }, "west": { "texture": "#point" }, "east": { "texture": "#point" } }
+    },
+    {
+      "from": [8.07, 5.28, 6.25],
+      "to": [8.97, 5.8, 7.26],
+      "faces": { "down": { "texture": "#point" }, "up": { "texture": "#point" }, "north": { "texture": "#point" }, "south": { "texture": "#point" }, "west": { "texture": "#point" }, "east": { "texture": "#point" } }
+    },
+    {
+      "from": [8.13, 0.47, 8.17],
+      "to": [9.95, 2.1, 10.27],
+      "faces": { "down": { "texture": "#body" }, "up": { "texture": "#body" }, "north": { "texture": "#body" }, "south": { "texture": "#body" }, "west": { "texture": "#body" }, "east": { "texture": "#body" } }
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "stone": "minecraft:blocks/brewing_stand_base",
+    "metal": "minecraft:blocks/cauldron_side",
+    "rod": "minecraft:blocks/gold_block",
+    "bronze": "minecraft:blocks/hardened_clay_stained_orange"
+  },
+  "elements": [
+    {
+      "from": [3.6, 0, 4.8],
+      "to": [12.4, 0.95, 11.2],
+      "faces": {
+        "north": { "texture": "#stone", "uv": [0, 0, 16, 4] },
+        "south": { "texture": "#stone", "uv": [0, 0, 16, 4] },
+        "east": { "texture": "#stone", "uv": [0, 0, 12, 4] },
+        "west": { "texture": "#stone", "uv": [0, 0, 12, 4] },
+        "up": { "texture": "#stone", "uv": [0, 0, 16, 16] },
+        "down": { "texture": "#stone", "uv": [0, 0, 16, 16] }
+      }
+    },
+    {
+      "from": [7.2, 0.95, 7.2],
+      "to": [8.8, 1.75, 8.8],
+      "faces": {
+        "north": { "texture": "#metal" },
+        "south": { "texture": "#metal" },
+        "east": { "texture": "#metal" },
+        "west": { "texture": "#metal" },
+        "up": { "texture": "#metal" },
+        "down": { "texture": "#metal" }
+      }
+    },
+    {
+      "from": [7.6, 1.75, 7.6],
+      "to": [8.4, 7.3, 8.4],
+      "faces": {
+        "north": { "texture": "#bronze" },
+        "south": { "texture": "#bronze" },
+        "east": { "texture": "#bronze" },
+        "west": { "texture": "#bronze" },
+        "up": { "texture": "#bronze" },
+        "down": { "texture": "#bronze" }
+      }
+    },
+    {
+      "from": [7.38, 7.3, 7.38],
+      "to": [8.62, 8.1, 8.62],
+      "faces": {
+        "north": { "texture": "#rod" },
+        "south": { "texture": "#rod" },
+        "east": { "texture": "#rod" },
+        "west": { "texture": "#rod" },
+        "up": { "texture": "#rod" },
+        "down": { "texture": "#rod" }
+      }
+    },
+    {
+      "from": [4.25, 5.03, 7.65],
+      "to": [11.75, 5.68, 8.35],
+      "faces": {
+        "north": { "texture": "#metal" },
+        "south": { "texture": "#metal" },
+        "east": { "texture": "#metal" },
+        "west": { "texture": "#metal" },
+        "up": { "texture": "#metal" },
+        "down": { "texture": "#metal" }
+      }
+    },
+    {
+      "from": [7.68, 5.03, 5.25],
+      "to": [8.32, 5.68, 7.65],
+      "faces": {
+        "north": { "texture": "#metal" },
+        "south": { "texture": "#metal" },
+        "east": { "texture": "#metal" },
+        "west": { "texture": "#metal" },
+        "up": { "texture": "#metal" },
+        "down": { "texture": "#metal" }
+      }
+    },
+    {
+      "from": [4.25, 4.25, 7.35],
+      "to": [5.15, 5.03, 8.65],
+      "faces": {
+        "north": { "texture": "#metal" },
+        "south": { "texture": "#metal" },
+        "east": { "texture": "#metal" },
+        "west": { "texture": "#metal" },
+        "up": { "texture": "#metal" },
+        "down": { "texture": "#metal" }
+      }
+    },
+    {
+      "from": [10.85, 4.25, 7.35],
+      "to": [11.75, 5.03, 8.65],
+      "faces": {
+        "north": { "texture": "#metal" },
+        "south": { "texture": "#metal" },
+        "east": { "texture": "#metal" },
+        "west": { "texture": "#metal" },
+        "up": { "texture": "#metal" },
+        "down": { "texture": "#metal" }
+      }
+    },
+    {
+      "from": [7.35, 4.25, 5.25],
+      "to": [8.65, 5.03, 6.15],
+      "faces": {
+        "north": { "texture": "#metal" },
+        "south": { "texture": "#metal" },
+        "east": { "texture": "#metal" },
+        "west": { "texture": "#metal" },
+        "up": { "texture": "#metal" },
+        "down": { "texture": "#metal" }
+      }
+    }
+  ]
+}

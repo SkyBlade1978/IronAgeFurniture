@@ -27,6 +27,9 @@ import zone.moddev.mc.ironagefurniture.api.PaddedBenchColourHelper;
 import zone.moddev.mc.ironagefurniture.api.Enumerations.PaddedBenchColour;
 import zone.moddev.mc.ironagefurniture.api.Enumerations.UpholsteryColour;
 import zone.moddev.mc.ironagefurniture.api.UpholsteryColourHelper;
+import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout;
+import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.ironagefurniture.api.surface.VanillaSurfaceFoods;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityMetalVariant;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -60,7 +63,9 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 /** Exact-loader probe for legacy Java-side optional registration and recipes. */
@@ -71,6 +76,7 @@ import net.minecraftforge.oredict.OreDictionary;
         dependencies = "required-after:ironagefurniture@[0.5.0.110021]")
 public final class OptionalIntegrationRecipeProbe {
     public static final String MOD_ID = "ironagefurnitureintegrationprobe";
+    static final Item SHELF_LAYOUT_SAMPLE = new Item().setRegistryName(MOD_ID, "shelf_layout_sample");
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static final List<String> PROFILES = Arrays.asList(
@@ -85,10 +91,26 @@ public final class OptionalIntegrationRecipeProbe {
     }
 
     @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        if (System.getProperty("iaf.probe.phase5Mods") != null || Boolean.getBoolean("iaf.probe.surfaceBoundsClient")
+                || Boolean.getBoolean("iaf.probe.phase5Reload")) {
+            GameRegistry.register(SHELF_LAYOUT_SAMPLE);
+            SurfaceContentRegistry.Descriptor fruit = VanillaSurfaceFoods.find(new ItemStack(Items.APPLE)).descriptor
+                .withShelfLayout(ShelfLayout.PRODUCE_TRAY).withProduceTray();
+            SurfaceContentRegistry.register(SHELF_LAYOUT_SAMPLE, stack -> fruit);
+
+            if (event.getSide().isClient()) {
+                ShelvingPantryClientExtension.register();
+            }
+        }
+    }
+
+    @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
         if (Boolean.getBoolean("iaf.probe.lampMiningClient")
                 || Boolean.getBoolean("iaf.probe.surfaceBoundsClient")) return;
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        if (CfmWorldProbe.run(server)) return;
         if (System.getProperty("iaf.probe.phase5Mods") != null) {
             try { Phase5StackProbe.verify(server); }
             finally { server.initiateShutdown(); }

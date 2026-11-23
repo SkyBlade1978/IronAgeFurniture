@@ -8,6 +8,7 @@ import zone.moddev.mc.ironagefurniture.api.CreativeModeBreakTracker;
 import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
 import zone.moddev.mc.ironagefurniture.api.FluidVesselInteractions;
 import zone.moddev.mc.ironagefurniture.api.network.StorageNetwork;
+import zone.moddev.mc.ironagefurniture.api.network.ShelfMapSync;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceReservationRepair;
 import zone.moddev.mc.ironagefurniture.api.entity.EntityThrownLavaLamp;
 import zone.moddev.mc.ironagefurniture.api.entity.EntityReleasedLavaLamp;
@@ -84,7 +85,9 @@ public class Ironagefurniture {
 		MinecraftForge.EVENT_BUS.register(new CreativeModeBreakTracker());
 		MinecraftForge.EVENT_BUS.register(new VanillaFoodPlacement());
 		MinecraftForge.EVENT_BUS.register(cfmChairMigration);
+		MinecraftForge.EVENT_BUS.register(ShelfMapSync.INSTANCE);
 		FMLCommonHandler.instance().bus().register(cfmChairMigration);
+		FMLCommonHandler.instance().bus().register(ShelfMapSync.INSTANCE);
 		FMLCommonHandler.instance().bus().register(new SurfaceReservationRepair());
 
 		GameRegistry.registerTileEntity(TileEntityPaddedBench.class, MODID + ":padded_bench_colour");
@@ -105,7 +108,9 @@ public class Ironagefurniture {
 		if (event.getSide().isClient()) {
 			GeneratedModelResourcePack.install();
 			FMLCommonHandler.instance().bus().register(new HeldCandleSmoke());
+			ClientModelInitialiser.registerDrawerModels();
 			ClientModelInitialiser.registerPaddedBenchItemModels();
+			ClientModelInitialiser.registerStorageBenchItemModels();
 			ClientModelInitialiser.registerUpholsteryItemModels();
 			ClientItemInitialiser.registerVariantItemModels();
 			ClientRenderInitialiser.registerShieldChairRenderer();

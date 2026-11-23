@@ -5,10 +5,13 @@ import java.util.List;
 
 import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBedsideCabinet;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityDiningTable;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityVanillaFoodDisplay;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
 import zone.moddev.mc.ironagefurniture.api.Blocks.LowTable;
+import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -16,6 +19,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -36,7 +42,7 @@ public final class SurfaceReloadProbe {
         chunks = loadedChunks;
         for (int dimension : new int[]{0, -1, 1}) {
             for (TileEntity tile : server.worldServerForDimension(dimension).loadedTileEntityList) {
-                if (tile instanceof TileEntityDiningTable || tile instanceof TileEntityCabinet
+                if (tile instanceof TileEntityDiningTable || tile instanceof TileEntityCabinet || tile instanceof TileEntityBedsideCabinet
                         || tile instanceof TileEntityVanillaFoodDisplay || tile instanceof TileEntityWallShelf
                         || tile instanceof zone.moddev.mc.ironagefurniture.api.tile.TileEntityGlassVase
                         || tile instanceof zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel
@@ -92,8 +98,43 @@ public final class SurfaceReloadProbe {
             LogManager.getLogger().info("IAF SAVED SHELF/LOW TABLE RELOAD PASSED: {} shelves, {} low tables", shelves, lowTables);
             LogManager.getLogger().info("IAF SAVED GLASS VASE RELOAD PASSED: {} placed vases", vases);
             LogManager.getLogger().info("IAF SAVED STORAGE RELOAD PASSED: {} half cabinets, {} barrels, {} racks", halfCabinets, barrels, racks);
+            verifyBarrelFixtures(completedServer.worldServerForDimension(0));
+            BedsideCabinetProbe.verifyReload(completedServer.worldServerForDimension(0));
+            StorageHopperProbe.verifyReload(completedServer.worldServerForDimension(0));
+            DrawerUnitProbe.verifyReload(completedServer.worldServerForDimension(0));
+            StorageBenchProbe.verifyReload(completedServer.worldServerForDimension(0));
+            ToolRackProbe.verifyReload(completedServer.worldServerForDimension(0));
+            ProduceFurnitureProbe.verifyReload(completedServer.worldServerForDimension(0));
         } finally {
             completedServer.initiateShutdown();
+        }
+    }
+
+    private static void verifyBarrelFixtures(WorldServer world) {
+        BlockPos fluidPos = new BlockPos(68, 120, 305);
+        TileEntity tile = world.getTileEntity(fluidPos);
+        if (!(tile instanceof TileEntityBarrel)) {
+            return;
+        }
+
+        TileEntityBarrel fluidBarrel = (TileEntityBarrel)tile;
+        FluidStack fluid = fluidBarrel.getFluid();
+        require(fluid != null && fluid.amount == 12345 && fluidBarrel.isSealed() && fluid.tag != null
+            && "exact batch data".equals(fluid.tag.getString("StorageProof"))
+            && fluidBarrel.getBulkStorage().getCount() == 0, "Saved sealed barrel lost fluid or gained solid contents");
+        LogManager.getLogger().info("IAF SEALED BARREL RELOAD PASSED: exact 12345 mB and seal");
+
+        BlockPos bulkPos = fluidPos.east(8);
+        tile = world.getTileEntity(bulkPos);
+        if (tile instanceof TileEntityBarrel) {
+            TileEntityBarrel bulk = (TileEntityBarrel)tile;
+            IBlockState state = world.getBlockState(bulkPos);
+            require(bulk.getBulkStorage().getCount() == 37
+                && "Saved grain".equals(bulk.getBulkStorage().getStack().getDisplayName())
+                && bulk.getFluidAmount() == 0
+                && state.getBlock().getActualState(state, world, bulkPos).getValue(StorageBarrel.OPEN),
+                "Saved bulk barrel lost its exact batch or lid state");
+            LogManager.getLogger().info("IAF BULK BARREL WORLD RELOAD PASSED: 37 named seeds and the open model");
         }
     }
 

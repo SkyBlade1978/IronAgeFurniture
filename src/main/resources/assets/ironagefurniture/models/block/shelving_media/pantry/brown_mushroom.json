@@ -1,0 +1,6 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/pantry/mushroom",
+  "textures": {
+    "cap": "minecraft:blocks/mushroom_block_skin_brown"
+  }
+}

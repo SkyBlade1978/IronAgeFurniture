@@ -1,0 +1,7 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/pantry/ingredient_bowl",
+  "textures": {
+    "fill": "minecraft:blocks/hardened_clay_stained_red",
+    "grain": "minecraft:blocks/dirt"
+  }
+}

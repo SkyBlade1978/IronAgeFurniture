@@ -49,10 +49,20 @@ public final class GlassVaseNetworkClientProbe {
 		if (pos == null || event.phase != TickEvent.Phase.END) return;
 		Minecraft client = Minecraft.getMinecraft();
 		try {
-			if (++ticks > 200) throw new IllegalStateException("Vase packet test timed out at step " + step);
+			if (++ticks > 200) {
+				throw new IllegalStateException("Vase packet test timed out at step " + step
+					+ "; block=" + client.world.getBlockState(pos) + "; displayed=" + displayed(client)
+					+ "; held=" + client.player.getHeldItemMainhand());
+			}
 			if (pending != null) { if (!pending.isDone()) return; pending.get(); pending = null; }
 			if (step == 0) {
-				if (!named(client.player.getHeldItemMainhand(), VASE, 2)) return;
+				// Wait for the table update as well as the held-item packet before clicking.
+				Block table = Block.getBlockFromName("ironagefurniture:table_dining_oak");
+				if (client.world.getBlockState(pos).getBlock() != table || !client.world.isAirBlock(pos.up())
+						|| !named(client.player.getHeldItemMainhand(), VASE, 2)) {
+					return;
+				}
+
 				client.playerController.processRightClickBlock(client.player, client.world, client.player.getHeldItemMainhand(),
 					pos, EnumFacing.UP, new Vec3d(pos).addVector(0.5, 1, 0.5), EnumHand.MAIN_HAND);
 				step++;
@@ -92,7 +102,7 @@ public final class GlassVaseNetworkClientProbe {
 			} else {
 				pos = null;
 				LogManager.getLogger().info("IAF GLASS VASE NETWORK CLIENT PROBE PASSED: side-hit packets insert plant, remove plant, retrieve exact vase and retain table");
-				VanillaFoodNetworkClientProbe.complete(client);
+				PantryIngredientClientProbe.start(client);
 			}
 		} catch (Exception failure) { client.shutdown(); throw failure; }
 	}

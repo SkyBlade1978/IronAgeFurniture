@@ -124,7 +124,6 @@ public abstract class RackBlock extends BlockHBase {
 			return;
 		}
 
-		this.removeEmptyRackTile(worldIn, pos);
 		this.notifyRackAndNeighbors(worldIn, pos);
 	}
 
@@ -148,7 +147,8 @@ public abstract class RackBlock extends BlockHBase {
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		return state.getValue(DATA).booleanValue();
+		// A hopper must see the intake on an empty rack, including old saves with DATA=false.
+		return true;
 	}
 
 	@Override
@@ -384,31 +384,7 @@ public abstract class RackBlock extends BlockHBase {
 	}
 
 	protected AxisAlignedBB rotateToFacing(AxisAlignedBB box, EnumFacing facing) {
-		switch (facing) {
-		case EAST:
-			return this.rotateClockwise(box);
-		case SOUTH:
-			return this.rotateHalfTurn(box);
-		case WEST:
-			return this.rotateCounterClockwise(box);
-		default:
-			return box;
-		}
-	}
-
-	private AxisAlignedBB rotateClockwise(AxisAlignedBB box) {
-		return new AxisAlignedBB(1.0D - box.maxZ, box.minY, box.minX,
-			1.0D - box.minZ, box.maxY, box.maxX);
-	}
-
-	private AxisAlignedBB rotateHalfTurn(AxisAlignedBB box) {
-		return new AxisAlignedBB(1.0D - box.maxX, box.minY, 1.0D - box.maxZ,
-			1.0D - box.minX, box.maxY, 1.0D - box.minZ);
-	}
-
-	private AxisAlignedBB rotateCounterClockwise(AxisAlignedBB box) {
-		return new AxisAlignedBB(box.minZ, box.minY, 1.0D - box.maxX,
-			box.maxZ, box.maxY, 1.0D - box.minX);
+		return rotateNorthBounds(box, facing);
 	}
 
 	private EnumFacing rotateClockwise(EnumFacing facing) {
@@ -443,45 +419,14 @@ public abstract class RackBlock extends BlockHBase {
 
 	public abstract boolean isRackFamily(Block block);
 
-	protected abstract void removeEmptyRackTile(World world, BlockPos pos);
-
 	protected abstract double getRackDepth();
 
-	protected <T extends TileEntity> T getRackTile(World world, BlockPos pos, boolean create, Class<T> type) {
-		IBlockState state = world.getBlockState(pos);
-
-		if (state.getBlock() != this) {
+	protected <T extends TileEntity> T getRackTile(World world, BlockPos pos, Class<T> type) {
+		if (world.getBlockState(pos).getBlock() != this) {
 			return null;
 		}
 
-		if (!state.getValue(DATA)) {
-			if (!create || world.isRemote || !world.setBlockState(pos, state.withProperty(DATA, true), 2)) {
-				return null;
-			}
-
-			state = world.getBlockState(pos);
-		}
-
 		TileEntity tile = world.getTileEntity(pos);
-
-		if (!type.isInstance(tile) && create && !world.isRemote) {
-			tile = this.createTileEntity(world, state);
-
-			if (tile != null) {
-				world.setTileEntity(pos, tile);
-			}
-		}
-
 		return type.isInstance(tile) ? type.cast(tile) : null;
-	}
-
-	protected void clearRackTile(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
-
-		if (state.getBlock() == this && state.getValue(DATA)) {
-			world.setBlockState(pos, state.withProperty(DATA, false), 2);
-		} else {
-			world.removeTileEntity(pos);
-		}
 	}
 }

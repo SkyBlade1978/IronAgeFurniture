@@ -1,0 +1,41 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/hardened_clay_stained_brown",
+    "skin": "minecraft:blocks/hardened_clay_stained_brown",
+    "rim": "minecraft:blocks/wool_colored_purple",
+    "iris": "minecraft:blocks/hardened_clay_stained_red",
+    "pupil": "minecraft:blocks/coal_block"
+  },
+  "elements": [
+    {
+      "from": [6.05, 0, 6.08],
+      "to": [9.95, 0.65, 9.9],
+      "faces": {"down": { "texture": "#skin" }, "up": { "texture": "#skin" }, "north": { "texture": "#skin" }, "south": { "texture": "#skin" }, "west": { "texture": "#skin" }, "east": { "texture": "#skin" } }
+    },
+    {
+      "from": [5.6, 0.62, 6.25],
+      "to": [10.4, 2.8, 10.5],
+      "faces": {"down": { "texture": "#skin" }, "up": { "texture": "#skin" }, "north": { "texture": "#skin" }, "south": { "texture": "#skin" }, "west": { "texture": "#skin" }, "east": { "texture": "#skin" } }
+    },
+    {
+      "from": [6.12, 2.76, 6.78],
+      "to": [9.88, 3.25, 9.94],
+      "faces": {"down": { "texture": "#skin" }, "up": { "texture": "#skin" }, "north": { "texture": "#skin" }, "south": { "texture": "#skin" }, "west": { "texture": "#skin" }, "east": { "texture": "#skin" } }
+    },
+    {
+      "from": [6.14, 2.05, 5.5],
+      "to": [9.84, 3.3, 6.82],
+      "faces": {"down": { "texture": "#rim" }, "up": { "texture": "#rim" }, "north": { "texture": "#rim" }, "south": { "texture": "#rim" }, "west": { "texture": "#rim" }, "east": { "texture": "#rim" } }
+    },
+    {
+      "from": [6.9, 2.62, 5.64],
+      "to": [9.09, 3.54, 6.72],
+      "faces": {"down": { "texture": "#iris" }, "up": { "texture": "#iris" }, "north": { "texture": "#iris" }, "south": { "texture": "#iris" }, "west": { "texture": "#iris" }, "east": { "texture": "#iris" } }
+    },
+    {
+      "from": [7.62, 3.54, 5.98],
+      "to": [8.41, 3.7, 6.48],
+      "faces": {"down": { "texture": "#pupil" }, "up": { "texture": "#pupil" }, "north": { "texture": "#pupil" }, "south": { "texture": "#pupil" }, "west": { "texture": "#pupil" }, "east": { "texture": "#pupil" } }
+    }
+  ]
+}

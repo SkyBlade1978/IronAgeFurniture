@@ -1,0 +1,41 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/hardened_clay_stained_orange",
+    "amber": "minecraft:blocks/hardened_clay_stained_orange",
+    "cream": "minecraft:blocks/wool_colored_yellow",
+    "warm": "minecraft:blocks/wool_colored_orange",
+    "swirl": "minecraft:blocks/glowstone"
+  },
+  "elements": [
+    {
+      "from": [6.35, 0, 6.35],
+      "to": [9.65, 0.6, 9.65],
+      "faces": {"down": { "texture": "#amber" }, "up": { "texture": "#amber" }, "north": { "texture": "#amber" }, "south": { "texture": "#amber" }, "west": { "texture": "#amber" }, "east": { "texture": "#amber" } }
+    },
+    {
+      "from": [5.95, 0.57, 5.96],
+      "to": [10.05, 1.22, 10.04],
+      "faces": {"down": { "texture": "#warm" }, "up": { "texture": "#warm" }, "north": { "texture": "#warm" }, "south": { "texture": "#warm" }, "west": { "texture": "#warm" }, "east": { "texture": "#warm" } }
+    },
+    {
+      "from": [5.4, 1.15, 5.4],
+      "to": [10.6, 2.55, 10.6],
+      "faces": {"down": { "texture": "#cream" }, "up": { "texture": "#cream" }, "north": { "texture": "#cream" }, "south": { "texture": "#cream" }, "west": { "texture": "#cream" }, "east": { "texture": "#cream" } }
+    },
+    {
+      "from": [5.85, 2.48, 5.82],
+      "to": [10.16, 3.16, 10.18],
+      "faces": {"down": { "texture": "#warm" }, "up": { "texture": "#warm" }, "north": { "texture": "#warm" }, "south": { "texture": "#warm" }, "west": { "texture": "#warm" }, "east": { "texture": "#warm" } }
+    },
+    {
+      "from": [6.3, 3.11, 6.34],
+      "to": [9.7, 3.77, 9.66],
+      "faces": {"down": { "texture": "#cream" }, "up": { "texture": "#cream" }, "north": { "texture": "#cream" }, "south": { "texture": "#cream" }, "west": { "texture": "#cream" }, "east": { "texture": "#cream" } }
+    },
+    {
+      "from": [7.28, 3.74, 6.74],
+      "to": [9.15, 4.2, 8.85],
+      "faces": {"down": { "texture": "#swirl" }, "up": { "texture": "#swirl" }, "north": { "texture": "#swirl" }, "south": { "texture": "#swirl" }, "west": { "texture": "#swirl" }, "east": { "texture": "#swirl" } }
+    }
+  ]
+}

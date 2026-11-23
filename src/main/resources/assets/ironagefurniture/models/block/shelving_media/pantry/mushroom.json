@@ -1,0 +1,29 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/mushroom_block_skin_stem",
+    "stem": "minecraft:blocks/mushroom_block_skin_stem",
+    "cap": "minecraft:blocks/mushroom_block_skin_brown"
+  },
+  "elements": [
+    {
+      "from": [7.22, 0, 7.22],
+      "to": [8.78, 2.85, 8.78],
+      "faces": { "down": { "texture": "#stem" }, "up": { "texture": "#stem" }, "north": { "texture": "#stem" }, "south": { "texture": "#stem" }, "west": { "texture": "#stem" }, "east": { "texture": "#stem" } }
+    },
+    {
+      "from": [5.2, 2.85, 5.2],
+      "to": [10.8, 3.85, 10.8],
+      "faces": { "down": { "texture": "#cap" }, "up": { "texture": "#cap" }, "north": { "texture": "#cap" }, "south": { "texture": "#cap" }, "west": { "texture": "#cap" }, "east": { "texture": "#cap" } }
+    },
+    {
+      "from": [5.9, 3.85, 5.9],
+      "to": [10.1, 4.48, 10.1],
+      "faces": { "down": { "texture": "#cap" }, "up": { "texture": "#cap" }, "north": { "texture": "#cap" }, "south": { "texture": "#cap" }, "west": { "texture": "#cap" }, "east": { "texture": "#cap" } }
+    },
+    {
+      "from": [6.5, 4.48, 6.5],
+      "to": [9.5, 4.8, 9.5],
+      "faces": { "down": { "texture": "#cap" }, "up": { "texture": "#cap" }, "north": { "texture": "#cap" }, "south": { "texture": "#cap" }, "west": { "texture": "#cap" }, "east": { "texture": "#cap" } }
+    }
+  ]
+}

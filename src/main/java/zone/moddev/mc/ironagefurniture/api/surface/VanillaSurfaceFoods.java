@@ -34,9 +34,12 @@ public final class VanillaSurfaceFoods {
 			this.metadata = data.get("metadata").getAsInt();
 			this.model = data.get("model").getAsString();
 			JsonArray bounds = data.getAsJsonArray("bounds");
+			ShelfLayout layout = data.has("shelfLayout") ? ShelfLayout.valueOf(data.get("shelfLayout").getAsString())
+				: ShelfLayout.NONE;
 			this.descriptor = new SurfaceContentRegistry.Descriptor(Category.MEAL, new AxisAlignedBB(
 				bounds.get(0).getAsDouble(), bounds.get(1).getAsDouble(), bounds.get(2).getAsDouble(),
-				bounds.get(3).getAsDouble(), bounds.get(4).getAsDouble(), bounds.get(5).getAsDouble()));
+				bounds.get(3).getAsDouble(), bounds.get(4).getAsDouble(), bounds.get(5).getAsDouble()))
+				.withShelfLayout(layout).withProduceTray();
 		}
 	}
 
@@ -59,7 +62,11 @@ public final class VanillaSurfaceFoods {
 
 	public static void register() {
 		for (Item item : BY_ITEM.keySet()) {
-			SurfaceContentRegistry.register(item, stack -> find(stack).descriptor);
+			SurfaceContentRegistry.register(item, stack -> {
+				Food food = find(stack);
+				return food.metadata < 0 || food.metadata == stack.getMetadata()
+					? food.descriptor : food.descriptor.withShelfLayout(ShelfLayout.NONE);
+			});
 		}
 	}
 

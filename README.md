@@ -30,6 +30,66 @@ Right-click an empty level or a matching arrangement to add one at a time.
 An empty-hand right-click opens a list of the books, discs or bottles on that level.
 Click an item's name or icon to move it to the next free inventory slot.
 The picker stays open so you can take several items. Click Close when done.
+Each level also holds five loaves, nine apples, six potatoes, beetroot, cookies
+or melon slices, fifteen carrots in layers of six, five and four, two pumpkin
+pies or matching bowls of soup or stew, one cake, or one axe, pickaxe, shovel or hoe.
+Wooden trays also display two matching cuts of meat or three matching fish.
+Raw and cooked foods, and each fish variant, use separate arrangements.
+One level can also display a single sword, bow, fishing rod, carrot on a stick,
+pair of shears, or shield. Up to three flint and steel tools can share a level,
+each retaining its own wear, name, and enchantments. Arrow displays hold six
+matching arrows laid side by side, including spectral and tipped arrows.
+Food must match the first item on that level, including its variant and custom name.
+Produce trays also hold six eggs, mushrooms, poisonous potatoes, spider eyes
+or chorus fruit. The meat tray holds two pieces of rotten flesh. Each level
+can display three bundles of wheat or sugar cane, two matching bowls of
+sugar, cocoa beans or seeds, or two milk pails.
+Brewing ingredients have their own shelf displays. A level holds two bowls of
+matching powder, six matching ingredients on a tray, or three rabbit's feet.
+Dragon's breath shares the eight-bottle row and picker with potions.
+Iron and gold ingots stack three, two, then one per level. Each wooden
+tray holds six matching gold nuggets, coal, charcoal, diamonds, emeralds
+or Nether quartz.
+Each level can also hold six nested empty bowls or two matching empty,
+water, lava or milk buckets.
+Travel displays hold one working clock or compass, three rolled blank maps,
+one open filled map, two coiled leads, or one saddle per level.
+One shelf level can also display an individual piece of vanilla armour,
+a wooden armour stand, any of the six kinds of head, mounted horse armour,
+folded elytra, or a banner with its original pattern.
+Crafting supply displays hold two matching leather or rabbit hides, three
+spools of string, three stick bundles or feathers, six sheets of paper, or
+one name tag per level.
+Each shelf level fits two matching bowls of dye, or a wooden tray with up to
+six ink sacs or pieces of lapis lazuli.
+Material trays hold three bones or blaze rods, or six matching pieces of flint,
+clay, slime, snow, prismarine shards, prismarine crystals, or popped chorus fruit.
+Magic displays hold one End Crystal or Nether Star, three matching rockets,
+or six matching pearls, Eyes of Ender, fire charges, firework stars, or spawn eggs.
+Firework stars and spawn eggs use the colours of the displayed item.
+Empty-hand right-click takes one displayed item directly from these arrangements.
+Boats, minecarts, paintings and item frames each have a model sized for
+one shelf level. A flower pot fits even when planted. Right-click it with
+a pottable plant to fill it, then empty-hand right-click to take the plant
+and again to take the pot.
+Right-click a level with a vanilla sign to add a one-line label on its
+front edge. Empty-hand right-click the label to edit it or mine the label
+to remove it. The label leaves the level free for a display.
+Utility displays hold one brewing stand, cauldron, vanilla bed, wooden or
+iron door, repeater or comparator on each level.
+Displayed glow and lava lamps light the shelves. Lava lamps and lava
+buckets bubble and pop, and candles give off light, flame and smoke.
+Empty sconces, obsidian chunks and tallow also have shelf-sized models.
+Modular shelves display Base Metals and Modern Metals materials, tools,
+armour and hardware. Ingots stack, nuggets go in trays, and powders go in
+bowls. Metal-filled buckets show the stored fluid's texture and colour.
+With Base Gems installed, each modular shelf level holds up to six cut stones
+on an angled, fabric-lined platter. Different stones can share it. Right-click
+a stone with an empty hand to retrieve it. Base Gems tools, blocks and other
+material forms use the standard shelf displays.
+
+Base Minerals powders go in wooden bowls. Its ores and storage blocks display
+as miniature blocks, with separate layouts for ingots, nuggets and molten buckets.
 Foudres, pot stills and brewing recipes belong to the separate Brewing addon.
 
 - One full cabinet crafts into two matching half cabinets.
@@ -47,6 +107,66 @@ its bottles and drinkware use the same barrel without duplicating Brewing
 content in IAF. Right-click an empty-handed barrel to open its fluid gauge
 and seal controls. Sealing blocks fluid transfer; Brewing supplies any
 applicable ageing policies.
+
+Upright barrels also hold one kind of loose solid. Right-click the top with
+wheat, seeds, pantry ingredients, produce or raw fish to start a batch. The
+barrel opens and shows its fill level. Use an empty hand to open the bulk
+storage screen, or run hoppers into the top and out of the bottom. Capacity
+is 512 grain or seed, 256 small ingredients, or 128 produce or fish. Removing
+the last item closes the barrel and frees it for fluids.
+
+Right-click a barrel face with a sign to give it a one-line label. Right-click
+the fitted sign with an empty hand to edit it, or break the sign to remove it.
+
+- Craft a bedside cabinet with matching planks across the top row, then a
+  plank, a wooden stick and a plank in each of the other two rows. Right-click
+  either drawer from the front to open its nine slots. Right-click the top to
+  display items such as a vase, lamp or drink.
+
+- Craft a drawer unit with eight matching planks around a stick. For the
+  half-depth version, leave the spaces to either side of the stick empty.
+  Place matching units side by side for
+  two 18-slot drawers, or stack them to any height. Each row opens
+  separately. One block has nine slots per drawer, and each block keeps its
+  own items when a pair is split. Hoppers can feed from the top, back or
+  sides and pull from below.
+
+- Craft a storage bench from a wooden bench and a chest. Craft it with a
+  carpet to add or recolour the cushion. Right-click the seat to sit, or
+  right-click the panel below it to open the 27-slot inventory. Hoppers can
+  feed and empty the bench. Place two benches with matching wood, facing
+  and cushion finish side by side to join them. Both panels open the same
+  54-slot inventory, and the two seats can be used independently.
+
+- Craft two wall tool racks with three matching planks in a row and a
+  wooden stick under each end. Place them on the side of a solid wall.
+  Matching racks join side by side. Right-click each hook to hang a tool,
+  sword or vanilla shield, and use an empty hand to retrieve it. A hopper
+  can fill the open hooks.
+
+- Craft two produce trays with matching planks at either end of the middle
+  row and three matching slabs below. Right-click a tray with food or an
+  ingredient to stock one item and with an empty hand to take one. Each
+  tray holds one exact type, with the same capacity as its shelf display.
+  Place a second tray on top of the first to stack them in one block.
+  Sneak-right-click with an empty hand to lift the top tray with its stock.
+- Craft a market rack with matching planks down the centre and sticks
+  down both sides. Leave two blocks of height for the frame. Right-click
+  any of its three tiers with a tray to install it and sneak-right-click
+  to remove it intact. Matching racks join side by side. Hoppers and item
+  pipes can fill trays, starting with the highest matching or empty tray.
+
+- Craft a shipping crate with matching planks across the top and bottom rows
+  and wooden sticks at each end of the middle row. Right-click the front for
+  its 16 slots. Sneak-right-click the front latch with an empty hand to seal
+  or unseal it. A sealed crate keeps its contents and sign when broken and
+  blocks automation. An unsealed crate spills its contents when broken.
+
+Hoppers and Forge item pipes can feed bottle racks and both kinds of shelf.
+Modular shelving fills the upper level first, then tries the lower level.
+Bottle racks accept only bottles. Built-in wall-shelf displays can be fed
+from above or the side. Use a side feed for loose wall-shelf displays that
+need the space above. Pick up displayed items by hand.
 
 - Craft an oak dining table with three oak slabs across the top row and
   sticks below the outer slabs. Adjacent tables join. Sneak-place against
@@ -157,7 +277,18 @@ loaded:
 - Immersive Engineering
 - Base Metals (extra sconce materials)
 - Mineralogy (rock-salt lamps)
-- MrCrayfish's Furniture Mod (chair conversion recipes)
+- MrCrayfish's Furniture Mod (chair conversion recipes and saved-furniture migration)
+
+Phase 5 migrates the six wooden variants of CFM chairs, cabinets, bedside
+cabinets, dining tables and coffee tables when CFM is absent. Placed
+and packed CFM crates convert to dark oak shipping crates with their slots
+and seal preserved. To convert this furniture
+with CFM installed, enable `FORCE_CFM_FURNITURE_CONVERSION` in
+`config/ironagefurniture.cfg` before loading the world. Conversion happens
+as chunks load. Cabinet slots are preserved, and the original bedside
+inventory goes into the upper drawer. CFM-only cabinet items with no IAF
+replacement stay usable while CFM is installed. If their mod is absent,
+their saved data is kept in the cabinet until the items become available again.
 
 All integrations are optional. A normal installation requires none of them,
 and furniture for an absent integration is not registered. Minecraft 1.10.2

@@ -3,19 +3,14 @@ package zone.moddev.mc.ironagefurniture.client.render;
 import zone.moddev.mc.ironagefurniture.api.Blocks.ShieldChair;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShieldChair;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelShield;
-import net.minecraft.client.renderer.BannerTextures;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.util.EnumFacing;
 
 /** Renders the stored vanilla shield design as a chair back, without its hand grip. */
 public class TileEntityShieldChairRenderer extends TileEntitySpecialRenderer<TileEntityShieldChair> {
-	private final ModelShield shieldModel = new ModelShield();
-	private final TileEntityBanner banner = new TileEntityBanner();
+	private final ShieldPlateRenderer shieldPlate = new ShieldPlateRenderer();
 
 	@Override public void renderTileEntityAt(TileEntityShieldChair tile, double x, double y, double z,
 			float partialTicks, int destroyStage) {
@@ -24,15 +19,6 @@ public class TileEntityShieldChairRenderer extends TileEntitySpecialRenderer<Til
 		IBlockState state = tile.getWorld().getBlockState(tile.getPos());
 		if (!(state.getBlock() instanceof ShieldChair)) return;
 		EnumFacing facing = state.getValue(ShieldChair.FACING);
-		if (shield.getSubCompound("BlockEntityTag", false) != null) {
-			banner.setItemValues(shield);
-			Minecraft.getMinecraft().getTextureManager().bindTexture(
-					BannerTextures.SHIELD_DESIGNS.getResourceLocation(banner.getPatternResourceLocation(),
-							banner.getPatternList(), banner.getColorList()));
-		} else {
-			Minecraft.getMinecraft().getTextureManager().bindTexture(BannerTextures.SHIELD_BASE_TEXTURE);
-		}
-
 		GlStateManager.pushMatrix();
 		GlStateManager.enableRescaleNormal();
 		try {
@@ -43,7 +29,7 @@ public class TileEntityShieldChairRenderer extends TileEntitySpecialRenderer<Til
 			// The original baked back was 10 x 16 pixels; vanilla's plate is 12 x 22.
 			GlStateManager.scale(10.0F / 12.0F, 16.0F / 22.0F, 0.75F);
 			GlStateManager.scale(1.0F, -1.0F, -1.0F);
-			shieldModel.plate.render(0.0625F);
+			this.shieldPlate.render(shield);
 		} finally {
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.popMatrix();

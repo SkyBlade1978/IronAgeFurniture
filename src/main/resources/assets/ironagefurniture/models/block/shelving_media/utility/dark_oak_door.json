@@ -1,0 +1,8 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/utility/oak_door",
+  "textures": {
+    "upper": "minecraft:blocks/door_dark_oak_upper",
+    "lower": "minecraft:blocks/door_dark_oak_lower",
+    "edge": "minecraft:blocks/planks_big_oak"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/pantry/milk_bucket",
+  "textures": {
+    "liquid": "minecraft:blocks/lava_still"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/objects/torch_shape",
+  "textures": {"torch":"minecraft:blocks/torch_on"}
+}

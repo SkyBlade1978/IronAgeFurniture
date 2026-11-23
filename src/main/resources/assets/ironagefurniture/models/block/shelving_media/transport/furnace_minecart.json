@@ -1,0 +1,8 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/transport/loaded_minecart",
+  "textures": {
+    "load_side": "minecraft:blocks/furnace_side",
+    "load_front": "minecraft:blocks/furnace_front_off",
+    "load_top": "minecraft:blocks/furnace_top"
+  }
+}

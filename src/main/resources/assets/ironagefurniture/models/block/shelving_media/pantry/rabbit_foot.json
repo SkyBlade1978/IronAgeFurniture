@@ -1,0 +1,60 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/hardened_clay_stained_orange",
+    "fur": "minecraft:blocks/hardened_clay_stained_orange",
+    "toes": "minecraft:blocks/wool_colored_white",
+    "heel": "minecraft:blocks/wool_colored_brown"
+  },
+  "elements": [
+    {
+      "from": [6.1, 0, 6.05],
+      "to": [9.9, 1.45, 12.4],
+      "faces": {"down": { "texture": "#fur" }, "up": { "texture": "#fur" }, "north": { "texture": "#fur" }, "south": { "texture": "#fur" }, "west": { "texture": "#fur" }, "east": { "texture": "#fur" } }
+    },
+    {
+      "from": [6.57, 0.23, 9.55],
+      "to": [9.47, 2.3, 11.98],
+      "faces": {"down": { "texture": "#heel" }, "up": { "texture": "#heel" }, "north": { "texture": "#heel" }, "south": { "texture": "#heel" }, "west": { "texture": "#heel" }, "east": { "texture": "#heel" } }
+    },
+    {
+      "from": [5.3, 0.55, 5.75],
+      "to": [10.7, 2.75, 9.62],
+      "faces": {"down": { "texture": "#fur" }, "up": { "texture": "#fur" }, "north": { "texture": "#fur" }, "south": { "texture": "#fur" }, "west": { "texture": "#fur" }, "east": { "texture": "#fur" } }
+    },
+    {
+      "from": [5.43, 0.12, 4.4],
+      "to": [6.88, 1.55, 6.8],
+      "faces": {"down": { "texture": "#fur" }, "up": { "texture": "#fur" }, "north": { "texture": "#fur" }, "south": { "texture": "#fur" }, "west": { "texture": "#fur" }, "east": { "texture": "#fur" } }
+    },
+    {
+      "from": [7.23, 0.05, 3.6],
+      "to": [8.77, 1.64, 6.73],
+      "faces": {"down": { "texture": "#fur" }, "up": { "texture": "#fur" }, "north": { "texture": "#fur" }, "south": { "texture": "#fur" }, "west": { "texture": "#fur" }, "east": { "texture": "#fur" } }
+    },
+    {
+      "from": [9.12, 0.12, 4.22],
+      "to": [10.57, 1.53, 6.86],
+      "faces": {"down": { "texture": "#fur" }, "up": { "texture": "#fur" }, "north": { "texture": "#fur" }, "south": { "texture": "#fur" }, "west": { "texture": "#fur" }, "east": { "texture": "#fur" } }
+    },
+    {
+      "from": [5.66, 0.55, 4.19],
+      "to": [6.52, 1.08, 4.83],
+      "faces": {"down": { "texture": "#toes" }, "up": { "texture": "#toes" }, "north": { "texture": "#toes" }, "south": { "texture": "#toes" }, "west": { "texture": "#toes" }, "east": { "texture": "#toes" } }
+    },
+    {
+      "from": [7.51, 0.6, 3.57],
+      "to": [8.49, 1.12, 4.27],
+      "faces": {"down": { "texture": "#toes" }, "up": { "texture": "#toes" }, "north": { "texture": "#toes" }, "south": { "texture": "#toes" }, "west": { "texture": "#toes" }, "east": { "texture": "#toes" } }
+    },
+    {
+      "from": [9.44, 0.55, 4.07],
+      "to": [10.34, 1.07, 4.71],
+      "faces": {"down": { "texture": "#toes" }, "up": { "texture": "#toes" }, "north": { "texture": "#toes" }, "south": { "texture": "#toes" }, "west": { "texture": "#toes" }, "east": { "texture": "#toes" } }
+    },
+    {
+      "from": [6.33, 2.67, 6.04],
+      "to": [9.68, 3.2, 8.69],
+      "faces": {"down": { "texture": "#fur" }, "up": { "texture": "#fur" }, "north": { "texture": "#fur" }, "south": { "texture": "#fur" }, "west": { "texture": "#fur" }, "east": { "texture": "#fur" } }
+    }
+  ]
+}

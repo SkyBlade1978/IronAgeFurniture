@@ -1,16 +1,22 @@
 package zone.moddev.mc.ironagefurniture.init;
 
+import java.util.List;
+
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockGlassVase;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockPaddedBench;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockMetalVariant;
+import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockProduceFurniture;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockUpholsteredFurniture;
 import zone.moddev.mc.ironagefurniture.api.Blocks.ShieldChair;
+import zone.moddev.mc.ironagefurniture.api.Blocks.ProduceFurniture;
 import zone.moddev.mc.ironagefurniture.api.ShieldChairItemData;
 import zone.moddev.mc.ironagefurniture.api.Enumerations.UpholsteryColour;
 
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.item.Item;
@@ -63,6 +69,11 @@ public final class ClientItemInitialiser {
 				continue;
 			}
 
+			if (item instanceof ItemBlockProduceFurniture) {
+				mesher.register(item, produceMesh(name));
+				continue;
+			}
+
 			if (isShieldChair(item)) {
 				mesher.register(item, shieldMesh(name));
 				continue;
@@ -89,6 +100,14 @@ public final class ClientItemInitialiser {
 					int meta = metal.getVariantMeta(i);
 					ModelLoader.setCustomModelResourceLocation(item, meta, model(metal.getModelName(meta)));
 				}
+			} else if (item instanceof ItemBlockProduceFurniture) {
+				ModelLoader.setCustomStateMapper(((ItemBlockProduceFurniture)item).getBlock(),
+					new StateMap.Builder().ignore(BlockHorizontal.FACING, ProduceFurniture.SECOND).build());
+				ResourceLocation[] models = WoodVariantHelper.getEnabledWoodSuffixes().stream()
+					.map(wood -> new ResourceLocation(Ironagefurniture.MODID, name + "_" + wood))
+					.toArray(ResourceLocation[]::new);
+				ModelBakery.registerItemVariants(item, models);
+				ModelLoader.setCustomMeshDefinition(item, produceMesh(name));
 			} else if (isShieldChair(item)) {
 				ModelBakery.registerItemVariants(item,
 					new ResourceLocation(Ironagefurniture.MODID, name),
@@ -100,6 +119,14 @@ public final class ClientItemInitialiser {
 
 	private static boolean isShieldChair(Item item) {
 		return item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof ShieldChair;
+	}
+
+	private static ItemMeshDefinition produceMesh(String name) {
+		List<String> woods = WoodVariantHelper.getEnabledWoodSuffixes();
+		return stack -> {
+			String wood = ItemBlockProduceFurniture.wood(stack);
+			return model(name + "_" + (woods.contains(wood) ? wood : "oak"));
+		};
 	}
 
 	private static ItemMeshDefinition shieldMesh(final String name) {

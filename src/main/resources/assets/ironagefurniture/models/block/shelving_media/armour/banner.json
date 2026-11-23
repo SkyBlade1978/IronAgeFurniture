@@ -1,0 +1,44 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/planks_spruce",
+    "wood": "minecraft:blocks/planks_oak",
+    "trim": "minecraft:blocks/planks_spruce"
+  },
+  "elements": [
+    {
+      "from": [2.15, 0, 5.2],
+      "to": [4.55, 0.45, 10.8],
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#wood" }, "north": { "texture": "#trim" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [11.45, 0, 5.2],
+      "to": [13.85, 0.45, 10.8],
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#wood" }, "north": { "texture": "#trim" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [2.95, 0.45, 8.03],
+      "to": [3.75, 8.31, 9.09],
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#trim" }, "north": { "texture": "#wood" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [12.25, 0.45, 8.03],
+      "to": [13.05, 8.31, 9.09],
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#trim" }, "north": { "texture": "#wood" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [0.22, 7.93, 7.39],
+      "to": [15.78, 8.40, 8.33],
+      "faces": { "down": { "texture": "#wood" }, "up": { "texture": "#trim" }, "north": { "texture": "#wood" }, "south": { "texture": "#wood" }, "west": { "texture": "#wood" }, "east": { "texture": "#wood" } }
+    },
+    {
+      "from": [0, 7.85, 7.32],
+      "to": [0.51, 8.48, 8.40],
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#trim" }, "north": { "texture": "#trim" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    },
+    {
+      "from": [15.49, 7.85, 7.32],
+      "to": [16, 8.48, 8.40],
+      "faces": { "down": { "texture": "#trim" }, "up": { "texture": "#trim" }, "north": { "texture": "#trim" }, "south": { "texture": "#trim" }, "west": { "texture": "#trim" }, "east": { "texture": "#trim" } }
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 package zone.moddev.mc.ironagefurniture.api.Blocks;
 
+import java.util.List;
+
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
 
@@ -18,6 +20,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -594,6 +597,39 @@ public class Cabinet extends Block {
 					this.updateCabinetState(worldIn, neighborPos);
 				}
 			}
+		}
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
+		TileEntityCabinet cabinet = this.getCabinetEntity(world, pos);
+		if (cabinet != null && !drops.isEmpty()) {
+			NBTTagCompound saved = cabinet.getUnresolvedItems();
+			if (!saved.hasNoTags()) {
+				drops.get(0).setTagInfo("BlockEntityTag", saved);
+			}
+		}
+
+		return drops;
+	}
+
+	@Override
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+		TileEntityCabinet cabinet = this.getCabinetEntity(world, pos);
+		if (willHarvest && cabinet != null && !cabinet.getUnresolvedItems().hasNoTags()) {
+			// Preserve the tile until the cabinet drop can carry unavailable stacks.
+			return true;
+		}
+
+		return super.removedByPlayer(state, world, pos, player, willHarvest);
+	}
+
+	@Override
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity tile, ItemStack tool) {
+		super.harvestBlock(world, player, pos, state, tile, tool);
+		if (world.getBlockState(pos).getBlock() == this) {
+			world.setBlockToAir(pos);
 		}
 	}
 

@@ -11,7 +11,7 @@ public final class VanillaSurfaceBottles {
 	private VanillaSurfaceBottles() { }
 	public static void register() {
 		for (Item item : new Item[]{Items.GLASS_BOTTLE, Items.POTIONITEM, Items.SPLASH_POTION,
-				Items.LINGERING_POTION, Items.EXPERIENCE_BOTTLE}) {
+				Items.LINGERING_POTION, Items.EXPERIENCE_BOTTLE, Items.DRAGON_BREATH}) {
 			SurfaceContentRegistry.register(item, stack -> DESCRIPTOR);
 		}
 	}

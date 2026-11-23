@@ -1,0 +1,6 @@
+{
+  "parent": "ironagefurniture:block/shelving_media/arrow",
+  "textures": {
+    "head": "minecraft:blocks/gold_block"
+  }
+}

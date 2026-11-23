@@ -1,0 +1,41 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/prismarine_dark",
+    "pearl": "minecraft:blocks/prismarine_dark",
+    "shine": "minecraft:blocks/wool_colored_cyan",
+    "edge": "minecraft:blocks/hardened_clay_stained_cyan",
+    "spark": "minecraft:blocks/sea_lantern"
+  },
+  "elements": [
+    {
+      "from": [6.66, 0, 6.66],
+      "to": [9.34, 0.76, 9.34],
+      "faces": { "down": { "texture": "#edge" }, "up": { "texture": "#edge" }, "north": { "texture": "#edge" }, "south": { "texture": "#edge" }, "west": { "texture": "#edge" }, "east": { "texture": "#edge" } }
+    },
+    {
+      "from": [6, 0.7, 6.02],
+      "to": [10, 1.6, 9.98],
+      "faces": { "down": { "texture": "#pearl" }, "up": { "texture": "#pearl" }, "north": { "texture": "#pearl" }, "south": { "texture": "#pearl" }, "west": { "texture": "#pearl" }, "east": { "texture": "#pearl" } }
+    },
+    {
+      "from": [5.65, 1.59, 5.65],
+      "to": [10.35, 3.35, 10.35],
+      "faces": { "down": { "texture": "#pearl" }, "up": { "texture": "#edge" }, "north": { "texture": "#pearl" }, "south": { "texture": "#pearl" }, "west": { "texture": "#pearl" }, "east": { "texture": "#pearl" } }
+    },
+    {
+      "from": [6.1, 3.34, 6.02],
+      "to": [9.9, 4.14, 9.98],
+      "faces": { "down": { "texture": "#shine" }, "up": { "texture": "#shine" }, "north": { "texture": "#shine" }, "south": { "texture": "#pearl" }, "west": { "texture": "#shine" }, "east": { "texture": "#pearl" } }
+    },
+    {
+      "from": [6.65, 4.14, 6.53],
+      "to": [9.35, 4.65, 9.47],
+      "faces": { "down": { "texture": "#pearl" }, "up": { "texture": "#shine" }, "north": { "texture": "#pearl" }, "south": { "texture": "#pearl" }, "west": { "texture": "#pearl" }, "east": { "texture": "#pearl" } }
+    },
+    {
+      "from": [6.45, 3.52, 5.98],
+      "to": [7.63, 4.05, 6.02],
+      "faces": { "down": { "texture": "#spark" }, "up": { "texture": "#spark" }, "north": { "texture": "#spark" }, "south": { "texture": "#spark" }, "west": { "texture": "#spark" }, "east": { "texture": "#spark" } }
+    }
+  ]
+}

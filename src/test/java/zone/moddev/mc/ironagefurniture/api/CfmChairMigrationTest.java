@@ -23,6 +23,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import zone.moddev.mc.ironagefurniture.api.Blocks.Chair;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBedsideCabinet;
+import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
 
 public class CfmChairMigrationTest {
     @BeforeClass
@@ -42,6 +44,102 @@ public class CfmChairMigrationTest {
         assertEquals("chair_wood_ironage_classic_big_oak", chairs.get("cfm:chair_dark_oak"));
         assertFalse(chairs.containsKey("cfm:chair_big_oak"));
         assertFalse(chairs.containsKey("cfm:chair_stone"));
+    }
+
+    @Test
+    public void bedsideMigrationPreservesExactInventoryInUpperDrawer() {
+        ItemStack book = new ItemStack(net.minecraft.init.Items.BOOK, 3).setStackDisplayName("Night reading");
+        NBTTagCompound raw = book.writeToNBT(new NBTTagCompound());
+        raw.setByte("cabinetSlot", (byte)8);
+        NBTTagCompound cabinet = savedCabinet("cfmBedsideCabinet", raw);
+
+        TileEntityBedsideCabinet converted = new TileEntityBedsideCabinet();
+        converted.readFromNBT(CfmStorageMigration.transferInventory(cabinet, true, java.util.Collections.emptyMap()));
+
+        assertTrue(ItemStack.areItemStacksEqual(book, converted.getDrawer(true).getStackInSlot(8)));
+        assertEquals(null, converted.getDrawer(false).getStackInSlot(8));
+        assertTrue(raw.hasKey("cabinetSlot"));
+        assertFalse(raw.hasKey("Slot"));
+    }
+
+    @Test
+    public void unavailableCabinetStackRetainsOriginalSlotAndNbt() {
+        NBTTagCompound raw = new NBTTagCompound();
+        raw.setString("id", "cfm:item_crow_bar");
+        raw.setByte("Count", (byte)1);
+        raw.setShort("Damage", (short)9);
+        raw.setByte("cabinetSlot", (byte)14);
+        NBTTagCompound custom = new NBTTagCompound();
+        custom.setString("Name", "Stored tool");
+        raw.setTag("tag", custom);
+        NBTTagCompound cabinet = savedCabinet("cfmCabinet", raw);
+        TileEntityCabinet converted = new TileEntityCabinet();
+        converted.readFromNBT(CfmStorageMigration.transferInventory(cabinet, false, java.util.Collections.emptyMap()));
+
+        NBTTagCompound retained = converted.getUnresolvedItems().getTagList("ItemsUnresolved", 10).getCompoundTagAt(0);
+        NBTTagCompound expected = raw.copy();
+        expected.removeTag("cabinetSlot");
+        expected.setByte("Slot", (byte)14);
+        assertEquals(expected, retained);
+        assertEquals(null, converted.getStackInSlot(14));
+    }
+
+    @Test
+    public void restoredStackDoesNotReplaceAnItemInItsOldSlot() {
+        ItemStack recent = new ItemStack(net.minecraft.init.Items.APPLE);
+        ItemStack restored = new ItemStack(net.minecraft.init.Items.BOOK).setStackDisplayName("Recovered book");
+        NBTTagCompound data = new NBTTagCompound();
+        NBTTagList current = new NBTTagList();
+        current.appendTag(recent.writeToNBT(new NBTTagCompound()));
+        data.setTag("Items", current);
+        NBTTagList deferred = new NBTTagList();
+        deferred.appendTag(restored.writeToNBT(new NBTTagCompound()));
+        data.setTag("ItemsUnresolved", deferred);
+
+        TileEntityCabinet cabinet = new TileEntityCabinet();
+        cabinet.readFromNBT(data);
+
+        assertTrue(cabinet.hasRestoredItems());
+        assertTrue(ItemStack.areItemStacksEqual(recent, cabinet.getStackInSlot(0)));
+        assertTrue(ItemStack.areItemStacksEqual(restored, cabinet.getStackInSlot(1)));
+        assertTrue(cabinet.getUnresolvedItems().hasNoTags());
+    }
+
+    @Test
+    public void packedCrateMigrationPreservesSealAndNestedStackData() {
+        NBTTagCompound crate = new NBTTagCompound();
+        crate.setString("id", "cfm:crate");
+        crate.setByte("Count", (byte)1);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("Sealed", true);
+        tag.setString("CustomProof", "kept on the item");
+        NBTTagList items = new NBTTagList();
+        NBTTagCompound sample = new ItemStack(net.minecraft.init.Items.BOOK, 11)
+                .setStackDisplayName("Cargo manifest").writeToNBT(new NBTTagCompound());
+        sample.setByte("Slot", (byte)15);
+        items.appendTag(sample);
+        tag.setTag("Items", items);
+        crate.setTag("tag", tag);
+        Map<String, String> ids = java.util.Collections.singletonMap("cfm:crate",
+                "ironagefurniture:crate_wood_ironage_big_oak");
+
+        assertEquals(1, CfmChairMigration.rewriteItemStacks(crate, ids));
+        assertEquals("ironagefurniture:crate_wood_ironage_big_oak", crate.getString("id"));
+        NBTTagCompound packed = crate.getCompoundTag("tag").getCompoundTag("BlockEntityTag");
+        assertTrue(packed.getBoolean("Sealed"));
+        assertEquals(sample, packed.getTagList("Items", 10).getCompoundTagAt(0));
+        assertEquals("kept on the item", tag.getString("CustomProof"));
+        assertFalse(tag.hasKey("Items"));
+        assertEquals(0, CfmChairMigration.rewriteItemStacks(crate, ids));
+    }
+
+    private static NBTTagCompound savedCabinet(String id, NBTTagCompound item) {
+        NBTTagCompound data = new NBTTagCompound();
+        data.setString("id", id);
+        NBTTagList inventory = new NBTTagList();
+        inventory.appendTag(item);
+        data.setTag("cabinetItems", inventory);
+        return data;
     }
 
     @Test
