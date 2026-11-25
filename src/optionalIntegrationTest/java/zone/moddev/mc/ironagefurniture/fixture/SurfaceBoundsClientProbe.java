@@ -53,6 +53,13 @@ public final class SurfaceBoundsClientProbe {
         }
         if (client.world == null || client.player == null || ++ticks < 40) return;
         complete = true;
+        if (Boolean.getBoolean("iaf.probe.harvestcraftDisplaysOnly")) {
+            if (!HarvestCraftClientProbe.start(client)) {
+                client.shutdown();
+                throw new IllegalStateException("HarvestCraft display probe requires the addon");
+            }
+            return;
+        }
         boolean galleryStarted = false;
         try {
             int cases = run(client);

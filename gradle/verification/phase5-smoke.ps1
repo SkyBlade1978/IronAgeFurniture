@@ -6,11 +6,13 @@ param(
     [string[]]$Profile,
     [string]$ForgeServerTemplate,
     [switch]$SurfaceBoundsProbe,
+    [switch]$HarvestCraftDisplaysOnly,
     [string]$WorldFixture,
     [int]$TimeoutSeconds = 150
 )
 
 $ErrorActionPreference = 'Stop'
+if ($HarvestCraftDisplaysOnly) { $SurfaceBoundsProbe = $true }
 if ($SurfaceBoundsProbe -and $Mode -ne 'Client') { throw 'Surface bounds require a client run.' }
 if ($WorldFixture -and $Mode -ne 'PackagedServer' -and !($Mode -eq 'Client' -and $SurfaceBoundsProbe)) {
     throw 'Saved-world checks require packaged Forge or the surface client probe.'
@@ -113,6 +115,9 @@ foreach ($name in $Profile) {
     if ($SurfaceBoundsProbe) {
         $arguments = @('-Diaf.probe.surfaceBoundsClient=true') + $arguments + @('--width', '1280', '--height', '720')
     }
+    if ($HarvestCraftDisplaysOnly) {
+        $arguments = @('-Diaf.probe.harvestcraftDisplaysOnly=true') + $arguments
+    }
     foreach ($argument in $arguments) { $start.ArgumentList.Add($argument) }
     $process = [Diagnostics.Process]::Start($start)
     $stdout = $process.StandardOutput.ReadToEndAsync()
@@ -132,7 +137,8 @@ foreach ($name in $Profile) {
             } elseif ($Mode -eq 'Server') {
                 $ready = $log -match 'Done \('
             } elseif ($SurfaceBoundsProbe) {
-                $ready = Test-Path -LiteralPath (Join-Path $run 'surface-bounds-pass.properties')
+                $receiptName = if ($HarvestCraftDisplaysOnly) { 'harvestcraft-client-pass.properties' } else { 'surface-bounds-pass.properties' }
+                $ready = Test-Path -LiteralPath (Join-Path $run $receiptName)
             } else {
                 $ready = $log -match "Forge Mod Loader has successfully loaded $clientCount mods" -and
                     $log -match 'Created: (?!16x16)\d+x\d+ textures-atlas'

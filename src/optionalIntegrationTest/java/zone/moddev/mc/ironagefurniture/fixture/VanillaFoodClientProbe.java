@@ -619,10 +619,12 @@ public final class VanillaFoodClientProbe {
         if (galleryTicks == magicStart + galleryEnd) {
             screenshot(client, "phase5-furniture-inventory.png");
             LogManager.getLogger().info("IAF PRODUCE CLIENT PASSED: inventory models, slope display, joins and add-on renderer");
-            VanillaFoodNetworkClientProbe.writePassReceipt();
             gallery = null;
             // Let Minecraft stop its integrated server before closing the client connection.
-            client.shutdown();
+            if (!HarvestCraftClientProbe.start(client)) {
+                VanillaFoodNetworkClientProbe.writePassReceipt();
+                client.shutdown();
+            }
         }
     }
 

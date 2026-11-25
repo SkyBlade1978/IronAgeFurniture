@@ -8,8 +8,10 @@ import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaShelfDisplay;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 import zone.moddev.mc.skysfurniturecore.api.surface.VanillaSurfaceFoods;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
 import zone.moddev.mc.skysfurniturecore.api.vessel.BarrelBulkStorage;
 import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderContext;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -66,6 +68,19 @@ public final class TileEntityBarrelRenderer extends TileEntitySpecialRenderer<Ti
 		}
 
 		ItemStack stack = storage.getStack();
+		Integer granularColour = BarrelBulkStorage.getGranularColour(stack);
+		if (granularColour != null) {
+			GranularBarrelRenderer.render((double)storage.getCount() / storage.getCapacity(), granularColour, x, y, z);
+			return;
+		}
+
+		if (SurfaceRenderRegistry.get(stack) != null
+				&& !stack.getItem().getRegistryName().getResourceDomain().equals("minecraft")) {
+			renderPile(stack, storage, SurfaceContentRegistry.describe(stack)
+				.getBounds(EnumFacing.NORTH), null, x, y, z);
+			return;
+		}
+
 		VanillaSurfaceFoods.Food food = VanillaSurfaceFoods.find(stack);
 		if (food != null) {
 			renderPile(stack, storage, food.descriptor.getBounds(EnumFacing.NORTH), null, x, y, z);

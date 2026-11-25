@@ -176,9 +176,16 @@ public class TileEntityShelvingUnit extends TileEntityDisplayStorage {
 		}
 
 		public ShelfLayout getShelfLayout() {
-			return this.getMediaKind() == ShelfContentKind.NONE
+			ShelfLayout layout = this.getMediaKind() == ShelfContentKind.NONE
 				? SurfaceContentRegistry.describe(this.getMediaItem(0)).getShelfLayout()
 				: ShelfLayout.NONE;
+			if (layout != ShelfLayout.NONE && this.media.size() > layout.getCapacity()) {
+				// Keep previously stocked rows visible and retrievable when an add-on refines its display capacity.
+				if (this.media.size() <= 2) return ShelfLayout.FOOD_PAIR;
+				if (this.media.size() <= 4) return ShelfLayout.FOOD_FOUR;
+				if (this.media.size() <= 6) return ShelfLayout.SMALL_FOOD_ROWS;
+			}
+			return layout;
 		}
 
 		public ShelfLayout.Placement getShelfPlacement(int index) {
@@ -228,7 +235,8 @@ public class TileEntityShelvingUnit extends TileEntityDisplayStorage {
 		}
 
 		private boolean canAddMedia(ItemStack stack, boolean loading) {
-			return !this.setting.hasAnyItem() && this.media.size() < shelfCapacity(stack, loading)
+			return stack != null && stack.stackSize > 0 && !this.setting.hasAnyItem()
+				&& (loading || this.media.size() < shelfCapacity(stack))
 				&& (this.media.isEmpty() || matchesDisplay(this.media.get(0), stack));
 		}
 
@@ -264,15 +272,14 @@ public class TileEntityShelvingUnit extends TileEntityDisplayStorage {
 			return true;
 		}
 
-		private int shelfCapacity(ItemStack stack, boolean loading) {
+		private int shelfCapacity(ItemStack stack) {
 			ShelfContentKind kind = ShelvingUnit.classifyMedia(stack);
 			if (kind != ShelfContentKind.NONE) {
 				return ShelvingUnit.getMediaCapacity(kind);
 			}
 
 			ShelfLayout layout = SurfaceContentRegistry.describe(stack).getShelfLayout();
-			// Older carrot trays held 18. Keep the extras available for pickup and block drops.
-			return loading && layout == ShelfLayout.CARROT_TRAY ? 18 : layout.getCapacity();
+			return layout.getCapacity();
 		}
 
 		private boolean matchesDisplay(ItemStack first, ItemStack incoming) {
@@ -356,7 +363,7 @@ public class TileEntityShelvingUnit extends TileEntityDisplayStorage {
 
 		private void migrateSurfaceMedia() {
 			ItemStack first = this.setting.getCompatibilityItem();
-			if (!this.media.isEmpty() || first == null || this.setting.getItemCount() > shelfCapacity(first, false)) {
+			if (!this.media.isEmpty() || first == null || this.setting.getItemCount() > shelfCapacity(first)) {
 				return;
 			}
 

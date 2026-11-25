@@ -71,6 +71,7 @@ final class Phase5StorageProbe {
 			StorageBenchProbe.verify(world, player, origin.south(130).east(96));
 			ToolRackProbe.verify(world, player, origin.south(190).east(96));
 			ProduceFurnitureProbe.verify(world, player, origin.south(208).east(100));
+			HarvestCraftDisplayProbe.verify(world, player, origin.south(224).east(100));
 			persist(world, origin.south(65));
 		} finally {
 			player.inventory.clear(); player.interactionManager.setGameType(oldMode); player.connection = oldConnection;
