@@ -32,9 +32,10 @@
     "furniture-base-gems": ["basemetalsCurrent", "basegems", "orespawnModernMetals"],
     "furniture-base-minerals": ["basemetalsCurrent", "baseminerals", "orespawnModernMetals"],
     "full-modern-advantage": ["ironagebrewing", "iafphcaddon", "harvestcraft", "basepower", "basesteam", "baseelectric", "basemetals", "orespawn"],
+    "brewing-modern-advantage": ["ironagebrewing", "basepower", "basesteam", "baseelectric", "basemetals", "orespawn"],
     "brewing-legacy-advantage": ["ironagebrewing", "poweradvantage", "steamadvantage", "electricadvantage", "basemetals", "orespawn"],
     "optional-woods": ["BiomesOPlenty", "natura", "mantle", "forestry", "immersiveengineering"]
   },
-  "clientExtras": {"full-modern-advantage":["jei"]},
+  "clientExtras": {"full-modern-advantage":["jei"], "brewing-modern-advantage":["jei"]},
   "clientHeap": {"default":"2G", "optional-woods":"8G"}
 }
