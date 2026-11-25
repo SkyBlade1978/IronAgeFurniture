@@ -1,13 +1,17 @@
 package zone.moddev.mc.ironagefurniture.api.surface;
 
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout;
+
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry.Descriptor;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Category;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry.Descriptor;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Category;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

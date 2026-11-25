@@ -1,7 +1,7 @@
 package zone.moddev.mc.ironagefurniture.fixture;
 
 import zone.moddev.mc.ironagefurniture.client.render.SurfaceDisplayRenderHelper;
-import zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;

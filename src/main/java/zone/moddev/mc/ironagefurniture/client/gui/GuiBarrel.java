@@ -8,6 +8,7 @@ import zone.moddev.mc.ironagefurniture.api.network.StorageNetwork;
 
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,12 +16,14 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GuiBarrel extends GuiContainer {
 	private static final int GUI_WIDTH = 176;
 	private static final int GUI_HEIGHT = 132;
+	private static final int BATCH_GUI_HEIGHT = 224;
 	private static final int TEXT_TRIM_PADDING = 24;
 	private static final int GAUGE_X = 80;
 	private static final int GAUGE_Y = 36;
@@ -73,13 +76,19 @@ public class GuiBarrel extends GuiContainer {
 	private static final int HIGHLIGHT_COLOR = 0x80FFFFFF;
 
 	private final TileEntityBarrel barrel;
+	private final boolean batchControls;
 	private GuiButton sealButton;
 
 	public GuiBarrel(TileEntityBarrel barrel) {
-		super(new ContainerBarrel(barrel));
+		this(barrel, new ContainerBarrel(barrel, Minecraft.getMinecraft().player.inventory));
+	}
+
+	private GuiBarrel(TileEntityBarrel barrel, ContainerBarrel container) {
+		super(container);
 		this.barrel = barrel;
+		this.batchControls = container.hasBatchSlots();
 		this.xSize = GUI_WIDTH;
-		this.ySize = GUI_HEIGHT;
+		this.ySize = this.batchControls ? BATCH_GUI_HEIGHT : GUI_HEIGHT;
 	}
 
 	@Override
@@ -124,6 +133,11 @@ public class GuiBarrel extends GuiContainer {
 
 		String amount = this.getAmountText();
 		this.drawCenteredText(amount, AMOUNT_Y);
+
+		if (this.batchControls) {
+			this.fontRendererObj.drawString(I18n.format("gui.skysfurniturecore.barrel.ingredient"), 13, 79, TEXT_DARK);
+			this.fontRendererObj.drawString(I18n.format("gui.skysfurniturecore.barrel.result"), 122, 79, TEXT_DARK);
+		}
 	}
 
 	@Override
@@ -131,6 +145,10 @@ public class GuiBarrel extends GuiContainer {
 		this.drawWoodFrame();
 		this.drawInsetPanel(TOP_PANEL_X, TOP_PANEL_Y, TOP_PANEL_WIDTH, TOP_PANEL_HEIGHT);
 		this.drawGauge();
+
+		for (Slot slot : this.inventorySlots.inventorySlots) {
+			this.drawInsetPanel(slot.xPos - 1, slot.yPos - 1, 18, 18);
+		}
 	}
 
 	private void drawWoodFrame() {
@@ -234,6 +252,10 @@ public class GuiBarrel extends GuiContainer {
 	}
 
 	private String getStatusText() {
+		String batch = this.barrel.getBatchStatus();
+		if (!batch.isEmpty()) {
+			return I18n.format("gui.skysfurniturecore.barrel." + batch);
+		}
 		if (!this.barrel.isSealed() || this.barrel.getAgeProgressTotal() <= 0
 				|| this.barrel.getNextAgeLevelName().isEmpty()) {
 			return I18n.format(this.barrel.isSealed() ? "gui.ironagefurniture.barrel.sealed"

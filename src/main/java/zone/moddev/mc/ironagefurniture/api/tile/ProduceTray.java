@@ -1,6 +1,6 @@
 package zone.moddev.mc.ironagefurniture.api.tile;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
 
 import zone.moddev.mc.ironagefurniture.api.container.ContainerFurnitureLabel;
 import zone.moddev.mc.ironagefurniture.api.network.StorageNetwork;
-import zone.moddev.mc.ironagefurniture.api.tile.FurnitureLabel;
+import zone.moddev.mc.skysfurniturecore.api.storage.FurnitureLabel;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;

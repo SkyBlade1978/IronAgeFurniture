@@ -1,7 +1,7 @@
 package zone.moddev.mc.ironagefurniture.api.tile;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

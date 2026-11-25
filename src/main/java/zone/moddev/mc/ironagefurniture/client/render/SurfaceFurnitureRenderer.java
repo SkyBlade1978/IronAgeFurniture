@@ -1,8 +1,10 @@
 package zone.moddev.mc.ironagefurniture.client.render;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderContext;
+
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;

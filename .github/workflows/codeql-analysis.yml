@@ -16,6 +16,9 @@ permissions:
   contents: read
   security-events: write
 
+env:
+  FURNITURE_CORE_MAVEN_URL: ${{ vars.FURNITURE_CORE_MAVEN_URL }}
+
 jobs:
   analyze:
     name: Analyze Java

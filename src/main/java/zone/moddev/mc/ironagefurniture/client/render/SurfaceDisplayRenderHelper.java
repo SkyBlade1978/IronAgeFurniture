@@ -1,5 +1,9 @@
 package zone.moddev.mc.ironagefurniture.client.render;
 
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderContext;
+
+
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -7,10 +11,10 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Point3f;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.opengl.GL11;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderer;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -25,8 +29,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
-import net.minecraftforge.common.model.TRSRTransformation;
 
 /** Generic fallback with an optional specialised renderer per item. */
 public final class SurfaceDisplayRenderHelper {
@@ -58,22 +60,14 @@ public final class SurfaceDisplayRenderHelper {
 			renderer.render(stack, context);
 			return;
 		}
-		RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-		boolean blockItem = stack.getItem() instanceof ItemBlock;
-		double itemY = blockItem
-			? context.blockSurfaceY + blockItemLift(fixedPerspective(renderItem.getItemModelWithOverrides(stack, null, null)).getRight())
-			: context.itemY;
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(context.x + context.itemX, context.y + itemY, context.z + context.itemZ);
-		GlStateManager.rotate(context.yaw, 0.0F, 1.0F, 0.0F);
-		if (blockItem) {
-			GlStateManager.scale(BLOCK_ITEM_SCALE, BLOCK_ITEM_SCALE, BLOCK_ITEM_SCALE);
-		} else {
-			GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
-			GlStateManager.scale(FLAT_ITEM_SCALE, FLAT_ITEM_SCALE, FLAT_ITEM_SCALE);
-		}
-		renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
-		GlStateManager.popMatrix();
+		SurfaceRenderer.renderDefault(stack, context);
+	}
+
+	/** @deprecated Pass the Core rendering context. */
+	@Deprecated
+	public static void renderSurfaceItem(ItemStack stack,
+			zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderContext context) {
+		renderSurfaceItem(stack, context.core());
 	}
 
 	private static SurfaceRenderRegistry.Renderer rendererFor(ItemStack stack) {
@@ -164,19 +158,7 @@ public final class SurfaceDisplayRenderHelper {
 	}
 
 	static void renderBakedItem(RenderItem renderer, ItemStack stack, IBakedModel model) {
-		// RenderItem's glint sets the blend function but relies on the caller to enable blending.
-		boolean enableBlend = stack.hasEffect() && !GL11.glIsEnabled(GL11.GL_BLEND);
-		if (enableBlend) {
-			GlStateManager.enableBlend();
-		}
-
-		try {
-			renderer.renderItem(stack, model);
-		} finally {
-			if (enableBlend) {
-				GlStateManager.disableBlend();
-			}
-		}
+		SurfaceRenderer.renderBakedItem(renderer, stack, model);
 	}
 
 	static void renderShelfObject(ItemStack stack, AxisAlignedBB target, boolean quarterTurn) {
@@ -223,11 +205,7 @@ public final class SurfaceDisplayRenderHelper {
 	}
 
 	private static Pair<? extends IBakedModel, Matrix4f> fixedPerspective(IBakedModel model) {
-		ItemCameraTransforms.TransformType fixed = ItemCameraTransforms.TransformType.FIXED;
-		if (model instanceof IPerspectiveAwareModel) {
-			return ((IPerspectiveAwareModel)model).handlePerspective(fixed);
-		}
-		return Pair.of(model, new TRSRTransformation(model.getItemCameraTransforms().getTransform(fixed)).getMatrix());
+		return SurfaceRenderer.fixedPerspective(model);
 	}
 
 	/** Bounds relative to the reserved cell above the furniture. */
@@ -316,13 +294,7 @@ public final class SurfaceDisplayRenderHelper {
 		return bounds;
 	}
 
-	static double blockItemLift(Matrix4f fixedTransform) {
-		if (fixedTransform == null) return BLOCK_ITEM_SCALE * 0.5D;
-
-		// RenderItem centres the unit block before applying its item perspective.
-		// Use the transformed vertical extent to put its base on the surface.
-		double halfHeight = (Math.abs(fixedTransform.m10) + Math.abs(fixedTransform.m11)
-			+ Math.abs(fixedTransform.m12)) * 0.5D;
-		return BLOCK_ITEM_SCALE * (halfHeight - fixedTransform.m13);
+	static double blockItemLift(Matrix4f transform) {
+		return SurfaceRenderer.blockItemLift(transform);
 	}
 }

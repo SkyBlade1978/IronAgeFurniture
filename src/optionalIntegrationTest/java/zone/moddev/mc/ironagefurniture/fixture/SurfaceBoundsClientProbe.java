@@ -1,7 +1,7 @@
 package zone.moddev.mc.ironagefurniture.fixture;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

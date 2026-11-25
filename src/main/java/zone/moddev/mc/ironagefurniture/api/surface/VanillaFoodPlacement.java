@@ -1,5 +1,7 @@
 package zone.moddev.mc.ironagefurniture.api.surface;
 
+import zone.moddev.mc.skysfurniturecore.api.surface.VanillaSurfaceFoods;
+
 import zone.moddev.mc.ironagefurniture.IronAgeFurnitureConfiguration;
 import zone.moddev.mc.ironagefurniture.api.Blocks.VanillaFoodDisplay;
 

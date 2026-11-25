@@ -237,6 +237,7 @@ def optionalIntegrationFixtureDeobfJar = tasks.register(
 
 def reobfOptionalIntegrationFixtureJar = renamer.classes(optionalIntegrationFixtureDeobfJar) {
     map.from minecraft.dependency.toSrgFile
+    libraries.from tasks.named('jar', Jar).flatMap { it.archiveFile }, furnitureCoreDevFiles
     output = optionalIntegrationFixtureJarFile
 }
 
@@ -267,6 +268,7 @@ tasks.register('stageOptionalIntegrationFixture', Sync) {
         }
     }
     from optionalIntegrationFixtureJarFile
+    from furnitureCoreRuntimeFiles
     from layout.buildDirectory.file(
             "libs/${base.archivesName.get()}-${project.version}.jar")
     into optionalIntegrationModsDirectory

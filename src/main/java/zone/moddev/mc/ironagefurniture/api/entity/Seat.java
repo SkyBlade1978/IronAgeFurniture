@@ -1,70 +1,34 @@
 package zone.moddev.mc.ironagefurniture.api.entity;
 
 import zone.moddev.mc.ironagefurniture.api.util.Coordinates;
+import zone.moddev.mc.skysfurniturecore.api.seating.FurnitureSeat;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class Seat extends Entity
-{
+/** The original registered Iron Age seat entity. */
+public class Seat extends FurnitureSeat {
 	public Coordinates SeatCoordinates = new Coordinates();
 
-	public Seat(World worldIn) {
-		super(worldIn);
-
-		this.height = 0.01F;
-		this.width = 0.01F;
-
-		this.noClip = true;
+	public Seat(World world) {
+		super(world);
 	}
 
-	public Seat(World world, double x, double y, double z, double y0ffset)
-	{
-		this(world);
-
-		SeatCoordinates = new Coordinates(x, y, z);
-		setPosition(x + 0.5D, y + y0ffset, z + 0.5D);
+	public Seat(World world, double x, double y, double z, double seatHeight) {
+		super(world, new BlockPos(x, y, z), seatHeight);
+		this.SeatCoordinates = new Coordinates(x, y, z);
 	}
 
 	@Override
-	public double getMountedYOffset()
-	{
-		return this.height * 0.0D;
+	protected BlockPos getAnchor() {
+		return new BlockPos(this.SeatCoordinates.X, this.SeatCoordinates.Y, this.SeatCoordinates.Z);
 	}
 
 	@Override
-	protected boolean shouldSetPosAfterLoading()
-	{
-		return false;
-	}
-
-	@Override
-	public void onEntityUpdate()
-	{
-		if (!this.world.isRemote)
-		{
-			if (!this.isBeingRidden() || this.world.isAirBlock(new BlockPos(SeatCoordinates.X, SeatCoordinates.Y, SeatCoordinates.Z)))
-			{
-				this.setDead();
-				world.updateComparatorOutputLevel(getPosition(), world.getBlockState(getPosition()).getBlock());
-			}
-		}
-	}
-
-	@Override
-	protected void entityInit()
-	{
-	}
-
-	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
-	{
-	}
-
-	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
-	{
+	public void readEntityFromNBT(NBTTagCompound tag) {
+		super.readEntityFromNBT(tag);
+		BlockPos anchor = super.getAnchor();
+		this.SeatCoordinates = new Coordinates(anchor.getX(), anchor.getY(), anchor.getZ());
 	}
 }

@@ -7,8 +7,8 @@ import zone.moddev.mc.ironagefurniture.BlockObjectHolder;
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.MineralogyCompat;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
 import zone.moddev.mc.ironagefurniture.client.particle.CandleFlameParticle;
 
 import net.minecraft.block.Block;

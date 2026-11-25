@@ -1,5 +1,7 @@
 package zone.moddev.mc.ironagefurniture.api.tile;
 
+import zone.moddev.mc.skysfurniturecore.api.storage.FurnitureLabel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +10,11 @@ import zone.moddev.mc.ironagefurniture.api.Blocks.ShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf.ShelfContentKind;
 import zone.moddev.mc.ironagefurniture.api.network.ShelfMapSync;
 import zone.moddev.mc.ironagefurniture.api.surface.FurnitureSurfaceDisplay;
-import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaShelfDisplay;
 
 import net.minecraft.block.BlockHorizontal;

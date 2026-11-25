@@ -1,8 +1,8 @@
 package zone.moddev.mc.ironagefurniture.init;
 
-import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Category;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Category;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;

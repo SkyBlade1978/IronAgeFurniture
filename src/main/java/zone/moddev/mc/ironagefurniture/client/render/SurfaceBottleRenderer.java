@@ -1,6 +1,8 @@
 package zone.moddev.mc.ironagefurniture.client.render;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderContext;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;

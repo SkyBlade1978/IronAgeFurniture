@@ -30,7 +30,7 @@ import zone.moddev.mc.ironagefurniture.client.render.TileEntityBarrelRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityCrateRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityShelvingUnitRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityGlassVaseRenderer;
-import zone.moddev.mc.ironagefurniture.client.render.VanillaFoodRenderer;
+import zone.moddev.mc.skysfurniturecore.client.render.VanillaFoodRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityShieldChairRenderer;
 import zone.moddev.mc.ironagefurniture.client.render.TileEntityToolRackRenderer;
 
@@ -72,7 +72,6 @@ public final class ClientRenderInitialiser {
 		FurnitureLabelRenderer.register();
 		TileEntityShelvingUnitRenderer.register();
 
-		VanillaFoodRenderer.register();
 		GlassVaseRenderer.register();
 		FlowerPotSurfaceRenderer.register();
 

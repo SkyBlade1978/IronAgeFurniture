@@ -19,10 +19,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityWallShelf extends TileEntityDisplayStorage implements zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost {
-	private final zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting setting = new zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting();
+public class TileEntityWallShelf extends TileEntityDisplayStorage implements zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost {
+	private final zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting setting = new zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting();
 	@Override
-	public zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting getSurfaceSetting() { return this.setting; }
+	public zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting getSurfaceSetting() { return this.setting; }
 	@Override
 	public void markSurfaceSettingChanged() { this.markForUpdate(); }
 	@Override

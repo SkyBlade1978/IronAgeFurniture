@@ -1,5 +1,8 @@
 package zone.moddev.mc.ironagefurniture.client.render;
 
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderContext;
+
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -7,9 +10,9 @@ import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.Blocks.ShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf.ShelfContentKind;
 import zone.moddev.mc.ironagefurniture.api.surface.MaterialShelfDisplay;
-import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaShelfDisplay;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit.ShelfLevel;
@@ -156,7 +159,7 @@ public final class TileEntityShelvingUnitRenderer extends TileEntitySpecialRende
 		return "shelving_media/" + kind.getName() + "_" + count;
 	}
 
-	private static ModelResourceLocation modelKey(String name) {
+	static ModelResourceLocation modelKey(String name) {
 		return new ModelResourceLocation(Ironagefurniture.MODID + ":" + name, "inventory");
 	}
 

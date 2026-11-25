@@ -1,6 +1,9 @@
 package zone.moddev.mc.ironagefurniture.api.surface;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry.Descriptor;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout;
+
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry.Descriptor;
 
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;

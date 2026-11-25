@@ -8,7 +8,7 @@ import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel;
 import zone.moddev.mc.ironagefurniture.api.container.ContainerBarrel;
 import zone.moddev.mc.ironagefurniture.api.container.ContainerFurnitureLabel;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
-import zone.moddev.mc.ironagefurniture.api.tile.FurnitureLabel;
+import zone.moddev.mc.skysfurniturecore.api.storage.FurnitureLabel;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;

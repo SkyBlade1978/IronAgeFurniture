@@ -1,5 +1,14 @@
 # IronAgeFurniture 0.5.0.110021 (unreleased)
 
+- Make drawer-unit drawers visibly pull out, with matching collision bounds
+  for full-depth and half-depth units.
+- Place two glass vases together on a shelf, with separate flower insertion,
+  removal and saved item data for each vase.
+- Require Skys Furniture Core for shared seating, drawers, item displays and
+  barrel behaviour. Existing furniture keeps its saved IDs and inventory data.
+- Add-on mods can opt into sealed barrel recipes with fluid and solid
+  ingredients and outputs. By default the barrel uses its compact fluid screen,
+  and Iron Age Brewing only adds drink ageing to ordinary barrels.
 - Add half-depth shelving units in all 65 supported woods. Mount them on
   a wall or centre them on the floor, then join matching units horizontally
   and vertically. Both shelf levels hold items using the shared surface renderer.

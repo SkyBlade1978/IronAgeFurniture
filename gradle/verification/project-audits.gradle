@@ -22,6 +22,11 @@ tasks.register('verifyMavenCoordinates') {
             throw new GradleException(
                     "Expected Maven coordinate ${expected.join(':')}, found ${actual.join(':')}")
         }
+        def core = pom.dependencies.dependency.findAll { it.artifactId.text() == 'skys-furniture-core' }
+        if (core.size() != 1 || core[0].groupId.text() != 'zone.moddev.mc'
+                || core[0].version.text() != project.furniture_core_version || core[0].scope.text() != 'compile') {
+            throw new GradleException('The Maven publication must declare the matching Furniture Core dependency')
+        }
     }
 }
 
@@ -82,7 +87,9 @@ tasks.register('verifyRepositoryHygiene') {
                     || ['.gitattributes', '.gitignore', 'gradlew'].contains(fileName)
         }
                 .each { String path ->
-                    String contents = file(path).getText('UTF-8')
+                    File candidate = file(path)
+                    if (!candidate.isFile()) return
+                    String contents = candidate.getText('UTF-8')
                     if (contents ==~ /(?s).*(?:[A-Za-z]:[\\\/](?:Users|Program Files)[\\\/]|\/home\/[^\/]+\/).*/) {
                         throw new GradleException("Tracked text file contains an absolute machine path: ${path}")
                     }
@@ -207,7 +214,7 @@ tasks.register('verifyVersionMetadata') {
                 || mod.license != project.mod_license
                 || mod.url != 'https://github.com/MinecraftModDevelopmentMods/IronAgeFurniture'
                 || mod.updateUrl != 'https://raw.githubusercontent.com/MinecraftModDevelopmentMods/IronAgeFurniture/master-1.10/update.json'
-                || !(mod.dependencies instanceof List) || !mod.dependencies.isEmpty()) {
+                || mod.dependencies != ['skysfurniturecore']) {
             throw new GradleException('Generated mcmod.info identity, version, or target is incorrect')
         }
         def pack = parseUtf8Json(layout.buildDirectory.file('resources/main/pack.mcmeta').get().asFile)

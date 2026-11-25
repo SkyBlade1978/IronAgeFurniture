@@ -1,6 +1,6 @@
 package zone.moddev.mc.ironagefurniture.api.container;
 
-import zone.moddev.mc.ironagefurniture.api.tile.BarrelBulkStorage;
+import zone.moddev.mc.skysfurniturecore.api.vessel.BarrelBulkStorage;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 
 import net.minecraft.entity.player.EntityPlayer;

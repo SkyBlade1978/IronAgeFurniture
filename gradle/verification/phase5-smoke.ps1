@@ -121,7 +121,7 @@ foreach ($name in $Profile) {
         $deadline = [DateTime]::UtcNow.AddSeconds($TimeoutSeconds)
         $latest = Join-Path $run 'logs/latest.log'
         $ready = $false
-        $clientCount = 4 + $manifest.profiles[$name].Count + @($manifest.clientExtras[$name] | Where-Object { $_ }).Count
+        $clientCount = 5 + $manifest.profiles[$name].Count + @($manifest.clientExtras[$name] | Where-Object { $_ }).Count
         while ([DateTime]::UtcNow -lt $deadline) {
             $log = if (Test-Path -LiteralPath $latest) { Get-Content -LiteralPath $latest -Raw } else { '' }
             if ($Mode -eq 'PackagedServer') {

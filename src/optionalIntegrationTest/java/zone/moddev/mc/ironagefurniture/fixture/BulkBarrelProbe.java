@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBarrel;
 import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
 import zone.moddev.mc.ironagefurniture.api.container.ContainerBulkBarrel;
-import zone.moddev.mc.ironagefurniture.api.tile.BarrelBulkStorage;
+import zone.moddev.mc.skysfurniturecore.api.vessel.BarrelBulkStorage;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 
 import net.minecraft.block.Block;
@@ -61,10 +61,10 @@ final class BulkBarrelProbe {
 
 		require(fluid.fill(water, true) == 1000 && input.insertItem(0, fish, false) == fish,
 			"A fluid-filled barrel accepted solids");
-		click(world, player, pos, fish);
+		click(world, player, pos, EnumFacing.NORTH, fish);
 		require(fish.stackSize == 64 && storage.getCount() == 0, "A hand deposit consumed items with fluid present");
 		require(fluid.drain(1000, true).amount == 1000, "Could not drain the starter fluid");
-		click(world, player, pos, fish);
+		click(world, player, pos, EnumFacing.SOUTH, fish);
 		require(player.getHeldItemMainhand() == null && storage.getCount() == 64 && storage.getCapacity() == 128
 			&& block.getActualState(state, world, pos).getValue(StorageBarrel.OPEN)
 			&& block.getComparatorInputOverride(state, world, pos) == 8, "First hand deposit did not open and update the barrel");
@@ -79,8 +79,8 @@ final class BulkBarrelProbe {
 		part.stackSize = 60;
 		require(input.insertItem(0, part, false) == null && storage.getCount() == 124, "Hopper port did not add a bulk deposit");
 		part = extra.copy();
-		click(world, player, pos, part);
-		require(part.stackSize == 60 && storage.getCount() == 128, "Top deposit did not leave the exact overflow");
+		click(world, player, pos, EnumFacing.WEST, part);
+		require(part.stackSize == 60 && storage.getCount() == 128, "Side deposit did not leave the exact overflow");
 		require(block.getComparatorInputOverride(state, world, pos) == 15 && input.insertItem(0, extra, false) == extra,
 			"A full barrel accepted extra items");
 		require(output.extractItem(0, 200, true).stackSize == 64 && storage.getCount() == 128,
@@ -173,11 +173,12 @@ final class BulkBarrelProbe {
 		world.setBlockToAir(pos.down());
 	}
 
-	private static void click(WorldServer world, FakePlayer player, BlockPos pos, ItemStack stack) {
+	private static void click(WorldServer world, FakePlayer player, BlockPos pos, EnumFacing face, ItemStack stack) {
 		player.setHeldItem(EnumHand.MAIN_HAND, stack);
 		IBlockState state = world.getBlockState(pos);
 		require(state.getBlock().onBlockActivated(world, pos, state, player, EnumHand.MAIN_HAND, stack,
-			EnumFacing.UP, 0.5F, 1.0F, 0.5F), "Top click did not handle eligible contents");
+			face, 0.5F + face.getFrontOffsetX() * 0.5F, 0.5F, 0.5F + face.getFrontOffsetZ() * 0.5F),
+			"Click did not handle eligible contents");
 	}
 
 	private static void require(boolean condition, String message) {

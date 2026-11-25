@@ -12,6 +12,9 @@ on:
 permissions:
   contents: read
 
+env:
+  FURNITURE_CORE_MAVEN_URL: ${{ vars.FURNITURE_CORE_MAVEN_URL }}
+
 concurrency:
   group: iron-age-furniture-1.10-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

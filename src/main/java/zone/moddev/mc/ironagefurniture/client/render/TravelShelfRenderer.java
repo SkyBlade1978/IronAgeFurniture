@@ -1,6 +1,6 @@
 package zone.moddev.mc.ironagefurniture.client.render;
 
-import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout.Placement;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout.Placement;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaShelfDisplay;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit.ShelfLevel;

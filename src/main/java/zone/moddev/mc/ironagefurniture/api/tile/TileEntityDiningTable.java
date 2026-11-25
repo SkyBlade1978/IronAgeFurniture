@@ -2,9 +2,9 @@ package zone.moddev.mc.ironagefurniture.api.tile;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable.TableEmbeddedContent;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceDisplayBlocker;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -167,7 +167,7 @@ public class TileEntityDiningTable extends TileEntity implements SurfaceSettingH
 			}
 
 
-			zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry.drop(worldIn, pos, itemStack);
+			zone.moddev.mc.skysfurniturecore.api.surface.SurfaceInteractionRegistry.drop(worldIn, pos, itemStack);
 		}
 
 		this.markSurfaceSettingChanged();

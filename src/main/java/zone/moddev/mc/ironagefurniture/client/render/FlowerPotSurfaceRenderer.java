@@ -1,5 +1,8 @@
 package zone.moddev.mc.ironagefurniture.client.render;
 
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderContext;
+
 import zone.moddev.mc.ironagefurniture.api.surface.FlowerPotSurface;
 
 import net.minecraft.block.Block;

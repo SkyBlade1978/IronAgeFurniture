@@ -2,7 +2,7 @@ package zone.moddev.mc.ironagefurniture.api.container;
 
 import java.util.function.BiPredicate;
 
-import zone.moddev.mc.ironagefurniture.api.tile.FurnitureLabel;
+import zone.moddev.mc.skysfurniturecore.api.storage.FurnitureLabel;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;

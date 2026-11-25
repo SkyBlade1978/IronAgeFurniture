@@ -4,8 +4,8 @@ import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceItemHit;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityDiningTable;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
 
@@ -39,7 +39,7 @@ final class Phase5ShelfTableClientProbe {
 		for (ItemStack vase : vases) {
 			IBakedModel model = client.getRenderItem().getItemModelWithOverrides(vase, client.world, client.player);
 			require(model != client.getRenderItem().getItemModelMesher().getModelManager().getMissingModel(), "Missing vase item model " + vase.getMetadata());
-			require(zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry.get(vase) != null, "Missing vase surface renderer");
+			require(zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry.get(vase) != null, "Missing vase surface renderer");
 			cases++;
 		}
 		for (String id : Ironagefurniture.BlockRegistry.keySet()) {

@@ -2,8 +2,8 @@ package zone.moddev.mc.ironagefurniture.api.Blocks;
 
 import java.util.List;
 
-import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityToolRack;
 
 import net.minecraft.block.Block;

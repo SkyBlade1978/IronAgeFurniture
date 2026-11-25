@@ -21,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -29,6 +30,7 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.*;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.oredict.*;
 import org.apache.logging.log4j.LogManager;
 
@@ -57,6 +59,7 @@ final class Phase5StorageProbe {
 				rack(world, player, origin.south(24).east(i * 12), facing, true, mods);
 				barrel(world, player, origin.south(40).east(i * 12), facing, mods);
 			}
+			fluidOnlyBarrel(world, origin.south(44), mods.contains("ironagebrewing"));
 			ShelvingUnitProbe.verify(world, player, origin.east(90));
 			ShelvingPantryProbe.verify(world, player, origin.east(130));
 			BulkBarrelProbe.verify(world, player, origin.south(58));
@@ -280,6 +283,57 @@ final class Phase5StorageProbe {
 		require(count(world,pos,expected)==1,"Barrel mining lost fluid/seal NBT"); clearDrops(world,pos);
 		require(Item.getItemFromBlock(block).getItemStackLimit(expected)==1,"Filled barrels must not stack");
 	}
+
+	private static void fluidOnlyBarrel(WorldServer world, BlockPos pos, boolean brewingLoaded) {
+		Block block = block("side_barrel_wood_ironage_oak");
+		world.setBlockState(pos, block.getDefaultState());
+		TileEntityBarrel tile = (TileEntityBarrel)world.getTileEntity(pos);
+		Fluid fluid = brewingLoaded ? FluidRegistry.getFluid("ironagefurniture_mead") : FluidRegistry.WATER;
+		require(fluid != null && tile.getFluidHandler().fill(new FluidStack(fluid, 4000), true) == 4000,
+			"Fluid barrel fixture fill");
+		require(!tile.isBatchProcessingEnabled(), "The ordinary barrel defaults to batch processing");
+
+		ItemStack[] savedStacks = {
+			new ItemStack(Items.POTATO, 2).setStackDisplayName("Saved ingredient"),
+			new ItemStack(Items.BREAD, 3).setStackDisplayName("Saved result")
+		};
+		NBTTagList items = new NBTTagList();
+
+		for (int slot = 0; slot < savedStacks.length; slot++) {
+			NBTTagCompound stack = savedStacks[slot].writeToNBT(new NBTTagCompound());
+			stack.setByte("Slot", (byte)slot);
+			items.appendTag(stack);
+		}
+
+		NBTTagCompound batch = new NBTTagCompound();
+		batch.setString("Recipe", "missingaddon:saved_batch");
+		batch.setInteger("Elapsed", 12);
+		batch.setTag("Items", items);
+		NBTTagCompound saved = tile.serializeNBT();
+		saved.setTag("BarrelBatch", batch);
+		saved.setBoolean("Sealed", true);
+		tile.readFromNBT(saved);
+		NBTTagCompound savedBatch = tile.serializeNBT().getCompoundTag("BarrelBatch");
+
+		require(tile.isSealed() && tile.getBatchStatus().isEmpty()
+			&& !tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+			&& !tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN),
+			"Inactive saved batch exposed processing or item ports");
+		int previousProgress = tile.getAgeProgress();
+		tile.update();
+		require(tile.getAgeProgress() == previousProgress + (brewingLoaded ? 1 : 0)
+			&& (tile.getAgeProgressTotal() > 0) == brewingLoaded && tile.getFluidAmount() == 4000,
+			"Ordinary barrel did not preserve its fluid ageing behavior");
+		require(savedBatch.getInteger("Elapsed") == 12 && items.equals(savedBatch.getTagList("Items", 10))
+			&& savedBatch.equals(tile.serializeNBT().getCompoundTag("BarrelBatch")), "Inactive batch changed saved data");
+
+		tile.setSealed(false);
+		ItemStack dropped = new ItemStack(block);
+		tile.writeToItemStack(dropped);
+		require(items.equals(dropped.getTagCompound().getCompoundTag("BarrelBatch").getTagList("Items", 10)),
+			"Opening or packing an inactive batch lost its saved items");
+	}
+
 	private static void persist(WorldServer world,BlockPos pos) {
 		Block half=block("half_cabinet_wood_ironage_oak"); world.setBlockState(pos,half.getDefaultState());
 		TileEntityHalfCabinet cabinet = (TileEntityHalfCabinet)world.getTileEntity(pos);

@@ -13,6 +13,9 @@ and sconce drops. These four furniture families cover the same 65 woods as
 the chairs: six vanilla woods plus the enabled Biomes O' Plenty, Natura,
 Forestry and Immersive Engineering variants.
 
+The Phase 5 candidate requires the separate
+[Skys Furniture Core](docs/FURNITURE_CORE.md) mod on the client and server.
+
 The remaining storage set includes half-depth cabinets, upright fluid barrels,
 side barrels and bottle racks in those same woods. Half cabinets hold 18
 stacks and pair into 36 slots. Barrels hold 16,000 mB and preserve their
@@ -108,12 +111,12 @@ content in IAF. Right-click an empty-handed barrel to open its fluid gauge
 and seal controls. Sealing blocks fluid transfer; Brewing supplies any
 applicable ageing policies.
 
-Upright barrels also hold one kind of loose solid. Right-click the top with
-wheat, seeds, pantry ingredients, produce or raw fish to start a batch. The
-barrel opens and shows its fill level. Use an empty hand to open the bulk
-storage screen, or run hoppers into the top and out of the bottom. Capacity
-is 512 grain or seed, 256 small ingredients, or 128 produce or fish. Removing
-the last item closes the barrel and frees it for fluids.
+Upright barrels also hold one kind of loose solid. Right-click any face with
+wheat, seeds, pantry ingredients, produce or raw fish to fill it. The lid opens
+and the pile of produce or fish grows as you add more. Use an empty hand to open
+the withdrawal screen, or run hoppers into the top and out of the bottom.
+Capacity is 512 grain or seed, 256 small ingredients, or 128 produce or fish.
+Removing the last item closes the barrel and frees it for fluids.
 
 Right-click a barrel face with a sign to give it a one-line label. Right-click
 the fitted sign with an empty hand to edit it, or break the sign to remove it.
@@ -204,7 +207,8 @@ Creative inventory categories separate chairs, benches, beds, lighting,
 tables/shelves, storage and decorations. Decorations include sixteen glass
 vase colours: arrange four matching stained-glass blocks in a diamond
 (` x `, `x x`, ` x `) to craft four vases. Place them normally or display
-them on furniture. Right-click a vase with a flower or other supported
+them on furniture, including two side by side on each shelf level.
+Right-click either vase with a flower or other supported
 potted plant to add it; an empty-hand click removes the plant first.
 Breaking a planted vase returns the vase and plant separately in Survival.
 

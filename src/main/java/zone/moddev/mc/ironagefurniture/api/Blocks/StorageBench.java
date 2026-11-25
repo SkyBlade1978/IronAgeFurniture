@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import zone.moddev.mc.ironagefurniture.api.PaddedBenchColourHelper;
-import zone.moddev.mc.ironagefurniture.api.Enumerations.BenchType;
+import zone.moddev.mc.skysfurniturecore.api.seating.BenchType;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockStorageBench;
 import zone.moddev.mc.ironagefurniture.api.Properties.PaddedBenchColourProperty;
 import zone.moddev.mc.ironagefurniture.api.entity.Seat;

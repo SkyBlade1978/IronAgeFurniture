@@ -93,6 +93,11 @@ final class DrawerUnitProbe {
 			&& ItemStack.areItemStacksEqual(wide.getStackInSlot(9), rightItem()), "Incorrect wide inventory ordering or contents");
 		require(leftUnit.isDrawerOpen(true) && rightUnit.isDrawerOpen(true) && !rightUnit.isDrawerOpen(false)
 			&& !unit(world, left.up()).isDrawerOpen(true), "Opening a wide drawer affected the wrong pieces");
+		AxisAlignedBB openBounds = block.getBoundingBox(state(world, left), world, left);
+		double openDepth = facing.getAxis() == EnumFacing.Axis.Z
+			? openBounds.maxZ - openBounds.minZ : openBounds.maxX - openBounds.minX;
+		require(Math.abs(openDepth - depth - depth * 3 / 8) < 0.0001D,
+			"Open drawer collision did not extend to its pulled-out front on " + facing);
 		player.closeScreen();
 
 		IInventory bottom = click(world, player, block, left, facing, false, depth);

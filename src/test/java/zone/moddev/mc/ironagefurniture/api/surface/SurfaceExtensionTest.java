@@ -1,14 +1,19 @@
 package zone.moddev.mc.ironagefurniture.api.surface;
 
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.VanillaSurfaceBottles;
+
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry.Descriptor;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Category;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
-import zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry.Descriptor;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Category;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry;
 
 import net.minecraft.init.Bootstrap;
 import net.minecraft.init.Items;
@@ -27,6 +32,41 @@ public class SurfaceExtensionTest {
 	}
 
 	@BeforeClass public static void bootstrap() { Bootstrap.register(); }
+
+	@Test public void twoVasesKeepIndependentDataAndLegacyPlacement() {
+		SurfaceContentRegistry.register(Items.ITEM_FRAME, stack -> new Descriptor(Category.VASE, 0.46D, 0.56D));
+		ItemStack first = new ItemStack(Items.ITEM_FRAME, 1, 3).setStackDisplayName("Rose vase");
+		first.getTagCompound().setString("Flower", "rose");
+		ItemStack second = new ItemStack(Items.ITEM_FRAME, 1, 11).setStackDisplayName("Daisy vase");
+		second.getTagCompound().setString("Flower", "daisy");
+
+		for (EnumFacing.Axis axis : new EnumFacing.Axis[] { EnumFacing.Axis.X, EnumFacing.Axis.Z }) {
+			SurfaceSetting setting = new SurfaceSetting();
+			setting.setSingleItem(first, EnumFacing.NORTH);
+			NBTTagCompound legacy = new NBTTagCompound();
+			setting.writeToNBT(legacy);
+			setting.readFromNBT(legacy);
+			assertTrue(setting.canInsert(second, EnumFacing.NORTH, 0.9F, 0.9F, axis));
+			assertEquals(1, setting.getItemCount());
+			assertTrue(setting.insert(second, EnumFacing.NORTH, 0.9F, 0.9F, axis));
+			assertEquals(2, setting.getItemCount());
+			assertTrue(ItemStack.areItemStacksEqual(first, setting.getItem(Slot.GUEST_A)));
+			assertTrue(ItemStack.areItemStacksEqual(second, setting.getItem(Slot.GUEST_B)));
+			assertFalse(setting.insert(first, EnumFacing.NORTH, 0.5F, 0.5F, axis));
+			assertFalse(setting.insert(new ItemStack(Items.GLASS_BOTTLE), EnumFacing.NORTH, 0.5F, 0.5F, axis));
+
+			float firstX = (float)setting.getX(Slot.GUEST_A);
+			float firstZ = (float)setting.getZ(Slot.GUEST_A);
+			assertEquals(Slot.GUEST_A, setting.findTarget(firstX, firstZ));
+			NBTTagCompound saved = new NBTTagCompound();
+			setting.writeToNBT(saved);
+			setting.readFromNBT(saved);
+			assertTrue(ItemStack.areItemStacksEqual(first, setting.remove(Slot.GUEST_A)));
+			assertTrue(ItemStack.areItemStacksEqual(second, setting.getItem(Slot.GUEST_B)));
+			assertTrue(setting.insert(first, EnumFacing.SOUTH, firstX, firstZ, axis));
+			assertTrue(ItemStack.areItemStacksEqual(first, setting.getItem(Slot.GUEST_A)));
+		}
+	}
 
 	@Test public void rayHitEdgesRemainTargetableAfterClickPacketFloatConversion() {
 		for (double width : new double[]{4.5D / 16.0D * GlassVaseSurface.SCALE, 0.56D * GlassVaseSurface.SCALE}) {

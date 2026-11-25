@@ -3,3 +3,12 @@ plugins {
 }
 
 rootProject.name = 'IronAgeFurniture'
+
+def coreDir = settingsDir.toPath().resolve(providers.gradleProperty('furnitureCoreDir')
+        .getOrElse('../../SkysFurnitureCore110/SkysFurnitureCore')).normalize().toFile()
+def useMavenCore = providers.gradleProperty('furnitureCoreMavenUrl')
+        .orElse(providers.environmentVariable('FURNITURE_CORE_MAVEN_URL')).getOrElse('')
+if (!providers.gradleProperty('furnitureCoreDeobfJar').isPresent()
+        && useMavenCore.isEmpty() && new File(coreDir, 'settings.gradle').isFile()) {
+    includeBuild(coreDir)
+}

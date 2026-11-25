@@ -3,8 +3,8 @@ package zone.moddev.mc.ironagefurniture.api.Blocks;
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
 import zone.moddev.mc.ironagefurniture.api.FluidVesselInteractions;
-import zone.moddev.mc.ironagefurniture.api.tile.BarrelBulkStorage;
-import zone.moddev.mc.ironagefurniture.api.tile.FurnitureLabel;
+import zone.moddev.mc.skysfurniturecore.api.vessel.BarrelBulkStorage;
+import zone.moddev.mc.skysfurniturecore.api.storage.FurnitureLabel;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 
 import net.minecraft.block.material.Material;
@@ -77,20 +77,26 @@ public class StorageBarrel extends Barrel {
 			return true;
 		}
 
-		if (this.supportsBulkStorage() && side == EnumFacing.UP && BarrelBulkStorage.capacityFor(held) > 0) {
-			if (!world.isRemote && world.isBlockModifiable(player, pos)
-					&& player.canPlayerEdit(pos, side, held)) {
-				TileEntityBarrel barrel = this.getBarrelEntity(world, pos);
-				int accepted = barrel == null ? 0 : barrel.getBulkStorage().deposit(held, false);
-				if (accepted > 0 && !player.capabilities.isCreativeMode) {
-					held.stackSize -= accepted;
-					if (held.stackSize == 0) {
-						player.setHeldItem(hand, null);
+		if (held != null && this.supportsBulkStorage()) {
+			TileEntityBarrel barrel = this.getBarrelEntity(world, pos);
+			if (barrel != null && BarrelBulkStorage.capacityFor(held) > 0) {
+				if (!world.isRemote && world.isBlockModifiable(player, pos)
+						&& player.canPlayerEdit(pos, side, held)) {
+					int accepted = barrel.getBulkStorage().deposit(held, false);
+					if (accepted > 0 && !player.capabilities.isCreativeMode) {
+						held.stackSize -= accepted;
+						if (held.stackSize == 0) {
+							player.setHeldItem(hand, null);
+						}
 					}
 				}
+
+				return true;
 			}
 
-			return true;
+			if (barrel != null && barrel.getBulkStorage().getCount() > 0) {
+				return true;
+			}
 		}
 
 		return super.onBlockActivated(world, pos, state, player, hand, held, side, hitX, hitY, hitZ);

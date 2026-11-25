@@ -154,8 +154,8 @@ public class BottleRack extends RackBlock {
 		Item item = stack.getItem();
 		return item == Items.GLASS_BOTTLE || item == Items.POTIONITEM || item == Items.SPLASH_POTION
 			|| item == Items.LINGERING_POTION || item == Items.EXPERIENCE_BOTTLE
-			|| zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.classify(stack)
-				== zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Category.BOTTLE;
+			|| zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.classify(stack)
+				== zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Category.BOTTLE;
 	}
 
 	@Override

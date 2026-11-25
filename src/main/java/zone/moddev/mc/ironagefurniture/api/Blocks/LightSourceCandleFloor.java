@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import zone.moddev.mc.ironagefurniture.BlockObjectHolder;
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.client.particle.CandleFlameParticle;
+import zone.moddev.mc.skysfurniturecore.api.block.LampBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -66,12 +67,7 @@ public class LightSourceCandleFloor extends BlockHBase {
     }
 
     protected boolean canPlaceOn(World worldIn, BlockPos pos) {
-        IBlockState state = worldIn.getBlockState(pos);
-        if (state.isSideSolid(worldIn, pos, EnumFacing.UP)) {
-            return true;
-        }
-
-        return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
+        return LampBlock.hasMountSupport(worldIn, pos.up(), EnumFacing.UP);
     }
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {

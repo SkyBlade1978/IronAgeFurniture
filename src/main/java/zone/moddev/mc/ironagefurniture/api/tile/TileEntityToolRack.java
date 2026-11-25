@@ -1,5 +1,7 @@
 package zone.moddev.mc.ironagefurniture.api.tile;
 
+import zone.moddev.mc.skysfurniturecore.api.storage.StoredInventoryData;
+
 import java.util.Arrays;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.ToolRack;

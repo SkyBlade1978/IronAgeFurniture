@@ -168,7 +168,7 @@ public final class StorageGuiHandler implements IGuiHandler {
 
 		if (id == BARREL) {
 			TileEntityBarrel barrel = this.findBarrel(world, pos);
-			return barrel != null && barrel.isUsableByPlayer(player) ? new ContainerBarrel(barrel) : null;
+			return barrel != null && barrel.isUsableByPlayer(player) ? new ContainerBarrel(barrel, player.inventory) : null;
 		}
 
 		if (id == BULK_BARREL) {

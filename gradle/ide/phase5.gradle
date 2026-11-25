@@ -174,9 +174,10 @@ def buildAddons = tasks.register('buildPhase5AddonJars') {
     dependsOn tasks.named('jar'), fetchFixtures
     doLast {
         String iaf = "-PiafDeobfJar=${iafDevJar.get().asFile.absolutePath}"
-        runAddonBuild(brewingProject.get(), ['check', 'build', 'javadoc', iaf,
+        String core = "-PfurnitureCoreDeobfJar=${furnitureCoreDevFiles.singleFile.absolutePath}"
+        runAddonBuild(brewingProject.get(), ['check', 'build', 'javadoc', iaf, core,
             "-PbasePowerJar=${original('basepower').absolutePath}"])
-        runAddonBuild(harvestProject.get(), ['check', 'build', 'javadoc', iaf,
+        runAddonBuild(harvestProject.get(), ['check', 'build', 'javadoc', iaf, core,
             "-PiabDeobfJar=${addonArtifact(brewingProject.get(), true).absolutePath}",
             "-PharvestCraftJar=${original('harvestcraft').absolutePath}"])
     }
@@ -298,12 +299,13 @@ tasks.register('stagePhase5PackagedServers') {
     group = 'verification'
     description = 'Stages original public JARs and distributable IAF/addon JARs for stock Forge smoke tests.'
     dependsOn buildAddons, tasks.named('assemble'), tasks.named('optionalIntegrationFixtureJar')
+    inputs.files furnitureCoreRuntimeFiles
     doLast {
         manifest.profiles.each { String profile, List<String> ids ->
             validateStack(ids)
             File run = phaseRoot.dir("packaged/${profile}").asFile
-            stageStack(run, profileArchives(ids, false) + [ironagefurniture:
-                layout.buildDirectory.file("libs/${base.archivesName.get()}-${project.version}.jar").get().asFile])
+            stageStack(run, profileArchives(ids, false) + [skysfurniturecore: furnitureCoreRuntimeFiles.singleFile,
+                ironagefurniture: layout.buildDirectory.file("libs/${base.archivesName.get()}-${project.version}.jar").get().asFile])
         }
     }
 }

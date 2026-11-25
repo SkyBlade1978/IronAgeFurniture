@@ -12,6 +12,6 @@
   "license": "LGPL-2.1",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "dependencies": ["skysfurniturecore"]
 }
 ]

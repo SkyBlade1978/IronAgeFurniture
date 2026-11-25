@@ -7,8 +7,11 @@ import zone.moddev.mc.ironagefurniture.api.Blocks.RackBlock;
 import zone.moddev.mc.ironagefurniture.api.Blocks.ShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf.ShelfContentKind;
 import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.ironagefurniture.api.VasePlantHelper;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit.ShelfLevel;
 
@@ -90,7 +93,9 @@ final class ShelvingUnitProbe {
 
 		// Exercise loose displays with items that use the generic layout.
 		ItemStack lower = new ItemStack(Blocks.COBBLESTONE).setStackDisplayName("Lower shelf stone");
-		ItemStack upper = new ItemStack(Items.NETHERBRICK).setStackDisplayName("Upper shelf brick");
+		ItemStack upper = new ItemStack(Blocks.WOOL, 1, 4).setStackDisplayName("Upper shelf wool");
+		require(SurfaceContentRegistry.describe(lower).getShelfLayout() == ShelfLayout.NONE
+			&& SurfaceContentRegistry.describe(upper).getShelfLayout() == ShelfLayout.NONE, "Loose display test requires generic items");
 		require(click(world, player, pos, facing, lower.copy(), centreX, 0.20D, centreZ)
 				&& player.getHeldItemMainhand() == null, "Lower shelf did not consume one item");
 		require(click(world, player, pos, facing, upper.copy(), centreX, 0.65D, centreZ)
@@ -126,6 +131,85 @@ final class ShelvingUnitProbe {
 		world.setBlockState(rightPos, unit.getDefaultState().withProperty(BlockHorizontal.FACING, facing)
 			.withProperty(RackBlock.STANDING, standing));
 		verifyBottles(world, player, rightPos, facing, centreX, centreZ);
+		world.setBlockState(rightPos, unit.getDefaultState().withProperty(BlockHorizontal.FACING, facing)
+			.withProperty(RackBlock.STANDING, standing));
+		verifyVases(world, player, rightPos, facing, centreX, centreZ);
+	}
+
+	private static void verifyVases(WorldServer world, FakePlayer player, BlockPos pos, EnumFacing facing,
+			double centreX, double centreZ) {
+		TileEntityShelvingUnit tile = (TileEntityShelvingUnit)world.getTileEntity(pos);
+		Block vase = Block.getBlockFromName("ironagefurniture:ornament_glass_vase");
+		AxisAlignedBB dropArea = new AxisAlignedBB(pos).expand(1, 1, 1);
+		for (EntityItem item : world.getEntitiesWithinAABB(EntityItem.class, dropArea)) {
+			item.setDead();
+		}
+
+		for (boolean upper : new boolean[] { false, true }) {
+			player.inventory.clear();
+			ShelfLevel level = tile.getLevel(upper);
+			SurfaceSetting setting = level.getSurfaceSetting();
+			String prefix = upper ? "Upper " : "Lower ";
+			ItemStack first = new ItemStack(vase, 1, 3).setStackDisplayName(prefix + "rose vase");
+			ItemStack second = new ItemStack(vase, 1, 11).setStackDisplayName(prefix + "daisy vase");
+			ItemStack rose = new ItemStack(Blocks.RED_FLOWER, 1, 0).setStackDisplayName(prefix + "rose");
+			ItemStack daisy = new ItemStack(Blocks.RED_FLOWER, 1, 8).setStackDisplayName(prefix + "daisy");
+			double height = level.getSurfaceHeight() + 0.10D;
+			require(click(world, player, pos, facing, first.copy(), centreX, height, centreZ)
+				&& player.getHeldItemMainhand() == null, "First shelf vase was not consumed exactly once");
+			double offsetX = level.getSurfaceAxis() == EnumFacing.Axis.X ? 0.30D : 0;
+			double offsetZ = level.getSurfaceAxis() == EnumFacing.Axis.Z ? 0.30D : 0;
+			require(click(world, player, pos, facing, second.copy(), centreX + offsetX, height, centreZ + offsetZ)
+				&& player.getHeldItemMainhand() == null && setting.getItemCount() == 2,
+				"Second shelf vase was not placed beside the first");
+			click(world, player, pos, facing, second.copy(), centreX, height, centreZ);
+			require(player.getHeldItemMainhand() != null && setting.getItemCount() == 2,
+				"A shelf accepted or consumed a third vase");
+
+			clickVase(world, player, pos, facing, level, Slot.GUEST_A, rose.copy());
+			clickVase(world, player, pos, facing, level, Slot.GUEST_B, daisy.copy());
+			require(ItemStack.areItemStacksEqual(rose, VasePlantHelper.getPlant(setting.getItem(Slot.GUEST_A)))
+				&& ItemStack.areItemStacksEqual(daisy, VasePlantHelper.getPlant(setting.getItem(Slot.GUEST_B))),
+				"The paired vases mixed up their flowers");
+			NBTTagCompound saved = tile.writeToNBT(new NBTTagCompound());
+			tile.readFromNBT(saved);
+			require(saved.equals(tile.writeToNBT(new NBTTagCompound())), "Paired vase save changed flowers or colours");
+			AxisAlignedBB a = ShelvingUnit.getItemBounds(level, Slot.GUEST_A, false);
+			AxisAlignedBB b = ShelvingUnit.getItemBounds(level, Slot.GUEST_B, false);
+			require(!a.intersectsWith(b), "Paired vase selection boxes overlap");
+			clickVase(world, player, pos, facing, level, Slot.GUEST_A, null);
+			require(!VasePlantHelper.hasPlant(setting.getItem(Slot.GUEST_A))
+				&& ItemStack.areItemStacksEqual(daisy, VasePlantHelper.getPlant(setting.getItem(Slot.GUEST_B))),
+				"Removing one flower changed the other vase");
+			clickVase(world, player, pos, facing, level, Slot.GUEST_A, null);
+			require(setting.getItemCount() == 1 && setting.getItem(Slot.GUEST_B).getMetadata() == 11,
+				"Picking up a vase removed its neighbour");
+			clickVase(world, player, pos, facing, level, Slot.GUEST_B, first.copy());
+			require(setting.getItemCount() == 2 && setting.getItem(Slot.GUEST_A).getMetadata() == 3,
+				"A retrieved vase could not be placed beside the remaining vase");
+			clickVase(world, player, pos, facing, level, Slot.GUEST_A, rose.copy());
+		}
+
+		world.setBlockToAir(pos);
+		List<EntityItem> drops = world.getEntitiesWithinAABB(EntityItem.class, dropArea);
+		require(drops.stream().filter(entity -> entity.getEntityItem().getItem() == Item.getItemFromBlock(vase))
+			.mapToInt(entity -> entity.getEntityItem().stackSize).sum() == 4, "Paired vase break lost or duplicated a vase");
+		require(drops.stream().filter(entity -> entity.getEntityItem().getItem() == Item.getItemFromBlock(Blocks.RED_FLOWER))
+			.mapToInt(entity -> entity.getEntityItem().stackSize).sum() == 4, "Paired vase break lost or duplicated a flower");
+		LogManager.getLogger().info("IAF PAIRED SHELF VASES PASSED: both levels, independent flowers, NBT, pickup and drops / {}", facing);
+	}
+
+	private static void clickVase(WorldServer world, FakePlayer player, BlockPos pos, EnumFacing facing,
+			ShelfLevel level, Slot slot, ItemStack held) {
+		AxisAlignedBB bounds = ShelvingUnit.getItemBounds(level, slot, false);
+		Vec3d centre = new Vec3d((bounds.minX + bounds.maxX) / 2, (bounds.minY + bounds.maxY) / 2,
+			(bounds.minZ + bounds.maxZ) / 2);
+		Vec3d front = centre.addVector(facing.getFrontOffsetX(), 0, facing.getFrontOffsetZ());
+		RayTraceResult hit = world.getBlockState(pos).collisionRayTrace(world, pos, front.add(new Vec3d(pos)),
+			centre.add(new Vec3d(pos)));
+		require(hit != null && hit.subHit >= 100, "Paired vase could not be targeted through the shelf opening");
+		require(click(world, player, pos, facing, held, hit.hitVec.xCoord - pos.getX(),
+			hit.hitVec.yCoord - pos.getY(), hit.hitVec.zCoord - pos.getZ()), "Targeted vase click failed");
 	}
 
 	private static void verifyBottles(WorldServer world, FakePlayer player, BlockPos pos, EnumFacing facing,

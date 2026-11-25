@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Table;
 
 import zone.moddev.mc.ironagefurniture.api.surface.MaterialShelfDisplay;
-import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout.Placement;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout.Placement;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

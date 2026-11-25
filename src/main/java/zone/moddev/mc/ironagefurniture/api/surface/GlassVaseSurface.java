@@ -1,10 +1,15 @@
 package zone.moddev.mc.ironagefurniture.api.surface;
 
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceInteractionRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import zone.moddev.mc.ironagefurniture.api.VasePlantHelper;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -24,7 +29,7 @@ public final class GlassVaseSurface implements SurfaceInteractionRegistry.Handle
 			double width = planted ? 0.56D : 4.5D / 16.0D;
 			double height = planted ? 0.68D : 6.0D / 16.0D;
 
-			return new SurfaceContentRegistry.Descriptor(SurfaceSetting.Category.SINGLETON, width * SCALE, height * SCALE);
+			return new SurfaceContentRegistry.Descriptor(SurfaceSetting.Category.VASE, width * SCALE, height * SCALE);
 		});
 		SurfaceInteractionRegistry.register(item, new GlassVaseSurface());
 	}

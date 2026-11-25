@@ -15,7 +15,8 @@ public class ItemBlockBarrel extends ItemBlock {
 	public ItemBlockBarrel(Block block) { super(block); }
 	@Override public int getItemStackLimit(ItemStack stack) {
 		FluidStack fluid = TileEntityBarrel.getFluidFromItemStack(stack);
-		return fluid != null && fluid.amount > 0 ? 1 : ((Barrel)block).getEmptyItemStackLimit();
+		return TileEntityBarrel.hasBatchData(stack) || fluid != null && fluid.amount > 0
+			? 1 : ((Barrel)block).getEmptyItemStackLimit();
 	}
 	@Override @SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {

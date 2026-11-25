@@ -1,11 +1,11 @@
 package zone.moddev.mc.ironagefurniture.api.Blocks;
 
 import zone.moddev.mc.ironagefurniture.api.MineralogyCompat;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingInteraction;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingInteraction.Result;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingInteraction;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingInteraction.Result;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -110,7 +110,7 @@ public final class SurfaceDisplayBlocker extends Block {
 	public static void dropItems(World world, BlockPos pos, SurfaceSettingHost host) {
 		for (Slot slot : Slot.values()) {
 			ItemStack displayed = host.getSurfaceSetting().remove(slot);
-			zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry.drop(world, pos, displayed);
+			zone.moddev.mc.skysfurniturecore.api.surface.SurfaceInteractionRegistry.drop(world, pos, displayed);
 		}
 	}
 
@@ -147,7 +147,7 @@ public final class SurfaceDisplayBlocker extends Block {
 		ItemStack removed = setting.remove(target);
 		host.markSurfaceSettingChanged();
 		if (!world.isRemote && !player.capabilities.isCreativeMode)
-			zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry.drop(world, pos, removed);
+			zone.moddev.mc.skysfurniturecore.api.surface.SurfaceInteractionRegistry.drop(world, pos, removed);
 		if (setting.hasAnyItem()) {
 			world.notifyBlockUpdate(pos, state, state, 2);
 			return true;

@@ -66,30 +66,29 @@ final class Phase5StorageClientScene {
 	}
 
 	static BlockPos bulkBarrels(Minecraft client, BlockPos origin) {
-		String[] woods = { "oak", "spruce", "birch", "jungle" };
+		String[] woods = { "oak", "spruce", "birch", "jungle", "oak" };
 		Block jacaranda = Block.getBlockFromName("ironagefurniture:barrel_wood_ironage_biomesoplenty_jacaranda");
 		if (jacaranda != null && jacaranda != Blocks.AIR) {
 			woods[2] = "biomesoplenty_jacaranda";
 		}
 
-		ItemStack[] stacks = { null, new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.POTATO), new ItemStack(Items.FISH, 1, 1) };
-		int[] counts = { 0, 450, 78, 128 };
-		String[] labels = { "Water", "Wheat seeds", "Potatoes", "Salmon" };
+		ItemStack[] stacks = { new ItemStack(Items.CARROT), new ItemStack(Items.WHEAT_SEEDS),
+			new ItemStack(Items.POTATO), new ItemStack(Items.FISH, 1, 1), new ItemStack(Items.CARROT) };
+		int[] counts = { 56, 450, 78, 128, 128 };
+		String[] labels = { "Carrots", "Wheat seeds", "Potatoes", "Salmon", "Carrots" };
 		for (int index = 0; index < woods.length; index++) {
 			Block barrel = Block.getBlockFromName("ironagefurniture:barrel_wood_ironage_" + woods[index]);
-			BlockPos pos = origin.add(index, 0, 2);
+			BlockPos pos = index == 4 ? origin.add(0, 0, 3) : origin.add(index, 0, 2);
 			client.world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState(), 2);
 			client.world.setBlockState(pos, barrel.getDefaultState(), 2);
 			TileEntity tile = client.world.getTileEntity(pos);
-			if (stacks[index] != null) {
-				NBTTagCompound saved = tile.writeToNBT(new NBTTagCompound());
-				NBTTagCompound bulk = new NBTTagCompound();
-				bulk.setTag("Stack", stacks[index].writeToNBT(new NBTTagCompound()));
-				bulk.setInteger("Amount", counts[index]);
-				saved.setTag("BulkContents", bulk);
-				tile.readFromNBT(saved);
-				client.world.markBlockRangeForRenderUpdate(pos, pos);
-			}
+			NBTTagCompound saved = tile.writeToNBT(new NBTTagCompound());
+			NBTTagCompound bulk = new NBTTagCompound();
+			bulk.setTag("Stack", stacks[index].writeToNBT(new NBTTagCompound()));
+			bulk.setInteger("Amount", counts[index]);
+			saved.setTag("BulkContents", bulk);
+			tile.readFromNBT(saved);
+			client.world.markBlockRangeForRenderUpdate(pos, pos);
 			((TileEntityBarrel)tile).writeLabel(EnumFacing.NORTH, new ItemStack(Items.SIGN), labels[index]);
 		}
 
@@ -241,6 +240,17 @@ final class Phase5StorageClientScene {
 					int discCount = y == 0 ? 4 : 10;
 					for (int index = 0; index < discCount; index++) {
 						tile.getLevel(true).addMedia(new ItemStack(Items.RECORD_CAT));
+					}
+				} else if (x == 4 && y == 1) {
+					for (boolean upper : new boolean[] { false, true }) {
+						zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting setting =
+							tile.getLevel(upper).getSurfaceSetting();
+						ItemStack rose = new ItemStack(Ironagefurniture.ItemRegistry.get("ornament_glass_vase"), 1, 3);
+						ItemStack daisy = new ItemStack(Ironagefurniture.ItemRegistry.get("ornament_glass_vase"), 1, 11);
+						VasePlantHelper.addPlant(rose, new ItemStack(Blocks.RED_FLOWER, 1, upper ? 4 : 0));
+						VasePlantHelper.addPlant(daisy, new ItemStack(Blocks.RED_FLOWER, 1, 8));
+						setting.insert(rose, EnumFacing.NORTH, 0.5F, 0.5F, EnumFacing.Axis.X);
+						setting.insert(daisy, EnumFacing.NORTH, 0.9F, 0.5F, EnumFacing.Axis.X);
 					}
 				} else {
 					tile.getLevel(false).getSurfaceSetting().setSingleItem(new ItemStack(Items.APPLE), EnumFacing.NORTH);
@@ -566,15 +576,14 @@ final class Phase5StorageClientScene {
 		}
 		for (int column = 0; column < 3; column++) {
 			BlockPos pos = origin.add(column, 0, 2);
-			client.world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState(), 2);
-			client.world.setBlockState(pos, rackBlock.getDefaultState(), 2);
-			client.world.setBlockState(pos.up(), rackBlock.getDefaultState().withProperty(ProduceFurniture.SECOND, true), 2);
-			TileEntityProduceFurniture rack = (TileEntityProduceFurniture)client.world.getTileEntity(pos);
-			rack.setWood("oak");
+			TileEntityProduceFurniture rack = placeProduceRack(client, pos, rackBlock);
 			for (int slot = 0; slot < 3; slot++) {
 				rack.setTray(slot, produceSample(woods[slot], stock[3 * column + slot]));
 			}
 		}
+		placeProduceRack(client, origin.add(-1, 0, 2), rackBlock);
+		placeProduceRack(client, origin.add(-3, 0, 2), rackBlock);
+
 		BlockPos pair = origin.add(4, 0, 2);
 		client.world.setBlockState(pair.down(), Blocks.STONEBRICK.getDefaultState(), 2);
 		client.world.setBlockState(pair, trayBlock.getDefaultState().withProperty(ProduceFurniture.SECOND, true), 2);
@@ -585,6 +594,15 @@ final class Phase5StorageClientScene {
 		TileEntityProduceFurniture top = (TileEntityProduceFurniture)client.world.getTileEntity(pair.up());
 		top.setTray(0, produceSample("oak", stock[1]));
 		return origin;
+	}
+
+	private static TileEntityProduceFurniture placeProduceRack(Minecraft client, BlockPos pos, Block rackBlock) {
+		client.world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState(), 2);
+		client.world.setBlockState(pos, rackBlock.getDefaultState(), 2);
+		client.world.setBlockState(pos.up(), rackBlock.getDefaultState().withProperty(ProduceFurniture.SECOND, true), 2);
+		TileEntityProduceFurniture rack = (TileEntityProduceFurniture)client.world.getTileEntity(pos);
+		rack.setWood("oak");
+		return rack;
 	}
 
 	private static ProduceTray produceSample(String wood, ItemStack stock) {

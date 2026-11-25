@@ -1,5 +1,9 @@
 package zone.moddev.mc.ironagefurniture.api.tile;
 
+import zone.moddev.mc.skysfurniturecore.api.storage.StoredInventoryData;
+
+import zone.moddev.mc.skysfurniturecore.api.storage.FurnitureLabel;
+
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockCrate;
 
 import net.minecraft.block.state.IBlockState;

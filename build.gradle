@@ -206,7 +206,10 @@ repositories {
     }
 }
 
+apply from: 'gradle/furniture-core.gradle'
+
 dependencies {
+    implementation furnitureCoreDevFiles
     implementation minecraft.dependency(
             "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}")
     compileOnly "mezz.jei:jei_1.10.2:${project.jei_version}:api"
@@ -314,6 +317,7 @@ tasks.named('jar', Jar) {
 
 def releaseJar = renamer.classes(tasks.named('jar', Jar)) {
     map.from minecraft.dependency.toSrgFile
+    libraries.from furnitureCoreDevFiles
     archiveClassifier = null
     output = layout.buildDirectory.file("libs/${base.archivesName.get()}-${project.version}.jar")
 }

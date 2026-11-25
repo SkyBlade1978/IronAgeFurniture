@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
-import zone.moddev.mc.ironagefurniture.api.surface.VanillaSurfaceFoods;
+import zone.moddev.mc.skysfurniturecore.SkysFurnitureCore;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.VanillaSurfaceFoods;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaFoodPlacement;
-import zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -50,7 +51,7 @@ public final class VanillaFoodClientProbe {
             ItemStack item = new ItemStack(food.item, 1, Math.max(0, food.metadata));
             variants.add(item);
             IBakedModel model = models.getModel(new ModelResourceLocation(
-                    "ironagefurniture:surface_food/" + food.model, "inventory"));
+                    SkysFurnitureCore.MODID + ":surface_food/" + food.model, "inventory"));
             require(model != models.getMissingModel(), "Missing baked food " + food.model);
             require(client.getRenderItem().getItemModelMesher().getItemModel(item) != model,
                     "Surface food replaced its ordinary inventory model");
@@ -132,7 +133,7 @@ public final class VanillaFoodClientProbe {
         AxisAlignedBB result = null;
         for (int side = -1; side < 6; side++) {
             for (BakedQuad quad : model.getQuads(null, side < 0 ? null : EnumFacing.getFront(side), 0L)) {
-                require("ironagefurniture:blocks/surface_foods".equals(quad.getSprite().getIconName()),
+                require((SkysFurnitureCore.MODID + ":blocks/surface_foods").equals(quad.getSprite().getIconName()),
                         "Food model has a missing texture");
                 int[] data = quad.getVertexData();
                 int stride = quad.getFormat().getIntegerSize();
@@ -271,6 +272,12 @@ public final class VanillaFoodClientProbe {
             positionCamera(client, 2.5D, 2.8D - client.player.getEyeHeight(), -2.2D, 2.5D, 1.1D, 2.2D);
         }
         int pantryStart = brewing ? 425 : 395;
+        if (galleryTicks == pantryStart - 12) {
+            positionCamera(client, 4.0D, 2.25D - client.player.getEyeHeight(), 0.35D, 4.5D, 1.5D, 2.5D);
+        }
+        if (galleryTicks == pantryStart - 1) {
+            screenshot(client, "phase5-shelf-paired-vases.png");
+        }
         if (galleryTicks == pantryStart) {
             screenshot(client, "phase5-shelving-units.png");
             gallery = Phase5StorageClientScene.pantryShelves(client, gallery.east(16));
@@ -565,6 +572,11 @@ public final class VanillaFoodClientProbe {
         galleryEnd += 26;
         if (galleryTicks == magicStart + galleryEnd) {
             screenshot(client, "phase5-bulk-barrels.png");
+            positionCamera(client, -1.0D, 3.45D - client.player.getEyeHeight(), 3.0D, 0.60D, 0.75D, 3.0D);
+        }
+        galleryEnd += 16;
+        if (galleryTicks == magicStart + galleryEnd) {
+            screenshot(client, "phase5-carrot-barrels.png");
             positionCamera(client, 2.5D, 1.45D - client.player.getEyeHeight(), -1.9D, 2.5D, 0.55D, 2.5D);
         }
         galleryEnd += 24;
@@ -596,6 +608,11 @@ public final class VanillaFoodClientProbe {
         if (galleryTicks == magicStart + galleryEnd) {
             require(ShelvingPantryClientExtension.renderCalls > 0, "Produce tray did not use the add-on renderer");
             screenshot(client, "phase5-produce-furniture.png");
+            positionCamera(client, -3.9D, 1.78D - client.player.getEyeHeight(), -1.15D, -0.8D, 0.98D, 2.5D);
+        }
+        galleryEnd += 24;
+        if (galleryTicks == magicStart + galleryEnd) {
+            screenshot(client, "phase5-produce-rack-braces.png");
             Phase5StorageClientScene.showFurnitureInventory(client);
         }
         galleryEnd += 10;

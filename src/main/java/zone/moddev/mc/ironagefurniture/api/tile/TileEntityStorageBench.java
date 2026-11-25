@@ -1,7 +1,9 @@
 package zone.moddev.mc.ironagefurniture.api.tile;
 
+import zone.moddev.mc.skysfurniturecore.api.storage.StoredInventoryData;
+
 import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBench;
-import zone.moddev.mc.ironagefurniture.api.Enumerations.BenchType;
+import zone.moddev.mc.skysfurniturecore.api.seating.BenchType;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

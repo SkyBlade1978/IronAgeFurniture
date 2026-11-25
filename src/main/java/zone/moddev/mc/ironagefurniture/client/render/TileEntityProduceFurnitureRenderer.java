@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.ProduceFurniture;
-import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaShelfDisplay;
 import zone.moddev.mc.ironagefurniture.api.tile.ProduceTray;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityProduceFurniture;

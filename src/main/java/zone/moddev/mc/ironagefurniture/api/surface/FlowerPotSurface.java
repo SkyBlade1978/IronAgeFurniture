@@ -1,11 +1,16 @@
 package zone.moddev.mc.ironagefurniture.api.surface;
 
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceInteractionRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import zone.moddev.mc.ironagefurniture.api.VasePlantHelper;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;

@@ -10,7 +10,7 @@ import zone.moddev.mc.ironagefurniture.api.Blocks.DiningChair;
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceItemHit;
 import zone.moddev.mc.ironagefurniture.api.entity.Seat;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityWallShelf;
 
 import net.minecraft.block.Block;
@@ -230,7 +230,7 @@ final class Phase5ShelfTableProbe {
 			SurfaceSettingHost surface = (SurfaceSettingHost)world.getTileEntity(pos);
 			require(ItemStack.areItemStacksEqual(item, ((SurfaceSettingHost)TileEntity.create(world,
 				((TileEntity)surface).writeToNBT(new NBTTagCompound()))).getSurfaceSetting().getCompatibilityItem()), "Low surface NBT changed");
-			AxisAlignedBB bounds = SurfaceItemHit.bounds(surface, zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot.CENTER, false).offset(pos);
+			AxisAlignedBB bounds = SurfaceItemHit.bounds(surface, zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot.CENTER, false).offset(pos);
 			double x = (bounds.minX + bounds.maxX) / 2.0D, z = (bounds.minZ + bounds.maxZ) / 2.0D;
 			RayTraceResult hit = host.collisionRayTrace(world.getBlockState(pos), world, pos,
 				new Vec3d(x, pos.getY() + 3.0D, z), new Vec3d(x, pos.getY(), z));

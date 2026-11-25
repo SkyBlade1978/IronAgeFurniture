@@ -1,0 +1,43 @@
+// Use the sibling build during development and the same pinned Maven version in CI.
+def coreBuild = gradle.includedBuilds.find { it.name == 'SkysFurnitureCore' }
+def coreVersion = project.furniture_core_version.toString()
+def coreCoordinate = "zone.moddev.mc:skys-furniture-core:${coreVersion}"
+def coreMavenUrl = providers.gradleProperty('furnitureCoreMavenUrl')
+        .orElse(providers.environmentVariable('FURNITURE_CORE_MAVEN_URL')).getOrElse('')
+
+repositories {
+    if (coreMavenUrl) {
+        maven {
+            name = 'FurnitureCore'
+            url = uri(coreMavenUrl)
+            content { includeModule('zone.moddev.mc', 'skys-furniture-core') }
+        }
+    } else {
+        mavenLocal {
+            content { includeModule('zone.moddev.mc', 'skys-furniture-core') }
+        }
+    }
+}
+
+def coreArtifacts = { String propertyName, String name, String task, boolean development ->
+    def override = providers.gradleProperty(propertyName)
+    if (override.isPresent()) {
+        return files(override.map { file(it) })
+    }
+    if (coreBuild != null) {
+        String basename = "skys-furniture-core-${coreVersion}"
+        String archive = development ? "libs-dev/${basename}-deobf.jar" : "libs/${basename}.jar"
+        return files(new File(coreBuild.projectDir, "build/${archive}")).builtBy(coreBuild.task(task))
+    }
+
+    def configuration = configurations.create(name) {
+        canBeResolved = true
+        canBeConsumed = false
+        transitive = false
+    }
+    dependencies.add(name, development ? "${coreCoordinate}:deobf" : coreCoordinate)
+    return files(configuration)
+}
+
+ext.furnitureCoreDevFiles = coreArtifacts('furnitureCoreDeobfJar', 'coreDevelopment', ':jar', true)
+ext.furnitureCoreRuntimeFiles = coreArtifacts('furnitureCoreRuntimeJar', 'coreDistribution', ':renameJar', false)

@@ -10,8 +10,8 @@ import java.util.stream.IntStream;
 import org.lwjgl.opengl.GL11;
 
 import zone.moddev.mc.ironagefurniture.api.surface.MaterialShelfDisplay;
-import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout;
-import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout.Placement;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout.Placement;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

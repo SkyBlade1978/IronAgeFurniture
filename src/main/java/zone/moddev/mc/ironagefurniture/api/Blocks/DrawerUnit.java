@@ -288,7 +288,7 @@ public final class DrawerUnit extends Block {
 		double top = level + 6.875D;
 		double left = pair == Pair.RIGHT ? 0 : 1.125D;
 		double right = pair == Pair.LEFT ? 16 : 14.875D;
-		return rotate(new AxisAlignedBB(left / 16, bottom / 16, front, right / 16, top / 16, front + 2.0D / 16),
+		return rotate(new AxisAlignedBB(left / 16, bottom / 16, front, right / 16, top / 16, front + front * 3 / 8),
 			state.getValue(FACING));
 	}
 

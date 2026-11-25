@@ -6,7 +6,7 @@ import com.mojang.authlib.GameProfile;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import zone.moddev.mc.ironagefurniture.api.surface.ShelfLayout.Placement;
+import zone.moddev.mc.skysfurniturecore.api.surface.ShelfLayout.Placement;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaShelfDisplay;
 
 import net.minecraft.client.Minecraft;

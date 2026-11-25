@@ -9,7 +9,7 @@ import java.util.concurrent.Future;
 import zone.moddev.mc.ironagefurniture.api.Blocks.RackBlock;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityShelvingUnit.ShelfLevel;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.client.gui.GuiShelfMedia;
 import zone.moddev.mc.ironagefurniture.client.gui.ShelfMediaInputProbe;
 
@@ -164,17 +164,22 @@ public final class VanillaFoodNetworkClientProbe {
 				step = 6;
 			} else if (step == 6) {
 				if (!(client.currentScreen instanceof zone.moddev.mc.ironagefurniture.client.gui.GuiBarrel)) return;
+				require(client.player.openContainer.inventorySlots.isEmpty(), "Default barrel screen exposed inventory slots");
 				zone.moddev.mc.ironagefurniture.api.network.StorageNetwork.channel.sendToServer(
 					new zone.moddev.mc.ironagefurniture.api.network.StorageNetwork.Seal(barrelPos,true));
 				step = 7;
 			} else if (step == 7) {
 				zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel tile = (zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel)client.world.getTileEntity(barrelPos);
 				if (!tile.isSealed()) return;
-				pending = client.getIntegratedServer().addScheduledTask(() -> require(
-					((zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel)serverPlayer(client).getServerWorld().getTileEntity(barrelPos)).isSealed(),
-					"Barrel seal did not reach the server"));
+				pending = client.getIntegratedServer().addScheduledTask(() -> {
+					EntityPlayerMP player = serverPlayer(client);
+					require(player.openContainer.inventorySlots.isEmpty(), "Default barrel container exposed server slots");
+					require(((zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel)player.getServerWorld()
+						.getTileEntity(barrelPos)).isSealed(), "Barrel seal did not reach the server");
+				});
 				step = 8;
 			} else if (step == 8) {
+				VanillaFoodClientProbe.screenshot(client, "phase5-fluid-barrel-compact.png");
 				zone.moddev.mc.ironagefurniture.api.network.StorageNetwork.channel.sendToServer(
 					new zone.moddev.mc.ironagefurniture.api.network.StorageNetwork.Seal(barrelPos,false));
 				step = 9;

@@ -26,6 +26,13 @@ publishing {
                 artifact(tasks.named('javadocJar'))
             }
             pom {
+                withXml {
+                    def core = asNode().appendNode('dependencies').appendNode('dependency')
+                    core.appendNode('groupId', 'zone.moddev.mc')
+                    core.appendNode('artifactId', 'skys-furniture-core')
+                    core.appendNode('version', project.furniture_core_version.toString())
+                    core.appendNode('scope', 'compile')
+                }
                 name = project.mod_name
                 description = project.mod_description
                 url = 'https://github.com/MinecraftModDevelopmentMods/IronAgeFurniture'

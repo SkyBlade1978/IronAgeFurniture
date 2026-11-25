@@ -19,12 +19,12 @@ import zone.moddev.mc.ironagefurniture.api.tile.TileEntityUpholstery;
 import zone.moddev.mc.ironagefurniture.client.resources.GeneratedModelResourcePack;
 import zone.moddev.mc.ironagefurniture.client.particle.HeldCandleSmoke;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityPaddedBench;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceContentRegistry;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceInteractionRegistry;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaFoodPlacement;
 import zone.moddev.mc.ironagefurniture.api.FluidAgingRegistry;
 import zone.moddev.mc.ironagefurniture.api.LegacyFluidRegistration;
-import zone.moddev.mc.ironagefurniture.client.render.SurfaceRenderRegistry;
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry;
 import zone.moddev.mc.ironagefurniture.init.BlockInitialiser;
 import zone.moddev.mc.ironagefurniture.init.ClientItemInitialiser;
 import zone.moddev.mc.ironagefurniture.init.ClientModelInitialiser;
@@ -48,7 +48,8 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-@Mod(modid = Ironagefurniture.MODID, version = Ironagefurniture.VERSION)
+@Mod(modid = Ironagefurniture.MODID, version = Ironagefurniture.VERSION,
+	dependencies = "required-after:skysfurniturecore@[0.1.0.110021,0.2)")
 public class Ironagefurniture {
 	public static final String MODID = "ironagefurniture";
 	public static final String VERSION = "0.5.0.110021";
@@ -122,14 +123,9 @@ public class Ironagefurniture {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		SurfaceContentRegistry.freeze();
-		SurfaceInteractionRegistry.freeze();
 		FluidAgingRegistry.freeze();
 		FluidVesselInteractions.freeze();
 
-		if (event.getSide().isClient()) {
-			SurfaceRenderRegistry.freeze();
-		}
 	}
 
 	@EventHandler

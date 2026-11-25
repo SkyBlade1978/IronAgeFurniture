@@ -1,7 +1,7 @@
 package zone.moddev.mc.ironagefurniture.api.Blocks;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.client.render.SurfaceDisplayRenderHelper;
 
 import net.minecraft.block.Block;
@@ -75,7 +75,7 @@ public final class SurfaceItemHit {
 		ItemStack removed = host.getSurfaceSetting().remove(Slot.byIndex(hit.subHit - ITEM_HIT));
 		host.markSurfaceSettingChanged();
 		if (!world.isRemote && !player.capabilities.isCreativeMode)
-			zone.moddev.mc.ironagefurniture.api.surface.SurfaceInteractionRegistry.drop(world, pos, removed);
+			zone.moddev.mc.skysfurniturecore.api.surface.SurfaceInteractionRegistry.drop(world, pos, removed);
 		if (!host.getSurfaceSetting().hasAnyItem()) SurfaceDisplayBlocker.release(world, pos);
 		Block block = state.getBlock();
 		if (block instanceof DiningTable) ((DiningTable)block).removeTableEntityIfEmpty(world, pos);

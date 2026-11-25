@@ -1,11 +1,13 @@
 package zone.moddev.mc.ironagefurniture.api.tile;
 
+import zone.moddev.mc.skysfurniturecore.api.storage.StoredInventoryData;
+
 import javax.annotation.Nullable;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.Cabinet;
 import zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceReservationRepair;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

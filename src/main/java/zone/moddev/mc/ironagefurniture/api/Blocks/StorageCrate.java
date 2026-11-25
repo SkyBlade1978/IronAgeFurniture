@@ -5,7 +5,7 @@ import java.util.List;
 
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.StorageGuiHandler;
-import zone.moddev.mc.ironagefurniture.api.tile.FurnitureLabel;
+import zone.moddev.mc.skysfurniturecore.api.storage.FurnitureLabel;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCrate;
 
 import net.minecraft.block.Block;

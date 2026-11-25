@@ -33,6 +33,7 @@ public final class BulkBarrelClientProbe {
 	private static Future<?> pending;
 	private static int step;
 	private static int ticks;
+	private static int mismatchTicks;
 
 	private BulkBarrelClientProbe() { }
 
@@ -78,10 +79,11 @@ public final class BulkBarrelClientProbe {
 			int count = tile.getBulkStorage().getCount();
 			if (step == 0 && count == 0 && ItemStack.areItemStacksEqual(client.player.getHeldItemMainhand(), potatoes(64))) {
 				require(!open(client), "Empty barrel rendered open");
-				click(client);
+				click(client, EnumFacing.SOUTH);
 				step = 1;
 			} else if (step == 1 && count == 64 && client.player.getHeldItemMainhand() == null) {
 				require(open(client), "Solid barrel did not render as open on the client");
+				require(client.currentScreen == null, "First side deposit opened the barrel menu");
 				pending = client.getIntegratedServer().addScheduledTask(() -> {
 					EntityPlayerMP player = serverPlayer(client);
 					player.setHeldItem(EnumHand.MAIN_HAND, potatoes(5));
@@ -89,28 +91,50 @@ public final class BulkBarrelClientProbe {
 				});
 				step = 2;
 			} else if (step == 2 && ItemStack.areItemStacksEqual(client.player.getHeldItemMainhand(), potatoes(5))) {
-				click(client);
+				click(client, EnumFacing.WEST);
 				step = 3;
 			} else if (step == 3 && count == 69 && client.player.getHeldItemMainhand() == null) {
-				click(client);
+				require(client.currentScreen == null, "Matching side deposit opened the barrel menu");
+				pending = client.getIntegratedServer().addScheduledTask(() -> {
+					EntityPlayerMP player = serverPlayer(client);
+					player.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(Items.STICK));
+					player.sendContainerToPlayer(player.inventoryContainer);
+				});
 				step = 4;
-			} else if (step == 4 && menuShows(client, 69)) {
+			} else if (step == 4 && client.player.getHeldItemMainhand() != null
+					&& client.player.getHeldItemMainhand().getItem() == Items.STICK) {
+				click(client, EnumFacing.SOUTH);
+				step = 5;
+			} else if (step == 5 && ++mismatchTicks >= 4) {
+				require(client.currentScreen == null && count == 69
+					&& ItemStack.areItemStacksEqual(client.player.getHeldItemMainhand(), new ItemStack(Items.STICK)),
+					"Held non-bulk item opened a menu or changed contents");
+				pending = client.getIntegratedServer().addScheduledTask(() -> {
+					EntityPlayerMP player = serverPlayer(client);
+					player.setHeldItem(EnumHand.MAIN_HAND, null);
+					player.sendContainerToPlayer(player.inventoryContainer);
+				});
+				step = 6;
+			} else if (step == 6 && client.player.getHeldItemMainhand() == null) {
+				click(client, EnumFacing.SOUTH);
+				step = 7;
+			} else if (step == 7 && menuShows(client, 69)) {
 				VanillaFoodClientProbe.screenshot(client, "phase5-bulk-barrel-gui.png");
 				take(client, ContainerBulkBarrel.TAKE_ONE);
-				step = 5;
-			} else if (step == 5 && count == 68 && menuShows(client, 68)
+				step = 8;
+			} else if (step == 8 && count == 68 && menuShows(client, 68)
 					&& ItemStack.areItemStacksEqual(client.player.inventory.getStackInSlot(0), potatoes(1))) {
 				take(client, ContainerBulkBarrel.TAKE_STACK);
-				step = 6;
-			} else if (step == 6 && count == 4 && menuShows(client, 4)
+				step = 9;
+			} else if (step == 9 && count == 4 && menuShows(client, 4)
 					&& ItemStack.areItemStacksEqual(client.player.inventory.getStackInSlot(0), potatoes(64))
 					&& ItemStack.areItemStacksEqual(client.player.inventory.getStackInSlot(1), potatoes(1))) {
 				take(client, ContainerBulkBarrel.TAKE_STACK);
-				step = 7;
-			} else if (step == 7 && count == 0 && client.currentScreen == null
+				step = 10;
+			} else if (step == 10 && count == 0 && client.currentScreen == null
 					&& ItemStack.areItemStacksEqual(client.player.inventory.getStackInSlot(1), potatoes(5))) {
 				require(!open(client), "The lid did not shut after the last client withdrawal");
-				LogManager.getLogger().info("IAF BULK BARREL NETWORK PASSED: top deposit, count, exact withdrawals and closing lid");
+				LogManager.getLogger().info("IAF BULK BARREL NETWORK PASSED: side deposits, empty-hand menu, exact withdrawals and closing lid");
 				BarrelLabelClientProbe.start(client, pos);
 				pos = null;
 			}
@@ -125,10 +149,11 @@ public final class BulkBarrelClientProbe {
 		return state.getBlock().getActualState(state, client.world, pos).getValue(StorageBarrel.OPEN);
 	}
 
-	private static void click(Minecraft client) {
+	private static void click(Minecraft client, EnumFacing side) {
 		EnumActionResult result = client.playerController.processRightClickBlock(client.player, client.world,
-			client.player.getHeldItemMainhand(), pos, EnumFacing.UP,
-			new Vec3d(pos).addVector(0.5D, 1, 0.5D), EnumHand.MAIN_HAND);
+			client.player.getHeldItemMainhand(), pos, side, new Vec3d(pos)
+				.addVector(0.5D + side.getFrontOffsetX() * 0.5D, 0.5D, 0.5D + side.getFrontOffsetZ() * 0.5D),
+			EnumHand.MAIN_HAND);
 		require(result == EnumActionResult.SUCCESS, "Bulk barrel click fell through to item use");
 	}
 

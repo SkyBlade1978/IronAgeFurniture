@@ -7,11 +7,11 @@ import zone.moddev.mc.ironagefurniture.api.LightingFactory;
 import zone.moddev.mc.ironagefurniture.api.MineralogyCompat;
 import zone.moddev.mc.ironagefurniture.api.SeatingFactory;
 import zone.moddev.mc.ironagefurniture.api.SurfaceDisplayFactory;
-import zone.moddev.mc.ironagefurniture.api.surface.VanillaSurfaceBottles;
+import zone.moddev.mc.skysfurniturecore.api.surface.VanillaSurfaceBottles;
 import zone.moddev.mc.ironagefurniture.api.surface.FlowerPotSurface;
 import zone.moddev.mc.ironagefurniture.api.surface.FurnitureSurfaceDisplay;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaShelfDisplay;
-import zone.moddev.mc.ironagefurniture.api.surface.VanillaSurfaceFoods;
+import zone.moddev.mc.skysfurniturecore.api.surface.VanillaSurfaceFoods;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBottleRack;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
@@ -61,12 +61,15 @@ public class BlockInitialiser {
 	}
 
 	private static void generateSurfaceFurniture() {
-		VanillaSurfaceFoods.register();
 		VanillaShelfDisplay.register();
 		FlowerPotSurface.register();
 		FurnitureSurfaceDisplay.register();
 		VanillaShelfTools.register();
-		VanillaSurfaceBottles.register();
+		zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry.registerFallback(stack -> {
+			zone.moddev.mc.ironagefurniture.api.surface.MaterialShelfDisplay display =
+				zone.moddev.mc.ironagefurniture.api.surface.MaterialShelfDisplay.find(stack);
+			return display == null ? null : display.getDescriptor();
+		});
 
 		GameRegistry.registerTileEntity(TileEntityDiningTable.class, Ironagefurniture.MODID + ":table_dining");
 		GameRegistry.registerTileEntity(TileEntityCabinet.class, Ironagefurniture.MODID + ":cabinet_wood_ironage");

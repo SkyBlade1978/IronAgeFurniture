@@ -38,6 +38,8 @@ JavaSE-1.8 runtime configured. Refresh the project and choose a
 `Phase5-<profile>-client` or `Phase5-<profile>-server` Java launch. Run the
 task again after editing any of the three mods: the launches use the rebuilt
 development JARs so classes and processed resources always match.
+Every profile loads [Skys Furniture Core](../docs/FURNITURE_CORE.md) from
+the sibling checkout or the configured artifact source.
 
 | Profile | Additional mods |
 | --- | --- |

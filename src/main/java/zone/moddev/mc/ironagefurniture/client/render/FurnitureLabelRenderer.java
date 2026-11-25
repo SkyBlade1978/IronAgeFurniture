@@ -2,7 +2,7 @@ package zone.moddev.mc.ironagefurniture.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import zone.moddev.mc.ironagefurniture.api.tile.FurnitureLabel;
+import zone.moddev.mc.skysfurniturecore.api.storage.FurnitureLabel;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

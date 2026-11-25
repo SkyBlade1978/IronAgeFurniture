@@ -28,6 +28,9 @@ permissions:
   actions: read
   contents: read
 
+env:
+  FURNITURE_CORE_MAVEN_URL: ${{ vars.FURNITURE_CORE_MAVEN_URL }}
+
 concurrency:
   group: iron-age-furniture-release-${{ inputs.release_version }}
   cancel-in-progress: false
@@ -132,6 +135,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REQUESTED_VERSION: ${{ inputs.release_version }}
+          FURNITURE_CORE_CURSEFORGE_SLUG: ${{ vars.FURNITURE_CORE_CURSEFORGE_SLUG }}
         run: |
           set -euo pipefail
 
@@ -235,6 +239,13 @@ jobs:
           fi
 
           curseforge_dependencies=
+          if [[ -n "$(value furniture_core_version)" ]]; then
+            if [[ ! "${FURNITURE_CORE_CURSEFORGE_SLUG:-}" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
+              echo "Set FURNITURE_CORE_CURSEFORGE_SLUG to the published Core project before releasing this Furniture build" >&2
+              exit 1
+            fi
+            curseforge_dependencies="$FURNITURE_CORE_CURSEFORGE_SLUG(required)"
+          fi
           if [[ -n "$curseforge_optionals" ]]; then
             IFS=',' read -ra optional_projects <<<"$curseforge_optionals"
             for project_slug in "${optional_projects[@]}"; do

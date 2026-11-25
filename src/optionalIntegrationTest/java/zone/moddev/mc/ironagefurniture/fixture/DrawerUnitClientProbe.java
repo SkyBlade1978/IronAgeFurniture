@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -34,6 +35,7 @@ public final class DrawerUnitClientProbe {
 	private static Future<?> ready;
 	private static int step;
 	private static int ticks;
+	private static int openFrames;
 
 	private DrawerUnitClientProbe() { }
 
@@ -103,9 +105,26 @@ public final class DrawerUnitClientProbe {
 					&& !actual.getValue(DrawerUnit.LOWER_OPEN), "Incorrect drawer inventory or opening state");
 				verifyModel(client, left);
 				verifyModel(client, right);
-				client.player.closeScreen();
+				// Keep the native container open while capturing its model without the inventory overlay.
+				client.currentScreen = null;
+				client.gameSettings.hideGUI = true;
+				client.player.setPositionAndRotation(left.getX() - 0.85D, left.getY() + 0.3D,
+					left.getZ() + 4.75D, 180.0F, 7.0F);
+				client.player.prevRotationYaw = 180.0F;
+				client.player.prevRotationPitch = 7.0F;
 				break;
 			case 2:
+				if (++openFrames < 8) return;
+				require(actual.getValue(DrawerUnit.UPPER_OPEN), "Open drawer closed before its visual capture");
+				verifyOpening(client, left);
+				verifyOpening(client, right);
+				verifyOpening(client, left.west(2));
+				verifyOpening(client, left.west(3));
+				VanillaFoodClientProbe.screenshot(client, "phase5-drawer-units-open.png");
+				client.player.closeScreen();
+				client.gameSettings.hideGUI = false;
+				break;
+			case 3:
 				if (client.currentScreen != null || actual.getValue(DrawerUnit.UPPER_OPEN)
 						|| actual(client, right).getValue(DrawerUnit.UPPER_OPEN)) return;
 				double x = left.getX() - 0.85D;
@@ -115,7 +134,7 @@ public final class DrawerUnitClientProbe {
 				client.player.prevRotationYaw = 180.0F;
 				client.player.prevRotationPitch = 7.0F;
 				break;
-			case 3:
+			case 4:
 				if (ticks % 15 != 0) return;
 				VanillaFoodClientProbe.screenshot(client, "phase5-drawer-units.png");
 				DoubleStorageBenchClientProbe.start(client, left.east(8));
@@ -141,6 +160,42 @@ public final class DrawerUnitClientProbe {
 		IBakedModel model = client.getBlockRendererDispatcher().getModelForState(state);
 		require(model.getQuads(state, null, 0).size() > 30 && !"missingno".equals(model.getParticleTexture().getIconName()),
 			"Drawer multipart geometry did not bake at " + pos);
+	}
+
+	private static void verifyOpening(Minecraft client, BlockPos pos) {
+		IBlockState state = actual(client, pos);
+		float expected = state.getBlock().getRegistryName().getResourcePath().startsWith("half_drawer") ? 3.0F / 16 : 6.0F / 16;
+		for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+			for (DrawerUnit.Pair pair : DrawerUnit.Pair.values()) {
+				IBlockState closed = state.withProperty(DrawerUnit.FACING, facing).withProperty(DrawerUnit.PAIR, pair)
+					.withProperty(DrawerUnit.UPPER_OPEN, false).withProperty(DrawerUnit.LOWER_OPEN, false);
+				for (boolean upper : new boolean[] { false, true }) {
+					IBlockState open = closed.withProperty(upper ? DrawerUnit.UPPER_OPEN : DrawerUnit.LOWER_OPEN, true);
+					float openFront = front(client.getBlockRendererDispatcher().getModelForState(open), open, upper);
+					float closedFront = front(client.getBlockRendererDispatcher().getModelForState(closed), closed, upper);
+					require(Math.abs(openFront - closedFront - expected) < 0.0001F,
+						"Open drawer geometry did not extend to its collision box on " + open);
+				}
+			}
+		}
+	}
+
+	private static float front(IBakedModel model, IBlockState state, boolean upper) {
+		float furthest = Float.NEGATIVE_INFINITY;
+		EnumFacing facing = state.getValue(DrawerUnit.FACING);
+		for (BakedQuad quad : model.getQuads(state, null, 0)) {
+			int[] data = quad.getVertexData();
+			int stride = data.length / 4;
+			for (int vertex = 0; vertex < 4; vertex++) {
+				float y = Float.intBitsToFloat(data[vertex * stride + 1]);
+				if (y > (upper ? 0.56F : 0.06F) && y < (upper ? 0.94F : 0.44F)) {
+					float x = Float.intBitsToFloat(data[vertex * stride]);
+					float z = Float.intBitsToFloat(data[vertex * stride + 2]);
+					furthest = Math.max(furthest, x * facing.getFrontOffsetX() + z * facing.getFrontOffsetZ());
+				}
+			}
+		}
+		return furthest;
 	}
 
 	private static void require(boolean condition, String message) {

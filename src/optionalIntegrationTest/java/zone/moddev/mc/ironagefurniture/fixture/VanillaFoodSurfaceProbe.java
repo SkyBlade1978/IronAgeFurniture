@@ -4,9 +4,9 @@ import java.util.UUID;
 import com.mojang.authlib.GameProfile;
 
 import zone.moddev.mc.ironagefurniture.IronAgeFurnitureConfiguration;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaFoodPlacement;
-import zone.moddev.mc.ironagefurniture.api.surface.VanillaSurfaceFoods;
+import zone.moddev.mc.skysfurniturecore.api.surface.VanillaSurfaceFoods;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityVanillaFoodDisplay;
 
 import net.minecraft.block.Block;

@@ -30,6 +30,7 @@ final class Phase5StackProbe {
     static void verify(MinecraftServer server) {
         Set<String> actual = new HashSet<>(Loader.instance().getIndexedModList().keySet());
         require(actual.remove("ironagefurniture"), "Furniture did not load");
+        require(actual.remove("skysfurniturecore"), "Furniture Core did not load");
         actual.removeAll(Arrays.asList("minecraft", "mcp", "FML", "Forge", "forge",
                 OptionalIntegrationRecipeProbe.MOD_ID));
         String expectedProperty = System.getProperty("iaf.probe.phase5Mods");

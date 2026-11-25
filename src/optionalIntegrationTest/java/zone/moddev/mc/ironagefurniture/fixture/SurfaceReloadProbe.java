@@ -3,7 +3,7 @@ package zone.moddev.mc.ironagefurniture.fixture;
 import java.util.ArrayList;
 import java.util.List;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBedsideCabinet;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityDiningTable;

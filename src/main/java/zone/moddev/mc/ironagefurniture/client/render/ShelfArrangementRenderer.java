@@ -1,5 +1,7 @@
 package zone.moddev.mc.ironagefurniture.client.render;
 
+import zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderContext;
+
 import java.util.List;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf;

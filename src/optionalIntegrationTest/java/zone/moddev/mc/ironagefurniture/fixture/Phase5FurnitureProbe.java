@@ -4,11 +4,11 @@ import java.util.Set;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.Cabinet;
 import zone.moddev.mc.ironagefurniture.api.Blocks.DiningTable;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Category;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
-import zone.moddev.mc.ironagefurniture.api.surface.VanillaSurfaceFoods;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Category;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.VanillaSurfaceFoods;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityCabinet;
 
 import net.minecraft.block.Block;

@@ -1,32 +1,29 @@
 package zone.moddev.mc.ironagefurniture.client.render;
 
-import java.util.IdentityHashMap;
-import java.util.Map;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-/** Client-only registrations for addon-provided surface item visuals. */
+/** Original renderer registration backed by the shared client registry. */
+@Deprecated
 public final class SurfaceRenderRegistry {
 	public interface Renderer {
 		void render(ItemStack stack, SurfaceRenderContext context);
 	}
 
-	private static final Map<Item, Renderer> RENDERERS = new IdentityHashMap<>();
-	private static boolean frozen;
-
 	private SurfaceRenderRegistry() { }
 
-	public static synchronized void register(Item item, Renderer renderer) {
-		if (frozen || item == null || renderer == null || RENDERERS.containsKey(item)) {
-			throw new IllegalStateException("Invalid or duplicate surface renderer registration");
-		}
-		RENDERERS.put(item, renderer);
+	public static void register(Item item, Renderer renderer) {
+		if (renderer == null) throw new IllegalArgumentException("Missing renderer");
+		zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry.register(item, (stack, context) ->
+			renderer.render(stack, new SurfaceRenderContext(context.x, context.y, context.z, context.itemX,
+				context.itemY, context.itemZ, context.blockSurfaceY, context.yaw)));
 	}
 
-	public static synchronized void freeze() { frozen = true; }
+	public static void freeze() { zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry.freeze(); }
 
-	public static synchronized Renderer get(ItemStack stack) {
-		return stack == null || stack.stackSize <= 0 ? null : RENDERERS.get(stack.getItem());
+	public static Renderer get(ItemStack stack) {
+		zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry.Renderer renderer =
+			zone.moddev.mc.skysfurniturecore.client.render.SurfaceRenderRegistry.get(stack);
+		return renderer == null ? null : (item, context) -> renderer.render(item, context.core());
 	}
 }

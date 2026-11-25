@@ -1,5 +1,8 @@
 package zone.moddev.mc.ironagefurniture.api.surface;
 
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceContentRegistry;
+import zone.moddev.mc.skysfurniturecore.api.surface.VanillaSurfaceFoods;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 

@@ -2,7 +2,7 @@ package zone.moddev.mc.ironagefurniture.fixture;
 
 import zone.moddev.mc.ironagefurniture.api.Blocks.WallShelf;
 import zone.moddev.mc.ironagefurniture.api.VasePlantHelper;
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSettingHost;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSettingHost;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityGlassVase;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -149,7 +149,7 @@ final class Phase5VaseProbe {
 	private static void rayClick(WorldServer world, FakePlayer player, BlockPos pos, EnumFacing side, ItemStack held) {
 		SurfaceSettingHost host = (SurfaceSettingHost)world.getTileEntity(pos);
 		AxisAlignedBB bounds = zone.moddev.mc.ironagefurniture.api.Blocks.SurfaceItemHit.bounds(host,
-			zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot.CENTER, false).offset(pos);
+			zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot.CENTER, false).offset(pos);
 		Vec3d centre = new Vec3d((bounds.minX + bounds.maxX) / 2, (bounds.minY + bounds.maxY) / 2, (bounds.minZ + bounds.maxZ) / 2);
 		double reach = (side.getAxis() == EnumFacing.Axis.X ? bounds.maxX - bounds.minX : bounds.maxZ - bounds.minZ) / 2 + 0.01D;
 		RayTraceResult hit = world.rayTraceBlocks(centre.addVector(side.getFrontOffsetX() * reach, 0, side.getFrontOffsetZ() * reach), centre);

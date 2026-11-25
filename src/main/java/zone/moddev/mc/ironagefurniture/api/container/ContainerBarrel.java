@@ -3,9 +3,10 @@ package zone.moddev.mc.ironagefurniture.api.container;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityBarrel;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.InventoryPlayer;
+import zone.moddev.mc.skysfurniturecore.api.vessel.BarrelContainer;
 
-public class ContainerBarrel extends Container {
+public class ContainerBarrel extends BarrelContainer {
 	public TileEntityBarrel getBarrel() { return this.barrel; }
 	private static final int DISPLAY_PROGRESS_TOTAL = 100;
 	private static final int MAX_IN_PROGRESS_PERCENT = 99;
@@ -16,6 +17,11 @@ public class ContainerBarrel extends Container {
 	private int lastSealed;
 
 	public ContainerBarrel(TileEntityBarrel barrel) {
+		this(barrel, null);
+	}
+
+	public ContainerBarrel(TileEntityBarrel barrel, InventoryPlayer inventory) {
+		super(barrel, inventory);
 		this.barrel = barrel;
 	}
 
@@ -62,7 +68,7 @@ public class ContainerBarrel extends Container {
 			return 0;
 		}
 
-		return Math.min(MAX_IN_PROGRESS_PERCENT, Math.max(0, progress * DISPLAY_PROGRESS_TOTAL / total));
+		return (int)Math.min(MAX_IN_PROGRESS_PERCENT, Math.max(0L, (long)progress * DISPLAY_PROGRESS_TOTAL / total));
 	}
 
 	private int getDisplayProgressTotal(int total) {

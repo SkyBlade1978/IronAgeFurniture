@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 
 import zone.moddev.mc.ironagefurniture.Ironagefurniture;
 import zone.moddev.mc.ironagefurniture.api.Blocks.StorageBench;
-import zone.moddev.mc.ironagefurniture.api.Enumerations.BenchType;
+import zone.moddev.mc.skysfurniturecore.api.seating.BenchType;
 import zone.moddev.mc.ironagefurniture.api.Enumerations.PaddedBenchColour;
 import zone.moddev.mc.ironagefurniture.api.Items.ItemBlockStorageBench;
 import zone.moddev.mc.ironagefurniture.api.entity.Seat;

@@ -2,7 +2,7 @@ package zone.moddev.mc.ironagefurniture.api.Blocks;
 
 import java.util.Random;
 
-import zone.moddev.mc.ironagefurniture.api.surface.SurfaceSetting.Slot;
+import zone.moddev.mc.skysfurniturecore.api.surface.SurfaceSetting.Slot;
 import zone.moddev.mc.ironagefurniture.api.surface.VanillaFoodPlacement;
 import zone.moddev.mc.ironagefurniture.api.tile.TileEntityVanillaFoodDisplay;
 
